@@ -1,10 +1,10 @@
-**Current turn outcome (2026-11-25 UTC):** M6-CP3-TB-REV-185 adversarial continuation upholds TB185V 1006/1006 and CB-206 bytes (syntax-clean) but reorders the sequence: activation lets the sphere reach quotient production, where QF1 stalled close_sheets. [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md).
+**Current turn outcome (2026-11-25 UTC):** CB-207A exact one-path product change compiled, eight GMP/GMPXX targets; no runtime. [Record](.agents/Directional/Architecture_M6_CP3_CB207A_QF1_Quotient_Forest_Adjacency_Once_Per_Owner_Code_Build_Record_20261125.md). TB185V remains 1006/1006 accepted preactivation only. Next CB-207B before activation.
 
 ## CURRENT — QF1 A/B before activation; bounded sphere termination diagnostic before the activation full gate (2026-11-25 UTC)
 
 - [x] **COMPLETE** `M6-CP3-TB-REV-185` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md): sphere cut failure returns before quotient production (`RemeshPipeline.cpp:12936–12954` vs `:13316`); activation unlocks it in rows 648/843/844/858/1006 (X1); row858 asserts sphere still fails somewhere, unclassified (X2); row648 prediction grounded (X3); CB-206 syntax-clean (X4).
-- [ ] **1 NEXT** `M6-CP3-CB-207A-QF1-QUOTIENT-FOREST-ADJACENCY-ONCE-PER-OWNER` (exact, compile only).
-- [ ] **2** `M6-CP3-CB-207B-QF1-VERIFIER-FOREST-EDGES-BY-CLASS` (exact, compile only).
+- [x] **1 COMPLETE** `M6-CP3-CB-207A-QF1-QUOTIENT-FOREST-ADJACENCY-ONCE-PER-OWNER` (exact, compile only; [record](.agents/Directional/Architecture_M6_CP3_CB207A_QF1_Quotient_Forest_Adjacency_Once_Per_Owner_Code_Build_Record_20261125.md)).
+- [ ] **2 NEXT** `M6-CP3-CB-207B-QF1-VERIFIER-FOREST-EDGES-BY-CLASS` (exact, compile only).
 - [ ] **3** `M6-CP3-TB-EXEC-187Q` full 1006 gate, all rows N1–N3-equal to TB185V → **4** `M6-CP3-TB-REV-187Q`.
 - [ ] **5** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (exact as frozen, compile only).
 - [ ] **6** `M6-CP3-TB-EXEC-186T` bounded: rows 648/843/844/858/979/1006 under activation, no gate credit → **7** `M6-CP3-TB-REV-186T` (freeze row858/size-receipt CBs if needed).
@@ -12,14 +12,15 @@
 - [ ] **9** CB-207C if needed → parameter-deletion CB → V3b → R1 → O48. **HELD:** CB-190, J6, E5.
 
 ```text
-NEXT_TURN: M6-CP3-CB-207A-QF1-QUOTIENT-FOREST-ADJACENCY-ONCE-PER-OWNER
+NEXT_TURN: M6-CP3-CB-207B-QF1-VERIFIER-FOREST-EDGES-BY-CLASS
 Owner: Code + Build only; apply exact one-path product diff; compile eight GMP/GMPXX targets; runtimeExecution=false. Do not run tests or benchmarks.
-Authority: Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md (X1, sequence step 1); gates/Architecture_M6_CP3_CB207_QF1_Quotient_Forest_Cost_Exact_Manifest.md; Architecture_M6_CP3_CB207A_QF1_Quotient_Forest_Adjacency_Once_Per_Owner_Exact.diff
-  diff SHA-256 afcbe25b77152e29f6221b77053b9d3420dab116555a32376ef28aaaf775cfc7; src/pipeline/RemeshPipeline.cpp 57c2251135637bef...4a02 -> e52e8dc4ff81fc0ab2fa01c2e6c50020563c6da95d27ed9b98cf42d7839c38d4; one path only
-  behaviour-preserving: prebuilt sorted adjacency per owner (producer incremental, publication and verifier read-only); identical paths, errors, record order
-  STOP on preimage/postimage/path/compile/package mismatch; no test, fixture, selector change
-Then: CB-207B (exact, preimage e52e8dc4...) -> TB-EXEC-187Q (full 1006 gate, all rows N1-N3-equal to TB185V; row1006 elapsed) -> TB-REV-187Q -> CB-206 (exact as frozen) -> TB-EXEC-186T (bounded: rows 648/843/844/858/979/1006 under activation; terminal stage/code/elapsed; stacks on cutoff; no gate credit) -> TB-REV-186T (freeze any row858/size-receipt CB) -> TB-EXEC-186 (full + V5, STOP-on-RED) -> TB-REV-186
-Do not: activate Branch A in CB-207A, edit tests, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
+Authority: Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md (X1, sequence step 2); gates/Architecture_M6_CP3_CB207_QF1_Quotient_Forest_Cost_Exact_Manifest.md; Architecture_M6_CP3_CB207B_QF1_Verifier_Forest_Edges_By_Class_Exact.diff
+  CB-207A source db1353d8154f684db9270a856423fee8cdab4f5a, package 15070039696, compile only; [record](.agents/Directional/Architecture_M6_CP3_CB207A_QF1_Quotient_Forest_Adjacency_Once_Per_Owner_Code_Build_Record_20261125.md).
+  diff SHA-256 523357c9b32633ebe21f9a0c6744b562c7ddf723f745df9a519b16956e53a279; src/pipeline/RemeshPipeline.cpp e52e8dc4ff81fc0ab2fa01c2e6c50020563c6da95d27ed9b98cf42d7839c38d4 -> 5da1fcc98dcb08b21279a3ba59ccd81861bc1f2fc3f2d2bf2ba3acd2c979dd03; one path only, +17/-9.
+  Behaviour-preserving: one pass buckets verifier forest edges by class, preserves forest order; same predicate, cardinality and spanning findings.
+  STOP on preimage/postimage/path/compile/package mismatch; no test, fixture, selector change.
+Then: TB-EXEC-187Q (full 1006 gate, all rows N1-N3-equal to TB185V; row1006 elapsed) -> TB-REV-187Q -> CB-206 (exact as frozen) -> TB-EXEC-186T (bounded: rows 648/843/844/858/979/1006 under activation; terminal stage/code/elapsed; stacks on cutoff; no gate credit) -> TB-REV-186T (freeze any row858/size-receipt CB) -> TB-EXEC-186 (full + V5, STOP-on-RED) -> TB-REV-186
+Do not: activate Branch A in CB-207B, edit tests, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-185 independent: CB-206 frozen; sequence reordered by adversarial X1 (2026-11-25 UTC)
