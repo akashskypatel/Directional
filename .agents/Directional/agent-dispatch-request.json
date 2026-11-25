@@ -1,12 +1,18 @@
 {
   "schema_version": 1,
-  "operation": "drive_apply",
-  "request_id": "m6-cp3-cb204-code-apply",
-  "mailbox_key": "m6-cp3-cb204-code-apply",
-  "file_id": "1RuVQE8YVc-mGclyvWn0GlacDw400I-mD",
-  "patch_sha256": "0b93062b74d8df4a2b434ce56ecd6dedc01ef63209dbf49cbfb6b1246946080d",
-  "base_sha": "caad2fc16c50b6fd632f00c9615d0bf269a7e1fd",
-  "target_branch": "agent/surface_cell_quad/p5-recover-bridge-healing",
-  "commit_message": "test: pre-stage explicit unstaged slide-entry controls",
-  "retention_days": 7
+  "operation": "compile",
+  "request_id": "m6-cp3-cb204-compile",
+  "mailbox_key": "m6-cp3-cb204-compile",
+  "source_sha": "754369dfb9e98d209e79802d8b13855f42a77f26",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb204-slide-entry-pre-staging"
 }
