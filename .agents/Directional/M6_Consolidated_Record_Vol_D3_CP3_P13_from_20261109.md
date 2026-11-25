@@ -6894,3 +6894,326 @@ Current turn: `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE`
 
 The bounded response ends before the execution result. The pending receipt preserves the exact continuation without a second run.
 ````
+
+
+## TB-REV-183 folded records — 2026-11-25 UTC
+
+Historical links and labels in the archived preimages are provenance, not current authority. Resolve through the folded index. The exact original bytes remain at the named commit.
+
+### Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md
+
+Original `.agents/Directional/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md` at `aa098cd2d75f909b2083fc3821b0a655daed6dfd`; 66 lines, SHA-256 `0fd93b05d36130423202381b9fd9b7ae81f8460cc537e771b9c29338299b2069`.
+
+# CB-201 — exact trace-segment namespace (2026-11-24 UTC)
+
+## Situation
+
+`M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` satisfies the compile-only gate. The exact reviewed namespace-only change is committed. The eight required targets compile with GNU Multiple Precision arithmetic libraries (GMP and GMPXX). No Directional executable ran. Only `M6-CP3-TB-EXEC-181-P13-TRACE-SEGMENT-NAMESPACE-FULL-GATE` is authorized next, in a separate turn.
+
+## Background
+
+[Exact manifest](gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md) and [TB-REV-180](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) authorize the K6 namespace correction. Move five shared trace-segment operations/types to `exact_trace_segment_detail`: `FaceChartPoint`, `face_chart_segment_parameter`, `exact_trace_segment_end`, `canonical_boundary_barycentric`, and `exact_trace_segment_pieces`. Update consumer qualifications without changing semantics, test identities or source line counts. K6 remains open until the independent TB-REV-181 verdict.
+
+## Assessment
+
+| Evidence | Exact authority |
+|---|---|
+| Reviewed patch | `Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact.diff`; SHA-256 `0da2ffe20ff5f0b4913acba5fa5dfd3e18c0e23ef1f6965d9d94098696d8d91c`, 27844 bytes, seven paths, +66/−66. |
+| Source snapshot | [Run 45488166187](https://github.com/akashskypatel/Directional/actions/runs/45488166187), job `138779118749`; source `6288eb3a641a51acab8e10abf57f0830e108d4e8`; artifact `14964364320` ZIP SHA-256 `7ec2cd5da878f092213001cb79b6103fe1b7b899d4994982ffc33a462311f551`; 5816/5816 member checks. |
+| Source application | [Run 45488678425](https://github.com/akashskypatel/Directional/actions/runs/45488678425), job `138781175904`, base `6288eb3a641a51acab8e10abf57f0830e108d4e8`, request `09acd14d35e197c7f7076f8ce473451a4ec5cf87`, source `b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3`. Transport SHA-256 `b629d327e9049ad6a89d2e1cbf6f13a837483deb91423e6d7d1bb7288663945b`; result `14964559299` ZIP SHA-256 `e16b4bed4bedeeba3ede7a8209ce1b625bad3f3e98e98f0377c2cc8ebfa26924`; log `14965366582` ZIP SHA-256 `b80f192f44427f28881cb5fb3d30194e548f52375eb08d3e53f01316634c4f99`. Apply and push exit 0; owner-authorized Drive retirement successful. |
+| Compile | [Run 45488907549](https://github.com/akashskypatel/Directional/actions/runs/45488907549), job `138781977639`, request `a057fc1b2bc3d11f147054bb4ac2d6ea584d15d7`, exact source `b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3`. Configure, preflight and build succeeded. Test/benchmark job skipped. |
+| Package | [14966635283](https://github.com/akashskypatel/Directional/actions/runs/45488907549/artifacts/14966635283), ZIP SHA-256 `fbad076e0d30e099ece6e197191f7a5ec98016a8713a286a4a391ede0cdb644a`, 28/28 internal checksums. Root `SHA256SUMS` SHA-256 `0641144df8b7d0b957a800fbc9d5853b79521daa3fdc760593acfa07594fe1ef`; source archive SHA-256 `b0f867441b2ef0e00fa08764a7aa2eda41b350541e7dab5bd35bdeb3893d7248`. |
+| Compile log | [14963894943](https://github.com/akashskypatel/Directional/actions/runs/45488907549/artifacts/14963894943), ZIP SHA-256 `dbe6c66668fe2dd757d2345762361097076a5f49193bc8ab7cef3d093a3914bb`. Both ZIP hashes match the mailbox and artifact API. Expires 2026-12-01 UTC. |
+| Mailbox | `workflow-mailbox:.workflow-mailbox/m6-cp3-cb201-compile-20261124/runs/45488907549-attempt-1.json`, blob `ec9aad65d0a795fee082dc97bacada4c10a20ede`, result success. |
+| Scope and clean state | `runtimeExecution=false`; `semanticContracts=compiled-not-executed`; five source status files empty. Preflight and build exit 0. `DIRECTIONAL_ENABLE_GMP=ON`; link uses `libgmpxx.so` and `libgmp.so`. |
+
+The seven preimages and postimages match the exact manifest (7/7 each). The packaged source also matches all seven postimages. The reviewed diff applies without errors; `git diff --check` passes. The remote source commit changes only the seven expected paths. Source line counts and 224 textual test declaration identities in the changed test file are unchanged. No moved symbol retains a downstream qualification. No compatibility alias, selector, gate manifest, harness, or deferred ledger changed. The eight targets are `directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, and `directional_benchmarks`. The package contains two libraries and six executables. No local compile, project binary execution, membership discovery or benchmark occurred.
+
+Accepted TB180 remains 1003/1003 and CP2 491/491. Stable 67 events / 17 categories / 50 recurrences; witness debt1/deferred81 unchanged. No CP3/497/D0/H4 promotion. Row979 remains unclassified.
+
+### Closeout checks
+
+- Temporary-state cleanup [run 45489026117](https://github.com/akashskypatel/Directional/actions/runs/45489026117), result artifact `14964654154`, ZIP SHA-256 `db6a16690bd117c5fca907702b8a36d6f684b1dab2825e285f5223767673959c`, cleanup commit `c7fb614bae17726a43ce8cf888fe40fd93cfafbc`. Only the CB-201 snapshot trigger and cleanup manifest were removed. No PR comments were deleted. Dispatcher slot retained; the mailbox remains on its dedicated branch.
+- Local document drift audit before and after edits: zero errors, one existing `DOCUMENT_BLOAT` warning for ORIENTATION.md (36,761 bytes against the 24,000-byte heuristic). Not changed in this compile-only turn. Review owns orientation maintenance. Durable section headings preserved; the task index and handoff name TB-EXEC-181 as the only next turn.
+- Process deviations: initial direct document reads preceded the required read-mode gate; the full mandatory start-policy/lesson read is not established before source work. The source patch request used a literal verified checksum rather than the payload writer. Compile dispatch followed independent remote source comparison but preceded download of the apply receipt; that receipt subsequently verified the exact frozen diff and successful push. Cleanup of the verified snapshot marker preceded completion of compile verification. The separate turn-based skill could not be retrieved at its attempted root path. These are process gaps, not proof of a product defect. The source snapshot, both apply receipts, and complete compile package were independently verified. The turn tool-call ledger is partial after context compaction; no exact total is claimed.
+
+## Recommendation — separate TB-EXEC-181
+
+Use the immutable package above. Submit this request only in the next turn after its entry STATUS write. No rebuild, repair, relink, test modification or benchmark is authorized.
+
+```json
+{
+  "schema_version": 1,
+  "operation": "test_benchmark",
+  "request_id": "m6-cp3-tb181-exec",
+  "mailbox_key": "m6-cp3-tb181-exec",
+  "executor_sha": "b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3",
+  "semantic_source_sha": "b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3",
+  "turn_id": "M6-CP3-TB-EXEC-181-P13-TRACE-SEGMENT-NAMESPACE-FULL-GATE",
+  "harness_path": ".agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh",
+  "harness_sha256": "78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94",
+  "environment": {
+    "CANDIDATE_ARTIFACT_ID": "14966635283",
+    "EXPECTED_SOURCE_SHA": "b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3",
+    "EXPECTED_CANDIDATE_ZIP_SHA256": "fbad076e0d30e099ece6e197191f7a5ec98016a8713a286a4a391ede0cdb644a",
+    "EXPECTED_ROOT_MANIFEST_SHA256": "0641144df8b7d0b957a800fbc9d5853b79521daa3fdc760593acfa07594fe1ef",
+    "EXPECTED_SOURCE_ARCHIVE_SHA256": "b0f867441b2ef0e00fa08764a7aa2eda41b350541e7dab5bd35bdeb3893d7248",
+    "CASE_MANIFEST": ".agents/Directional/gates/Architecture_M6_TB179_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv",
+    "CASE_MANIFEST_SHA256": "2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724",
+    "EXPECTED_CASE_COUNT": "1003",
+    "MEMBERSHIP_LEDGER": ".agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv",
+    "MEMBERSHIP_LEDGER_SHA256": "fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce"
+  },
+  "artifact_prefix": "m6-cp3-tb181-trace-segment-namespace",
+  "retention_days": 14
+}
+```
+
+The unchanged TB179 manifest has 1003 rows and 81 deferred names; expected membership 1084. Runtime membership is a TB preflight obligation. Compare all 1003 raw records and ledger rows against accepted TB180 result `14951803089`, ZIP SHA-256 `67e784747b1c8d04bf781b69b486f3310876fde101b7935f0207fd2fd36a39f8`. All cases must PASS; every ledger field except raw-log hash must match. Normalize only N1 (GoogleTest elapsed time), N2 (line endings), N3 (counted complete fragment-record ordering). All normalized raw bytes must match. No source-line normalization, receipt exception, changed semantic digest, membership, diagnostic or corruption classification. Any material difference, new RED, missing/duplicate result or changed membership means STOP. Independent TB-REV-181 decides whether K6 closes and freezes CB-202 under the prior adversarial requirements. J6, row979, Branch A, CB-190 and E5 remain held. No promotion.
+
+
+### Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact.diff
+
+Original `.agents/Directional/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact.diff` at `aa098cd2d75f909b2083fc3821b0a655daed6dfd`; 483 lines, SHA-256 `0da2ffe20ff5f0b4913acba5fa5dfd3e18c0e23ef1f6965d9d94098696d8d91c`.
+
+Exact consumed patch bytes remain at the pinned original path in Git history.
+
+
+### Architecture_M6_CP3_TB181_P13_Trace_Segment_Namespace_Full_Gate_Execution_Report_20261124.md
+
+Original `.agents/Directional/Architecture_M6_CP3_TB181_P13_Trace_Segment_Namespace_Full_Gate_Execution_Report_20261124.md` at `aa098cd2d75f909b2083fc3821b0a655daed6dfd`; 42 lines, SHA-256 `864aaab3580ca1245344c8766513b421324dfd425d226881819c5396c27112b0`.
+
+# TB-EXEC-181 — trace-segment namespace full gate (2026-11-24 UTC)
+
+## Situation
+
+The immutable TB-181 gate passed all 1,003 cases. All 1,003 records equal the accepted TB180 baseline under the frozen N1–N3 rules. Independent review must adjudicate K6 before a new acceptance decision.
+
+## Background — exact authority
+
+- Entry STATUS commit `7e936851dadac90004a84f184dd4f214c841fdd6`; Started at `2026-11-24T21:32:07Z`.
+- [CB-201 record](Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md): exact source/executor `b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3`, compile run 45488907549, package 14966635283, ZIP SHA-256 `fbad076e0d30e099ece6e197191f7a5ec98016a8713a286a4a391ede0cdb644a`; 28/28 member checks.
+- Root manifest SHA-256 `0641144df8b7d0b957a800fbc9d5853b79521daa3fdc760593acfa07594fe1ef`; source archive `b0f867441b2ef0e00fa08764a7aa2eda41b350541e7dab5bd35bdeb3893d7248`.
+- Accepted [TB180 report](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc), result 14951803089, ZIP SHA-256 `67e784747b1c8d04bf781b69b486f3310876fde101b7935f0207fd2fd36a39f8`; 2014/2014 member checks.
+- Exact frozen harness, TB179 manifest and deferred ledger hashes match CB-201 authority. Historical 491-row and 993-row selector prefixes also match.
+- Request `m6-cp3-tb181-exec`, event commit `f9389e18494cbc8460c133d57d430810654da4bd`, request SHA-256 `8fd1f9e9972c3704f02fceebcee8dc82a9abfef93e4d67609a4775160dfd9c2b`.
+- [Run 45492294397](https://github.com/akashskypatel/Directional/actions/runs/45492294397), runtime job `138793718042`. Both schema validations, parse, exact executor checkout and harness contract validation passed. Runtime job and mailbox publication succeeded. Compile, Drive apply and noop jobs skipped. Mailbox `workflow-mailbox:.workflow-mailbox/m6-cp3-tb181-exec/latest.json` confirms the exact event and source authority.
+- Snapshot [run 45492143628](https://github.com/akashskypatel/Directional/actions/runs/45492143628), artifact 14966102592, ZIP SHA-256 `aa73820eecc02c0110f52dd795d010b34f8471106f332e43b5cdab75855a3d0f`, 5817/5817 member checks, source `85a0d2011f92687dbdefcfce6899e6b41df35e90`. Resume authority `7be114da915394b9b34e23f244387d8f2e4a4413` differs from the snapshot only in STATUS, the dispatcher request and this report. The exact report preimage blob `6aac75e4246cef4a5e80cd87ebee79d85bc36f00` was reconstructed and verified. Other intended document preimages remain unchanged.
+
+## Assessment
+
+| Item | Observed result |
+|---|---|
+| Result archive | `14967943314`, ZIP SHA-256 `877efb75d3ed801aab7fdc9931356254155162a114d9fc36a2f680f02ec9fa6b`, 2,014/2,014 member hashes |
+| Harness log | `14968042888`, ZIP SHA-256 `fc292fcc56e5e4ea922ccf8cef5b02772b0b046566b4adbf28f39371fcac42e1` |
+| Reusable wrapper log | `14968147873`, ZIP SHA-256 `630d8fe619037fde1a692c0515472aaad9ca686f17b2e4cf429de8ef03ae460f` |
+| Runtime | 1,003/1,003 PASS, zero RED, abnormal, missing, skipped or duplicate results; exit 0; postflight true |
+| Membership | Byte-identical 1,084 identities (1,003 gated and 81 deferred) |
+| Ledger | All 1,003 rows equal in every field except raw-log hash; each raw-log hash matches its file |
+| Raw logs | 607 byte-identical, 393 equal under N1/N2, three equal under N3; zero material differences |
+| N3 rows | 164, 172, 176; each has six identical complete fragment records, with three positions changed; 1,554 fragment records in each archive |
+| Controls | 445/652/653/656/658/660/786 all PASS; CP2 491/491 PASS |
+
+All three candidate ZIP hashes match both mailbox and artifact API. The wrapper log identifies the exact executor and harness SHA-256 from the request. It records `harness_exit=0`, `final_job_status=success`, and completion at 2026-11-24T21:51:54Z. The harness log records every case and the same terminal counters. The comparison independently checked both immutable archives and their manifests. N1 changes only GoogleTest elapsed times, N2 changes only line endings, and N3 permits only complete counted fragment-record reorder. No source-line normalization, receipt exception or semantic digest change occurred.
+
+No new stable regression or candidate. The TB170 mechanical recurrence remains closed at its seven-control boundary. Historical 67 events / 17 categories / 50 recurrences, debt1/deferred81 remain unchanged. Row979 is still staged-only and unclassified. TB180 remains the accepted cumulative baseline pending independent review of TB181. No CP3/497/D0/H4 promotion.
+
+No product, test, fixture, manifest or workflow changes. No local executable run, rebuild, relink, configuration or benchmark. The initial direct document reads preceded snapshot-mode selection; complete mandatory policy/lesson reads before dispatch are not established. The document audit has zero errors and one existing ORIENTATION size warning. The initial attempt's tool ledger is incomplete after context compaction. These are process deviations, not runtime evidence.
+
+The File Library contains `Directional/TB181_VERIFICATION_EVIDENCE.zip`, SHA-256 `a42cb042e21c9a3b674a799743909f9a66f80cbeee2882c9aaec0345590281c2`. It contains the two exact result archives, candidate harness and wrapper logs, comparator, frozen manifests, per-row comparison and normalized difference evidence. The earlier `TB181_RESUME.md` and `TB181_resume_evidence.zip` remain historical recovery evidence.
+
+## Recommendation
+
+Next only `M6-CP3-TB-REV-181`. Independently repeat the archive, ledger, membership and N1–N3 checks. Adjudicate K6 and freeze CB-202 only if the requirements in [TB-REV-180 adversarial continuation](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc) are met. No runtime or implementation in that review. Keep J6, E5, row979, Branch A and CB-190 held until their authorized boundaries. No successor work occurred in TB181.
+
+
+### Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md
+
+Original `.agents/Directional/Architecture_M6_CP3_TB_REV_181_Adversarial_Review_20261124.md` at `aa098cd2d75f909b2083fc3821b0a655daed6dfd`; 80 lines, SHA-256 `7d14c843bc7a67e67306813e2f83f84789993748d65ffad683c6b4573e1ede49`.
+
+# TB-REV-181 — adversarial continuation (2026-11-24 UTC)
+
+This continues turn `M6-CP3-TB-REV-181` after the [independent review](Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md).
+
+The review was runtime-free. It used:
+- source reading;
+- Haiku read-only work:
+  - the CB-202 hashes, apply check and `clang++ -fsyntax-only` checks;
+  - the TB182 case-manifest prefix check;
+  - a census of plan error codes over all 1003 TB181 raw logs (artifact `14967943314`, SHA-256 `877efb75…fa6b`).
+
+## Verdict
+
+- **Upheld:** TB181 1003/1003, and K6 closed.
+- **Upheld unamended:** the CB-202 exact diff `26ec484d…5332`. It implements TB-REV-180 requirements 1–6.
+- **Recorded:** one design debt (O3) and one digest risk (O4). Neither blocks CB-202, and the TB182 STOP rules already catch O4.
+
+## Findings
+
+**O1 — CB-202 compiles; the independent review did not check this.**
+- The diff, all preimages and all postimages match the manifest, and the diff applies cleanly at HEAD.
+- `clang++ -fsyntax-only` results, each with a warning list identical to HEAD:
+  - patched `GlobalTopologyPlan.cpp`: 0 errors, 3 warnings;
+  - test TU: 0 errors, 9 warnings.
+- The new `RegionCornerOwnership.h` compiles on its own (self-contained).
+- The TB182 case manifest `d778afbe…a5ca` is the TB179 manifest byte for byte, plus row 1004 `GlobalTopologyPlan.SingularityReachUsesOwningFragmentCorners`.
+
+**O2 — The "only row 979 + row 1004 may change" rule is sound against the evidence.**
+- Across all 1003 TB181 logs, these codes appear only in row 979, and only as its `RegionContainsInteriorSingularity`: `RegionContainsInteriorSingularity`, `RegionSourceFaceOwningFragmentMissing`, `RegionOrbitMissing`, `RegionBoundaryNotSingleWalk`, `InvalidRegionCertificateBinding`, `RegionBoundaryArcNotOwnedByNetwork`, `RegionElectedCutComponentEmpty`.
+- `Plan outcome=` appears only in row 979.
+- So the reordered precedence cannot change any other printed outcome, unlike J1, where line moves were omitted. The asserting negatives (rows 354, 355, 654, 966) are covered by the independent review's census.
+
+**O3 — Design debt: the complete-partition-union branch is production code shaped by one test.**
+- `claims_complete_partition_union` and its branch in `build_region_certificates` (about 60 lines) exist only so row 355 keeps reporting `RegionContainsInteriorSingularity`. Row 355's forged candidate claims the whole four-triangle fan disc with an exterior-only walk.
+- **Accepted for now, because the branch is bounded:**
+  - It runs only on validation candidates (`validationPartition` is non-null only from `validate_candidate_structure`).
+  - It returns an error on every path, so it can never accept a candidate.
+  - The disc it describes really does contain the singularity. The diagnostic is true, not invented.
+- **Not general.** A forged union of only *some* regions falls through to `RegionOrbitMissing`.
+- **Debt D-U:** remove the branch once a production-path witness of `RegionContainsInteriorSingularity` exists (row 979, if TB182 shows its rejection is lawful). Otherwise, generalize it to the exact union of any subset of regions.
+- Do not change row 355's assertion to delete the branch. Changing it would weaken an existing negative.
+
+**O4 — Digest risk.**
+- `boundarySingularities` now comes from the corner-granular set, and it feeds `GlobalTopologyRegionDiscCertificate::boundarySingularities`, which the candidate digest covers.
+- A region whose boundary passes through a singular port node also owns a corner sector at that vertex: `partition_face_corners` assigns a corner where cuts end to every side orbit. So no accepted plan's list is predicted to change.
+- The TB182 rule "no unrelated semantic-digest change; any off-row change is STOP" is the falsifier. It is not relaxed.
+
+**O5 — Equivalences checked.**
+- Using `firstNode`/`secondNode` in place of `oriented_arc_nodes` builds the same boundary node set.
+- The removed `incidentFacesByVertex` skip is no longer needed, because reach now comes from region corners.
+- The helper namespace `global_topology_plan_detail` matches the existing `validate_candidate_structure` home (`:3030`).
+
+**O6 — Carried.** J6 debt, E5, Branch A, CB-190 and CP3/497/D0/H4 stay held.
+
+## TB-EXEC-182 rules (unchanged from the manifest, restated)
+
+1. Use the CB-202 package and the case manifest `d778afbe…a5ca`: 1004 gated + 81 deferred = 1085.
+2. Expect 1004/1004 PASS.
+3. Compare against TB181 `14967943314` under N1–N3.
+   - Only row 979's raw receipt and the new row 1004 may differ.
+   - No test line moves: line 50 is a one-for-one include swap, and line 18184 is edited in place.
+   - Anything else means STOP.
+
+## Turn sequence
+
+1. `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH`: exact diff, compile only.
+2. `M6-CP3-TB-EXEC-182-P13-REGION-CORNER-SINGULARITY-REACH-FULL-GATE`.
+3. `M6-CP3-TB-REV-182`: classify row 979 from its new `region=` field and outcome.
+   - **(a) The plan builds.** Freeze the Branch A activation CB, with exact premise rows 393/648/858/971/972/978.
+
+> TB-REV-182 A1: this six-row scope is insufficient and is held, not silently expanded. Row979 has a conflicting production-failure assertion; row858 later stop unmeasured. See [TB-REV-182 review](Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md). Activation requires amended authority and exact evidence.
+
+   - **(b) It advances to a new earliest error.** Freeze one exact receipt or correction for that error.
+   - **(c) It is still `RegionContainsInteriorSingularity`.** The rejection is lawful, P1 is falsified as the cause, and the route is A2a at node 1. Schedule removal of D-U against row 979.
+4. CB-190, off the critical path.
+
+## Lessons
+
+- Before accepting a "only row X may change" rule, census the predecessor gate's raw logs for every outcome token the patch can reorder.
+- Production code that exists only to preserve one negative test's error code is debt. Bound it (reject-only, validation-only) and give it a removal condition.
+
+
+### Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md
+
+Original `.agents/Directional/Architecture_M6_CP3_TB_REV_181_Region_Corner_Ownership_Independent_Review_20261124.md` at `aa098cd2d75f909b2083fc3821b0a655daed6dfd`; 63 lines, SHA-256 `5d591a2b142185401f9956e41ead34abf435312c591ce173b2aba6e799f4c1a4`.
+
+# M6-CP3-TB-REV-181 — independent review (2026-11-24 UTC)
+
+## Situation
+
+Accept TB181 as the cumulative runtime baseline, 1003/1003. Close K6 (shared exact trace-segment namespace) at its frozen contract. No production or CP3/497/D0/H4 acceptance. Freeze only the compile-only successor `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH`. The proposed code is a review artifact, not an applied implementation.
+
+## Background — exact authority
+
+- Entry STATUS `80a234893e49dd383e64ab8eede08dae157adfc9`; Started at `2026-11-24T22:22:03Z`, no Resumed at. The previous beacon was TB-EXEC-181 COMPLETE with this Review as successor; the user requested this canonical turn only.
+- Source/executor `b9d79c4d9e951cab787d3bfdc3b8f20aaf7195c3`, [CB201 compile record](Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Code_Build_Record_20261124.md), run 45488907549, package 14966635283 ZIP SHA-256 `fbad076e0d30e099ece6e197191f7a5ec98016a8713a286a4a391ede0cdb644a`. 28/28 checksums independently verified; root SHA256SUMS `0641144df8b7d0b957a800fbc9d5853b79521daa3fdc760593acfa07594fe1ef`, source archive `b0f867441b2ef0e00fa08764a7aa2eda41b350541e7dab5bd35bdeb3893d7248`. Eight targets, GMP/GMPXX linkage, empty source status, runtimeExecution=false.
+- TB181 [run 45492294397](https://github.com/akashskypatel/Directional/actions/runs/45492294397), job 138793718042, result 14967943314 SHA-256 `877efb75d3ed801aab7fdc9931356254155162a114d9fc36a2f680f02ec9fa6b`; request SHA-256 `8fd1f9e9972c3704f02fceebcee8dc82a9abfef93e4d67609a4775160dfd9c2b`. [Execution report](Architecture_M6_CP3_TB181_P13_Trace_Segment_Namespace_Full_Gate_Execution_Report_20261124.md). Runtime job and mailbox success; configure/relink/compile/benchmark false, immutable postflight true. TB180 baseline result 14951803089 SHA-256 `67e784747b1c8d04bf781b69b486f3310876fde101b7935f0207fd2fd36a39f8`, source `4c2b4cf16732cddb58252d5e758ea0b24449ed2a`, package 14901170173, run 45457449013.
+- Review snapshot [run 45500317863](https://github.com/akashskypatel/Directional/actions/runs/45500317863), job 138821732547, artifact 14969183368 SHA-256 `35eb06541d1a51e5e81bc866695cada61ea29cf635d1e6966f101fb257226269`, 5818/5818 file checks, source `1aebcd183113512cce435d45b7ae373164f1b8f7`. GitHub compare confirms semantic source ancestor (19 commits ahead, zero behind, zero code paths changed); independent package/snapshot SHA-256 census matches 162 src, 146 include, 68 tests, 30 benchmarks, 12 cmake and root CMakeLists files. PR #8 open/draft/unmerged.
+
+## Assessment — independent evidence
+
+| Check | Result |
+|---|---|
+| Frozen 1003-row manifest | `2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724` |
+| Historical 993-row prefix | `82581dd14064efe3729923cfd94333ef70113b0bb84e6bb8eabfb2ec61cce436` |
+| CP2 491-row prefix | `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038` |
+| Deferred ledger | `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`; 81 unchanged |
+| Membership | 1084, SHA-256 `556019b09f8a31392d3e9860acd2e9c63ad61d7179da9899006eff59ce031a46`; both archives byte-identical |
+| Archive verification | 2014/2014 files each, all 1003 raw-log hashes and test RUN/OK/PASSED records checked independently |
+| Raw equality | 607 byte-equal, 393 equal after N1/N2, 3 after N3 (164/172/176), zero material differences |
+| Fragment record multiset | 1554 complete records in each archive; all per-row multisets equal; N3 moves only whole counted records |
+| Controls | 445/652/653/656/658/660/786 PASS; CP2 491/491; no skipped, abnormal, missing or duplicate executions |
+
+The independent comparison reads the raw bytes and exact ledger fields, not the execution report's arithmetic. K6 is namespace-only: the five operations/types are in `exact_trace_segment_detail`, no downstream alias for a moved operation remains. The exact CB201 diff SHA-256 `0da2ffe20ff5f0b4913acba5fa5dfd3e18c0e23ef1f6965d9d94098696d8d91c` and seven packaged postimages match the frozen manifest; reverse application in scratch recovers every frozen preimage. This is a source-ownership correction, not an assertion of more production witness coverage. K1–K5/J4/J5 and M1–M4 retained as discharged or withdrawn per prior Review; TB170/L2 closed at seven-control boundary; C4 withdrawn. K6 discharged. J6 remains unexercised in the production path (isolated row1002 is not a production witness); debt1/deferred81, stable 67 events / 17 categories / 50 recurrences. E5, CB-190, Branch A and CP3/497/D0/H4 carried, not authorized.
+
+### P1 and CB-202 — exact next hypothesis
+
+Row979 remains a staged stop at `RegionContainsInteriorSingularity` vertex8 (node1, three departures plus two arrivals; five arc ends). The raw record is identical under permitted normalization; no production sphere is proved. Region source support is fragment-level by contract (`GlobalTopologyPlan.h:78–81`). `GlobalTopologyPlan.cpp:1791–1806` checks any incident source face; `:2196–2222` already restricts the certificate to owning-orbit corners. This is a real semantic disagreement independent of the staged result. Cause of row979 remains unclassified until the next TB.
+
+The [exact successor manifest](gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md) binds six prior requirements. It extracts the existing corner selection into one internal helper and preserves the exact missing-owner error. Both field regularity and the disc certificate consume the same set. The new appended guard discriminates a non-owning corner, a reached singularity with no port, empty corner set, a boundary port and a missing owner. It does not weaken or modify existing assertions. Source census identifies four existing negative tests (rows354/355/654/966) and no direct assertion of `RegionOrbitMissing`. The current validator checks singularity reach before orbit selection. Simply reordering it could invalidate the row355 negative, which collapses all canonical regions into an exterior-only candidate. The proposed validation-only full-partition union proof uses exact support union and exterior arc multiplicity, derives all corners from the same helper, and always rejects that malformed union. This is a deliberate bounded decision to preserve the negative test's actual semantic rejection, not a repair of invalid region topology. Broken walks/missing orbits on other invalid inputs precede unprovable reach. All frozen old tests must stay PASS and no off-row material difference is permitted. The new plan is not compiled or executed; future TB is the falsifier. Only row979 plus appended row1004 may differ. The new gate preserves the exact 1003-row prefix, 1004 gated + 81 deferred, SHA-256 `d778afbe65e181391116a67ada06f4482e9786917ca58dd2a17f7b7459d8ca5f`. No selector promotion.
+
+## Recommendation
+
+Only `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH` is frozen. Exact diff SHA-256 `26ec484d0434afd3f0376661e945bdbd73d1c9a1fc206e7b589be34bb3ba5332`, 25,159 bytes, three paths, +297/−105. `git apply --check`, exact postimages and `git diff --check` pass in scratch. See [manifest](gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md) for preimages, precedence census and TB182 stop rules. Code + Build only in a separate turn, eight GMP/GMPXX targets, `runtimeExecution=false`. The current Review must not implement, compile or run the successor. No Branch A before a valid sphere plan and independent Review.
+
+## Review closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | 993/491 prefixes and 1003 manifest hash above; no selector byte changed. |
+| Decisive claims independently re-derived | Raw archive checksums, logs, membership, ledger, complete records, exact package and source, K6 reverse preimages and postimages. |
+| Non-vacuity checked | All seven controls and six corruption labels retained; old row355 requires typed rejection; new positive/negative guard is frozen, not yet executed. J6 debt retained. |
+| Prior obligations discharged/carried | K6 discharged; M1–M4/K1–K5/J4/J5 and withdrawn C4 retained; J6/E5/row979/CB-190/Branch A held. |
+| Stable accounting | 67/17/50, debt1/deferred81; TB181 accepted 1003/1003, CP2 491/491, no promotion. |
+| New candidates/obligations recorded | P1 source-level disagreement and frozen precedence proof; tracker updated. |
+| ORIENTATION currency line | TB-REV-181, 2026-11-24 UTC. |
+| ORIENTATION §3 / §4 / §7 / §8 | Runtime baseline, K6 closure, unchanged controls and prioritized P1; source-reader disagreement recorded; no production promotion. |
+| CHANGELOG | New entry. |
+| ROADMAP | Current acceptance and next-turn label updated; milestone unchanged. |
+| Selector manifest | Baseline index updated; historical selectors unchanged. |
+| LESSONS | Existing single-producing-authority, representation-consumer and non-vacuity rules apply; no new general rule. |
+| Consolidation under CLEAN_UP_POLICY | Seven superseded CB200/TB180 records folded with exact content (the old diff is encoded losslessly as Base64), hashes, original paths and snapshot; live references repaired. CB201 package authority and TB181 current runtime evidence retained. |
+| Successor frozen | `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH`, exact [manifest](gates/Architecture_M6_CP3_CB202_P13_Region_Corner_Singularity_Reach_Exact_Manifest.md) with falsifiers. |
+| Turn boundary held | No product/test/fixture/benchmark/build/selector mutation on working branch; scratch proposal only; no project compile/runtime. New gate manifest is future plan input. |
+| review_check.py boundary | Local boundary confirms clean code and selectors and fails four historic-authority checks because the snapshot omits original Git history. GitHub compare confirms rewrite base `8b7299b43764a6ba3444e5bc774a2f1b65e99731` is ancestor (8063 commits ahead); independent exact connector reads and local heading census confirm all durable headings retained. Drift audit: zero errors; three authorized protected-document changes and one pre-existing orientation size warning. |
+| STATUS lifecycle maintained | `M6-CP3-TB-REV-181`, entry IN_PROGRESS, Started at 2026-11-24T22:22:03Z, Resumed at blank. Final direct STATUS write only after verified remote closeout; successor `M6-CP3-CB-202-P13-REGION-CORNER-SINGULARITY-REACH`. Ended at recorded by final beacon. |
+| Pushed to origin, branch in sync | Remote apply and cleanup receipt are required before the COMPLETE beacon; at preparation no push claimed. Final receipt in chat closeout and repository STATUS. |
+
+Process deviations: initial document reads preceded explicit snapshot mode and the full mandatory start-policy read. Corrected by verified snapshot and package comparison. The full initial lesson/policy and separate turn-based skill read is not established; tool ledger is partial after context compaction. No acceptance claim relies on those missing process receipts. No actual syntax compilation of the proposed diff is claimed. Existing orientation size warning is tracked; no durable requirement is removed to meet a size heuristic.
+
+
+### Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md
+
+Original `.agents/Directional/gates/Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact_Manifest.md` at `aa098cd2d75f909b2083fc3821b0a655daed6dfd`; 31 lines, SHA-256 `675e097a82ce61738e20a2a7ab66f70504a2a2d3f40bea3000cbd872cdc4679e`.
+
+# CB-201 exact manifest — trace-segment helper namespace (2026-11-24 UTC)
+
+**Review artifact only.** The proposed diff is not applied or compiled in TB-REV-180.
+
+- Owner: `M6-CP3-CB-201-P13-EXACT-TRACE-SEGMENT-NAMESPACE` (Code + Build only).
+- Authority: [TB-REV-180](../M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-181-folded-records--2026-11-24-utc), K6 of [TB-REV-178](../M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb-rev-179-folded-records--2026-11-24-utc). The seven mechanical controls are green; the rename condition is met.
+- Semantic preimage: `4c2b4cf16732cddb58252d5e758ea0b24449ed2a`. Verified review snapshot `9e38e162eec9d61db0cc35cb8eab030ede3a8329` has identical product/test/build bytes.
+- Exact [diff](../Architecture_M6_CP3_CB201_P13_Exact_Trace_Segment_Namespace_Exact.diff) SHA-256 `0da2ffe20ff5f0b4913acba5fa5dfd3e18c0e23ef1f6965d9d94098696d8d91c`, 27,844 bytes, 7 paths, +66/−66. `git apply --check` and `git diff --check` passed in an isolated scratch copy. Source lines are preserved. No compile or project runtime executed in Review.
+
+## Scope
+
+Move `FaceChartPoint`, `face_chart_segment_parameter`, `exact_trace_segment_end`, `canonical_boundary_barycentric`, and `exact_trace_segment_pieces` from the downstream `embedded_graph_topology_detail` namespace to `exact_trace_segment_detail`. Update the consumers, including test qualifications, without changing any function body behavior, signature type, test expectation, source line count, data contract, digest algorithm, selection or incidence policy. The A2a producer and its reference-remap helper no longer name the downstream namespace for these shared trace-segment operations. No compatibility alias in the downstream namespace. No new source file or test identity.
+
+## Exact file preimages and postimages (SHA-256)
+
+| Path | Before | After |
+|---|---|---|
+| `src/geometry/ArcFaceVisits.h` | `0838e637c620252886ec75a6c85bdcd036b623e5cd7c2f405adcec5000028a9e` | `9a53888d66b631683f70bbf4b11e42103221da543dfae85cf77f5833621d769c` |
+| `src/geometry/EmbeddedGraphTopology.cpp` | `61a0fbac4ada9b7a5efbb83c725122af78479411a2a1af2d2f02c8f9ebdead30` | `5a1b576e90371c39c8c5f9a50079cdea29d8f0dbdde3885b06579a40de6715ea` |
+| `src/geometry/EmbeddedGraphTopology.h` | `bb2c298f7e2353a6cc9949228db729b5bb84d5ea266413b849a5ba23b311b2a6` | `419d15e41c326080e6ed28a0e28735dbb1997746c9949688514b6aa7956cd985` |
+| `src/geometry/ExactTraceSegmentPieces.h` | `6279c6d6e08a14d2b80dff799231249d2e8a9939c09fa88bf2b52eb314bac9da` | `bc0e878db7b8ea7eaff9c0b8c1cd2cd5d27cdf4e58f2e123805460b6c52f1da5` |
+| `src/geometry/RetracedTraceReferences.h` | `bcab2d6292b9f1317471c0659e714b4afd7339e1def7c07d5d409f85b2356944` | `aaff2ebda27a61f195a366877b9c01f4ce20ab8122176856ec9c448c81968504` |
+| `src/geometry/SurfaceCellTracing.cpp` | `642c829db50360c59ddb7b5ff2b2871a904b639cd1749a3bf11b5d74c911ada9` | `4b2e56873e3e2464621738633509a9540389516fddc1686bb4fe84d773be53fb` |
+| `tests/FieldAlignedCurveNetworkTests.cpp` | `6e83fc338d7632c4540691cb12403d7b495ecd0ddea52f31d792c29c267e0b7b` | `af3204703d804c905d0e46f9edb2d483197f2eaaa3bea6128a5accd1189f156b` |
+
+## Execution and falsifiers
+
+1. Freeze the current source and verify all seven preimages and the diff hash. Apply only the frozen patch. Verify all postimages, no downstream qualifications of the moved operations, the unchanged test identities, and no semantic edits outside the seven paths. A preimage/postimage mismatch, remaining downstream name or unexpected diff is STOP; return to Review. Do not repair by expanding scope.
+2. Compile only the eight durable-default GMP/GMPXX targets through `agent-compile-reusable.yml`, with exact source/package receipts, zero test/benchmark/discovery execution and `runtimeExecution=false`. A compile failure is STOP; do not silently broaden this frozen patch.
+3. Separate artifact-only TB after the successful CB. Reuse [`Architecture_M6_TB179_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv`](Architecture_M6_TB179_P13_Retraced_Trace_Selection_Full_Gate_Case_Manifest.tsv), SHA-256 `2928fd3181eb06e635c0b88527550cddc7ff602b95b757ebd8d569e699e2f724`, 1,003 gated + 81 deferred. Baseline TB180 result `14951803089`, source `4c2b4cf16732cddb58252d5e758ea0b24449ed2a`, run `45457449013`, result ZIP SHA-256 `67e784747b1c8d04bf781b69b486f3310876fde101b7935f0207fd2fd36a39f8`. All 1,003 cases must PASS, every ledger field except raw-log hash must match, all normalized raw bytes must match under N1–N3 only. N1 GoogleTest elapsed time, N2 line endings, N3 counted complete fragment-record ordering; no source-line normalization or other receipt exception. No changed semantic digest, membership, diagnostic or corruption classification. Any material difference, new RED, missing/duplicate result or changed membership is STOP; independent Review decides.
+4. K6 remains open until that independent Review. J6 production struck-reference witness debt, E5, row979, Branch A, CB-190 and CP3/497/D0/H4 remain held. The full-gate baseline acceptance does not establish production sphere or mesh acceptance.
