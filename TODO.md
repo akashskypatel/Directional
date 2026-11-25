@@ -1,25 +1,26 @@
-**Current turn outcome (2026-11-25 UTC):** TB-REV-185T adversarial continuation withdraws prose CB-205U; test-only CB-205V (exact) unblocks activation; QF1 moves to its own exact CB-207A/B track ([adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_185T_Adversarial_Review_20261125.md)). No activation or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-25 UTC):** CB-205V source `eee220e7e37f409eb5150f436e80e51a534c037a`, package `15064166049` ZIP SHA-256 `a193085ae0a05edc0099404dc09433abb1d5e64e703091a1e5eb85edfdebfbcd`, [compile run 45701222684](https://github.com/akashskypatel/Directional/actions/runs/45701222684), 28/28 member checks, eight GMP/GMPXX targets, `runtimeExecution=false`. [Record](.agents/Directional/Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Code_Build_Record_20261125.md). TB184 1005/1005 remains accepted; TB185V next. QF1 separate; no activation or CP3/497/D0/H4 promotion.
 
-## CURRENT — TB-REV-185T adversarial: CB-205V critical path, QF1 track (2026-11-25 UTC)
+## CURRENT — CB-205V compiled: TB185V next, QF1 track held (2026-11-25 UTC)
 
 - [x] **COMPLETE** TB185T (bounded diagnostic) → `M6-CP3-TB-REV-185T` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_185T_Adversarial_Review_20261125.md): only the sphere changes under staging, sphere stays polyline-eligible (W1); close_sheets stall is outside reader scope → CB-205V (W2); prose CB-205U withdrawn, it missed the verifier K×F loop (W3); exact CB-207A/B frozen (W4); syntax-clean (W5).
-- [ ] **1 NEXT** `M6-CP3-CB-205V-P13-REACH-RECEIPT-READER-SELECTION-SCOPE` — exact test-only diff; compile only.
-- [ ] **2** `M6-CP3-TB-EXEC-185V` — 1006/1006; row1006 exactly 10 receipts (= TB185T lines 1–10 except census separator) + polyline sphere/sphere line.
+- [x] **COMPLETE** `M6-CP3-CB-205V-P13-REACH-RECEIPT-READER-SELECTION-SCOPE` — exact one-file test change; eight targets compiled; [record](.agents/Directional/Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Code_Build_Record_20261125.md).
+- [ ] **2 NEXT** `M6-CP3-TB-EXEC-185V` — 1006/1006; row1006 exactly 10 receipts (= TB185T lines 1–10 except census separator) + polyline sphere/sphere line.
 - [ ] **3** `M6-CP3-TB-REV-185` — classify readers; freeze CB-206 (flip `SurfaceCellTracing.cpp:5336`, rows 648/978/979, row979 label, row1006 transcript).
 - [ ] **4A** CB-206 → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185V; STOP-on-RED) → TB-REV-186 (one correction CB per RED family).
 - [ ] **4B** QF1: CB-207A → CB-207B (exact, [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB207_QF1_Quotient_Forest_Cost_Exact_Manifest.md)) → CB-207C (close_sheets termination + N/K/R/F/max-class receipt) → TB-EXEC-187 → TB-REV-187.
 - [ ] **5** parameter-deletion CB → V3b → R1 → O48. **HELD:** CB-190, J6, E5.
 
 ```text
-NEXT_TURN: M6-CP3-CB-205V-P13-REACH-RECEIPT-READER-SELECTION-SCOPE
-Owner: Code + Build only; apply exact one-file test-only diff; compile eight GMP/GMPXX targets; runtimeExecution=false.
-Authority: Architecture_M6_CP3_TB_REV_185T_Adversarial_Review_20261125.md (W1/W2); gates/Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Exact_Manifest.md; Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Exact.diff
-  diff SHA-256 c9d66976d9d8f765f572de4f66fc00ee8a815abac8f3a04b3f51b39b67881178; tests/FieldAlignedCurveNetworkTests.cpp 03abb0a6...d72d -> 39b22f998b29b9662640e1212440db3d3f997bd1e1eba8c5492fa25b350efc48; one path only
-  row1006 polyline loop stops at first production+staged eligible fixture (reader scope); receipts 9+visited; ' published=not-applicable' separator; all other assertions unchanged
-  STOP on preimage/postimage/path/compile/package mismatch; no product change
-Then: M6-CP3-TB-EXEC-185V (1006/1006; row1006 exactly 10 receipts = TB185T lines 1-10 except census separator; polyline line sphere/sphere) -> M6-CP3-TB-REV-185 (classify readers; freeze CB-206 = flip SurfaceCellTracing.cpp:5336 + rows 648/978/979 + row979 label + row1006 transcript) -> CB-206 -> TB-EXEC-186 (V5; full compare; STOP-on-RED) -> TB-REV-186 -> QF1 track: CB-207A -> CB-207B (exact, frozen) -> CB-207C (close_sheets termination+size receipt) -> TB-EXEC-187 -> TB-REV-187
+NEXT_TURN: M6-CP3-TB-EXEC-185V
+Owner: Test + Benchmark only; immutable candidate, full 1006-case gate; no rebuild, repair, relink, fixture, selector or harness change.
+Authority: .agents/Directional/Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Code_Build_Record_20261125.md; gates/Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Exact_Manifest.md
+  source/executor eee220e7e37f409eb5150f436e80e51a534c037a; candidate 15064166049; ZIP a193085ae0a05edc0099404dc09433abb1d5e64e703091a1e5eb85edfdebfbcd; root manifest 3c62120fac196d5b9bbdbb11dc508c71ad3787d9ee5ddf9b67461350f9d7fc74; source archive 4b566edbf23ab9197d1d2d3794d6a424374a9caf7ce7f4e0d0c530a35eb1eaf5
+  harness SHA-256 423f385b73c3825ce9fe18fbd5ca395287620475deb621389f0efbaa601e572c; same 1006-case manifest a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587, deferred v5 fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce; 1087 members; no full-gate timeout
+  1006/1006 organic PASS; first 1005 N1–N3-equal to TB184; exact own hashes, immutable postflight; row1006 elapsed and exactly 10 receipts = TB185T lines 1–10 except census separator; SlideEntryActivationReachPolyline productionFirst=sphere_prescribed stagedDiagnosticFirst=sphere_prescribed
+  STOP on mismatch/RED/abnormal outcome; no activation
+Then: M6-CP3-TB-REV-185 (classify readers; freeze CB-206 = flip SurfaceCellTracing.cpp:5336 + rows 648/978/979 + row979 label + row1006 transcript) -> CB-206 -> TB-EXEC-186 (V5; full compare; STOP-on-RED) -> TB-REV-186 -> QF1 track: CB-207A -> CB-207B (exact, frozen) -> CB-207C (close_sheets termination+size receipt) -> TB-EXEC-187 -> TB-REV-187
 Withdrawn: prose CB-205U (TB-REV-185T adversarial W3/W4)
-Do not: change product code in CB-205V, activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
+Do not: activate Branch A, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-185T independent causal review; CB-205U withdrawn by adversarial W3 (2026-11-25 UTC)
@@ -34,14 +35,14 @@ Do not: change product code in CB-205V, activate Branch A, promote CP3/497/D0/H4
 - [x] **COMPLETE** `M6-CP3-CB-205T-DEBUGGER-PROVISIONING` — hosted debugger control verified; [record](.agents/Directional/Architecture_M6_CP3_CB205T_Debugger_Provisioning_Record_20261125.md); no Directional runtime or rebuild.
 - [x] **COMPLETE (diagnostic execution)** `M6-CP3-TB-EXEC-185T-REACH-TERMINATION-DIAGNOSTIC` — Valid bounded observation: 19/19 samples; all 17 after receipt 11 in `quotient_forest_path`; exit124; no gate credit. Repeated whole-forest adjacency reconstruction is a cost candidate, not a proven infinite loop. [Report](.agents/Directional/Architecture_M6_CP3_TB185T_Reach_Termination_Diagnostic_Execution_Report_20261125.md)
 - [x] **COMPLETE (diagnostic review)** `M6-CP3-TB-REV-185T-REACH-TERMINATION-DIAGNOSTIC` — [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_185T_Reach_Termination_Diagnostic_Independent_Review_20261125.md); QF1, no gate credit.
-- [ ] **1 NEXT** `M6-CP3-CB-205U-QUOTIENT-FOREST-PATH-REUSE` — private adjacency index reuse, compile only, frozen source and falsifiers in Review.
-- [ ] **2 HELD** `M6-CP3-TB-EXEC-185U` — full immutable 1006-case execution only after valid compile; original acceptance requirements.
+- [x] **WITHDRAWN (historical)** `M6-CP3-CB-205U-QUOTIENT-FOREST-PATH-REUSE` — private adjacency index reuse, compile only, frozen source and falsifiers in Review.
+- [x] **SUPERSEDED (historical)** `M6-CP3-TB-EXEC-185U` — full immutable 1006-case execution only after valid compile; original acceptance requirements.
 - [ ] **3** `M6-CP3-TB-REV-185` — classify 13 recipes and their readers (S4 list + 380/388/688/689/691/695/698–700/702); plane, multi_face_seam and synthetic builders UNMEASURED; freeze CB-206 (flip `SurfaceCellTracing.cpp:5336`, rows 648/978/979, row979 label, row1006 transcript).
 - [ ] **4** CB-206 → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185; STOP-on-RED) → TB-REV-186 (one correction CB per RED family).
 - [ ] **5** parameter-deletion CB → V3b → R1 → O48, each separate. **HELD:** CB-190, J6, E5. No CP3/497/D0/H4 promotion.
 
 ```text
-NEXT_TURN: M6-CP3-CB-205U-QUOTIENT-FOREST-PATH-REUSE
+HISTORICAL_WITHDRAWN_TURN: M6-CP3-CB-205U-QUOTIENT-FOREST-PATH-REUSE
 Owner: Code + Build only; eight existing GMP/GMPXX targets; runtimeExecution=false.
 Authority: .agents/Directional/Architecture_M6_CP3_TB_REV_185T_Reach_Termination_Diagnostic_Independent_Review_20261125.md; candidate source 21087c8285a5dd367cc16f610386accc061bd194 and current exact snapshot; QF1.
   Change only private forest adjacency construction in src/pipeline/RemeshPipeline.cpp. Index once per producer/publication/verifier lifetime; preserve joining order, traversal, full path/transport/certificates, typed failures and independent validation. All five callers. Static falsifiers and separate immutable gate in Review.
