@@ -5334,7 +5334,7 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
     const FieldTraceArrivalPriority priority =
         FieldTraceArrivalPriority::ArcLengthFiltered,
     FieldAlignedTraceScaleCensus *scaleCensus = nullptr,
-    const bool stopAtLaterSlideEntry = false) {
+    const bool stopAtLaterSlideEntry = true) {
   if (scaleCensus != nullptr) *scaleCensus = FieldAlignedTraceScaleCensus{};
   const Eigen::MatrixXi &sourceFaces = sourceMesh.F;
   const std::size_t sourceVertexCount =

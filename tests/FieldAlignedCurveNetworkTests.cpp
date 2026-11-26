@@ -14389,41 +14389,23 @@ TEST(GlobalTopologyPlan,
 
   const Cp4cProductionFixture sphere = build_cp4c_pipeline_products_fixture(
       "sphere_prescribed", "prescribed sphere");
-  if (!sphere.cutGraph.has_value()) {
-    std::cout << "m3Cp4c3BW4;torus={V=" << torusCertificate.vertexCount
-              << ",E=" << torusCertificate.edgeCount
-              << ",F=" << torusCertificate.totalOrbitCount
-              << ",componentCount=" << torusCertificate.graphComponentCount
-              << ",sourceChi=" << torusCertificate.sourceEulerCharacteristic
-              << ",residual=" << torusResidual
-              << "};sphere={status=SKIPPED,reason=ordinal368-open,terminalFailureCode="
-              << sphere.terminalFailureCode << "}\n";
-    return;
-  }
+  ASSERT_TRUE(sphere.cutGraph.has_value()) << sphere.terminalFailureCode;
+  ASSERT_TRUE(sphere.plan.has_value()) << sphere.terminalFailureCode;
   const auto &sphereCertificate = sphere.cutGraph->certificate();
-  const auto &sphereLocus = sphere.terminalFailureLocus;
-  ASSERT_FALSE(sphere.plan.has_value());
-  EXPECT_TRUE(sphereLocus.embeddedGraphEulerCensusComplete);
-  ASSERT_TRUE(sphereLocus.embeddedGraphNodeCount.has_value());
-  ASSERT_TRUE(sphereLocus.embeddedGraphArcCount.has_value());
-  ASSERT_TRUE(sphereLocus.embeddedGraphFaceWalkOrbitCount.has_value());
-  ASSERT_TRUE(sphereLocus.embeddedGraphComponentCount.has_value());
-  ASSERT_TRUE(sphereLocus.embeddedGraphSourceEulerCharacteristic.has_value());
-  ASSERT_TRUE(sphereLocus.embeddedGraphEulerResidual.has_value());
-  EXPECT_EQ(sphereCertificate.vertexCount, *sphereLocus.embeddedGraphNodeCount);
-  EXPECT_EQ(sphereCertificate.edgeCount, *sphereLocus.embeddedGraphArcCount);
-  EXPECT_EQ(sphereCertificate.totalOrbitCount,
-            *sphereLocus.embeddedGraphFaceWalkOrbitCount);
-  EXPECT_EQ(sphereCertificate.graphComponentCount,
-            *sphereLocus.embeddedGraphComponentCount);
-  EXPECT_EQ(sphereCertificate.sourceEulerCharacteristic,
-            *sphereLocus.embeddedGraphSourceEulerCharacteristic);
+  EXPECT_TRUE(sphereCertificate.proves_embedded_cellularity());
+  EXPECT_TRUE(sphereCertificate.proves_cellularity());
+  EXPECT_EQ(18U, sphereCertificate.vertexCount);
+  EXPECT_EQ(30U, sphereCertificate.edgeCount);
+  EXPECT_EQ(14U, sphereCertificate.totalOrbitCount);
+  EXPECT_EQ(1U, sphereCertificate.graphComponentCount);
+  EXPECT_EQ(2, sphereCertificate.sourceEulerCharacteristic);
+  EXPECT_EQ(sphere.cutGraph->semantic_digest(), sphere.plan->cut_graph_digest());
   const std::int64_t sphereResidual =
       static_cast<std::int64_t>(sphereCertificate.vertexCount) -
       static_cast<std::int64_t>(sphereCertificate.edgeCount) +
       static_cast<std::int64_t>(sphereCertificate.totalOrbitCount) -
       static_cast<std::int64_t>(sphereCertificate.sourceEulerCharacteristic);
-  EXPECT_EQ(sphereResidual, *sphereLocus.embeddedGraphEulerResidual);
+  EXPECT_EQ(0, sphereResidual);
   std::cout << "m3Cp4c3BW4;torus={V=" << torusCertificate.vertexCount
             << ",E=" << torusCertificate.edgeCount
             << ",F=" << torusCertificate.totalOrbitCount
@@ -17913,8 +17895,6 @@ TEST(TraceTerminationCorrection,
       sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
       field_aligned_production_arrival_priority(), false);
   ASSERT_TRUE(unstaged);
-  EXPECT_EQ(sphere.network->semantic_digest(),
-            unstaged.value().semantic_digest());
 
   const auto staged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
       sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
@@ -17922,6 +17902,8 @@ TEST(TraceTerminationCorrection,
   ASSERT_TRUE(staged) << directional::geometry::
                              field_aligned_curve_network_error_code_name(
                                  staged.error().code);
+  EXPECT_EQ(sphere.network->semantic_digest(),
+            staged.value().semantic_digest());
   const FieldAlignedCurveNetwork &network = staged.value();
   const auto &traces = network.candidate_traces();
   const auto &unstagedTraces = unstaged.value().candidate_traces();
@@ -18069,8 +18051,6 @@ TEST(TraceTerminationCorrection,
       sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
       field_aligned_production_arrival_priority(), false);
   ASSERT_TRUE(unstaged);
-  ASSERT_EQ(sphere.network->semantic_digest(),
-            unstaged.value().semantic_digest());
 
   // Without the stop the canonical cut search is exhausted before cellularity.
   const auto unstagedCut = directional::geometry::SurfaceCutGraph::make(
@@ -18087,6 +18067,8 @@ TEST(TraceTerminationCorrection,
   ASSERT_TRUE(staged) << directional::geometry::
                              field_aligned_curve_network_error_code_name(
                                  staged.error().code);
+  ASSERT_EQ(sphere.network->semantic_digest(),
+            staged.value().semantic_digest());
   const FieldAlignedCurveNetwork &network = staged.value();
   const auto &traces = network.candidate_traces();
   ASSERT_EQ(24U, traces.size());
@@ -18130,7 +18112,7 @@ TEST(TraceTerminationCorrection,
   std::size_t slideCutEdges = 0U;
   for (const auto &edge : cutGraph.value().cut_edges())
     slideCutEdges += slideCarriers.count(edge);
-  std::cout << "SphereStagedCutGraph productionCut="
+  std::cout << "SphereStagedCutGraph unstagedCut="
             << directional::geometry::surface_cut_graph_error_code_name(
                    unstagedCut.error().code)
             << " V=" << certificate.vertexCount
