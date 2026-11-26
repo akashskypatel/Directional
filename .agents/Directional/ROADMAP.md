@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; TB187Q **1006/1006** independently accepted for QF1 A/B preactivation behaviour preservation ([review](Architecture_M6_CP3_TB_REV_187Q_QF1_Behaviour_Preservation_Independent_Review_20261126.md)). CP2 **491/491** accepted; TB170/K6 closed, P1 supported. Exact CB-206 activation plan frozen, compile-only next. Bounded sphere diagnostic and review precede activation full gate and V5 census; termination sufficiency unproved. No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3; TB187Q **1006/1006** independently accepted for QF1 A/B preactivation behaviour preservation ([review](Architecture_M6_CP3_TB_REV_187Q_QF1_Behaviour_Preservation_Independent_Review_20261126.md)). CP2 **491/491** accepted; TB170/K6 closed, P1 supported. Exact CB-206 activation applied and compiled; bounded TB-EXEC-186T next. Bounded sphere diagnostic and review precede activation full gate and V5 census; termination sufficiency unproved. No CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

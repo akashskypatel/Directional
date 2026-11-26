@@ -1,3 +1,7 @@
+## 2026-11-26 — CB-206 exact slide-entry activation compiled
+
+[record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md). Source `2d62bf3b15f4571504fddd21bafbdd9019f0eeb9`, candidate `15136691967`, compile run `45857779921`. Exact two-path diff (+17/−35); both pre/postimage hashes verified. Eight GMP/GMPXX targets, 28/28 checks, no runtime execution. TB187Q 1006/1006 remains preactivation only. Stable 67/17/50, debt1/deferred81. Next separate TB-EXEC-186T bounded six-row census, then independent review; no promotion.
+
 ## 2026-11-26 — TB-REV-187Q adversarial continuation freezes the bounded activation census
 
 [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_187Q_Adversarial_Review_20261126.md). TB187Q and CB-206 upheld. TB-EXEC-186T now runs on the existing harness census mode with a frozen six-row OBSERVE manifest (SHA-256 `80970f59…eefc`). Contingent exact CB-207D (root-to-member path searches once per root, identical output) frozen, syntax-only clean. close_sheets passes at lengthRatio 0.18 and stalls at 0.02; four activated sphere rows run at 0.02. No product, test or selector change.
