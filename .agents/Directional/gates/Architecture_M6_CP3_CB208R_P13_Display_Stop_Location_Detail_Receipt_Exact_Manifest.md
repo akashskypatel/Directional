@@ -1,6 +1,6 @@
 # CB-208R exact manifest: display stop-location authority with a completion detail receipt (2026-11-26 UTC)
 
-**Review artifact only.** This manifest supersedes the [CB-208 manifest](Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact_Manifest.md) **diff and hashes only**. That diff, `15dd890d…e4e9`, is withdrawn because it does not compile; see [TB-REV-186T adversarial Z1](../Architecture_M6_CP3_TB_REV_186T_Adversarial_Review_20261126.md). Everything else in the CB-208 manifest still governs: the bounded Code + Build steps, the eight targets, and the runtime plan for TB-EXEC-186 and V5, including the row 858 receipt and the prefix witness. This manifest adds one recorded-only line.
+**Review artifact only.** This manifest supersedes the [CB-208 manifest](Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact_Manifest.md) **diff and hashes only**. That diff, `15dd890d…e4e9`, is withdrawn because it does not compile; see [TB-REV-186T adversarial Z1](../M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb_rev_186t_adversarial_review_20261126md). Everything else in the CB-208 manifest still governs: the bounded Code + Build steps, the eight targets, and the runtime plan for TB-EXEC-186 and V5, including the row 858 receipt and the prefix witness. This manifest adds one recorded-only line.
 
 ## Exact change
 

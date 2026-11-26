@@ -66,4 +66,31 @@ Only next turn after STATUS COMPLETE: `M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE`, 
 | V5 | Held: Cylinder, BunnyRandom and Vase, both pending wall contacts 142:2→87:0 and 26:1→99:0; no deferred credit, no census executed. |
 | Remaining | X4/W5 prior syntax evidence not rerun; S1/U1/W1/W2/R1 prior discharge retained; W3 withdrawn, R4/CB-190 held. P1 supported; D-U/O3 carried; O1/O2/O4/O5 discharged, O6 held; K6/TB170 closed; J6/E5/CB190, parameter deletion, V3b/R1/O48 held. |
 
-Stable counts **67 events /17 categories /50 recurrences**, debt1/deferred81. No CP3/497/D0/H4 promotion. Fine-resolution close_sheets 0.02 and QF1 efficacy remain unproved. Review retains active and cited predecessor records; broader historical consolidation not performed. Preflight read ordering was imperfect (direct orientation/policy reads before snapshot proof). Corrected by verifying exact source and document preimages. The local snapshot is not a complete remote current-document snapshot; remote comparison and blob checks cover all changed preimages. No hidden repair or runtime.
+Stable counts **67 events /17 categories /50 recurrences**, debt1/deferred81. No CP3/497/D0/H4 promotion. Fine-resolution close_sheets 0.02 and QF1 efficacy remain unproved. Review retains active predecessor execution and compile authority. The two superseded review records are consolidated in the closeout below. Preflight read ordering was imperfect (direct orientation/policy reads before snapshot proof). Corrected by verifying exact source and document preimages. The local snapshot is not a complete remote current-document snapshot; remote comparison and blob checks cover all changed preimages. No hidden repair or runtime.
+
+
+## Review closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | 491/1005/1006 and deferred81 exact hashes in Background. |
+| Decisive claims independently re-derived | Package and archive checks; all 26 row differences, exact four contacts, terminal paths and predicate inventory. |
+| Non-vacuity checked | Exact source-edge parameters, arc partitions, both interior ray orientations and original vertex rays; actual missing ray evidence remains unproved and is a CB/TB falsifier. No source or test mutation. |
+| Prior obligations discharged/carried | IDs and dispositions in Recommendation; unproved predicate and V5 carried. |
+| Stable accounting | 67/17/50; debt1/deferred81; accepted 1006 preactivation TB185V/TB187Q only, CP2 491. |
+| New candidates/obligations recorded | A1 test-authority non-stable, A2 preparation branch unresolved, tracker updated. |
+| ORIENTATION currency line | TB-REV-186, 2026-11-26. |
+| ORIENTATION §3 / §4 / §7 / §8 | Current selector and state, display witness, priority and premise-test instance updated; historical facts preserved. |
+| CHANGELOG | Entry added. |
+| ROADMAP | CP3 current disposition updated. |
+| Selector manifest | n/a — no new/accepted selector. |
+| LESSONS | Existing premise-test and independent-falsifier rules apply; no new numbered lesson. |
+| Consolidation under CLEAN_UP_POLICY | Two superseded TB-REV-186T review records retained verbatim in Vol D3, indexed and live links redirected. Active execution/package authority remains. No other retired review document identified in entry delta. |
+| Successor frozen | `M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE`, one exact test-only plan with falsifiers and STOP rules; no compile evidence. |
+| Turn boundary held | Runtime-free; no product/test/fixture/selector/build or workflow definition mutation. |
+| review_check.py boundary | Scope/selector checks PASS. Four local failures from absent historical baseline in snapshot-derived repository; remote comparison to historical rewrite baseline proves ancestry and connector historical protected headings match retained headings. No claim of clean local tool exit. |
+| Documentation audit | Initial local audit two missing-link errors for the existing TB186 report, confirmed remote blob c4a9638105ac3dc8a1cd0c8bbc16369e9ad8a7f8 exists. Four warnings (three protected document changes authorized by turn scope, existing orientation size warning). No dropped protected headings. Re-audit final delta before closeout. |
+| STATUS lifecycle maintained | Entry IN_PROGRESS 2026-11-26T22:39:53Z, resume blank. Final direct STATUS write after all durable documentation verified; no successor started. |
+| Pushed to origin, branch in sync | First documentation patch verified on branch by dispatcher run 45907311165 and result 15157684456, runtimeExecution=false. Connector branch readback of final documentation patch required before final beacon. No local remote-tracking branch; local git status cannot establish remote sync. |
+
+First documentation patch applied; this consolidation/receipt patch completes the remaining document work. Review retains the exact evidence and independent test plan. No new product or gate credit.

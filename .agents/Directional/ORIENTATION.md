@@ -55,7 +55,7 @@ Stable accounting now includes the TB170 accepted-green recurrence: **67 events 
 
 ## 4. Fixtures and witnesses
 
-**TB183/TB186T display witness:** accepted preactivation row858 cut-graph stop at face `(0,1,2)`; row1005 independently proves rotated corner-keyed face lookup. Activated row858 reaches completion/NotProductionReady with no printed source face, edge or vertex; unconditional location assertion RED. [TB-REV-186T](Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md) finds invalid test premise; preserve real positive location controls. TB186 row858 now PASS, exact prefix and `PreparationRejected` detail with empty first-invalid fields. Exact completion rejection predicate and successful output unproved.
+**TB183/TB186T display witness:** accepted preactivation row858 cut-graph stop at face `(0,1,2)`; row1005 independently proves rotated corner-keyed face lookup. Activated row858 reaches completion/NotProductionReady with no printed source face, edge or vertex; unconditional location assertion RED. [TB-REV-186T](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb_rev_186t_activated_sphere_termination_independent_review_20261126md) finds invalid test premise; preserve real positive location controls. TB186 row858 now PASS, exact prefix and `PreparationRejected` detail with empty first-invalid fields. Independent TB-REV-186 confirms the corrected row858 receipt and narrows completion rejection to parity repair, subdivision repair or no descriptors; the exact branch and successful output remain unproved.
 
 **TB182 independent staged witness:** Row979 built 14-region plan (V18/E30/F14, Euler 2, 192/192 established owners); P1 supported, row1004 corner-granular guard PASS. No production activation or later pipeline stop measured. [TB-REV-182 review](Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md).
 
@@ -160,7 +160,9 @@ TB-REV-167 S6 (carried to CB-190): terminal-vertex edge-side diagnostics require
 
 ## 8. Recurring defect patterns
 
-**TB-REV-186T X2:** An unconditional geometric diagnostic premise became false when the sphere reached a stage-wide completion rejection. A display is not authority to invent source geometry; require the actual source metadata and independent positive/negative controls. This is the existing premise-test pattern, not a new stable event. [Review](Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md).
+**TB-REV-186 A1:** A test must distinguish source slide identity from clipped arc occurrence. Four exact wall contacts split slides; the previous piece-count and vertex-only ray premises no longer describe the contract. Retain exact coverage and both interior ray orientations, not just a larger count. Existing premise-test pattern; no stable event. [Review](Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md).
+
+**TB-REV-186T X2:** An unconditional geometric diagnostic premise became false when the sphere reached a stage-wide completion rejection. A display is not authority to invent source geometry; require the actual source metadata and independent positive/negative controls. This is the existing premise-test pattern, not a new stable event. [Review](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb_rev_186t_activated_sphere_termination_independent_review_20261126md).
 
 **TB-REV-182 A1:** A previously positive diagnostic with a negative production control is itself a premise row when the diagnostic behavior becomes production default. Preserve the explicit negative control; do not silently omit the test from the activation scope. Existing non-vacuity and premise rules apply. [TB-REV-182 review](Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md).
 

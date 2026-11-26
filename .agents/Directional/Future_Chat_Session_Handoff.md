@@ -42,7 +42,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ## Mandatory next turn
 
-- **COMPLETE:** … → TB185V → TB-REV-185 (+[adv.](Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md): activation sends sphere into quotient production; QF1 first) → CB-207A/B → TB187Q 1006/1006 → TB-REV-187Q (+[adv.](Architecture_M6_CP3_TB_REV_187Q_Adversarial_Review_20261126.md)) → CB-206 (compile only) → TB-EXEC-186T ([report](Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), all six finish) → TB-REV-186T (+[adv.](Architecture_M6_CP3_TB_REV_186T_Adversarial_Review_20261126.md)).
+- **COMPLETE:** … → TB185V → TB-REV-185 (+[adv.](Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md): activation sends sphere into quotient production; QF1 first) → CB-207A/B → TB187Q 1006/1006 → TB-REV-187Q (+[adv.](Architecture_M6_CP3_TB_REV_187Q_Adversarial_Review_20261126.md)) → CB-206 (compile only) → TB-EXEC-186T ([report](Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), all six finish) → TB-REV-186T (+[adv.](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb_rev_186t_adversarial_review_20261126md)).
 - **TB-REV-186T adv.:** CB-208 diff does not compile (`RemeshResult` has no `faces`) — withdrawn (Z1). CB-208R: `is_produced()` check plus recorded `SphereDisplayStopDetail` line naming which of five completion sites fired; prefix witness unchanged (Z2). Row972 predicted PASS from row979 counts (Z3), observed PASS in TB186; row971 separately RED.
 - **TB-REV-187Q adv.:** census path + contingent CB-207D frozen; no cap measured, so not applied.
 

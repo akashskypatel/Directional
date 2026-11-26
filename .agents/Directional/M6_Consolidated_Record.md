@@ -2170,3 +2170,9 @@ The three superseded CB168D/E records below are preserved verbatim in Volume D3.
 ## TB-REV-185 folded record index — 2026-11-25 UTC
 
 - [Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb205_p13_slide_entry_activation_reach_code_build_record_20261125md) — superseded original CB205 compile record, 67 lines, SHA-256 `480f9cae0eb14c767be03d4081d7758901ff4519a5c619e0a19fdc9c34b8dc69`, original `.agents/Directional/Architecture_M6_CP3_CB205_P13_Slide_Entry_Activation_Reach_Code_Build_Record_20261125.md` at `aa65fce6d6fa4e7e5fd2955b65542e75cb7d153c`.
+
+
+### TB-REV-186 folded review index (2026-11-26 UTC)
+
+- `Architecture_M6_CP3_TB_REV_186T_Adversarial_Review_20261126.md` — 63 lines; Adversarial: CB-208 withdrawn, corrected CB-208R exact plan and row972 prediction. Complete verbatim bytes retained in [M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb_rev_186t_adversarial_review_20261126md); exact SHA-256 `06df2e1e6c13648cf1376bd389fee3872620b46aed4c377d0bc495f4cfdee197`. Original also recoverable from prior Git history.
+- `Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md` — 77 lines; Independent: display-location test authority; bounded census adjudication and carried obligations. Complete verbatim bytes retained in [M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb_rev_186t_activated_sphere_termination_independent_review_20261126md); exact SHA-256 `c9c9d5eed3ce975b8b243403a1772480fd607ac2d4ecb2e0ea7d8213b0e1c3a3`. Original also recoverable from prior Git history.

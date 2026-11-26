@@ -6,7 +6,7 @@
 
 ## Background
 
-The [CB-208R manifest](gates/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact_Manifest.md) and [adversarial review Z1–Z3](Architecture_M6_CP3_TB_REV_186T_Adversarial_Review_20261126.md) control the change. The [CB-208 manifest](gates/Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact_Manifest.md) controls the retained runtime plan, not the withdrawn diff. Row858 now checks each reported location. The unlocated completion branch rejects invented geometry, requires stage/code notes and checks `is_produced() == false`. The new `SphereDisplayStopDetail` receipt records the completion detail code and first invalid producer stage/reason. The positive location controls and row1005 remain unchanged. No product change occurred.
+The [CB-208R manifest](gates/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact_Manifest.md) and [adversarial review Z1–Z3](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_tb_rev_186t_adversarial_review_20261126md) control the change. The [CB-208 manifest](gates/Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact_Manifest.md) controls the retained runtime plan, not the withdrawn diff. Row858 now checks each reported location. The unlocated completion branch rejects invented geometry, requires stage/code notes and checks `is_produced() == false`. The new `SphereDisplayStopDetail` receipt records the completion detail code and first invalid producer stage/reason. The positive location controls and row1005 remain unchanged. No product change occurred.
 
 ## Assessment
 
