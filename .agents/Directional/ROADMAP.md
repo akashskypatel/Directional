@@ -2,13 +2,13 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Updated:** 2026-11-25 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
+**Updated:** 2026-11-26 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
 
 This roadmap answers **what is done, what comes next, and what each milestone delivers**. It is not a turn log, task queue, test ledger, definition spec, or implementation handoff. The product and acceptance contract is [DESIGN.md](DESIGN.md) (especially §§2 and 14); status, detailed plans, unresolved findings, and exact next-turn authorization live in [ORIENTATION.md](ORIENTATION.md), [Future_Chat_Session_Handoff.md](Future_Chat_Session_Handoff.md), [TODO.md](../../TODO.md), and [Regression_Root_Cause_Tracker.md](Regression_Root_Cause_Tracker.md).
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; TB185V **1006/1006** independently accepted for the preactivation gate ([review](Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md)). CP2 **491/491** accepted; TB170/K6 closed, P1 supported. Exact CB-206 plan frozen; activation and V5 census not yet executed. QF1 A/B and behaviour-preservation gate precede activation; A compiled, B pending; sufficiency unproved. No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3; TB185V **1006/1006** independently accepted for the preactivation gate ([review](Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md)). CP2 **491/491** accepted; TB170/K6 closed, P1 supported. Exact CB-206 plan frozen; activation and V5 census not yet executed. QF1 A/B and behaviour-preservation gate precede activation; A/B compiled, TB-EXEC-187Q pending; sufficiency unproved. No CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

@@ -1,4 +1,4 @@
-**Current currency — CB-207A (2026-11-25 UTC):** [Independent review](Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md) accepts TB185V preactivation 1006/1006; 773 exact + 232 N1/N2 + 0 material; 1087 members, 81 deferred. [CB-207A](Architecture_M6_CP3_CB207A_QF1_Quotient_Forest_Adjacency_Once_Per_Owner_Code_Build_Record_20261125.md) compiled; CB-207B next under [adversarial review](Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md). No activation yet. Stable 67/17/50, debt1/deferred81; CP2 491/491; P1 supported, D-U carried, TB170/K6 closed. QF1 A/B and behaviour-preservation gate precede activation. No CP3/497/D0/H4 promotion.
+**Current currency — CB-207B (2026-11-26 UTC):** [Independent review](Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md) accepts TB185V preactivation 1006/1006; 773 exact + 232 N1/N2 + 0 material; 1087 members, 81 deferred. [CB-207A](Architecture_M6_CP3_CB207A_QF1_Quotient_Forest_Adjacency_Once_Per_Owner_Code_Build_Record_20261125.md) and [CB-207B](Architecture_M6_CP3_CB207B_QF1_Verifier_Forest_Edges_By_Class_Code_Build_Record_20261126.md) compiled; TB-EXEC-187Q next under [adversarial review](Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md). No activation yet. Stable 67/17/50, debt1/deferred81; CP2 491/491; P1 supported, D-U carried, TB170/K6 closed. QF1 behaviour-preservation gate precedes activation. No CP3/497/D0/H4 promotion.
 
 # Directional — Project Orientation
 
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-207B-QF1-VERIFIER-FOREST-EDGES-BY-CLASS` — [exact QF1 manifest](gates/Architecture_M6_CP3_CB207_QF1_Quotient_Forest_Cost_Exact_Manifest.md), compile only; then TB-EXEC-187Q and independent TB-REV-187Q before CB-206. After CB-206, bounded TB-EXEC-186T and independent TB-REV-186T precede the activation full gate. Sufficiency unproved.
+**Current priority:** `M6-CP3-TB-EXEC-187Q` — [CB-207B record](Architecture_M6_CP3_CB207B_QF1_Verifier_Forest_Edges_By_Class_Code_Build_Record_20261126.md), immutable 1006-row behaviour-preservation gate; compare every row N1–N3 against TB185V and record row1006 elapsed. Independent TB-REV-187Q before CB-206; bounded TB-EXEC-186T and independent TB-REV-186T precede activation full gate. Sufficiency unproved.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
