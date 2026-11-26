@@ -1,25 +1,24 @@
-**Current turn outcome (2026-11-26 UTC):** CB-206 exact activation compiled, no runtime execution ([record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)). TB-EXEC-186T is the next separate turn; TB187Q 1006/1006 remains preactivation acceptance only.
+**Current turn outcome (2026-11-26 UTC):** TB-EXEC-186T completed the bounded census ([report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md)). All six OBSERVE cases terminated, 5 PASS / 1 organic RED (row 858), no cap. Row 648 and 979 predictions match; row 1006 eleven receipts match exactly. Row 858 reached completion/NotProductionReady with no geometric locus; prior accepted cut-graph rejection named face (0,1,2). Candidate/non-stable display assertion/contract issue; exact completion rejection predicate not proved. Stable 67/17/50, debt1/deferred81 unchanged. No gate credit or promotion. TB-REV-186T next.
 
 ## CURRENT — bounded activated-sphere census after CB-206 compile; CB-207D only on a measured cutoff (2026-11-26 UTC)
 
 - [x] **COMPLETE** `M6-CP3-TB-REV-187Q` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_187Q_Adversarial_Review_20261126.md): close_sheets passes at 0.18 (rows 795/934), stalls at 0.02; sphere rows 843/844/858/1006 run at 0.02 (Y1); diagnostic harness mode is single-row, census mode + [frozen manifest](.agents/Directional/gates/Architecture_M6_CP3_TB186T_CB207D_Activated_Sphere_Termination_Exact_Manifest.md) (Y2); A/B leave O(M²) root-to-member searches, exact contingent CB-207D syntax-clean (Y3); Σ-depth path output (Y4).
 - [x] **1 COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (exact, compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
-- [ ] **2 NEXT** `M6-CP3-TB-EXEC-186T` — OBSERVE census, manifest `80970f59…eefc`, 6 rows, 600 s each, no gate credit.
-- [ ] **3** `M6-CP3-TB-REV-186T` — all finish → step 6; any cap → step 4.
+- [x] **2 COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED, no cap or gate credit.
+- [ ] **3 NEXT** `M6-CP3-TB-REV-186T` — adjudicate receipts and row858 contract before full gate or exact corrective CB. No cap observed; steps 4–5 not authorized.
 - [ ] **4** (contingent) `M6-CP3-CB-207D-QF1-ROOTED-CLASS-PATH-SEARCH-ONCE-PER-ROOT` (exact) → `M6-CP3-TB-EXEC-186U` (same census).
 - [ ] **5** (contingent) `M6-CP3-TB-REV-186U` — still capped → CB-207C size receipt, no further cost fix.
 - [ ] **6** `M6-CP3-TB-EXEC-186` (full + V5, STOP-on-RED) → `M6-CP3-TB-REV-186`.
 - [ ] **7** parameter-deletion CB → V3b → R1 → O48. **HELD:** CB-190, J6, E5.
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-186T
-Owner: Test + Benchmark only; immutable bounded termination census; no source/build/selector/harness changes or gate credit.
-Authority: Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md; gates/Architecture_M6_CP3_TB186T_CB207D_Activated_Sphere_Termination_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_187Q_Adversarial_Review_20261126.md (step 2).
-  Candidate: source 2d62bf3b15f4571504fddd21bafbdd9019f0eeb9, artifact 15136691967, ZIP SHA-256 5b2ae326640d0b55feedeeeb46faf1c389dc110177307fafedea8e2759a40127; root manifest 0a35cc8e36ec86c3a70fe40e709dbd6f4f4440fb7fc8071f66c667db98ca827f; source archive 3ca963601fe85a5982375c16a6b507c461a2c1ce613ab7532f9469b873dc6f95.
-  Harness unchanged, SHA-256 423f385b73c3825ce9fe18fbd5ca395287620475deb621389f0efbaa601e572c; census mode (all OBSERVE; no MEMBERSHIP_LEDGER, no REACH_TERMINATION_DIAGNOSTIC).
-  Manifest gates/Architecture_M6_TB186T_P13_Activated_Sphere_Termination_Observe_Case_Manifest.tsv SHA-256 80970f595b3fe0d46fca08ae47fae1f53567a6d2b9b500ec34f74de24019eefc; 6 rows (648/843/844/858/979/1006), 600 s per row. Preserve raw logs, timing/RSS, cutoff and exact receipts per frozen contract. STOP only on provenance/package/postflight failure; organic RED is data.
-Then: TB-REV-186T -> [0.02 cap hit and review authorizes: CB-207D exact contingent -> TB-EXEC-186U same census -> TB-REV-186U (CB-207C size receipt if still capped)] -> TB-EXEC-186 (full + V5, STOP-on-RED) -> TB-REV-186.
-Do not: rerun/rebuild, claim activated sphere or close_sheets termination, apply contingent CB-207D without review, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
+NEXT_TURN: M6-CP3-TB-REV-186T
+Owner: independent Review only; runtime-free. No product/test/fixture/harness edits or new execution.
+Authority: Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md; gates/Architecture_M6_CP3_TB186T_CB207D_Activated_Sphere_Termination_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_187Q_Adversarial_Review_20261126.md (step 3); gates/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact_Manifest.md.
+  Candidate/source 2d62bf3b15f4571504fddd21bafbdd9019f0eeb9, package 15136691967. Run 45861079666, job 140052235045, result 15138712336 ZIP SHA-256 42de0d943825cd6e5b3932fb98300cf6555bd7a25a8786179d8f5bcfb670b3a3, 16/16 checks. All six finish, row858 RED; postflight=true; no gate credit.
+  Recheck all receipts and row858 baseline (TB187Q result 15130286146). Decide whether the empty completion locus violates the product contract or the unconditional display assertion is invalid. Preserve independent negative controls and exact CB-206 predictions. No measured 0.02 cutoff; do not authorize CB-207D on this evidence.
+Then: independent adjudication must authorize unchanged full gate + V5 (STOP-on-RED) or freeze exact separate corrective CB(s). No successor execution in Review.
+Do not: rerun/rebuild, infer successful sphere quadrangulation or close_sheets termination, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)

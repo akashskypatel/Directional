@@ -1,3 +1,7 @@
+## 2026-11-26 — TB-EXEC-186T bounded activated-sphere census
+
+[Execution report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md). Source `2d62bf3b15f4571504fddd21bafbdd9019f0eeb9`, package `15136691967`, [run 45861079666](https://github.com/akashskypatel/Directional/actions/runs/45861079666), result `15138712336`, 16/16 checks, postflight PASS. All six OBSERVE cases terminated, 5 PASS / 1 organic RED (row 858), no cap. Row 648 and 979 predictions match; row 1006 eleven receipts match exactly. Row 858 reached completion/NotProductionReady with no geometric locus; prior accepted cut-graph rejection named face (0,1,2). Candidate/non-stable display assertion/contract issue; exact completion rejection predicate not proved. Stable 67/17/50, debt1/deferred81 unchanged. No gate credit or promotion. Next independent TB-REV-186T.
+
 ## 2026-11-26 — CB-206 exact slide-entry activation compiled
 
 [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md). Source `2d62bf3b15f4571504fddd21bafbdd9019f0eeb9`, candidate `15136691967`, compile run `45857779921`. Exact two-path diff (+17/−35); both pre/postimage hashes verified. Eight GMP/GMPXX targets, 28/28 checks, no runtime execution. TB187Q 1006/1006 remains preactivation only. Stable 67/17/50, debt1/deferred81. Next separate TB-EXEC-186T bounded six-row census, then independent review; no promotion.
