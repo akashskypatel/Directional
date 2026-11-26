@@ -1,3 +1,7 @@
+## 2026-11-26 — TB-REV-186T adversarial continuation
+
+[Record](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Adversarial_Review_20261126.md). CB-208 diff `15dd890d…` withdrawn: it does not compile (`RemeshResult` has no `faces`). Frozen CB-208R [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact_Manifest.md) (diff `29ce73c7…`, syntax-clean): `is_produced()` check plus a recorded `SphereDisplayStopDetail` line naming which of five completion rejection sites fires. Row972 predicted PASS. No runtime, no product change.
+
 ## 2026-11-26 — TB-REV-186T independent activated-sphere census disposition
 
 [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md). Verified candidate 15136691967 (28/28), result 15138712336 (16/16), prior result 15130286146 (2020/2020), 420 source paths unchanged and all 1012 raw hashes. Six terminate, 5 PASS / row858 RED; exact rows648/979/1006 predictions match. Row858 invalid unconditional location assertion at stage-wide completion; no new stable product event, no cap/CB-207D, no gate credit. Stable 67/17/50, debt1/deferred81; TB187Q 1006/1006 preactivation accepted. Freeze `M6-CP3-CB-208-P13-DISPLAY-STOP-LOCATION-AUTHORITY` [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact_Manifest.md), test-only compile-only; no source/test edits or execution in Review. Full gate plus V5 held until correction compile; no checkpoint promotion.

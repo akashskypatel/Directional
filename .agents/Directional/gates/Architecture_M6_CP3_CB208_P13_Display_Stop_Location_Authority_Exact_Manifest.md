@@ -1,6 +1,6 @@
 # CB-208 exact manifest: display stop-location authority (2026-11-26 UTC)
 
-**Review artifact only.** Owner: `M6-CP3-CB-208-P13-DISPLAY-STOP-LOCATION-AUTHORITY`, Code + Build only. [Independent TB-REV-186T](../Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md) authorizes this one test correction; no application, build or runtime in Review. The actual observed RED remains in TB186T. The historical CB-203 manifest records its earlier unchanged unconditional location assertion; this new plan corrects that premise only for the measured stage-wide failure. The product contract, positive location evidence, and row membership are unchanged.
+**Diff WITHDRAWN (does not compile); superseded for diff/hashes by [CB-208R](Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact_Manifest.md). Steps and runtime plan below still govern.** **Review artifact only.** Owner: `M6-CP3-CB-208-P13-DISPLAY-STOP-LOCATION-AUTHORITY`, Code + Build only. [Independent TB-REV-186T](../Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md) authorizes this one test correction; no application, build or runtime in Review. The actual observed RED remains in TB186T. The historical CB-203 manifest records its earlier unchanged unconditional location assertion; this new plan corrects that premise only for the measured stage-wide failure. The product contract, positive location evidence, and row membership are unchanged.
 
 ## Exact preimage and change
 

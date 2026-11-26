@@ -5,18 +5,20 @@
 - [x] **COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.
 - [x] **COMPLETE (adjudication)** `M6-CP3-TB-REV-186T` — [review](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md); no measured cap. Root STATUS governs final closeout.
-- [ ] **NEXT** `M6-CP3-CB-208-P13-DISPLAY-STOP-LOCATION-AUTHORITY` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact_Manifest.md), one test-only diff, compile eight GMP/GMPXX targets; no runtime.
-- [ ] After successful CB-208: `M6-CP3-TB-EXEC-186` (full + V5, STOP-on-RED) → `M6-CP3-TB-REV-186`; preserve exact CB-206 predictions, row858 corrected expectation and all frozen memberships/controls.
+- [x] **COMPLETE** TB-REV-186T adversarial — [record](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Adversarial_Review_20261126.md): CB-208 diff withdrawn (does not compile); CB-208R adds detail receipt; row972 predicted PASS.
+- [ ] **NEXT** `M6-CP3-CB-208R-P13-DISPLAY-STOP-LOCATION-DETAIL-RECEIPT` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact_Manifest.md), one test-only diff, compile eight GMP/GMPXX targets; no runtime.
+- [ ] After successful CB-208R: `M6-CP3-TB-EXEC-186` (full + V5, STOP-on-RED; detail line recorded) → `M6-CP3-TB-REV-186` (freeze completion-site step from measured detail); preserve exact CB-206 predictions, row858 corrected expectation and all frozen memberships/controls.
 - [ ] **HELD:** CB-207D (no cap); CB-207C (size receipt only if needed), close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-CB-208-P13-DISPLAY-STOP-LOCATION-AUTHORITY
-Owner: Code + Build only. Test-only exact diff. No product, other test, selector, fixture, workflow or harness changes; no runtime.
-Authority: .agents/Directional/gates/Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact_Manifest.md; .agents/Directional/Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md; .agents/Directional/Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact.diff.
-  Source 2d62bf3b15f4571504fddd21bafbdd9019f0eeb9; test preimage b054f3b2fabc07553c0efcef293048ff46a18649609997665593cb6827d10a75; exact diff 15dd890d826744797d127ecb41fcd4721af9379800032e2b7e21cb114e9ca4e9; postimage 176760f5df9df0ec4aa8007f5c3c14b6684bafc5f5c65e4143f3f8f3f3b6f74c.
-  STOP on any hash/path/patch/compile mismatch; eight GMP/GMPXX targets, runtimeExecution=false. No CB-207D.
-Then: immutable TB-EXEC-186 full gate + V5, STOP-on-RED, then TB-REV-186. No successor execution here.
-Do not: promote CP3/497/D0/H4, infer sphere success or close_sheets termination, change unrelated tests, repair J6/E5/CB-190.
+NEXT_TURN: M6-CP3-CB-208R-P13-DISPLAY-STOP-LOCATION-DETAIL-RECEIPT
+Owner: Code + Build only. Apply one exact test-only diff, compile eight GMP/GMPXX targets, runtimeExecution=false. No product, other test, fixture, selector, harness, workflow or build-logic change. No runtime.
+Authority: .agents/Directional/gates/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_186T_Adversarial_Review_20261126.md (Z1-Z3); CB-208 manifest for steps/targets/runtime plan only.
+  Diff Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact.diff SHA-256 29ce73c74f4a1ab2dcd6295048002c6f5e882796e076d19021489deb7f44a02c; tests/SurfaceCellTracingDisplayTests.cpp b054f3b2fabc07553c0efcef293048ff46a18649609997665593cb6827d10a75 -> 1957d13f6aa2c86d84a337cef192e090ac6a9695bd45b79fcf8629cffc2c8712; one path only.
+  CB-208 diff 15dd890d...e4e9 WITHDRAWN (does not compile: RemeshResult has no faces). Do not apply it.
+  STOP on hash/path/patch/compile mismatch.
+Then: TB-EXEC-186 (full 1006 + V5, STOP-on-RED; row858 receipt + prefix witness as CB-208 manifest; SphereDisplayStopDetail recorded verbatim; row972 predicted PASS) -> TB-REV-186 (freeze completion-site step from measured detail code).
+Do not: run tests in CB, apply CB-207D, infer sphere success or close_sheets termination, promote CP3/497/D0/H4, repair J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)
