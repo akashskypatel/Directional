@@ -1,2 +1,0 @@
-# TB-REV-187Q temporary snapshot trigger; manifest removes itself
-.agents/connector-triggers/source-snapshot/tb-rev-187q-20261126T152706Z.txt
