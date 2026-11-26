@@ -1,26 +1,34 @@
-**Current turn outcome (2026-11-26 UTC):** TB-REV-187Q independently accepts QF1 A/B behaviour preservation, 1006/1006 PASS, all semantic ledgers equal, 738 exact + 268 N1 + 0 material. 1087 members, 81 deferred. Stable 67/17/50, debt1/deferred81. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_187Q_QF1_Behaviour_Preservation_Independent_Review_20261126.md). Activation not yet applied; next only `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION`.
+**Current turn outcome (2026-11-26 UTC):** TB-REV-187Q adversarial continuation upholds TB187Q and CB-206 as next, and freezes the missing TB-EXEC-186T plan (harness census mode, six-row OBSERVE manifest) plus a contingent exact CB-207D. [Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_187Q_Adversarial_Review_20261126.md).
 
-## CURRENT — QF1 A/B accepted preactivation; bounded sphere termination diagnostic before the activation full gate (2026-11-26 UTC)
+## CURRENT — CB-206 then bounded activated-sphere census; CB-207D only on a measured cutoff (2026-11-26 UTC)
+
+- [x] **COMPLETE** `M6-CP3-TB-REV-187Q` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_187Q_Adversarial_Review_20261126.md): close_sheets passes at 0.18 (rows 795/934), stalls at 0.02; sphere rows 843/844/858/1006 run at 0.02 (Y1); diagnostic harness mode is single-row, census mode + [frozen manifest](.agents/Directional/gates/Architecture_M6_CP3_TB186T_CB207D_Activated_Sphere_Termination_Exact_Manifest.md) (Y2); A/B leave O(M²) root-to-member searches, exact contingent CB-207D syntax-clean (Y3); Σ-depth path output (Y4).
+- [ ] **1 NEXT** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (exact, compile only).
+- [ ] **2** `M6-CP3-TB-EXEC-186T` — OBSERVE census, manifest `80970f59…eefc`, 6 rows, 600 s each, no gate credit.
+- [ ] **3** `M6-CP3-TB-REV-186T` — all finish → step 6; any cap → step 4.
+- [ ] **4** (contingent) `M6-CP3-CB-207D-QF1-ROOTED-CLASS-PATH-SEARCH-ONCE-PER-ROOT` (exact) → `M6-CP3-TB-EXEC-186U` (same census).
+- [ ] **5** (contingent) `M6-CP3-TB-REV-186U` — still capped → CB-207C size receipt, no further cost fix.
+- [ ] **6** `M6-CP3-TB-EXEC-186` (full + V5, STOP-on-RED) → `M6-CP3-TB-REV-186`.
+- [ ] **7** parameter-deletion CB → V3b → R1 → O48. **HELD:** CB-190, J6, E5.
+
+```text
+NEXT_TURN: M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION
+Owner: Code + Build only; exact two-path activation diff, compile only, eight GMP/GMPXX targets; runtimeExecution=false.
+Authority: Architecture_M6_CP3_TB_REV_187Q_Adversarial_Review_20261126.md (sequence step 1); Architecture_M6_CP3_TB_REV_187Q_QF1_Behaviour_Preservation_Independent_Review_20261126.md; gates/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact_Manifest.md
+  diff SHA-256 e1be85e05c505490b6025c9982b5857e612b7c28cfc1cc9198cefba669339cdb; src/geometry/SurfaceCellTracing.cpp 4b2e5687...53fb -> ad3c5ea3a9f73031e076330ab583b9951dadb6f92b1174991f521cc31a5c0de1; tests/FieldAlignedCurveNetworkTests.cpp 39b22f99...0efc48 -> 073d5254b055a74ac32e6509418375c3ad31058c20f263139f5f5481e81017da; two paths only
+  Base: accepted preactivation source 9d69f8e568cad9253f8e0ac0efd1d61bc073840b (CB-207A/B), package 15087219160, result 15130286146.
+  STOP on hash/path/patch/compile mismatch; row1006 source unchanged; no other test, fixture, selector, harness or product change.
+Then: TB-EXEC-186T (harness 423f385b... census mode, all OBSERVE, no ledger; manifest gates/Architecture_M6_TB186T_P13_Activated_Sphere_Termination_Observe_Case_Manifest.tsv SHA-256 80970f595b3fe0d46fca08ae47fae1f53567a6d2b9b500ec34f74de24019eefc, 6 rows, 600 s cap each; no gate credit) -> TB-REV-186T -> [cap hit: CB-207D exact contingent -> TB-EXEC-186U same census -> TB-REV-186U (CB-207C size receipt if still capped)] -> TB-EXEC-186 (full + V5, STOP-on-RED) -> TB-REV-186
+Do not: run tests/benchmarks in CB, apply CB-207D now, claim activated sphere or close_sheets termination, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
+```
+
+## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)
 
 - [x] **COMPLETE** `M6-CP3-TB-REV-185` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md): sphere cut failure returns before quotient production (`RemeshPipeline.cpp:12936–12954` vs `:13316`); activation unlocks it in rows 648/843/844/858/1006 (X1); row858 asserts sphere still fails somewhere, unclassified (X2); row648 prediction grounded (X3); CB-206 syntax-clean (X4).
 - [x] **1 COMPLETE** `M6-CP3-CB-207A-QF1-QUOTIENT-FOREST-ADJACENCY-ONCE-PER-OWNER` (exact, compile only; [record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#architecture_m6_cp3_cb207a_qf1_quotient_forest_adjacency_once_per_owner_code_build_record_20261125md)).
 - [x] **2 COMPLETE** `M6-CP3-CB-207B-QF1-VERIFIER-FOREST-EDGES-BY-CLASS` (exact, compile only; [record](.agents/Directional/Architecture_M6_CP3_CB207B_QF1_Verifier_Forest_Edges_By_Class_Code_Build_Record_20261126.md)).
 - [x] **3 COMPLETE** `M6-CP3-TB-EXEC-187Q` 1006/1006, all rows N1–N3-equal to TB185V. [Report](.agents/Directional/Architecture_M6_CP3_TB187Q_QF1_Behaviour_Preservation_Full_Gate_Execution_Report_20261126.md).
 - [x] **4 COMPLETE** `M6-CP3-TB-REV-187Q` — [independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_187Q_QF1_Behaviour_Preservation_Independent_Review_20261126.md), preactivation acceptance only.
-- [ ] **5 NEXT** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (exact as frozen, compile only).
-- [ ] **6** `M6-CP3-TB-EXEC-186T` bounded: rows 648/843/844/858/979/1006 under activation, no gate credit → **7** `M6-CP3-TB-REV-186T` (freeze row858/size-receipt CBs if needed).
-- [ ] **8** `M6-CP3-TB-EXEC-186` (full + V5, STOP-on-RED) → `M6-CP3-TB-REV-186`.
-- [ ] **9** CB-207C if needed → parameter-deletion CB → V3b → R1 → O48. **HELD:** CB-190, J6, E5.
-
-```text
-NEXT_TURN: M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION
-Owner: Code + Build only; exact two-path activation difference, compile only, eight GMP/GMPXX targets; runtimeExecution=false.
-Authority: Architecture_M6_CP3_TB_REV_187Q_QF1_Behaviour_Preservation_Independent_Review_20261126.md; gates/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md (X1–X5).
-  Accepted preactivation source 9d69f8e568cad9253f8e0ac0efd1d61bc073840b, package 15087219160, result 15130286146; 1006/1006, 1087 members, 81 deferred; all semantic ledgers and N1–N3 transcripts equal to TB185V result 15066180913.
-  Verify the frozen CB-206 diff and both preimages/postimages; apply only the authorized two paths. STOP on hash/path/patch/compile mismatch. Row1006 source unchanged; no repair of other tests, fixtures, selectors or harness.
-Then: TB-EXEC-186T (bounded sphere rows 648/843/844/858/979/1006; terminal stage/code/locus/elapsed and stacks on cutoff; no gate credit) -> TB-REV-186T (adjudicate row858 and QF1 size/termination) -> conditional TB-EXEC-186 (full + V5, STOP-on-RED) -> TB-REV-186.
-Do not: run successor tests/benchmarks in CB, claim activated sphere or close_sheets termination, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
-```
 
 ## HISTORY — TB-REV-185 independent: CB-206 frozen; sequence reordered by adversarial X1 (2026-11-25 UTC)
 

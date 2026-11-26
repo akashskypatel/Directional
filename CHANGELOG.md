@@ -1,3 +1,7 @@
+## 2026-11-26 — TB-REV-187Q adversarial continuation freezes the bounded activation census
+
+[Adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_187Q_Adversarial_Review_20261126.md). TB187Q and CB-206 upheld. TB-EXEC-186T now runs on the existing harness census mode with a frozen six-row OBSERVE manifest (SHA-256 `80970f59…eefc`). Contingent exact CB-207D (root-to-member path searches once per root, identical output) frozen, syntax-only clean. close_sheets passes at lengthRatio 0.18 and stalls at 0.02; four activated sphere rows run at 0.02. No product, test or selector change.
+
 ## 2026-11-26 — TB-REV-187Q independently accepts QF1 A/B preactivation behaviour preservation
 
 [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_187Q_QF1_Behaviour_Preservation_Independent_Review_20261126.md). Exact source `9d69f8e568cad9253f8e0ac0efd1d61bc073840b`, package `15087219160`, result `15130286146`; 1006/1006, both result manifests 2020/2020, 1087 members, 81 deferred. All ordered semantic ledgers equal; 738 exact + 268 N1 + 0 material. Row1006 51.56 s vs 52.17 s; no speed or termination claim. Both frozen QF1 changes replay exactly; CB-206 preimages unchanged. Stable 67/17/50, debt1/deferred81. No activation, runtime, product/test/fixture/selector edits or checkpoint promotion. Next only `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only), then bounded diagnostic and independent review.
