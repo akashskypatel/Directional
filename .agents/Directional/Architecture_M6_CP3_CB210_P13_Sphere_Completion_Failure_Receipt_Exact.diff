@@ -1,0 +1,13 @@
+diff --git a/tests/SurfaceCellTracingDisplayTests.cpp b/tests/SurfaceCellTracingDisplayTests.cpp
+index 486ccb942..897ebffbd 100644
+--- a/tests/SurfaceCellTracingDisplayTests.cpp
++++ b/tests/SurfaceCellTracingDisplayTests.cpp
+@@ -206,6 +206,8 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
+             << " firstInvalidStage=" << sphereDiagnostics.surfaceCellFirstInvalidProducerStage
+             << " firstInvalidReason=" << sphereDiagnostics.surfaceCellFirstInvalidProducerReason
+             << '\n';
++  std::cout << "SphereCompletionFailure detail="
++            << sphere.result.surfaceCellContext.completionFailure << '\n';
+   const auto sphereDisplay = display_of(sphere);
+   for (const auto *face : {&sphereLocus.sourceFace, &sphereLocus.relatedSourceFace,
+                           &sphereLocus.edgeTraceFaceCorners}) {

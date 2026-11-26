@@ -9,16 +9,20 @@
 - [x] **COMPLETE** `M6-CP3-CB-208R-P13-DISPLAY-STOP-LOCATION-DETAIL-RECEIPT` — [compile record](.agents/Directional/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Code_Build_Record_20261126.md), one exact test-only diff, eight GMP/GMPXX targets; no runtime.
 - [x] **COMPLETE (semantic RED)** `M6-CP3-TB-EXEC-186` — [report](.agents/Directional/Architecture_M6_CP3_TB186_P13_Activated_Sphere_Full_Gate_Execution_Report_20261126.md), 1005/1006, row971 RED; V5 not authorized. Row858 exact receipt/prefix/detail and row972 PASS.
 - [x] **Adjudication** `M6-CP3-TB-REV-186` — [review](.agents/Directional/Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md); root STATUS controls closeout.
-- [ ] **NEXT after STATUS COMPLETE** `M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Exact_Manifest.md); compile only.
+- [x] **COMPLETE** TB-REV-186 adversarial — [record](.agents/Directional/Architecture_M6_CP3_TB_REV_186_Adversarial_Review_20261126.md): CB-209 upheld (syntax-clean); CB-210 completion-failure receipt moved before the single gate.
+- [ ] **1 NEXT** `M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Exact_Manifest.md); compile only.
+- [ ] **2** `M6-CP3-CB-210-P13-SPHERE-COMPLETION-FAILURE-RECEIPT` — [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB210_TB188_Completion_Receipt_Activated_Full_Gate_Exact_Manifest.md); two-line print, compile only.
+- [ ] **3** `M6-CP3-TB-EXEC-188` — full 1006 + V5 on CB-210 package, STOP-on-RED; vs TB186 only row971 and one recorded row858 line change.
+- [ ] **4** `M6-CP3-TB-REV-188` — accept activation if green; choose completion step from measured `SphereCompletionFailure`.
 - [ ] **HELD:** CB-207D (no cap); CB-207C (size receipt only if needed), close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
 NEXT_TURN: M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE
-Owner: Code + Build only. Root STATUS must first close TB-REV-186.
-Authority: Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md; gates/Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Exact_Manifest.md; Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Exact.diff.
-  One exact test-only diff, 14643 bytes, SHA-256 6f17d7c84672dc3780ca15e6556f2ffbc40bbd5565c881242f14573afe38fcc4. Verify pre/postimage and apply; compile eight GMP/GMPXX targets, runtimeExecution=false. No runtime, other repair or gate change. Scratch replay verified; syntax/build unproved. STOP on mismatch.
-  Full 1006-row gate later, only row971 predicted to change against TB186; preserve both baseline comparisons, original ten vertex rays, eight interior wall rays, row858 exact receipt and all controls. V5 held until valid gate; no cap, no CB-207D; completion predicate unresolved; no promotion.
-Then: freeze artifact-only TB after successful compile; independent Review follows. No successor work in TB-REV-186.
+Owner: Code + Build only. One exact test-only diff; compile eight GMP/GMPXX targets, runtimeExecution=false. No runtime, product, other test, fixture, selector, harness or workflow change.
+Authority: .agents/Directional/gates/Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Exact_Manifest.md; .agents/Directional/Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md; .agents/Directional/Architecture_M6_CP3_TB_REV_186_Adversarial_Review_20261126.md (AA1 upheld, syntax-clean 0 errors).
+  Diff Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Exact.diff SHA-256 6f17d7c84672dc3780ca15e6556f2ffbc40bbd5565c881242f14573afe38fcc4; tests/FieldAlignedCurveNetworkTests.cpp 073d5254b055a74ac32e6509418375c3ad31058c20f263139f5f5481e81017da -> a371dffbb30576dfe492631ecd68f2006b1cef01b721f2518a8472362e617584; one path. STOP on hash/path/patch/compile mismatch.
+Then: CB-210 (exact receipt diff 696efc1e2a0c3be15047f407f5f9beaedd7c4710a3919251377751b38baac488, SurfaceCellTracingDisplayTests.cpp 1957d13f... -> 0089c18e..., compile only) -> TB-EXEC-188 (full 1006 + V5 on CB-210 package, STOP-on-RED; vs TB186 only row971 PASS and one recorded SphereCompletionFailure line in row858 may change; contract .agents/Directional/gates/Architecture_M6_CP3_CB210_TB188_Completion_Receipt_Activated_Full_Gate_Exact_Manifest.md) -> TB-REV-188 (completion step from measured string).
+Do not: run tests in CB, combine CB-209 and CB-210 into one turn, apply CB-207D, infer sphere success or close_sheets termination, promote CP3/497/D0/H4, repair J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)

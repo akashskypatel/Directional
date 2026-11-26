@@ -1,3 +1,7 @@
+## 2026-11-26 — TB-REV-186 adversarial continuation
+
+[Record](.agents/Directional/Architecture_M6_CP3_TB_REV_186_Adversarial_Review_20261126.md). CB-209 upheld and syntax-clean (0 errors). The stored `completionFailure` string distinguishes every PreparationRejected site, so CB-210 [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB210_TB188_Completion_Receipt_Activated_Full_Gate_Exact_Manifest.md) (two-line receipt, diff `696efc1e…`) precedes the single TB-EXEC-188 full gate + V5. No runtime, no product change.
+
 ## 2026-11-26 — TB-REV-186 independent disposition
 
 [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md). TB-REV-186: independent adjudication of valid semantic RED 1005/1006; row971 invalid arc/segment test premise, no stable product regression proved. Row858 exact PASS; 26 material differences reconciled, three possible completion preparation failures remain. V5 held; preactivation TB185V/TB187Q 1006/1006 accepted only; CP2 491/491, stable 67/17/50, debt1/deferred81, membership1087. No CP3/497/D0/H4 promotion. Next M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE compile only, after STATUS COMPLETE. Exact one-path test-only plan; scratch application verified, no compile/runtime.
