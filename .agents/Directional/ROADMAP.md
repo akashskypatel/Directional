@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; TB187Q **1006/1006** independently accepted for QF1 A/B preactivation preservation. CP2 **491/491** accepted; TB170/K6 closed, P1 supported. [TB-REV-186T](Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md) confirms all six activated sphere diagnostic rows terminate; exact predictions match, row858 test-premise RED. Separate [CB-208](gates/Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact_Manifest.md) test correction before full gate and V5. No diagnostic gate credit; close_sheets fine-resolution termination and production completion unproved. No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3; TB187Q **1006/1006** independently accepted for QF1 A/B preactivation preservation. CP2 **491/491** accepted; TB170/K6 closed, P1 supported. [TB-REV-186T](Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md) confirms all six activated sphere diagnostic rows terminate; exact predictions match, row858 test-premise RED. [CB-208R](Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Code_Build_Record_20261126.md) test correction compiled; full gate and V5 pending. No diagnostic gate credit; close_sheets fine-resolution termination and production completion unproved. No CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

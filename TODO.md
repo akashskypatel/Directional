@@ -1,4 +1,4 @@
-**Current turn outcome (2026-11-26 UTC):** [TB-REV-186T](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md) independently verifies six terminations, 5 PASS / row858 RED, exact 648/979/1006 receipts. Row858 invalid unconditional geometric expectation; no stable product event, no cap/CB-207D, no gate credit. Stable 67/17/50, debt1/deferred81; accepted TB187Q 1006/1006 preactivation. Exact completion predicate and fine-resolution close_sheets termination unproved. No CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-26 UTC):** [CB-208R](.agents/Directional/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Code_Build_Record_20261126.md) exact one-path test correction compiled, eight GMP/GMPXX targets, 28/28 package checks, source `cc25a6402cdd3ca1a33a9a9778250176b182bb2a`, candidate `15154205483`, `runtimeExecution=false`. TB186T six terminations, 5 PASS / row858 test-premise RED, no cap or gate credit. Stable 67/17/50, debt1/deferred81; accepted TB187Q 1006/1006 preactivation. Exact completion predicate and fine-resolution close_sheets termination unproved. No CP3/497/D0/H4 promotion.
 
 ## CURRENT — row858 display authority before activation full gate (2026-11-26 UTC)
 
@@ -6,19 +6,18 @@
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.
 - [x] **COMPLETE (adjudication)** `M6-CP3-TB-REV-186T` — [review](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md); no measured cap. Root STATUS governs final closeout.
 - [x] **COMPLETE** TB-REV-186T adversarial — [record](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Adversarial_Review_20261126.md): CB-208 diff withdrawn (does not compile); CB-208R adds detail receipt; row972 predicted PASS.
-- [ ] **NEXT** `M6-CP3-CB-208R-P13-DISPLAY-STOP-LOCATION-DETAIL-RECEIPT` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact_Manifest.md), one test-only diff, compile eight GMP/GMPXX targets; no runtime.
-- [ ] After successful CB-208R: `M6-CP3-TB-EXEC-186` (full + V5, STOP-on-RED; detail line recorded) → `M6-CP3-TB-REV-186` (freeze completion-site step from measured detail); preserve exact CB-206 predictions, row858 corrected expectation and all frozen memberships/controls.
+- [x] **COMPLETE** `M6-CP3-CB-208R-P13-DISPLAY-STOP-LOCATION-DETAIL-RECEIPT` — [compile record](.agents/Directional/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Code_Build_Record_20261126.md), one exact test-only diff, eight GMP/GMPXX targets; no runtime.
+- [ ] **NEXT** `M6-CP3-TB-EXEC-186` (full + V5, STOP-on-RED; detail line recorded) → `M6-CP3-TB-REV-186` (freeze completion-site step from measured detail); preserve exact CB-206 predictions, row858 corrected expectation and all frozen memberships/controls.
 - [ ] **HELD:** CB-207D (no cap); CB-207C (size receipt only if needed), close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-CB-208R-P13-DISPLAY-STOP-LOCATION-DETAIL-RECEIPT
-Owner: Code + Build only. Apply one exact test-only diff, compile eight GMP/GMPXX targets, runtimeExecution=false. No product, other test, fixture, selector, harness, workflow or build-logic change. No runtime.
-Authority: .agents/Directional/gates/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_186T_Adversarial_Review_20261126.md (Z1-Z3); CB-208 manifest for steps/targets/runtime plan only.
-  Diff Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact.diff SHA-256 29ce73c74f4a1ab2dcd6295048002c6f5e882796e076d19021489deb7f44a02c; tests/SurfaceCellTracingDisplayTests.cpp b054f3b2fabc07553c0efcef293048ff46a18649609997665593cb6827d10a75 -> 1957d13f6aa2c86d84a337cef192e090ac6a9695bd45b79fcf8629cffc2c8712; one path only.
-  CB-208 diff 15dd890d...e4e9 WITHDRAWN (does not compile: RemeshResult has no faces). Do not apply it.
-  STOP on hash/path/patch/compile mismatch.
-Then: TB-EXEC-186 (full 1006 + V5, STOP-on-RED; row858 receipt + prefix witness as CB-208 manifest; SphereDisplayStopDetail recorded verbatim; row972 predicted PASS) -> TB-REV-186 (freeze completion-site step from measured detail code).
-Do not: run tests in CB, apply CB-207D, infer sphere success or close_sheets termination, promote CP3/497/D0/H4, repair J6/E5/CB-190.
+NEXT_TURN: M6-CP3-TB-EXEC-186
+Owner: Test + Benchmark only. Immutable full 1006-case gate with 81 deferred, then V5 only after valid full gate. STOP-on-RED. No rebuild, repair, semantic mutation, fixture/selector/harness change, or full-gate timeout.
+Authority: .agents/Directional/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Code_Build_Record_20261126.md; gates/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact_Manifest.md; CB-208 manifest (runtime plan only); CB-206 manifest (activation predictions).
+  Source/executor cc25a6402cdd3ca1a33a9a9778250176b182bb2a; candidate 15154205483; ZIP cd84ab8b591759f4e01b5aaa685b048d69ed0a30a6b7e63dde6b1a97031971e8; root manifest 4c6ad586ca35afff9ad61da3cdae88c62d0356fec906d37c0b9cc1a67e477648; source archive 5c316970e7163432d3bffb0ec2ac1646cef27ce4bc13ec999a9d70ae447eeb79.
+  Harness 423f385b73c3825ce9fe18fbd5ca395287620475deb621389f0efbaa601e572c; 1006 gate + 81 deferred = 1087 members; compare TB185V 15066180913 and retained TB187Q 15130286146, frozen N1–N3 only.
+  Row858 exact stop receipt and 69196-byte prefix witness; record SphereDisplayStopDetail verbatim; row972 predicted PASS. Preserve all frozen activation receipts and negative controls. V5 Cylinder/BunnyRandom offgate:360/Vase; both pending-wall contacts; no census gate credit.
+Then: M6-CP3-TB-REV-186 (independent adjudication and completion-site step from measured detail). No CP3/497/D0/H4 promotion or CB-207D; no J6/E5/CB-190 repair.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)

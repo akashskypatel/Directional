@@ -1,3 +1,7 @@
+## 2026-11-26 — CB-208R display stop-location detail receipt compiled
+
+[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Code_Build_Record_20261126.md). Exact test-only diff `29ce73c7…`, +39/−4; [apply run 45895610123](https://github.com/akashskypatel/Directional/actions/runs/45895610123), source `cc25a6402cdd3ca1a33a9a9778250176b182bb2a`, [compile run 45895803711](https://github.com/akashskypatel/Directional/actions/runs/45895803711), package `15154205483`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Row858 corrected location premise and `SphereDisplayStopDetail` receipt remain unexecuted. Stable 67/17/50, debt1/deferred81 unchanged, no CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-EXEC-186` full gate and V5.
+
 ## 2026-11-26 — TB-REV-186T adversarial continuation
 
 [Record](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Adversarial_Review_20261126.md). CB-208 diff `15dd890d…` withdrawn: it does not compile (`RemeshResult` has no `faces`). Frozen CB-208R [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact_Manifest.md) (diff `29ce73c7…`, syntax-clean): `is_produced()` check plus a recorded `SphereDisplayStopDetail` line naming which of five completion rejection sites fires. Row972 predicted PASS. No runtime, no product change.
