@@ -873,6 +873,8 @@ TB-REV-184 accepts TB184 package `14990462714`, result `14992995631`, source `75
 
 TB-REV-185 accepts TB185V package `15064166049`, result `15066180913`, source `eee220e7e37f409eb5150f436e80e51a534c037a`, **1006/1006** preactivation. [Frozen manifest](gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv) SHA-256 `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587`; exact TB184 1005-case prefix `94f02d6bd2d599f02bbc7dc7cd317e490cdb00e18827596acac2cfdd827460be`. Membership 1087 = 1006 gated + 81 deferred. [Independent review](Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md). No frozen selector bytes changed; no CP3 selector497 or production promotion.
 
+TB-REV-187Q accepts TB187Q package `15087219160`, result `15130286146`, source `9d69f8e568cad9253f8e0ac0efd1d61bc073840b`, **1006/1006** preactivation behaviour preservation. Frozen manifest SHA-256 `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587` equals the full accepted TB185V prefix byte for byte. Membership 1087 = 1006 gated + 81 deferred; 738 exact + 268 N1 + 0 material. [Independent review](Architecture_M6_CP3_TB_REV_187Q_QF1_Behaviour_Preservation_Independent_Review_20261126.md). No selector bytes changed; CP3 selector497 remains unpromoted.
+
 ## Regenerating this manifest
 
 Every column is derived. `tools/selector_probe.py` computes counts, LF hashes, prefix relations and appended
