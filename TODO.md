@@ -1,24 +1,22 @@
-**Current turn outcome (2026-11-26 UTC):** TB-EXEC-186T completed the bounded census ([report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md)). All six OBSERVE cases terminated, 5 PASS / 1 organic RED (row 858), no cap. Row 648 and 979 predictions match; row 1006 eleven receipts match exactly. Row 858 reached completion/NotProductionReady with no geometric locus; prior accepted cut-graph rejection named face (0,1,2). Candidate/non-stable display assertion/contract issue; exact completion rejection predicate not proved. Stable 67/17/50, debt1/deferred81 unchanged. No gate credit or promotion. TB-REV-186T next.
+**Current turn outcome (2026-11-26 UTC):** [TB-REV-186T](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md) independently verifies six terminations, 5 PASS / row858 RED, exact 648/979/1006 receipts. Row858 invalid unconditional geometric expectation; no stable product event, no cap/CB-207D, no gate credit. Stable 67/17/50, debt1/deferred81; accepted TB187Q 1006/1006 preactivation. Exact completion predicate and fine-resolution close_sheets termination unproved. No CP3/497/D0/H4 promotion.
 
-## CURRENT — bounded activated-sphere census after CB-206 compile; CB-207D only on a measured cutoff (2026-11-26 UTC)
+## CURRENT — row858 display authority before activation full gate (2026-11-26 UTC)
 
-- [x] **COMPLETE** `M6-CP3-TB-REV-187Q` independent + [adversarial](.agents/Directional/Architecture_M6_CP3_TB_REV_187Q_Adversarial_Review_20261126.md): close_sheets passes at 0.18 (rows 795/934), stalls at 0.02; sphere rows 843/844/858/1006 run at 0.02 (Y1); diagnostic harness mode is single-row, census mode + [frozen manifest](.agents/Directional/gates/Architecture_M6_CP3_TB186T_CB207D_Activated_Sphere_Termination_Exact_Manifest.md) (Y2); A/B leave O(M²) root-to-member searches, exact contingent CB-207D syntax-clean (Y3); Σ-depth path output (Y4).
-- [x] **1 COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (exact, compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
-- [x] **2 COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED, no cap or gate credit.
-- [ ] **3 NEXT** `M6-CP3-TB-REV-186T` — adjudicate receipts and row858 contract before full gate or exact corrective CB. No cap observed; steps 4–5 not authorized.
-- [ ] **4** (contingent) `M6-CP3-CB-207D-QF1-ROOTED-CLASS-PATH-SEARCH-ONCE-PER-ROOT` (exact) → `M6-CP3-TB-EXEC-186U` (same census).
-- [ ] **5** (contingent) `M6-CP3-TB-REV-186U` — still capped → CB-207C size receipt, no further cost fix.
-- [ ] **6** `M6-CP3-TB-EXEC-186` (full + V5, STOP-on-RED) → `M6-CP3-TB-REV-186`.
-- [ ] **7** parameter-deletion CB → V3b → R1 → O48. **HELD:** CB-190, J6, E5.
+- [x] **COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
+- [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.
+- [x] **COMPLETE (adjudication)** `M6-CP3-TB-REV-186T` — [review](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md); no measured cap. Root STATUS governs final closeout.
+- [ ] **NEXT** `M6-CP3-CB-208-P13-DISPLAY-STOP-LOCATION-AUTHORITY` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact_Manifest.md), one test-only diff, compile eight GMP/GMPXX targets; no runtime.
+- [ ] After successful CB-208: `M6-CP3-TB-EXEC-186` (full + V5, STOP-on-RED) → `M6-CP3-TB-REV-186`; preserve exact CB-206 predictions, row858 corrected expectation and all frozen memberships/controls.
+- [ ] **HELD:** CB-207D (no cap); CB-207C (size receipt only if needed), close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-186T
-Owner: independent Review only; runtime-free. No product/test/fixture/harness edits or new execution.
-Authority: Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md; gates/Architecture_M6_CP3_TB186T_CB207D_Activated_Sphere_Termination_Exact_Manifest.md; Architecture_M6_CP3_TB_REV_187Q_Adversarial_Review_20261126.md (step 3); gates/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact_Manifest.md.
-  Candidate/source 2d62bf3b15f4571504fddd21bafbdd9019f0eeb9, package 15136691967. Run 45861079666, job 140052235045, result 15138712336 ZIP SHA-256 42de0d943825cd6e5b3932fb98300cf6555bd7a25a8786179d8f5bcfb670b3a3, 16/16 checks. All six finish, row858 RED; postflight=true; no gate credit.
-  Recheck all receipts and row858 baseline (TB187Q result 15130286146). Decide whether the empty completion locus violates the product contract or the unconditional display assertion is invalid. Preserve independent negative controls and exact CB-206 predictions. No measured 0.02 cutoff; do not authorize CB-207D on this evidence.
-Then: independent adjudication must authorize unchanged full gate + V5 (STOP-on-RED) or freeze exact separate corrective CB(s). No successor execution in Review.
-Do not: rerun/rebuild, infer successful sphere quadrangulation or close_sheets termination, promote CP3/497/D0/H4 or repair J6/E5/CB-190.
+NEXT_TURN: M6-CP3-CB-208-P13-DISPLAY-STOP-LOCATION-AUTHORITY
+Owner: Code + Build only. Test-only exact diff. No product, other test, selector, fixture, workflow or harness changes; no runtime.
+Authority: .agents/Directional/gates/Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact_Manifest.md; .agents/Directional/Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md; .agents/Directional/Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact.diff.
+  Source 2d62bf3b15f4571504fddd21bafbdd9019f0eeb9; test preimage b054f3b2fabc07553c0efcef293048ff46a18649609997665593cb6827d10a75; exact diff 15dd890d826744797d127ecb41fcd4721af9379800032e2b7e21cb114e9ca4e9; postimage 176760f5df9df0ec4aa8007f5c3c14b6684bafc5f5c65e4143f3f8f3f3b6f74c.
+  STOP on any hash/path/patch/compile mismatch; eight GMP/GMPXX targets, runtimeExecution=false. No CB-207D.
+Then: immutable TB-EXEC-186 full gate + V5, STOP-on-RED, then TB-REV-186. No successor execution here.
+Do not: promote CP3/497/D0/H4, infer sphere success or close_sheets termination, change unrelated tests, repair J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)

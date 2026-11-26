@@ -1,4 +1,4 @@
-**Current currency — CB-206 (2026-11-26 UTC):** [Independent review](Architecture_M6_CP3_TB_REV_187Q_QF1_Behaviour_Preservation_Independent_Review_20261126.md) accepts QF1 A/B preactivation behaviour preservation: 1006/1006, 738 exact + 268 N1 + 0 material vs TB185V. 1087 members, 81 deferred. CB-206 compiled only ([record](Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)); TB-EXEC-186T next. Activated sphere and close_sheets termination unproved. Stable 67/17/50, debt1/deferred81; CP2 491/491; P1 supported, D-U carried, TB170/K6 closed. No CP3/497/D0/H4 promotion.
+**Current currency — TB-REV-186T (2026-11-26 UTC):** [Independent review](Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md): six activated sphere census rows terminate (5 PASS / row858 RED); exact 648/979/1006 predictions match. Row858 is an invalid unconditional display-location expectation, correction frozen in [CB-208](gates/Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact_Manifest.md). No cap, no CB-207D. TB187Q 1006/1006 remains accepted preactivation only; 1087 members, 81 deferred. Stable 67/17/50, debt1/deferred81; CP2 491/491; P1 supported, D-U carried, TB170/K6 closed. Fine-resolution close_sheets and production completion unproved. No CP3/497/D0/H4 promotion.
 
 # Directional — Project Orientation
 
@@ -48,14 +48,14 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | TB185V independently accepted 1006/1006 preactivation; TB184 historical 1005/1005; CP2 491/491 accepted. TB170 recurrence and K6 closed. Row979 staged plan built; P1 supported. CB-206 activation applied and compiled, runtime unmeasured; QF1 A/B compiled; TB187Q independently accepted preactivation, 1006/1006. No CP3/497/D0/H4 acceptance. |
+| **M6-CP3 — active; multi-cut plan remains open** | TB185V/TB187Q independently accepted 1006/1006 preactivation; CP2 491/491 accepted. TB170 recurrence and K6 closed. CB-206 activated sphere cut/plan observed, P1 supported; sphere reaches completion RED without location. Six diagnostic rows terminate; no gate credit. Row858 test-only correction CB-208 next. No CP3/497/D0/H4 acceptance. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
 
-**TB183 independent display witness:** row858 reports the existing cut-graph stop at face `(0,1,2)`; row1005 independently proves the rotated corner-keyed face lookup. No later activated production stop measured. [Review](Architecture_M6_CP3_TB_REV_183_Display_Stop_Locus_Contract_Independent_Review_20261125.md).
+**TB183/TB186T display witness:** accepted preactivation row858 cut-graph stop at face `(0,1,2)`; row1005 independently proves rotated corner-keyed face lookup. Activated row858 reaches completion/NotProductionReady with no printed source face, edge or vertex; unconditional location assertion RED. [TB-REV-186T](Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md) finds invalid test premise; preserve real positive location controls. Exact completion rejection predicate and successful output unproved.
 
 **TB182 independent staged witness:** Row979 built 14-region plan (V18/E30/F14, Euler 2, 192/192 established owners); P1 supported, row1004 corner-granular guard PASS. No production activation or later pipeline stop measured. [TB-REV-182 review](Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md).
 
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-TB-EXEC-186T` — [bounded census contract](gates/Architecture_M6_CP3_TB186T_CB207D_Activated_Sphere_Termination_Exact_Manifest.md); CB-206 compiled only ([record](Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)). [TB-REV-187Q](Architecture_M6_CP3_TB_REV_187Q_QF1_Behaviour_Preservation_Independent_Review_20261126.md) discharged QF1 A/B behaviour preservation. Bounded TB-EXEC-186T and independent TB-REV-186T precede the activation full gate. Row858 premise and termination sufficiency remain unproved.
+**Current priority:** `M6-CP3-CB-208-P13-DISPLAY-STOP-LOCATION-AUTHORITY` — [exact test-only manifest](gates/Architecture_M6_CP3_CB208_P13_Display_Stop_Location_Authority_Exact_Manifest.md). TB-REV-186T verifies all six terminate and exact activation receipts; row858 requires the display to show reported geometry or stage/code without fabricated geometry for the measured unlocated completion. Compile only, then immutable full gate and V5, STOP-on-RED. No CB-207D (no cap); close_sheets at 0.02 and general scaling still unproved.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
@@ -159,6 +159,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 TB-REV-167 S6 (carried to CB-190): terminal-vertex edge-side diagnostics require a direct two-orientation witness. Diagnostic-only; no new stable regression.
 
 ## 8. Recurring defect patterns
+
+**TB-REV-186T X2:** An unconditional geometric diagnostic premise became false when the sphere reached a stage-wide completion rejection. A display is not authority to invent source geometry; require the actual source metadata and independent positive/negative controls. This is the existing premise-test pattern, not a new stable event. [Review](Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md).
 
 **TB-REV-182 A1:** A previously positive diagnostic with a negative production control is itself a premise row when the diagnostic behavior becomes production default. Preserve the explicit negative control; do not silently omit the test from the activation scope. Existing non-vacuity and premise rules apply. [TB-REV-182 review](Architecture_M6_CP3_TB_REV_182_Region_Corner_Singularity_Reach_Independent_Review_20261125.md).
 

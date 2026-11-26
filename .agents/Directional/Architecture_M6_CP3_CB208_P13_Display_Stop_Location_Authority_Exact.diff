@@ -1,0 +1,62 @@
+diff --git a/tests/SurfaceCellTracingDisplayTests.cpp b/tests/SurfaceCellTracingDisplayTests.cpp
+index a21f8e5e6c6ec5da10dbc585f815078a13fcf44b..8199db5f7fb8944265f76dede2b5fad1d39b192d 100644
+--- a/tests/SurfaceCellTracingDisplayTests.cpp
++++ b/tests/SurfaceCellTracingDisplayTests.cpp
+@@ -203,14 +203,17 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
+                                          : std::string("-"))
+             << '\n';
+   const auto sphereDisplay = display_of(sphere);
+-  for (const auto *face : {&sphereLocus.sourceFace, &sphereLocus.relatedSourceFace}) {
++  for (const auto *face : {&sphereLocus.sourceFace, &sphereLocus.relatedSourceFace,
++                          &sphereLocus.edgeTraceFaceCorners}) {
+     if (!face->has_value()) continue;
+     const Eigen::Index row = face_row_of(sphere.mesh.F, **face);
+     ASSERT_GE(row, 0);
+     EXPECT_TRUE(has_face(sphereDisplay, sphere.mesh.V, sphere.mesh.F, row));
+   }
+-  if (sphereLocus.sourceEdge.has_value()) {
+-    const auto &e = *sphereLocus.sourceEdge;
++  for (const auto *edge : {&sphereLocus.sourceEdge, &sphereLocus.traceIncomingCarrier,
++                          &sphereLocus.traceOutgoingCarrier, &sphereLocus.edgeTraceOtherCarrier}) {
++    if (!edge->has_value()) continue;
++    const auto &e = **edge;
+     EXPECT_TRUE(has_edge(sphereDisplay, sphere.mesh.V, e[0], e[1]));
+   }
+   if (sphereLocus.sourceVertex.has_value()) {
+@@ -218,7 +221,35 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
+     EXPECT_TRUE(has_vertex(sphereDisplay,
+                            sphere.mesh.V.row(static_cast<Eigen::Index>(v))));
+   }
+-  for (const auto *display : {&genusDisplay, &singularDisplay, &sphereDisplay}) {
++  // Completion can reject without naming a source entity. In that case the
++  // display must report the stop in text, not invent a geometric location.
++  const auto &sphereContext = sphere.result.surfaceCellContext;
++  const bool hasSourceLocus =
++      sphereLocus.sourceFace || sphereLocus.relatedSourceFace ||
++      sphereLocus.edgeTraceFaceCorners || sphereLocus.sourceEdge ||
++      sphereLocus.traceIncomingCarrier || sphereLocus.traceOutgoingCarrier ||
++      sphereLocus.edgeTraceOtherCarrier || sphereLocus.sourceVertex;
++  const bool hasPhaseFrontRejection =
++      sphereContext.hasTraceNetwork &&
++      sphereContext.productSnapshots.traceNetwork.phaseFront.rejection() != nullptr;
++  if (!hasSourceLocus && !hasPhaseFrontRejection &&
++      sphereDiagnostics.terminalFailureStage == "completion" &&
++      sphereDiagnostics.terminalFailureCode == "NotProductionReady") {
++    EXPECT_FALSE(sphereDisplay.has_stop_location());
++    EXPECT_EQ(0, sphereDisplay.stopFaces.rows());
++    EXPECT_EQ(0, sphereDisplay.stopEdges.rows());
++    EXPECT_EQ(0, sphereDisplay.stopVertices.rows());
++  } else {
++    EXPECT_TRUE(sphereDisplay.has_stop_location());
++  }
++  for (const auto &note : {"stage: " + sphereDiagnostics.terminalFailureStage,
++                           "code: " + sphereDiagnostics.terminalFailureCode}) {
++    EXPECT_NE(sphereDisplay.stopNotes.end(),
++              std::find(sphereDisplay.stopNotes.begin(), sphereDisplay.stopNotes.end(), note));
++  }
++  EXPECT_EQ(0, sphere.result.faces.rows());
++  EXPECT_EQ(0U, sphereDisplay.cellCount);
++  for (const auto *display : {&genusDisplay, &singularDisplay}) {
+     EXPECT_TRUE(display->has_stop_location());
+     EXPECT_EQ(0U, display->cellCount);
+   }
