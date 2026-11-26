@@ -1,23 +1,24 @@
-**Current turn outcome (2026-11-26 UTC):** [CB-208R](.agents/Directional/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Code_Build_Record_20261126.md) exact one-path test correction compiled, eight GMP/GMPXX targets, 28/28 package checks, source `cc25a6402cdd3ca1a33a9a9778250176b182bb2a`, candidate `15154205483`, `runtimeExecution=false`. TB186T six terminations, 5 PASS / row858 test-premise RED, no cap or gate credit. Stable 67/17/50, debt1/deferred81; accepted TB187Q 1006/1006 preactivation. Exact completion predicate and fine-resolution close_sheets termination unproved. No CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-26 UTC):** [TB-EXEC-186](.agents/Directional/Architecture_M6_CP3_TB186_P13_Activated_Sphere_Full_Gate_Execution_Report_20261126.md) valid semantic RED, 1005/1006 PASS, row971 sole loss against accepted preactivation TB185V/TB187Q. Row858 PASS with exact prefix/detail `PreparationRejected`; row648/979/1006 exact, row972 PASS. Source `cc25a6402cdd3ca1a33a9a9778250176b182bb2a`, candidate `15154205483`, result `15155787349`, 2020/2020 checks, 1087 members, postflight true. V5 held. Stable 67/17/50 pending independent adjudication, debt1/deferred81; CP2 491/491. No CP3/497/D0/H4 promotion.
 
-## CURRENT — row858 display authority before activation full gate (2026-11-26 UTC)
+## CURRENT — activated full-gate RED; independent review next (2026-11-26 UTC)
 
 - [x] **COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.
 - [x] **COMPLETE (adjudication)** `M6-CP3-TB-REV-186T` — [review](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Activated_Sphere_Termination_Independent_Review_20261126.md); no measured cap. Root STATUS governs final closeout.
 - [x] **COMPLETE** TB-REV-186T adversarial — [record](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Adversarial_Review_20261126.md): CB-208 diff withdrawn (does not compile); CB-208R adds detail receipt; row972 predicted PASS.
 - [x] **COMPLETE** `M6-CP3-CB-208R-P13-DISPLAY-STOP-LOCATION-DETAIL-RECEIPT` — [compile record](.agents/Directional/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Code_Build_Record_20261126.md), one exact test-only diff, eight GMP/GMPXX targets; no runtime.
-- [ ] **NEXT** `M6-CP3-TB-EXEC-186` (full + V5, STOP-on-RED; detail line recorded) → `M6-CP3-TB-REV-186` (freeze completion-site step from measured detail); preserve exact CB-206 predictions, row858 corrected expectation and all frozen memberships/controls.
+- [x] **COMPLETE (semantic RED)** `M6-CP3-TB-EXEC-186` — [report](.agents/Directional/Architecture_M6_CP3_TB186_P13_Activated_Sphere_Full_Gate_Execution_Report_20261126.md), 1005/1006, row971 RED; V5 not authorized. Row858 exact receipt/prefix/detail and row972 PASS.
+- [ ] **NEXT** `M6-CP3-TB-REV-186` — independently classify row971 and all 26 material differences, determine exact completion rejection predicate, freeze separate exact correction CB per proved family; no runtime/repair/promotion.
 - [ ] **HELD:** CB-207D (no cap); CB-207C (size receipt only if needed), close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-186
-Owner: Test + Benchmark only. Immutable full 1006-case gate with 81 deferred, then V5 only after valid full gate. STOP-on-RED. No rebuild, repair, semantic mutation, fixture/selector/harness change, or full-gate timeout.
-Authority: .agents/Directional/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Code_Build_Record_20261126.md; gates/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Exact_Manifest.md; CB-208 manifest (runtime plan only); CB-206 manifest (activation predictions).
-  Source/executor cc25a6402cdd3ca1a33a9a9778250176b182bb2a; candidate 15154205483; ZIP cd84ab8b591759f4e01b5aaa685b048d69ed0a30a6b7e63dde6b1a97031971e8; root manifest 4c6ad586ca35afff9ad61da3cdae88c62d0356fec906d37c0b9cc1a67e477648; source archive 5c316970e7163432d3bffb0ec2ac1646cef27ce4bc13ec999a9d70ae447eeb79.
-  Harness 423f385b73c3825ce9fe18fbd5ca395287620475deb621389f0efbaa601e572c; 1006 gate + 81 deferred = 1087 members; compare TB185V 15066180913 and retained TB187Q 15130286146, frozen N1–N3 only.
-  Row858 exact stop receipt and 69196-byte prefix witness; record SphereDisplayStopDetail verbatim; row972 predicted PASS. Preserve all frozen activation receipts and negative controls. V5 Cylinder/BunnyRandom offgate:360/Vase; both pending-wall contacts; no census gate credit.
-Then: M6-CP3-TB-REV-186 (independent adjudication and completion-site step from measured detail). No CP3/497/D0/H4 promotion or CB-207D; no J6/E5/CB-190 repair.
+NEXT_TURN: M6-CP3-TB-REV-186
+Owner: Independent Review + Plan only. No runtime, rebuild, source/test/fixture/selector/harness mutation or repair in Review.
+Authority: .agents/Directional/Architecture_M6_CP3_TB186_P13_Activated_Sphere_Full_Gate_Execution_Report_20261126.md; CB-208R exact manifest; CB-208 runtime plan; CB-206 activation predictions; TB185V and TB187Q accepted reviews.
+  Source/executor cc25a6402cdd3ca1a33a9a9778250176b182bb2a; candidate 15154205483; run 45898832790; result 15155787349; ZIP ee1e603907561d773034c9e48fd76fa2d1e8fe6273ace85f9425f5bf557f76fa. 1005/1006 PASS, row971 RED; postflight true; membership 1087. Full evidence and both raw comparisons in ChatGPT Library /Directional/TB-EXEC-186-terminal-evidence.zip SHA-256 d6e11bc3c43e38d2989a2f07cb3be2bbfb915af71b5a5558d0eb6e4b2a0c0a20.
+  Independently re-derive row971 assertions, lost accepted-green classification, all 26 material rows under N1–N3, row858 exact prefix/detail and completion predicate; reconcile row963/968/972/978/979/1006 and explicit unstaged controls. Freeze separate exact CB for each proved RED family; do not weaken an assertion or infer a root cause from counts. If authority is insufficient, stop and record the unresolved predicate.
+  V5 held until valid full gate. Preserve both pending-wall contacts 142:2→87:0 and 26:1→99:0, debt1/deferred81. No new census/witness credit. Stable 67/17/50 until independently adjudicated. No CP3/497/D0/H4 promotion, CB-207D, J6/E5/CB-190 repair.
+Then: only the exact correction turn(s) authorized by this Review; no successor invented before adjudication.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)
@@ -34,12 +35,12 @@ Then: M6-CP3-TB-REV-186 (independent adjudication and completion-site step from 
 - [x] **COMPLETE** `M6-CP3-CB-205V-P13-REACH-RECEIPT-READER-SELECTION-SCOPE` — exact one-file test change; eight targets compiled; [record](.agents/Directional/Architecture_M6_CP3_CB205V_P13_Reach_Receipt_Reader_Selection_Scope_Code_Build_Record_20261125.md).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-185V` — 1006/1006; comparison and 10-receipt prediction PASS. [Report](.agents/Directional/Architecture_M6_CP3_TB185V_Reach_Receipt_Reader_Selection_Scope_Full_Gate_Execution_Report_20261125.md).
 - [x] **COMPLETE (adjudication)** `M6-CP3-TB-REV-185` — [independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md); exact activation plan frozen.
-- [ ] **4A NEXT** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` ([exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact_Manifest.md)) → TB-EXEC-186 (V5 BunnyRandom; full compare vs TB185V; STOP-on-RED) → TB-REV-186 (one correction CB per RED family).
+- [x] **4A historical activation compile (complete)** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` ([exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact_Manifest.md)) → TB-EXEC-186 (full compare vs TB185V complete, RED; V5 BunnyRandom held by STOP-on-RED) → TB-REV-186 (pending; one correction CB per proved RED family).
 - [ ] **4B** QF1: CB-207A → CB-207B (exact, [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB207_QF1_Quotient_Forest_Cost_Exact_Manifest.md)) → CB-207C (close_sheets termination + N/K/R/F/max-class receipt) → TB-EXEC-187 → TB-REV-187.
 - [ ] **5** parameter-deletion CB → V3b → R1 → O48. **HELD:** CB-190, J6, E5.
 
 ```text
-NEXT_TURN: M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION
+HISTORICAL_NEXT_TURN: M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION
 Owner: Code + Build only; apply exact two-path diff after verifying source hashes; compile eight GMP/GMPXX targets, runtimeExecution=false. Do not run tests or benchmarks.
 Authority: .agents/Directional/gates/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact_Manifest.md; .agents/Directional/Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md; .agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Exact.diff.
   Accepted preactivation baseline TB185V source eee220e7e37f409eb5150f436e80e51a534c037a, package 15064166049, result 15066180913, 1006/1006, 1087 members, 81 deferred. Gate and receipts independently verified.
