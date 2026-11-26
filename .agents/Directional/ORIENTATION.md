@@ -1,4 +1,4 @@
-**Current currency — CB-207B (2026-11-26 UTC):** [Independent review](Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md) accepts TB185V preactivation 1006/1006; 773 exact + 232 N1/N2 + 0 material; 1087 members, 81 deferred. [CB-207A](Architecture_M6_CP3_CB207A_QF1_Quotient_Forest_Adjacency_Once_Per_Owner_Code_Build_Record_20261125.md) and [CB-207B](Architecture_M6_CP3_CB207B_QF1_Verifier_Forest_Edges_By_Class_Code_Build_Record_20261126.md) compiled; TB-EXEC-187Q next under [adversarial review](Architecture_M6_CP3_TB_REV_185_Adversarial_Review_20261125.md). No activation yet. Stable 67/17/50, debt1/deferred81; CP2 491/491; P1 supported, D-U carried, TB170/K6 closed. QF1 behaviour-preservation gate precedes activation. No CP3/497/D0/H4 promotion.
+**Current currency — TB-EXEC-187Q (2026-11-26 UTC):** [Execution report](Architecture_M6_CP3_TB187Q_QF1_Behaviour_Preservation_Full_Gate_Execution_Report_20261126.md) 1006/1006 PASS, 738 exact + 268 N1 + 0 material vs [accepted TB185V](Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md). 1087 members, 81 deferred. QF1 A/B compiled and candidate gate passed; independent TB-REV-187Q next. No activation yet. Stable 67/17/50, debt1/deferred81; CP2 491/491; P1 supported, D-U carried, TB170/K6 closed. No CP3/497/D0/H4 promotion.
 
 # Directional — Project Orientation
 
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | TB185V independently accepted 1006/1006 preactivation; TB184 historical 1005/1005; CP2 491/491 accepted. TB170 recurrence and K6 closed. Row979 staged plan built; P1 supported. CB-206 activation plan frozen, not applied; QF1 A compiled, B pending. No CP3/497/D0/H4 acceptance. |
+| **M6-CP3 — active; multi-cut plan remains open** | TB185V independently accepted 1006/1006 preactivation; TB184 historical 1005/1005; CP2 491/491 accepted. TB170 recurrence and K6 closed. Row979 staged plan built; P1 supported. CB-206 activation plan frozen, not applied; QF1 A/B compiled, TB187Q gate PASS pending independent review. No CP3/497/D0/H4 acceptance. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-TB-EXEC-187Q` — [CB-207B record](Architecture_M6_CP3_CB207B_QF1_Verifier_Forest_Edges_By_Class_Code_Build_Record_20261126.md), immutable 1006-row behaviour-preservation gate; compare every row N1–N3 against TB185V and record row1006 elapsed. Independent TB-REV-187Q before CB-206; bounded TB-EXEC-186T and independent TB-REV-186T precede activation full gate. Sufficiency unproved.
+**Current priority:** `M6-CP3-TB-REV-187Q` — [execution report](Architecture_M6_CP3_TB187Q_QF1_Behaviour_Preservation_Full_Gate_Execution_Report_20261126.md), independent review of the immutable 1006-row gate vs TB185V. Only after acceptance may CB-206 proceed. Bounded TB-EXEC-186T and independent TB-REV-186T precede activation full gate. Sufficiency unproved.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).

@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; TB185V **1006/1006** independently accepted for the preactivation gate ([review](Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md)). CP2 **491/491** accepted; TB170/K6 closed, P1 supported. Exact CB-206 plan frozen; activation and V5 census not yet executed. QF1 A/B and behaviour-preservation gate precede activation; A/B compiled, TB-EXEC-187Q pending; sufficiency unproved. No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3; TB185V **1006/1006** independently accepted for the preactivation gate ([review](Architecture_M6_CP3_TB_REV_185_Slide_Entry_Activation_Reach_Independent_Review_20261125.md)). CP2 **491/491** accepted; TB170/K6 closed, P1 supported. Exact CB-206 plan frozen; activation and V5 census not yet executed. QF1 A/B and behaviour-preservation gate precede activation; A/B compiled, TB-EXEC-187Q 1006/1006 and comparison PASS pending independent TB-REV-187Q; sufficiency unproved. No CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
