@@ -1,4 +1,4 @@
-**Current currency — TB-EXEC-186 (2026-11-26 UTC):** [Execution report](Architecture_M6_CP3_TB186_P13_Activated_Sphere_Full_Gate_Execution_Report_20261126.md) valid semantic RED, 1005/1006; only row971 lost accepted PASS. Row858 corrected display premise PASS, exact activated prefix/detail `PreparationRejected`; 648/979/1006 predictions and row972 PASS. V5 held; TB187Q/TB185V 1006/1006 accepted preactivation only; 1087 members, 81 deferred. Stable 67/17/50 pending independent Review, debt1/deferred81; CP2 491/491, P1 supported, D-U carried, TB170/K6 closed. Fine-resolution close_sheets and production completion unproved. No CP3/497/D0/H4 promotion.
+**Current currency — TB-REV-186 (2026-11-26 UTC):** [Independent review](Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md). TB-REV-186: independent adjudication of valid semantic RED 1005/1006; row971 invalid arc/segment test premise, no stable product regression proved. Row858 exact PASS; 26 material differences reconciled, three possible completion preparation failures remain. V5 held; preactivation TB185V/TB187Q 1006/1006 accepted only; CP2 491/491, stable 67/17/50, debt1/deferred81, membership1087. No CP3/497/D0/H4 promotion. Next M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE compile only, after STATUS COMPLETE.
 
 # Directional — Project Orientation
 
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | TB185V/TB187Q independently accepted 1006/1006 preactivation; CP2 491/491 accepted. TB170 recurrence and K6 closed. CB-206 activated sphere cut/plan observed, P1 supported; sphere reaches completion rejection without location. [TB186](Architecture_M6_CP3_TB186_P13_Activated_Sphere_Full_Gate_Execution_Report_20261126.md) 1005/1006, row971 RED, row858 PASS. No new gate credit. V5 held; independent Review next. No CP3/497/D0/H4 acceptance. |
+| **M6-CP3 — active; multi-cut plan remains open** | CP2 491/491 accepted; TB185V/TB187Q 1006/1006 preactivation only. [TB-REV-186](Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md) 1005/1006, row971 test-authority RED, row858 PASS; activated plan reached, completion rejected. No new gate credit, V5 held. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-TB-REV-186` — [TB186 execution report](Architecture_M6_CP3_TB186_P13_Activated_Sphere_Full_Gate_Execution_Report_20261126.md). Independently classify row971 and the 26 material log differences, preserve row858 exact corrected receipt and derive the completion rejection predicate. V5 held until valid full gate. No CB-207D (no cap); close_sheets at 0.02 and general scaling still unproved.
+**Current priority:** `M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE` after Review STATUS COMPLETE — [exact manifest](gates/Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Exact_Manifest.md). Compile-only correction; independent ray coverage still unproved. Completion preparation path, V5, fine-resolution close_sheets and scaling remain open.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).

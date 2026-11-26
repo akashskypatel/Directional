@@ -1,6 +1,6 @@
-**Current turn outcome (2026-11-26 UTC):** [TB-EXEC-186](.agents/Directional/Architecture_M6_CP3_TB186_P13_Activated_Sphere_Full_Gate_Execution_Report_20261126.md) valid semantic RED, 1005/1006 PASS, row971 sole loss against accepted preactivation TB185V/TB187Q. Row858 PASS with exact prefix/detail `PreparationRejected`; row648/979/1006 exact, row972 PASS. Source `cc25a6402cdd3ca1a33a9a9778250176b182bb2a`, candidate `15154205483`, result `15155787349`, 2020/2020 checks, 1087 members, postflight true. V5 held. Stable 67/17/50 pending independent adjudication, debt1/deferred81; CP2 491/491. No CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-26 UTC):** [Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md). TB-REV-186: independent adjudication of valid semantic RED 1005/1006; row971 invalid arc/segment test premise, no stable product regression proved. Row858 exact PASS; 26 material differences reconciled, three possible completion preparation failures remain. V5 held; preactivation TB185V/TB187Q 1006/1006 accepted only; CP2 491/491, stable 67/17/50, debt1/deferred81, membership1087. No CP3/497/D0/H4 promotion. Next M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE compile only, after STATUS COMPLETE.
 
-## CURRENT — activated full-gate RED; independent review next (2026-11-26 UTC)
+## CURRENT — activated full-gate RED; exact test-authority correction plan (2026-11-26 UTC)
 
 - [x] **COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.
@@ -8,17 +8,17 @@
 - [x] **COMPLETE** TB-REV-186T adversarial — [record](.agents/Directional/Architecture_M6_CP3_TB_REV_186T_Adversarial_Review_20261126.md): CB-208 diff withdrawn (does not compile); CB-208R adds detail receipt; row972 predicted PASS.
 - [x] **COMPLETE** `M6-CP3-CB-208R-P13-DISPLAY-STOP-LOCATION-DETAIL-RECEIPT` — [compile record](.agents/Directional/Architecture_M6_CP3_CB208R_P13_Display_Stop_Location_Detail_Receipt_Code_Build_Record_20261126.md), one exact test-only diff, eight GMP/GMPXX targets; no runtime.
 - [x] **COMPLETE (semantic RED)** `M6-CP3-TB-EXEC-186` — [report](.agents/Directional/Architecture_M6_CP3_TB186_P13_Activated_Sphere_Full_Gate_Execution_Report_20261126.md), 1005/1006, row971 RED; V5 not authorized. Row858 exact receipt/prefix/detail and row972 PASS.
-- [ ] **NEXT** `M6-CP3-TB-REV-186` — independently classify row971 and all 26 material differences, determine exact completion rejection predicate, freeze separate exact correction CB per proved family; no runtime/repair/promotion.
+- [x] **Adjudication** `M6-CP3-TB-REV-186` — [review](.agents/Directional/Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md); root STATUS controls closeout.
+- [ ] **NEXT after STATUS COMPLETE** `M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Exact_Manifest.md); compile only.
 - [ ] **HELD:** CB-207D (no cap); CB-207C (size receipt only if needed), close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-186
-Owner: Independent Review + Plan only. No runtime, rebuild, source/test/fixture/selector/harness mutation or repair in Review.
-Authority: .agents/Directional/Architecture_M6_CP3_TB186_P13_Activated_Sphere_Full_Gate_Execution_Report_20261126.md; CB-208R exact manifest; CB-208 runtime plan; CB-206 activation predictions; TB185V and TB187Q accepted reviews.
-  Source/executor cc25a6402cdd3ca1a33a9a9778250176b182bb2a; candidate 15154205483; run 45898832790; result 15155787349; ZIP ee1e603907561d773034c9e48fd76fa2d1e8fe6273ace85f9425f5bf557f76fa. 1005/1006 PASS, row971 RED; postflight true; membership 1087. Full evidence and both raw comparisons in ChatGPT Library /Directional/TB-EXEC-186-terminal-evidence.zip SHA-256 d6e11bc3c43e38d2989a2f07cb3be2bbfb915af71b5a5558d0eb6e4b2a0c0a20.
-  Independently re-derive row971 assertions, lost accepted-green classification, all 26 material rows under N1–N3, row858 exact prefix/detail and completion predicate; reconcile row963/968/972/978/979/1006 and explicit unstaged controls. Freeze separate exact CB for each proved RED family; do not weaken an assertion or infer a root cause from counts. If authority is insufficient, stop and record the unresolved predicate.
-  V5 held until valid full gate. Preserve both pending-wall contacts 142:2→87:0 and 26:1→99:0, debt1/deferred81. No new census/witness credit. Stable 67/17/50 until independently adjudicated. No CP3/497/D0/H4 promotion, CB-207D, J6/E5/CB-190 repair.
-Then: only the exact correction turn(s) authorized by this Review; no successor invented before adjudication.
+NEXT_TURN: M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE
+Owner: Code + Build only. Root STATUS must first close TB-REV-186.
+Authority: Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md; gates/Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Exact_Manifest.md; Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Exact.diff.
+  One exact test-only diff, 14643 bytes, SHA-256 6f17d7c84672dc3780ca15e6556f2ffbc40bbd5565c881242f14573afe38fcc4. Verify pre/postimage and apply; compile eight GMP/GMPXX targets, runtimeExecution=false. No runtime, other repair or gate change. Scratch replay verified; syntax/build unproved. STOP on mismatch.
+  Full 1006-row gate later, only row971 predicted to change against TB186; preserve both baseline comparisons, original ten vertex rays, eight interior wall rays, row858 exact receipt and all controls. V5 held until valid gate; no cap, no CB-207D; completion predicate unresolved; no promotion.
+Then: freeze artifact-only TB after successful compile; independent Review follows. No successor work in TB-REV-186.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)

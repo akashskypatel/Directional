@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3; TB187Q **1006/1006** independently accepted for QF1 A/B preactivation preservation. CP2 **491/491** accepted; TB170/K6 closed, P1 supported. [TB186](Architecture_M6_CP3_TB186_P13_Activated_Sphere_Full_Gate_Execution_Report_20261126.md) valid semantic RED **1005/1006**, row971 sole loss; row858 correction PASS. V5 held, independent Review next. No new gate credit; close_sheets fine-resolution termination and production completion unproved. No CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3. [Independent review](Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md). TB-REV-186: independent adjudication of valid semantic RED 1005/1006; row971 invalid arc/segment test premise, no stable product regression proved. Row858 exact PASS; 26 material differences reconciled, three possible completion preparation failures remain. V5 held; preactivation TB185V/TB187Q 1006/1006 accepted only; CP2 491/491, stable 67/17/50, debt1/deferred81, membership1087. No CP3/497/D0/H4 promotion. Next M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE compile only, after STATUS COMPLETE.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
