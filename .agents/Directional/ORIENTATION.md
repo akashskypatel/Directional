@@ -1,4 +1,4 @@
-**Current currency — TB-REV-192 independent acceptance (2026-11-27 UTC):** [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md). 1010/1010 accepted for the test gate only; CP2 491/491 unchanged. Membership 1091 = 1010 gated + 81 deferred; 770 exact inherited logs, 237 N1/N2, 12 authorized row858 lines. Ten sphere radial-edge arrivals match ten distinct traced ports; genus_two has no arrivals. Rows1009/1010 PASS. O51 open, AP4 user decision pending. Stable 67/17/50, debt1/deferred81. No production, schedule activation or checkpoint promotion.
+**Current currency — TB-REV-192 independent acceptance (2026-11-27 UTC):** [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md). 1010/1010 accepted for the test gate only; CP2 491/491 unchanged. Membership 1091 = 1010 gated + 81 deferred; 770 exact inherited logs, 237 N1/N2, 12 authorized row858 lines. Ten sphere radial-edge arrivals match ten distinct traced ports; genus_two has no arrivals. Rows1009/1010 PASS. O51 open, AP4 user decision pending; [TB-REV-192 adv.](Architecture_M6_CP3_TB_REV_192_Adversarial_Review_20261127.md) upholds the gate: removal is plain deletion (predicted 14 traces, V12/E18/F8), slivers 2/4 are O52. Stable 67/17/50, debt1/deferred81. No production, schedule activation or checkpoint promotion.
 
 [Adversarial continuation](Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md):
 - The 34 incidences are 24 port traces plus 10 singularity arrivals that claim no port.
@@ -161,7 +161,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 ## 7. Open problems
 
 **Current priority:** `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` — AP4 user decision on removing partial co-traces (O51); see [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md).
-- After an authorized removal rule and separate CB/TB/REV: corners DEFN, a Vase row and A4 unequal-side construction (DD5).
+- [TB-REV-192 adv.](Architecture_M6_CP3_TB_REV_192_Adversarial_Review_20261127.md): removal is plain deletion on the sphere (A0 recommended); CB-217 classifier hardening, then CB-218 removal, then TB-EXEC-193.
+- After an authorized removal rule and separate CB/TB/REV: corners DEFN with O52 (slivers 2/4, near-miss doubled separatrices), a Vase row and A4 unequal-side construction (DD5).
 - The 1010-row test gate is accepted; the schedule is not activated.
 - B1 stays held. The source-region producers and the veto stay until 65D.
 

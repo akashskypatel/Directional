@@ -12,7 +12,13 @@
   - It froze CB-215 (A1 rays) and CB-216 (A2a classifier), then TB-EXEC-192.
   - It corrects TB-REV-191 adv. DD2's "no reduction" claim.
 - **TB192 measurement:** 1091 members (1010 gated + 81 deferred), 770 exact inherited logs, 237 N1/N2 and 12 authorized row858 lines. All 10 sphere arrivals match existing traced ports. Rows1009/1010 PASS. O51 open, AP4 user decision pending. No production acceptance or checkpoint promotion.
-- **Next:** `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` only, after TB-REV-192 formal closeout. STOP for AP4 user decision.
+- **TB-REV-192 adversarial** ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_192_Adversarial_Review_20261127.md)): upholds the gate. From row858 tracing records:
+  - EE1: all 10 claimed ports are confirmed exactly (sphere = cube graph, 12 separatrices).
+  - EE2: no claim is reciprocal, so invariant 1 forces removing the claimed trace.
+  - EE3: no kept trace stops on a removed one, so removal needs no re-trace. Prediction: 14 traces, V12/E18/F8. Rule A0 (remove + typed fail-closed) recommended over the fixed point A.
+  - EE4: correction, slivers 2/4 are the near-miss doubled separatrices n1–n5 and n2–n6. AP4 cannot remove them (invariant 8), so O52 is opened.
+  - EE5: classifier hardening (unique, branch-consistent, candidate-level) gets its own CB first.
+- **Next:** `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` only. STOP for the AP4 user decision (A0 or A). Then CB-217 (classifier hardening) → CB-218 (removal) → TB-EXEC-193 → TB-REV-193 → corners DEFN + O52.
 
 ## CURRENT — per-disc A4 route: TB192 arrival classification evidence (2026-11-27 UTC)
 
