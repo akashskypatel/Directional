@@ -1,12 +1,9 @@
-**Current turn outcome (2026-11-27 UTC):** `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` (step 65C re-baselined; runtime-free) is complete; see the [record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md).
-- **A4D1:** A4's unit is the A2b region.
-- **A4D2:** the disc domain is built as boundary schedule → corners → fill.
-- **A4D3/A4D4:** the schedule has one owner in the A3 module, with three reachable typed failures. Debt O50 records the duplicate lookup.
-- **A4D5:** sphere regions 5 and 10 (3 walk nodes) falsify node-only corners for regular discs. The corner slice must measure this.
-- **Frozen:** exact CB-214 (`0fc97ddc…b02b`, four paths, behaviour-neutral, syntax-clean) and a 1008-row TB-EXEC-191 manifest (`ca16b66d…4081`).
-- **Next:** `M6-CP3-CB-214-P13-REGION-BOUNDARY-SCHEDULE`. Stable 67/17/50, debt 1, deferred 81, no promotion.
+**Current turn outcome (2026-11-27 UTC):** `M6-CP3-CB-214-P13-REGION-BOUNDARY-SCHEDULE` (compile only) meets its gate; see the [record](.agents/Directional/Architecture_M6_CP3_CB214_P13_Region_Boundary_Schedule_Code_Build_Record_20261127.md). Root STATUS governs completion.
+- Exact four-path diff `0fc97ddc…b02b`, +316/−0; all eight GMP/GMPXX targets compiled; package `15175464398`, 28/28 checks, `runtimeExecution=false`.
+- A4D1–A4D5 remain frozen; no producer activation. The new schedule and receipts are not executed.
+- **Next:** `M6-CP3-TB-EXEC-191` on the 1008-row manifest `ca16b66d…4081`. The accepted 1006/1006 gate and CP2 491/491 remain unchanged. Stable 67/17/50, debt 1, deferred 81, no promotion.
 
-## CURRENT — per-disc A4 route: DEFN-65C complete; CB-214 boundary schedule next (2026-11-27 UTC)
+## CURRENT — per-disc A4 route: CB-214 compiled; TB-EXEC-191 next (2026-11-27 UTC)
 
 - [x] **COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.
@@ -37,11 +34,11 @@
   - 65A–65D reconciled: 65A is not on the sphere's path, 65B gates acceptance, 65C is this turn and 65D is dispatch.
   - A4D1–A4D5 frozen.
   - The withdrawn CB-211 plan and CB-213 manifest are folded into Vol D3.
-- [ ] **11 NEXT** `M6-CP3-CB-214-P13-REGION-BOUNDARY-SCHEDULE` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB214_TB191_Region_Boundary_Schedule_Exact_Manifest.md). Compile only. One exact diff `0fc97ddc…b02b`, four paths:
+- [x] **11 COMPLETE (compile only)** `M6-CP3-CB-214-P13-REGION-BOUNDARY-SCHEDULE` — [record](.agents/Directional/Architecture_M6_CP3_CB214_P13_Region_Boundary_Schedule_Code_Build_Record_20261127.md); exact diff `0fc97ddc…b02b`, four paths, eight GMP/GMPXX targets, no runtime:
   - `build_region_boundary_schedules` with its typed failure;
   - unit rows 1007/1008;
   - 16 receipt lines in row858.
-- [ ] **12** `M6-CP3-TB-EXEC-191` on the 1008-row manifest `ca16b66d…4081`, no V5. Sphere prediction: 14 regions, 60 sides, 30 paired arcs, all even; genus_two `otherArcs=0`.
+- [ ] **12 NEXT** `M6-CP3-TB-EXEC-191` on the 1008-row manifest `ca16b66d…4081`, no V5. Sphere prediction: 14 regions, 60 sides, 30 paired arcs, all even; genus_two `otherArcs=0`.
 - [ ] **13** `M6-CP3-TB-REV-191`.
 - [ ] **14+** One DEFN → CB → TB each, in order:
   1. corners, which decides A4D5 and admits a gated Vase row;
@@ -55,12 +52,13 @@
 - [ ] **HELD:** B1 fallback repair (off-trajectory; the fallback cannot be certified, DESIGN §5.2); row858 legacy diagnostic lines (CB-210/211R/212) stay until the per-disc route supersedes them; CB-207D (no cap); CB-207C (size receipt only if needed); close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-CB-214-P13-REGION-BOUNDARY-SCHEDULE
-Owner: Code + Build only. Apply one exact diff; compile the eight GMP/GMPXX targets, runtimeExecution=false. No runtime, no other source/test/fixture/selector/harness/workflow change.
-Authority: gates/Architecture_M6_CP3_CB214_TB191_Region_Boundary_Schedule_Exact_Manifest.md; Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md (A4D1-A4D5).
-  Diff Architecture_M6_CP3_CB214_P13_Region_Boundary_Schedule_Exact.diff SHA-256 0fc97ddc4ac033281a1bc6c8ce9eafd379e89a888f5906ccf3c74a1f59b8c02b (17,530 B, +316/-0); preimages GlobalConformityBaseline.h 4b8bf701..., GlobalConformityBaseline.cpp ed146974..., GlobalConformityBaselineTests.cpp 90b253a6..., SurfaceCellTracingDisplayTests.cpp 6149b26d...; postimages per manifest. STOP on hash/path/patch/compile mismatch; do not adapt.
-Then: TB-EXEC-191 (1008-row manifest ca16b66d...4081; rows 1007/1008 new; row858 +16 predicted lines; others N1-N3 = TB189 15171482516; no V5) -> TB-REV-191 -> corners DEFN (A4D5).
-Do not: run tests in CB, call the schedule from any producer, change dispatch or the veto, repair B1/fallback, CB-207D, promote CP3/497/D0/H4, start J6/E5/CB-190.
+NEXT_TURN: M6-CP3-TB-EXEC-191
+Owner: Test + Benchmark only. Run the frozen 1008-row gate once on CB-214 package 15175464398; no rebuild, retry, timeout substitution or V5.
+Authority: Architecture_M6_CP3_CB214_P13_Region_Boundary_Schedule_Code_Build_Record_20261127.md; gates/Architecture_M6_CP3_CB214_TB191_Region_Boundary_Schedule_Exact_Manifest.md.
+  Source/executor checkout 9ed5560822ae435e55101206dcb6ecda59bca706; unchanged harness 423f385b73c3825ce9fe18fbd5ca395287620475deb621389f0efbaa601e572c; candidate ZIP d53298314ab80c89e2fd9e8891b8883b798f4d6e9029acf5e3b177070eba108b.
+  Manifest ca16b66da3cb52e77a3540c79f9357e3e9e59b211bae872f87d58f60c4434081; 1089 members = 1008 gated + 81 deferred; CP2 491. Rows 1007/1008 new; row858 +16 predicted lines; other inherited rows N1–N3 = TB189 15171482516. STOP on failure or prediction mismatch; preserve evidence.
+Then: TB-REV-191 -> corners DEFN (A4D5).
+Do not: repair B1/fallback, change dispatch or the veto, activate the schedule, CB-207D, promote CP3/497/D0/H4, start J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)

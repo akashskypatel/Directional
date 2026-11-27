@@ -1,3 +1,7 @@
+## 2026-11-27 — CB-214 region boundary schedules compiled
+
+[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB214_P13_Region_Boundary_Schedule_Code_Build_Record_20261127.md). Exact diff `0fc97ddc…b02b`, four paths, +316/−0; [apply run 45949133311](https://github.com/akashskypatel/Directional/actions/runs/45949133311), source `9ed5560822ae435e55101206dcb6ecda59bca706`, [compile run 45949296543](https://github.com/akashskypatel/Directional/actions/runs/45949296543), package `15175464398`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. A3 schedule not activated; the two GUARD rows and 16 row858 receipt lines remain unexecuted. TB189 1006/1006 and CP2 491/491 remain accepted; stable 67/17/50, debt1/deferred81 unchanged; no CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-EXEC-191` after STATUS COMPLETE.
+
 ## 2026-11-27 — DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION: A4 disc domain defined; CB-214 frozen
 
 [Record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md). Step 65C re-baselined, runtime-free; no product or test byte changed on the branch.
