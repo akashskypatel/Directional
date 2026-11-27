@@ -1,5 +1,12 @@
 # M6-CP3-CB-213-P13-A4-REGION-DECLINE-RECEIPT — exact diagnostic-only plan
 
+**WITHDRAWN (2026-11-27, [TB-REV-189 adversarial continuation](../Architecture_M6_CP3_TB_REV_189_Adversarial_Review_20261127.md) CC1–CC3).** Do not apply the diff or run TB-EXEC-190 or TB-REV-190.
+- The code already fixes the result: one closed source-topology region, and three declines at the source-global singularity guard.
+- It repeats CB102, which RA-213 withdrew, and it breaks RA-214 §1 item 3, which forbids diagnostic-only CBs.
+- Its public receipt is string-typed and keyed by a unit DESIGN does not use for A4.
+
+The mechanics verified clean: hashes, replay, syntax-only and digest exposure. Superseded by `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION`.
+
 Frozen by [Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md](../Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md). Not applied, compiled or executed in Review.
 
 ## Code + Build boundary

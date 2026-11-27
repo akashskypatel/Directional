@@ -1,3 +1,13 @@
+## 2026-11-27 — TB-REV-189 adversarial continuation: CB-213 withdrawn; per-disc A4 route resumed
+
+[Record](.agents/Directional/Architecture_M6_CP3_TB_REV_189_Adversarial_Review_20261127.md). Runtime-free; product and test bytes are unchanged.
+- **Upheld:** the 1006/1006 gate, BB1, the BB3 falsification, B1 held and B2 carried.
+- **CB-213 withdrawn.** Its result is fixed by the code: one closed source-topology region (χ=2) and three declines at the source-global singularity guard (CC1). It repeats CB102, which RA-213 withdrew, and it breaks RA-214 §1.3 (CC2). Its mechanics verified clean.
+- **Ownership DEFN struck.** DESIGN §5, §5.1, §5.2 and §2.1 item 7, together with RA-213, already put A4 per A2b disc (CC3).
+- **No A4 code builds a disc.** The sphere's 14 certified discs are 368 fragments on 192 faces (CC4).
+- **Next:** `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` (65C, re-baselined; Review). It freezes one behaviour-neutral domain slice.
+- **Corrects** step 4 of TB-REV-188 adv. and its diagnostic-only CB-211R/212.
+
 ## 2026-11-27 — TB-REV-189 independently adjudicated
 
 TB-REV-189 independently accepts the activated 1006/1006 test gate (CP2 491/491; membership 1087 = 1006 gated + 81 deferred). 655 exact, 350 N1/N2 and one authorized row858 receipt change. NotApplicable confirms legacy fallback; 14 certified plan discs are not 14 actual A4 producer calls. Cell164 is a non-disk bridge excursion, repeated original node35, 24 singularity-support bridge pairs; BB3 disk prediction false. No produced sphere. V5 not rerun: Cylinder PASS 288, Vase RED, BunnyRandom ABNORMAL at 600 s. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md). Exact diagnostic-only successor `M6-CP3-CB-213-P13-A4-REGION-DECLINE-RECEIPT` frozen in [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB213_P13_A4_Region_Decline_Receipt_Exact_Manifest.md); no product/test/selector changes or execution.

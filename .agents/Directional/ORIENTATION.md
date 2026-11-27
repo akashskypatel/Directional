@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-213-P13-A4-REGION-DECLINE-RECEIPT` — [exact manifest](gates/Architecture_M6_CP3_CB213_P13_A4_Region_Decline_Receipt_Exact_Manifest.md). Compile only; record actual A4 source-region calls and plan support, not presumed plan-region calls. TB189 gate accepted; A4 ownership DEFN and B2 cost diagnosis remain conditional. No V5 or producer repair.
+**Current priority:** `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` (Review, runtime-free; step 65C re-baselined by the [TB-REV-189 adversarial continuation](Architecture_M6_CP3_TB_REV_189_Adversarial_Review_20261127.md)). CB-213 is withdrawn. The DEFN freezes one behaviour-neutral per-A2b-disc domain slice. No V5, no producer repair and no veto change.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
