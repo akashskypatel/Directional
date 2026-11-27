@@ -1,4 +1,4 @@
-**Current turn outcome (2026-11-27 UTC):** CB-209 compiled the exact row971 test-only correction; no runtime. [Record](.agents/Directional/Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Code_Build_Record_20261127.md). TB186 remains 1005/1006 RED; row971 ray/coverage evidence is unproved. TB185V/TB187Q 1006/1006 preactivation only; CP2 491/491, stable 67/17/50, debt1/deferred81, membership1087. Row858 exact PASS; completion rejection detail and V5 remain unmeasured. No CP3/497/D0/H4 promotion. Next `M6-CP3-CB-210-P13-SPHERE-COMPLETION-FAILURE-RECEIPT` compile only, after STATUS COMPLETE.
+**Current turn outcome (2026-11-27 UTC):** CB-210 compiled the exact two-line sphere completion failure receipt; no runtime. [Record](.agents/Directional/Architecture_M6_CP3_CB210_P13_Sphere_Completion_Failure_Receipt_Code_Build_Record_20261127.md). TB186 remains 1005/1006 RED; row971 ray/coverage evidence is unproved. TB185V/TB187Q 1006/1006 preactivation only; CP2 491/491, stable 67/17/50, debt1/deferred81, membership1087. Row858 exact PASS; completion rejection detail and V5 remain unmeasured. No CP3/497/D0/H4 promotion. Next `M6-CP3-TB-EXEC-188` after STATUS COMPLETE.
 
 ## CURRENT — activated full-gate RED; exact test-authority correction plan (2026-11-26 UTC)
 
@@ -11,18 +11,18 @@
 - [x] **Adjudication** `M6-CP3-TB-REV-186` — [review](.agents/Directional/Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md); root STATUS controls closeout.
 - [x] **COMPLETE** TB-REV-186 adversarial — [record](.agents/Directional/Architecture_M6_CP3_TB_REV_186_Adversarial_Review_20261126.md): CB-209 upheld (syntax-clean); CB-210 completion-failure receipt moved before the single gate.
 - [x] **1 COMPLETE (compile only)** `M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE` — [record](.agents/Directional/Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Code_Build_Record_20261127.md); exact test-only patch, eight GMP/GMPXX targets, no runtime.
-- [ ] **2 NEXT** `M6-CP3-CB-210-P13-SPHERE-COMPLETION-FAILURE-RECEIPT` — [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB210_TB188_Completion_Receipt_Activated_Full_Gate_Exact_Manifest.md); two-line print, compile only.
-- [ ] **3** `M6-CP3-TB-EXEC-188` — full 1006 + V5 on CB-210 package, STOP-on-RED; vs TB186 only row971 and one recorded row858 line change.
+- [x] **2 COMPLETE (compile only)** `M6-CP3-CB-210-P13-SPHERE-COMPLETION-FAILURE-RECEIPT` — [record](.agents/Directional/Architecture_M6_CP3_CB210_P13_Sphere_Completion_Failure_Receipt_Code_Build_Record_20261127.md); exact two-line receipt, eight GMP/GMPXX targets, no runtime.
+- [ ] **3 NEXT** `M6-CP3-TB-EXEC-188` — full 1006 + V5 on CB-210 package `15162357312`, STOP-on-RED; vs TB186 only row971 PASS and one recorded row858 line may change.
 - [ ] **4** `M6-CP3-TB-REV-188` — accept activation if green; choose completion step from measured `SphereCompletionFailure`.
 - [ ] **HELD:** CB-207D (no cap); CB-207C (size receipt only if needed), close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-CB-210-P13-SPHERE-COMPLETION-FAILURE-RECEIPT
-Owner: Code + Build only. Use exact CB-209 source 62e888727803fcc2640dd5fba4a9369229d8df2b, package 15161541555 as the compile baseline. One exact test-only print receipt; compile eight GMP/GMPXX targets, runtimeExecution=false. No runtime, product, other test, fixture, selector, harness or workflow change.
-Authority: .agents/Directional/gates/Architecture_M6_CP3_CB210_TB188_Completion_Receipt_Activated_Full_Gate_Exact_Manifest.md; .agents/Directional/Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Code_Build_Record_20261127.md; Architecture_M6_CP3_TB_REV_186_Adversarial_Review_20261126.md (AA2).
-  Diff .agents/Directional/Architecture_M6_CP3_CB210_P13_Sphere_Completion_Failure_Receipt_Exact.diff SHA-256 696efc1e2a0c3be15047f407f5f9beaedd7c4710a3919251377751b38baac488; tests/SurfaceCellTracingDisplayTests.cpp 1957d13f6aa2c86d84a337cef192e090ac6a9695bd45b79fcf8629cffc2c8712 -> 0089c18ef38298c207a52574fb98ed995c2d65db6bceadea6ea1b5de219bc7a9; one path. STOP on hash/path/patch/compile mismatch.
-Then: M6-CP3-TB-EXEC-188 (full 1006 + V5 on CB-210 package, STOP-on-RED; vs TB186 only row971 PASS and one recorded SphereCompletionFailure line in row858 may change) -> M6-CP3-TB-REV-188 (completion step from measured string).
-Do not: run tests in CB, apply CB-207D, infer sphere success or close_sheets termination, promote CP3/497/D0/H4, repair J6/E5/CB-190.
+NEXT_TURN: M6-CP3-TB-EXEC-188
+Owner: Test + Benchmark only. Use exact CB-210 source 0409304d6f9f423685ccddc26b19baf4e41ea61e, candidate package 15162357312, ZIP SHA-256 9aa9f28b3830275c6eb6b1bb712126094976e9556abcfe61d7921b2ed91bd74a; unchanged executor and frozen selector. Full 1006 + V5 only after a valid full gate; 1087 members including 81 deferred. No rebuild, source/test/fixture/selector/harness/workflow change, rerun or timeout substitution.
+Authority: .agents/Directional/gates/Architecture_M6_CP3_CB210_TB188_Completion_Receipt_Activated_Full_Gate_Exact_Manifest.md; .agents/Directional/Architecture_M6_CP3_CB210_P13_Sphere_Completion_Failure_Receipt_Code_Build_Record_20261127.md; Architecture_M6_CP3_TB_REV_186_Adversarial_Review_20261126.md (AA1/AA2).
+Compare: TB186 result 15155787349 under N1–N3; row971 PASS with all independent coverage/ray obligations, row858 exact prefix and existing detail plus one SphereCompletionFailure line, every other row equal. Both accepted preactivation comparators TB185V 15066180913 and TB187Q 15130286146: reproduce 26 adjudicated activation rows. Preserve exact receipts and negative controls in manifest. STOP on RED, unexpected material difference or invalid boundary. V5 only after valid gate, three exact cases and both pending wall contacts; STOP on InvalidNetworkBinding or carrier-contact struck-index rejection.
+Then: M6-CP3-TB-REV-188 (independent disposition and completion step from measured string).
+Do not: apply CB-207D, infer sphere success or close_sheets termination, promote CP3/497/D0/H4, repair J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)

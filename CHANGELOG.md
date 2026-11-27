@@ -1,3 +1,7 @@
+## 2026-11-27 — CB-210 exact sphere completion failure receipt compiled
+
+[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB210_P13_Sphere_Completion_Failure_Receipt_Code_Build_Record_20261127.md). Exact test-only diff `696efc1e…c488`, +2/−0; source `0409304d6f9f423685ccddc26b19baf4e41ea61e`, [compile run 45916449585](https://github.com/akashskypatel/Directional/actions/runs/45916449585), package `15162357312`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. No runtime acceptance; row971 and exact sphere failure detail unmeasured. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion. Next only `M6-CP3-TB-EXEC-188`.
+
 ## 2026-11-27 — CB-209 exact slide arc ray oracle compiled
 
 [Code + Build record](.agents/Directional/Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Code_Build_Record_20261127.md). Exact test-only diff `6f17d7c8…fcc4`, +186/−19; source `62e888727803fcc2640dd5fba4a9369229d8df2b`, [compile run 45913923121](https://github.com/akashskypatel/Directional/actions/runs/45913923121), package `15161541555`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Row971 ray and coverage obligations remain unexecuted. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion. Next only `M6-CP3-CB-210-P13-SPHERE-COMPLETION-FAILURE-RECEIPT`.

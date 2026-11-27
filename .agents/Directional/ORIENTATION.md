@@ -1,4 +1,4 @@
-**Current currency — CB-209 (2026-11-27 UTC):** CB-209 compiled the exact row971 test-only correction; no runtime. [Record](Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Code_Build_Record_20261127.md). TB186 remains 1005/1006 RED; row971 ray/coverage evidence is unproved. TB185V/TB187Q 1006/1006 preactivation only; CP2 491/491, stable 67/17/50, debt1/deferred81, membership1087. Row858 exact PASS; completion rejection detail and V5 remain unmeasured. No CP3/497/D0/H4 promotion. Next `M6-CP3-CB-210-P13-SPHERE-COMPLETION-FAILURE-RECEIPT` compile only, after STATUS COMPLETE.
+**Current currency — CB-210 (2026-11-27 UTC):** CB-210 compiled the exact two-line sphere completion failure receipt; no runtime. [Record](Architecture_M6_CP3_CB210_P13_Sphere_Completion_Failure_Receipt_Code_Build_Record_20261127.md). TB186 remains 1005/1006 RED; row971 ray/coverage evidence is unproved. TB185V/TB187Q 1006/1006 preactivation only; CP2 491/491, stable 67/17/50, debt1/deferred81, membership1087. Row858 exact PASS; completion rejection detail and V5 remain unmeasured. No CP3/497/D0/H4 promotion. Next `M6-CP3-TB-EXEC-188` after STATUS COMPLETE.
 
 # Directional — Project Orientation
 
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-210-P13-SPHERE-COMPLETION-FAILURE-RECEIPT` after CB-209 STATUS COMPLETE — [exact manifest](gates/Architecture_M6_CP3_CB210_TB188_Completion_Receipt_Activated_Full_Gate_Exact_Manifest.md). Compile-only receipt; independent ray coverage still unproved. Completion preparation path, V5, fine-resolution close_sheets and scaling remain open.
+**Current priority:** `M6-CP3-TB-EXEC-188` after CB-210 STATUS COMPLETE — [exact manifest](gates/Architecture_M6_CP3_CB210_TB188_Completion_Receipt_Activated_Full_Gate_Exact_Manifest.md). Immutable full gate then V5 only after valid gate; independent ray coverage and sphere completion rejection still unproved. Fine-resolution close_sheets and scaling remain open.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
