@@ -1,8 +1,8 @@
-# TB-EXEC-188 — activated full gate and V5 census (in progress)
+# TB-EXEC-188 — activated full gate and V5 census (execution finished; review pending)
 
 ## Situation
 
-The full gate of M6-CP3-TB-EXEC-188 is valid: 1006/1006 PASS. The frozen comparisons permit the separate V5 census, now dispatched once. The sphere completion receipt identifies boundary parity repair rejection; no produced sphere or independent activation acceptance is established. Do not start TB-REV-188 or repeat either dispatch.
+The full gate of M6-CP3-TB-EXEC-188 is valid: 1006/1006 PASS. The frozen comparisons permit the separate V5 census, executed once. The sphere completion receipt identifies boundary parity repair rejection; no produced sphere or independent activation acceptance is established. Do not repeat either dispatch. Independent review follows formal execution closeout.
 
 ## Background
 
@@ -55,12 +55,16 @@ SphereCompletionFailure detail=BoundaryParityRepair:InvalidReplacementBoundary:r
 
 This is a measured boundary parity repair failure at replacement boundary validation, not a proved causal diagnosis of the repeated node or justification for increasing the budget. No produced sphere or new stable event. Retain independent review to choose the next completion measure.
 
-## V5 — dispatched, terminal evidence pending
+## V5 — terminal evidence, not accepted
 
-[Run 45920872749](https://github.com/akashskypatel/Directional/actions/runs/45920872749), event `27723a4547b3bddd95fa5fd00b369278abb07228`, request SHA-256 `0f5769d89b0881ea8ad2fb09aece6872f636fff3b74407bad7b7f8c8e0ec38b1`, mailbox `m6-cp3-tb188-v5` on `workflow-mailbox`. Same exact immutable candidate/executor/harness, [three-case manifest](gates/Architecture_M6_TB63_P13_Census_Case_Manifest.tsv) SHA-256 `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`, no membership ledger. Prior TB161 preactivation census result `14741883606`, ZIP `cc3f200101168f5fd3ff1e0e0dca986adb750dcd7e107a0b03ecc786b4d50b59` exact inventory and 9/9 checks; Cylinder PASS, BunnyRandom RED, Vase RED, postflight true. Prior BunnyRandom pending-wall contacts 142:2→87:0 and 26:1→99:0 appear in its raw/2.log. Observe new census once; no gate credit for OBSERVE rows. STOP on InvalidNetworkBinding or carrier-contact struck-index rejection.
+[Run 45920872749](https://github.com/akashskypatel/Directional/actions/runs/45920872749), job 140251189913, event `27723a4547b3bddd95fa5fd00b369278abb07228`, request `0f5769d89b0881ea8ad2fb09aece6872f636fff3b74407bad7b7f8c8e0ec38b1`, exact mailbox/source/executor match. Result 15165185584 ZIP SHA-256 `088d7ba4f2b0daee8c7eaeb14479052d77796affa9d2c30d180b2810c4a2cacb`; harness 15164960868, wrapper 15165690015. All three outer digests match; 9/9 result checks. Prior TB161 14741883606, 9/9. Exact three OBSERVE identities, no membership.
+
+- Cylinder PASS, 288 faces, N1/N2 equal; 8.65→10.64 s.
+- BunnyRandom RED→ABNORMAL, exit124, `HARNESS_TIMEOUT 600s`, no terminal verdict or resource receipt. Prior 325.23 s RED: RotationSystemInconsistent / TraceEventPositionNodeConflict trace82, face (21,72,273). Both pending contacts recorded with identical stop attributes: 142:2→87:0 2 vs prior3, 26:1→99:0 3 vs prior3. No InvalidNetworkBinding or struck-index rejection in captured bytes; no final-state proof. New runtime candidate, cause unproved.
+- Vase RED unchanged terminal AggregateCompletionValidationFailure; 200.18→252.30 s. N1/N2 difference only two opaque GetParam object renderings.
+
+Postflight true, harness exit0, planned/executed3, PASS1 RED1 ABNORMAL1. The prior strict offline verifier rejected missing resource evidence; retain the failure, no acceptance. No rerun or timeout substitution. Preserve all raw logs and diffs. No V5 gate credit.
 
 ## Recommendation
 
-Finish TB188 only. Read V5 terminal mailbox and verify exact source/event, three outcomes, raw/ledger/exit bindings and both pending wall contacts. Update tracker, TODO, handoff, CHANGELOG and report before final STATUS COMPLETE. Next only TB-REV-188 for independent disposition and root-cause planning. No CB-207D, CP3/497/D0/H4 promotion, or other successor work. Stable 67/17/50, debt1/deferred81 unchanged. Fine-resolution close_sheets unmeasured.
-
-Process limitations: initial authority/policy reads preceded verified snapshot acquisition; external turn-based coding skill returned 404. Full mandatory pre-work document/LESSONS review and exact multi-attempt tool ledger are not established. Later inspection reused the verified snapshot, with exact remote comparison. No fabricated acceptance.
+Finish execution documentation, then TB-REV-188 independently adjudicates full gate and V5 timeout, not acceptance. Stable 67/17/50, debt1/deferred81. No CP3/497/D0/H4 promotion, CB-207D, or fine-resolution close_sheets proof. Initial policy-read ordering and unavailable external skill remain procedural deviations; cumulative tool ledger incomplete.
