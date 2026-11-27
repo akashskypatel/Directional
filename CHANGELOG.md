@@ -1,3 +1,7 @@
+## 2026-11-27 — CB-216 singularity arrival classification (compile only)
+
+[record](.agents/Directional/Architecture_M6_CP3_CB216_P13_Singularity_Arrival_Classification_Code_Build_Record_20261127.md). Exact frozen diff `d6e980a8…4bfa` (+251/−0, four paths); source `c76e74b35ffa5ba6aa1f3f8662f592e077c63033`. Added a read-only arrival classifier and frozen diagnostic/test witnesses. [Compile run 45986095420](https://github.com/akashskypatel/Directional/actions/runs/45986095420), candidate `15192246171`, 28/28 checks, eight GMP/GMPXX targets, no runtime. Rows 1009/1010 compiled only; row858 additions not measured. TB-REV-191 1008/1008 and CP2 491/491 remain accepted gates. O51 open; stable 67/17/50, debt1/deferred81 unchanged. No production or checkpoint promotion. Next: `M6-CP3-TB-EXEC-192`.
+
 ## 2026-11-27 — CB-215 singularity ray classes (compile only)
 
 [record](.agents/Directional/Architecture_M6_CP3_CB215_P13_Singularity_Ray_Classes_Code_Build_Record_20261127.md). Exact frozen diff `e6176e8f…4e83` (+115/−3, three paths); source `abb42e51ef9742c9f29086c4066d80000e5aeb18`. Published all separatrix class rays with port slots and radial edges. [Compile run 45972407236](https://github.com/akashskypatel/Directional/actions/runs/45972407236), candidate `15186681282`, 28/28 checks, eight GMP/GMPXX targets, no runtime. Row 1009 compiled only. TB-REV-191 1008/1008 and CP2 491/491 remain the accepted gates. O51 open; stable 67/17/50, debt1/deferred81 unchanged. No production or checkpoint promotion. Next: `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION`.
