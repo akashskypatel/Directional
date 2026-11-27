@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3. [TB-REV-188](Architecture_M6_CP3_TB_REV_188_Completion_Receipt_Activated_Full_Gate_Independent_Review_20261127.md) accepts the activated 1006/1006 test gate, not production; CP2 491/491 remains the closed checkpoint. Sphere completion rejects a repeated original boundary node. V5 Cylinder PASS (288 quads, strict=0), Vase RED, BunnyRandom timeout. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3. [TB-REV-189](Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md) accepts the activated 1006/1006 test gate, not production; CP2 491/491 remains the closed checkpoint. Sphere completion rejects a repeated original boundary node on the legacy fallback; A4 region decline ownership remains unresolved. V5 Cylinder PASS (288 quads, strict=0), Vase RED, BunnyRandom timeout. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|
