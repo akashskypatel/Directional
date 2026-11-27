@@ -1,4 +1,4 @@
-**Current turn outcome (2026-11-27 UTC):** `M6-CP3-TB-REV-191` independently adjudicated the frozen gate; [review](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md). Root STATUS governs completion.
+**Current turn outcome (2026-11-27 UTC):** `M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES` passed compile only; [record](.agents/Directional/Architecture_M6_CP3_CB215_P13_Singularity_Ray_Classes_Code_Build_Record_20261127.md). Root STATUS governs completion. Last accepted test gate: [TB-REV-191](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md).
 - 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81.
 - **TB-REV-191 adversarial** ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md)): upholds the gate and CB-214. Its findings:
   - DD1: the 34 incidences are 24 port traces plus 10 singularity arrivals that claim no port.
@@ -8,10 +8,10 @@
   - DD5: A4 unequal-side construction is added to the sequence.
 - **A2a arrival DEFN** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md)):
   - Ownership is already D13 = A.
-  - A1 publishes one ray per separatrix class. All 10 sphere arrivals slide along the radial edge that a class straddles while that port keeps its own trace (O51, partial co-traces).
+  - Before CB-215, A1 published one ray per separatrix class. All 10 sphere arrivals slide along the radial edge that a class straddles while that port keeps its own trace (O51, partial co-traces).
   - It froze CB-215 (A1 rays) and CB-216 (A2a classifier), then TB-EXEC-192.
   - It corrects TB-REV-191 adv. DD2's "no reduction" claim.
-- **Next:** `M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES` only.
+- **Next:** `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION` only, after CB-215 formal closeout.
 
 ## CURRENT — per-disc A4 route: A2a arrival DEFN froze CB-215/216 (2026-11-27 UTC)
 
@@ -61,8 +61,8 @@
   - (a) the lifecycle is confirmed;
   - (b) ownership is D13 = A;
   - (c) one slice is frozen as two stacked diffs (A1 rays, A2a classifier). The [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB215_CB216_TB192_Singularity_Arrival_Exact_Manifest.md) has the hashes and predictions.
-- [ ] **15 NEXT** `M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES`, compile only: diff `e6176e8f…4e83`, three paths, +115/−3, gate row 1009.
-- [ ] **16** `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION`, compile only, on CB-215: diff `d6e980a8…4bfa`, four paths, +251/−0, gate row 1010, and 12 lines in row858.
+- [x] **15 COMPLETE (compile only)** `M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES`: [record](.agents/Directional/Architecture_M6_CP3_CB215_P13_Singularity_Ray_Classes_Code_Build_Record_20261127.md); exact diff, eight GMP/GMPXX targets, candidate `15186681282`, 28/28 checks, row 1009 not executed.
+- [ ] **16 NEXT** `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION`, compile only, on CB-215: diff `d6e980a8…4bfa`, four paths, +251/−0, gate row 1010, and 12 lines in row858.
 - [ ] **17** `M6-CP3-TB-EXEC-192`: the 1010-row manifest `c9f6325e…e9f5`, membership 1091. Sphere prediction: 10 radial-edge arrivals, all matched and all `portTraced=1`.
 - [ ] **17a** `M6-CP3-TB-REV-192`.
 - [ ] **18** The behaviour DEFN (AP4): how a partially co-traced port trace is removed. Option A, suppress and re-trace to a fixed point, is recommended. It needs new §7.2 step-7 text, so the DEFN STOPs for a user decision. Then CB → TB → TB-REV.
@@ -80,11 +80,11 @@
 - [ ] **HELD:** B1 fallback repair (off-trajectory; the fallback cannot be certified, DESIGN §5.2); row858 legacy diagnostic lines (CB-210/211R/212) stay until the per-disc route supersedes them; CB-207D (no cap); CB-207C (size receipt only if needed); close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES
-Owner: Code + Build only. Apply one exact diff; compile the eight GMP/GMPXX targets, runtimeExecution=false. No runtime, no other source/test/fixture/selector/harness/workflow change.
+NEXT_TURN: M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION
+Owner: Code + Build only. Apply the frozen CB-216 diff on CB-215; compile the eight GMP/GMPXX targets, runtimeExecution=false. No runtime or other source/test/fixture/selector/harness/workflow change.
 Authority: gates/Architecture_M6_CP3_CB215_CB216_TB192_Singularity_Arrival_Exact_Manifest.md; Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md (AP0-AP5).
-  Diff Architecture_M6_CP3_CB215_P13_Singularity_Ray_Classes_Exact.diff SHA-256 e6176e8f0a12eccb191356e57819eb4c22402e7e28ff84b6e6dffdc5aeb44e83 (10,226 B, +115/-3); preimages FieldTransportAtlas.h 06217407..., FieldTransportAtlas.cpp 7b0b8138..., FieldAlignedCurveNetworkTests.cpp a371dffb...; postimages per manifest. STOP on hash/path/patch/compile mismatch; do not adapt.
-Then: CB-216 (diff d6e980a8...4bfa on CB-215, compile only) -> TB-EXEC-192 (1010-row manifest c9f6325e...e9f5; rows 1009/1010 new; row858 +12 predicted lines; others N1-N3 = TB191 15179335926) -> TB-REV-192 -> behaviour DEFN (AP4, user decision) -> corners DEFN.
+  CB-215 source abb42e51ef9742c9f29086c4066d80000e5aeb18; verify CB-216 diff Architecture_M6_CP3_CB216_P13_Singularity_Arrival_Classification_Exact.diff SHA-256 d6e980a89dc6bdc47569e81dabffb763b645d60023f542d6f9d24dac2f664bfa (13,166 B, +251/-0); four preimages/postimages per manifest. STOP on mismatch; do not adapt.
+Then: TB-EXEC-192 on the CB-216 package (1010-row manifest c9f6325e...e9f5; rows 1009/1010 new; row858 +12 predicted lines; others N1-N3 = TB191 15179335926) -> TB-REV-192 -> behaviour DEFN (AP4, user decision) -> corners DEFN.
 Do not: run tests in CB, change tracing/retrace selection/A2b/A3/dispatch/veto, repair B1/fallback, CB-207D, promote CP3/497/D0/H4, start J6/E5/CB-190.
 ```
 

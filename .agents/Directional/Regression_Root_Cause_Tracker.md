@@ -1,9 +1,9 @@
 **DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP disposition (2026-11-27 UTC; [record](Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md)).** Runtime-free; there is no new stable regression. Stable 67/17/50, debt 1, deferred 81.
 - **O51 restated:**
   - D13 = A already removes exact along-edge reciprocal retraces (`arrivalPort`).
-  - The open defect is **inexact partial co-tracing**. A1 publishes one ray per separatrix class (`FieldTransportAtlas.cpp:922–944`), so an arrival along a class's other ray, or along the radial edge between its two rays, is not seen as that port's separatrix.
+  - The open defect is **inexact partial co-tracing**. Before CB-215, A1 published one ray per separatrix class (`FieldTransportAtlas.cpp:922–944`), so an arrival along a class's other ray, or along the radial edge between its two rays, is not seen as that port's separatrix.
   - **Sphere:** 10 of 10 arrivals slide along a straddled edge, and their ports keep their own traces.
-  - **Owner:** CB-215 and CB-216 classify it. Removal waits for AP4, a user decision in the behaviour DEFN.
+  - **Owner:** CB-215 ray publication compiled ([CB-215 record](Architecture_M6_CP3_CB215_P13_Singularity_Ray_Classes_Code_Build_Record_20261127.md)); CB-216 classification is next. No runtime evidence yet. O51 stays open. Removal waits for AP4, a user decision in the behaviour DEFN.
 - **Note:** `SourceChartTransitions.h` uses `std::inserter` without `<iterator>`. Local libc++ rejects it; CI is unaffected. Not stable and not in scope.
 
 **TB-REV-191 adversarial disposition (2026-11-27 UTC; [record](Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md)).** Runtime-free; there is no new stable regression. Stable 67/17/50, debt 1, deferred 81.

@@ -1,15 +1,15 @@
-**Current currency — TB-REV-191 (2026-11-27 UTC):** [Independent review](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md). 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81. [Adversarial continuation](Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md):
+**Current currency — CB-215 compile-only PASS (2026-11-27 UTC):** [Record](Architecture_M6_CP3_CB215_P13_Singularity_Ray_Classes_Code_Build_Record_20261127.md). Last accepted gate: [Independent review](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md). 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81. [Adversarial continuation](Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md):
 - The 34 incidences are 24 port traces plus 10 singularity arrivals that claim no port.
 - Slivers 2, 4, 5 and 10 are separatrix connections traced from both ends, an A2a defect (DD1–DD4).
 - A4 unequal-side construction is added (DD5).
 
 [A2a arrival DEFN](Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md):
 - Ownership is already D13 = A.
-- A1 publishes one ray per separatrix class. All 10 sphere arrivals slide along a straddled radial edge while that port keeps its own trace (O51).
+- Before CB-215, A1 published one ray per separatrix class. All 10 sphere arrivals slide along a straddled radial edge while that port keeps its own trace (O51).
 - It froze CB-215 and CB-216, then TB-EXEC-192 (1010 rows).
 - It corrects the adversarial DD2.
 
-Next `M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES`.
+Next `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION`, compile only after CB-215 formal closeout.
 
 # Directional — Project Orientation
 
@@ -156,7 +156,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES` (A1 rays), then CB-216 (A2a arrival classifier), then TB-EXEC-192 and TB-REV-192 ([A2a arrival DEFN](Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md); O51).
+**Current priority:** `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION` (A2a arrival classifier; CB-215 rays compiled), then TB-EXEC-192 and TB-REV-192 ([A2a arrival DEFN](Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md); O51).
 - After it: the behaviour DEFN (AP4, a user decision on removing partial co-traces), then the corners DEFN, a Vase row, and A4 unequal-side construction (DD5).
 - The [1008-row test gate](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md) is accepted; the schedule is not activated.
 - B1 stays held. The source-region producers and the veto stay until 65D.

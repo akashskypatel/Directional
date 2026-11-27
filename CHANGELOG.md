@@ -1,3 +1,7 @@
+## 2026-11-27 — CB-215 singularity ray classes (compile only)
+
+[record](.agents/Directional/Architecture_M6_CP3_CB215_P13_Singularity_Ray_Classes_Code_Build_Record_20261127.md). Exact frozen diff `e6176e8f…4e83` (+115/−3, three paths); source `abb42e51ef9742c9f29086c4066d80000e5aeb18`. Published all separatrix class rays with port slots and radial edges. [Compile run 45972407236](https://github.com/akashskypatel/Directional/actions/runs/45972407236), candidate `15186681282`, 28/28 checks, eight GMP/GMPXX targets, no runtime. Row 1009 compiled only. TB-REV-191 1008/1008 and CP2 491/491 remain the accepted gates. O51 open; stable 67/17/50, debt1/deferred81 unchanged. No production or checkpoint promotion. Next: `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION`.
+
 ## 2026-11-27 — DEFN A2a singularity arrival port ownership: CB-215/216 frozen
 
 [Record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md); [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB215_CB216_TB192_Singularity_Arrival_Exact_Manifest.md). Runtime-free; no product, test or selector change on the branch.
