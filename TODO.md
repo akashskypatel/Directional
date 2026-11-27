@@ -1,4 +1,4 @@
-**Current turn outcome (2026-11-27 UTC):** `M6-CP3-TB-REV-192` independently accepts the 1010/1010 test gate only. [TB-REV-192](.agents/Directional/Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md). Root STATUS governs formal closeout. Previous comparator: [TB-REV-191](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md).
+**Current turn outcome (2026-11-27 UTC):** `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` decides AP4: A0 deletion with typed fail-closed, DESIGN Amendment 35, staged behind an option that defaults off ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_Partial_CoTrace_Removal_20261127.md), [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB217_CB218_TB193_CoTrace_Deletion_Exact_Manifest.md)). The user delegated the choice to the design. CB-217 and CB-218 exact diffs are frozen, with the 1013-row TB-EXEC-193 contract. Previous: `M6-CP3-TB-REV-192` accepted the 1010/1010 test gate only ([TB-REV-192](.agents/Directional/Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md)).
 - TB191 comparator: 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81.
 - **TB-REV-191 adversarial** ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md)): upholds the gate and CB-214. Its findings:
   - DD1: the 34 incidences are 24 port traces plus 10 singularity arrivals that claim no port.
@@ -18,7 +18,28 @@
   - EE3: no kept trace stops on a removed one, so removal needs no re-trace. Prediction: 14 traces, V12/E18/F8. Rule A0 (remove + typed fail-closed) recommended over the fixed point A.
   - EE4: correction, slivers 2/4 are the near-miss doubled separatrices n1–n5 and n2–n6. AP4 cannot remove them (invariant 8), so O52 is opened.
   - EE5: classifier hardening (unique, branch-consistent, candidate-level) gets its own CB first.
-- **Next:** `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` only. STOP for the AP4 user decision (A0 or A). Then CB-217 (classifier hardening) → CB-218 (removal) → TB-EXEC-193 → TB-REV-193 → corners DEFN + O52.
+- **AP4 DEFN:**
+  - PC1: A0 chosen against DESIGN (§7.2 step 7 selection, D13 placement, §10.1, §5.2).
+  - PC2: 27 gated rows carry the sphere, so the rule ships off by default and gets its own switch.
+  - PC3: CB-217 unique classification `d3d3102e…aff8`.
+  - PC4: CB-218 deletion `b0be915a…cfab5`, witness rows 1012/1013.
+  - PC5: TB-EXEC-193 requires rows 1–1010 N1–N3-equal to TB192.
+- **Turn sequence:**
+  1. `M6-CP3-CB-217-P13-UNIQUE-ARRIVAL-CLASSIFICATION` (NEXT, compile only).
+  2. `M6-CP3-CB-218-P13-CLAIMED-COTRACE-DELETION` (compile only).
+  3. `M6-CP3-TB-EXEC-193` (1013 rows).
+  4. `M6-CP3-TB-REV-193`.
+  5. `M6-CP3-DEFN-P13-A2A-COTRACE-DELETION-SWITCH` (27-row premise census, `arrivalPort` readers) → CB/TB.
+  6. `M6-CP3-DEFN-P13-A4-DISC-CORNERS` + O52 → Vase row → A4 unequal-side construction.
+
+```text
+NEXT_TURN: M6-CP3-CB-217-P13-UNIQUE-ARRIVAL-CLASSIFICATION
+Owner: Code + Build only. Apply one exact diff; compile the eight GMP/GMPXX targets, runtimeExecution=false. No runtime, no other source/test/fixture/selector/harness/workflow change.
+Authority: gates/Architecture_M6_CP3_CB217_CB218_TB193_CoTrace_Deletion_Exact_Manifest.md; AP4 DEFN PC1-PC7; DESIGN Amendment 35.
+  Diff Architecture_M6_CP3_CB217_P13_Unique_Arrival_Classification_Exact.diff SHA-256 d3d3102e85a372d5b5cf4e999fef6caf0852efb3581336f4ba922f566626aff8 (15,476 B, +190/-31); preimages SurfaceCellTracing.h 7fcb9fc2..., SurfaceCellTracing.cpp d6dbb123..., FieldAlignedCurveNetworkTests.cpp 9b08f174...; postimages per manifest. STOP on hash/path/patch/compile mismatch; do not adapt.
+Then: CB-218 (diff b0be915a...cfab5 on CB-217, option default off, compile only) -> TB-EXEC-193 (1013-row manifest b910f2a9...2fc2; rows 1-1010 N1-N3 = TB192 15195820651 incl. row858; rows 1011-1013 new) -> TB-REV-193 -> co-trace deletion switch DEFN (27-row census) -> corners DEFN + O52.
+Do not: run tests in CB, turn the option on, re-trace, change D13 selection/A2b/A3/dispatch/veto, repair B1/fallback, CB-207D, promote CP3/497/D0/H4.
+```
 
 ## CURRENT — per-disc A4 route: TB192 arrival classification evidence (2026-11-27 UTC)
 

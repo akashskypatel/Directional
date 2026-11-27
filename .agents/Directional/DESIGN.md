@@ -707,6 +707,23 @@ withdrawn except where an amendment says so explicitly.
 
   The two remaining per-query binding checks in `validate_final_surface_mesh` are Amendment 33 sites. With all four corrected, Vase reaches the same verdict in 108.5 s ([RA-202](M6_Consolidated_Record_Vol_D2_CP3_P13_from_20261104.md#architecture_m6_cp3_tb76_rev_p13_census_path_cost_probe_adjudication_20261104md "moved: Architecture_M6_CP3_TB76_REV_P13_Census_Path_Cost_Probe_Adjudication_20261104.md")).
 
+- **Amendment 35 — A2a step 7 deletes a port trace whose separatrix another trace's arrival already realizes (M6 P13 O51, AP4).** A1 publishes every in-sector ray of a singularity with its port slot. A trace X that ends at singularity `s` realizes the separatrix of port `p` of `s` when its last piece matches `p` uniquely:
+  - along a radial edge: the edge carries `p`'s edge-supported attachment or ray, or `p`'s class has rays in both faces of the edge;
+  - through a face: the face holds `p`'s ray on the reverse of X's branch.
+
+  If `p`'s own trace Y is still in the candidate, Y is redundant (invariant 8). Step 7 deletes Y and records `p` as X's `arrivalPort`, the ownership rule of D13 = A ([TB-REV-173](Architecture_M6_CP3_TB_REV_173_D13_Resolution_From_Design_20261123.md)).
+  - **Placement and order.** The selection runs inside the canonical derivation, after D13's exact-retrace selection, so the validator compares against the same selected product. Every claim is read from the traced candidate before anything is deleted, so the result does not depend on order (§10.1).
+  - **Deletion only.** The rule never re-traces, never extends a trace and never moves a contact. Node identities are re-indexed densely in their existing order.
+  - **Typed failure, no degraded mode (§5.2).** A2a returns a typed failure if:
+    - an arrival at a singularity that publishes ports matches no port or more than one;
+    - two arrivals claim one port;
+    - a claimed trace is itself an arrival (reciprocal or chained claims);
+    - a kept trace ends on a trace to be deleted, which would leave it ending nowhere (invariant 3).
+  - **Evidence.** On the prescribed sphere, ten of the twelve separatrices are co-traced this way and no kept trace stops on a claimed one. Deletion gives 14 traces, 12 nodes, 18 arcs and 8 regions ([TB-REV-192 adv.](Architecture_M6_CP3_TB_REV_192_Adversarial_Review_20261127.md)).
+  - **Activation.** The rule takes effect at its activation switch. Until then the canonical derivation carries it behind an option that defaults off, and a witness measures it on the sphere. 27 gated rows carry the sphere network, so the switch is its own change, with those rows' expectations re-derived from the measured witness.
+  - **Scope.** A separatrix traced twice where neither trace arrives (O52) is outside this rule. Removing either trace would leave a port owned by a curve that ends at a T-node, which alters port topology.
+  - **Choice.** The user delegated the choice between this deletion rule and a suppress-and-re-trace fixed point to the design. Re-tracing would loop step 7 back into steps 3–5. Under arc-length contact order it is not monotone, so a re-trace can withdraw an earlier claim.
+
 ### 7.3 Single-writer authority
  
 `SourceAuthoritySnapshot`, `GlobalTopologyPlan`, and `GlobalConformityPlan` are referenced, not copied into multiple mutable aggregates. A consumer receives a `const` view or stable typed ID. Network, phase-front, materializer, and validator objects cannot each own divergent copies of face-region or sheet arrays.

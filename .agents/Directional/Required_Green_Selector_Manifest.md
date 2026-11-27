@@ -893,6 +893,11 @@ DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP (2026-11-27): TB-EXEC-192 used t
 - `FieldTransportAtlas.MechanicalSingularityRaysLieOnRadialEdgesAndNameTheirPortSlot`;
 - `FieldAlignedCurveNetwork.MechanicalRetraceArrivalsRealizeTheRemovedPortsSeparatrix`.
 
+DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL (2026-11-27): TB-EXEC-193 uses the 1013-row gate case manifest `b910f2a96626660f46042c34360a8062c7546f35fb1980432d038ba8f41d2fc2` (`gates/Architecture_M6_CP3_CB217_CB218_TB193_CoTrace_Deletion_Full_Gate_Case_Manifest.tsv`). Its header plus rows 1–1010 are byte-identical to `c9f6325e…e9f5`. It appends three GUARD rows:
+- `FieldAlignedCurveNetwork.CandidateArrivalClassificationRequiresExactlyOnePortSlot`;
+- `FieldAlignedCurveNetwork.PrescribedSphereClaimedCoTraceDeletionKeepsOneTracePerSeparatrix`;
+- `FieldAlignedCurveNetwork.PrescribedSphereClaimedCoTraceDeletionRejectsInadmissibleClaims`.
+
 No selector file changed; CP2 491 is unchanged.
 
 [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md) independently accepts the 1010-row test gate only; 1000 GUARD + 10 POSITIVE, 81 deferred, membership 1091. CP2 491 and TB191 prefix 1008 are byte-identical. No selector bytes changed; no production or checkpoint promotion.
