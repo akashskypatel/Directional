@@ -1,0 +1,2 @@
+# TB-EXEC-191: snapshot acquired and verified; the test request is retained.
+.agents/connector-triggers/source-snapshot/m6-cp3-tb191.txt
