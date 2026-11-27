@@ -1,4 +1,4 @@
-**Current currency — DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION (2026-11-27 UTC):** step 65C re-baselined (runtime-free). A4's unit is the A2b region, and the disc domain is built as boundary schedule → corners → fill (A4D1–A4D5). CB-214 freezes the behaviour-neutral boundary schedule (A2b walk → A3 spans) and a 1008-row gate. Sphere regions 5 and 10 (3 walk nodes) are the corner-slice falsifier. TB-REV-189's 1006/1006 acceptance stands. Stable 67/17/50, debt 1, deferred 81; no promotion. [Record](Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md).
+**Current currency — TB-EXEC-191 (2026-11-27 UTC):** [Execution report](Architecture_M6_CP3_TB191_Region_Boundary_Schedule_Execution_Report_20261127.md). TB191 1008/1008 PASS, CP2 491/491, membership1089 = 1008 gated + 81 deferred; 766 exact + 239 N1/N2 + one authorized row858 change; both new GUARD rows PASS. Sphere 14 regions/60 sides/30 paired arcs, all even and positive span counts; genus_two 14 regions/184 sides/92 paired arcs, otherArcs=0. All predictions match; no produced sphere, no activation or promotion. Stable 67/17/50, debt1/deferred81. TB189 remains independently accepted; TB-REV-191 pending. A4D1–A4D5 remain frozen. A4D5 corners unresolved; next TB-REV-191.
 
 # Directional — Project Orientation
 
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-214-P13-REGION-BOUNDARY-SCHEDULE`, compile only ([exact manifest](gates/Architecture_M6_CP3_CB214_TB191_Region_Boundary_Schedule_Exact_Manifest.md)). Then TB-EXEC-191 (1008 rows), TB-REV-191 and the corners DEFN. The legacy-fallback repair (B1) stays held; the source-region producers and the veto stay until 65D.
+**Current priority:** `M6-CP3-TB-REV-191` independently adjudicates the [1008-row execution](Architecture_M6_CP3_TB191_Region_Boundary_Schedule_Execution_Report_20261127.md). The corners DEFN follows only after review. The legacy-fallback repair (B1) stays held; the source-region producers and the veto stay until 65D.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
