@@ -889,8 +889,10 @@ TB-REV-189 accepts TB189 package `15170182914`, source `39253c63c308a2699669095b
 
 DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION (2026-11-27): TB-EXEC-191 uses the 1008-row gate case manifest `ca16b66da3cb52e77a3540c79f9357e3e9e59b211bae872f87d58f60c4434081` (`gates/Architecture_M6_CP3_CB214_TB191_Region_Boundary_Schedule_Full_Gate_Case_Manifest.tsv`). Its header plus rows 1–1006 are byte-identical to `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587`. It appends two GUARD rows, `GlobalConformityBaseline.RegionBoundarySchedulesBindEveryWalkOccurrenceToItsSpan` and `…RejectAnotherPlanOrAForeignSupport`. No selector file changed; CP2 491 is unchanged. [TB-REV-191](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md) independently accepts this 1008-row test gate. The CP2 prefix hash remains `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`; 998 GUARD + 10 POSITIVE, 81 deferred, no selector bytes changed or production promotion.
 
-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP (2026-11-27): TB-EXEC-192 will use the 1010-row gate case manifest `c9f6325eee41ebead3d516d3bfcbef3141c9dee8c7051cef1e08ad146f60e9f5` (`gates/Architecture_M6_CP3_CB215_CB216_TB192_Singularity_Arrival_Full_Gate_Case_Manifest.tsv`). Its header plus rows 1–1008 are byte-identical to `ca16b66d…4081`. It appends two GUARD rows:
+DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP (2026-11-27): TB-EXEC-192 used the 1010-row gate case manifest `c9f6325eee41ebead3d516d3bfcbef3141c9dee8c7051cef1e08ad146f60e9f5` (`gates/Architecture_M6_CP3_CB215_CB216_TB192_Singularity_Arrival_Full_Gate_Case_Manifest.tsv`). Its header plus rows 1–1008 are byte-identical to `ca16b66d…4081`. It appends two GUARD rows:
 - `FieldTransportAtlas.MechanicalSingularityRaysLieOnRadialEdgesAndNameTheirPortSlot`;
 - `FieldAlignedCurveNetwork.MechanicalRetraceArrivalsRealizeTheRemovedPortsSeparatrix`.
 
 No selector file changed; CP2 491 is unchanged.
+
+[TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md) independently accepts the 1010-row test gate only; 1000 GUARD + 10 POSITIVE, 81 deferred, membership 1091. CP2 491 and TB191 prefix 1008 are byte-identical. No selector bytes changed; no production or checkpoint promotion.

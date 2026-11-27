@@ -1,3 +1,7 @@
+## 2026-11-27 — TB-REV-192 independent singularity arrival review
+
+[TB-REV-192](.agents/Directional/Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md). Accept only the 1010/1010 test gate; 491/491 CP2, 1091 membership, 1008/1008 prior comparator, exact 491/1008 prefix, 770 exact inherited logs and 237 N1/N2, exact row858 prefix plus 12 lines. All ten sphere arrivals match distinct already-traced ports; genus_two zero arrivals, rows1009/1010 non-vacuous. No production activation, V5 or checkpoint promotion; stable 67/17/50, debt1/deferred81. O51 remains open; AP4 next `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` (STOP for user decision). Folded the superseded TB-EXEC-192 continuation into Vol D3. No product/test/selector/build edits.
+
 
 ## 2026-11-27 — TB-EXEC-192 singularity arrival classification execution
 

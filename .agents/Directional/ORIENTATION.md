@@ -1,4 +1,6 @@
-**Current currency — CB-215 compile-only PASS (2026-11-27 UTC):** [Record](Architecture_M6_CP3_CB215_P13_Singularity_Ray_Classes_Code_Build_Record_20261127.md). Last accepted gate: [Independent review](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md). 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81. [Adversarial continuation](Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md):
+**Current currency — TB-REV-192 independent acceptance (2026-11-27 UTC):** [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md). 1010/1010 accepted for the test gate only; CP2 491/491 unchanged. Membership 1091 = 1010 gated + 81 deferred; 770 exact inherited logs, 237 N1/N2, 12 authorized row858 lines. Ten sphere radial-edge arrivals match ten distinct traced ports; genus_two has no arrivals. Rows1009/1010 PASS. O51 open, AP4 user decision pending. Stable 67/17/50, debt1/deferred81. No production, schedule activation or checkpoint promotion.
+
+[Adversarial continuation](Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md):
 - The 34 incidences are 24 port traces plus 10 singularity arrivals that claim no port.
 - Slivers 2, 4, 5 and 10 are separatrix connections traced from both ends, an A2a defect (DD1–DD4).
 - A4 unequal-side construction is added (DD5).
@@ -9,7 +11,7 @@
 - It froze CB-215 and CB-216, then TB-EXEC-192 (1010 rows).
 - It corrects the adversarial DD2.
 
-Next `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION`, compile only after CB-215 formal closeout.
+Next `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` only after TB-REV-192 formal closeout; runtime-free and STOP for user decision AP4.
 
 # Directional — Project Orientation
 
@@ -59,12 +61,14 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | CP2 491/491 accepted; [TB-REV-191](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md) accepts the 1008/1008 test gate, not production. The per-disc A4 route (65A–65D) resumed: [DEFN-65C](Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md) froze CB-214, the first domain slice; its schedule binding is accepted for the pinned test witnesses only. TB185V/TB187Q remain preactivation comparators; TB186 row971 test-authority RED is discharged at the measured contract. Sphere completion rejects a repeated original boundary node; V5 BunnyRandom timed out; no checkpoint promotion. |
+| **M6-CP3 — active; multi-cut plan remains open** | CP2 491/491 accepted; [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md) accepts the 1010/1010 test gate, not production. The per-disc A4 route (65A–65D) resumed: [DEFN-65C](Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md) froze CB-214, the first domain slice; its schedule binding is accepted for the pinned test witnesses only. TB185V/TB187Q remain preactivation comparators; TB186 row971 test-authority RED is discharged at the measured contract. Sphere completion rejects a repeated original boundary node; V5 BunnyRandom timed out; no checkpoint promotion. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
 
 ## 4. Fixtures and witnesses
+
+**TB-REV-192 arrival witness:** All ten sphere arrivals on radial edges match distinct already-traced ports, from 24 two-ray classes. The 78,276-byte inherited row858 prefix is exact; 12 predicted lines are added. Genus_two has no arrivals; mechanical ray publication and four exact D13 retraces pass. No partial co-trace removal or production reader. [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md).
 
 **TB-REV-191 schedule witness:** 14 sphere regions, 60 occurrences, 30 paired arcs with equal positive spans and opposite directions. All region boundary counts even. Regions 5 and 10 each have three walk nodes and boundary count 72. Genus_two aggregate 14/184/92; no other arcs. The helper is not activated in production; A4D5 is unresolved. [Review](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md).
 
@@ -156,9 +160,9 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION` (A2a arrival classifier; CB-215 rays compiled), then TB-EXEC-192 and TB-REV-192 ([A2a arrival DEFN](Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md); O51).
-- After it: the behaviour DEFN (AP4, a user decision on removing partial co-traces), then the corners DEFN, a Vase row, and A4 unequal-side construction (DD5).
-- The [1008-row test gate](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md) is accepted; the schedule is not activated.
+**Current priority:** `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` — AP4 user decision on removing partial co-traces (O51); see [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md).
+- After an authorized removal rule and separate CB/TB/REV: corners DEFN, a Vase row and A4 unequal-side construction (DD5).
+- The 1010-row test gate is accepted; the schedule is not activated.
 - B1 stays held. The source-region producers and the veto stay until 65D.
 
 
