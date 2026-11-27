@@ -1,3 +1,17 @@
+**TB-REV-191 adversarial disposition (2026-11-27 UTC; [record](Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md)).** Runtime-free; there is no new stable regression. Stable 67/17/50, debt 1, deferred 81.
+- **O51 — singularity arrival claims no port, a non-stable open defect at A2a.**
+  - **Root:** an arrival terminates on vertex identity alone (`SurfaceCellTracing.cpp:3617–3633`, `:2301–2338`). Contacts come only from `ProperCrossing` (`:4755–4758`). So a separatrix connection traced from both ends stays doubled.
+  - **Witness:** the sphere has 10 arrivals (34 incidences against Σvalence 24). Slivers 2, 4, 5 and 10 result, and the wedges need a cusp.
+  - **Falsifier:** the arrival classification finds no arrival whose carrier matches an existing port trace.
+  - **Owner:** `M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP` (invariants 1 and 8).
+  - **Prohibited:** tiny-region collapse after the plan; D3 routing of these regions as the fix (DESIGN :457, :1050, §5.2).
+- **A4D5** is updated by DD1–DD3:
+  - falsifier (2) is excluded by `RegionCornerOwnership.h:28–127`;
+  - the 34 incidences are accounted for;
+  - the wedge corners are cusps from O51.
+
+  It moves to the corners DEFN after O51.
+
 **TB-REV-191 independent disposition (2026-11-27 UTC; [review](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md)).** 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81. Result `15179335926`, ZIP `bab546af9cc089db9deb405ede41b3dd859b9e4547f81507d669c58c911bb519`, 2024/2024 checks. No stable loss, new candidate or reclassification. B1 held, B2 unmeasured, O50 and A4D5 open.
 
 **DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION disposition (2026-11-27 UTC; [record](Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md)).** Runtime-free; no new stable regression. Stable 67/17/50, debt 1, deferred 81, CP2 491/491.

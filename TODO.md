@@ -1,8 +1,14 @@
 **Current turn outcome (2026-11-27 UTC):** `M6-CP3-TB-REV-191` independently adjudicated the frozen gate; [review](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md). Root STATUS governs completion.
 - 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81.
-- **Next:** `M6-CP3-DEFN-P13-A4-DISC-CORNERS` only.
+- **TB-REV-191 adversarial** ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md)): upholds the gate and CB-214. Its findings:
+  - DD1: the 34 incidences are 24 port traces plus 10 singularity arrivals that claim no port.
+  - DD2: sliver regions 2, 4, 5 and 10 are separatrix connections traced from both ends. That is an A2a defect, since DESIGN §5.2 gives A2a no degraded mode.
+  - DD3: `interiorSingularityFree` is sound.
+  - DD4: the corners DEFN is resequenced after the A2a fix.
+  - DD5: A4 unequal-side construction is added to the sequence.
+- **Next:** `M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP` only.
 
-## CURRENT — per-disc A4 route: TB-REV-191 reviewed; corners DEFN next (2026-11-27 UTC)
+## CURRENT — per-disc A4 route: TB-REV-191 adversarial realigns to A2a arrival ownership (2026-11-27 UTC)
 
 - [x] **COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.
@@ -39,24 +45,41 @@
   - 16 receipt lines in row858.
 - [x] **12 COMPLETE (execution)** `M6-CP3-TB-EXEC-191` — [report](.agents/Directional/Architecture_M6_CP3_TB191_Region_Boundary_Schedule_Execution_Report_20261127.md); 1008/1008 PASS; all predicted records match; no V5. Independent review pending.
 - [x] **13 REVIEWED** `M6-CP3-TB-REV-191` — [review](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md); 1008-row test gate accepted only; all frozen predictions met.
-- [ ] **14 NEXT** `M6-CP3-DEFN-P13-A4-DISC-CORNERS` — A4D5 definition only; freeze evidence before a separate Code + Build.
-- [ ] **15+** One DEFN → CB → TB each, in order (the first DEFN is item 14):
-  1. corners, which decides A4D5 and admits a gated Vase row;
-  2. fill domain (A2a′ fragments);
-  3. 65B reciprocal trace intervals;
-  4. 65D per-disc dispatch with typed declines, which retires O50 and fixes the Amendment-19 flags at `RemeshPipeline.cpp:13310–13312`;
-  5. O41 and the switch exit.
+- [x] **COMPLETE** TB-REV-191 adversarial — [record](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md). Findings:
+  - DD1: singular nodes are 0–7. The 34 incidences decompose into 24 ports, 6 T-junctions, 4 mutual stops and 10 arrivals.
+  - DD2: arrivals claim no port (`SurfaceCellTracing.cpp:3617–3633`), so slivers 2, 4, 5 and 10 trace one connection twice. The wedges need a cusp. A2a owns this under invariants 1 and 8.
+  - DD3: the `interiorSingularityFree` validator is sound.
+  - DD4: the corners DEFN is resequenced.
+  - DD5: unequal opposite sides are the common case (regions 0, 3, 6, 8, 9 and 11).
+- [-] **RESEQUENCED** `M6-CP3-DEFN-P13-A4-DISC-CORNERS`, frozen by TB-REV-191, moves to item 19 (DD4).
+- [ ] **14 NEXT** `M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP` (runtime-free). It does three things:
+  1. confirms the arrival lifecycle;
+  2. resolves from invariants 1 and 8 which port an arrival owns, with a STOP for a user decision if that needs new normative text;
+  3. freezes one exact, behaviour-neutral classification slice.
+
+  The slice is a free function, not a hashed member: for each arrival it records the target, the carrier, the matched port or `NoPortCarrier`, and whether that port's own trace exists. It adds a unit row and row858 sphere and genus_two receipts, and predicts 10 sphere arrivals.
+- [ ] **15** CB, compile only. **16** TB-EXEC, full gate. **17** TB-REV.
+- [ ] **18** A behaviour DEFN: a claimed port's redundant trace is removed (invariant 8). It states the predicted sphere plan and the changed gate rows. Then CB → TB → TB-REV.
+- [ ] **19+** One DEFN → CB → TB each, in order:
+  1. corners (A4D2 part 2) on the corrected plan;
+  2. a gated Vase witness row;
+  3. A4 unequal-side construction (DD5; O40 class);
+  4. fill domain (A2a′ fragments);
+  5. 65B reciprocal trace intervals;
+  6. 65D per-disc dispatch with typed declines, which retires O50 and fixes the Amendment-19 flags at `RemeshPipeline.cpp:13310–13312`;
+  7. O41 and the switch exit.
 
   The source-region producers and the singularity veto stay until per-disc dispatch exists (RA-213).
 - [ ] **CARRIED:** B2, the BunnyRandom regression lead on a shared stage: the previous RED was `RotationSystemInconsistent` at A2b, and the run now times out at 600 s. The observation mechanism is frozen in a separate Review item. No acceptance or timeout increase.
 - [ ] **HELD:** B1 fallback repair (off-trajectory; the fallback cannot be certified, DESIGN §5.2); row858 legacy diagnostic lines (CB-210/211R/212) stay until the per-disc route supersedes them; CB-207D (no cap); CB-207C (size receipt only if needed); close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-DEFN-P13-A4-DISC-CORNERS
-Owner: DEFN / Review only, runtime-free. Define the corners part of A4D2 and its exact measurable evidence; adjudicate A4D5 against DESIGN §7.4 and RA-237/238. Do not implement or execute it in the definition turn.
-Authority: Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md; Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md; row858 TB191 result 15179335926; exact 1008-row gate and accepted CP2 prefix.
-Falsifiers: regions 5 and 10 each have three walk nodes; distinguish arc turning, incorrect interiorSingularityFree, and node turns greater than a quarter turn. Account for all 34 boundary-singularity incidences and port valences; include a gated Vase witness. Do not presume a regular disc from even span counts. Stop on missing authority or ambiguous ownership; preserve the frozen gate and defer a separate CB/TB.
-Do not: repair B1/fallback, change dispatch or the veto, activate the schedule, CB-207D, promote CP3/497/D0/H4, start J6/E5/CB-190.
+NEXT_TURN: M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP
+Owner: DEFN / Review only, runtime-free. Freeze exactly one behaviour-neutral compile-only successor; do not implement or execute.
+Authority: Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md (DD1-DD5); DESIGN §5.2, §7.2 steps 1/5/7, A2a invariants 1 and 8; row858 TB191 result 15179335926; accepted 1008-row gate.
+Scope: (a) confirm the arrival lifecycle from source (SurfaceCellTracing.cpp:3617-3633, :2301-2338, :4755-4758; SurfaceCellTracing.h:770-777). (b) Resolve from invariants 1/8 which port an arrival owns; STOP for a user decision if new normative text is needed. (c) Freeze one exact diff: a free A2a function classifying each singularity arrival (target; arrival carrier = face+branch or radial edge; matched port or NoPortCarrier; whether that port's own trace exists), enum + _name(), read by no stage, not a hashed member (RA-211); one non-vacuity unit row; row858 sphere + genus_two receipts. Predict 10 sphere arrivals, all at nodes 0,1,2,5,6,7.
+Then: CB (compile) -> TB-EXEC -> TB-REV -> behaviour DEFN (claimed port's redundant trace removed) -> CB/TB -> corners DEFN -> Vase row -> A4 unequal-side construction -> fill -> 65B -> 65D -> O41.
+Do not: change tracing, A2b or A3 behaviour, dispatch or the veto; add tiny-region collapse; repair B1/fallback; CB-207D; promote CP3/497/D0/H4; start J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)

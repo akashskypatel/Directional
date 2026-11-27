@@ -345,6 +345,8 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - Before freezing a replacement for a reader, read every check the consumer applies to that reader's output. The region certificate needs a key for each fragment orbit, including strips that touch no corner, not only the corner owners (TB-REV-166 adversarial L3).
 - Check a shape premise such as "every piece has two boundary ends" against every visit in the receipt. Terminal slits and arcs split inside a face are normal. A labelling that is local to each boundary end needs no special case for them (L4).
 - Check a tie rule against the required positive cases before freezing it. Cuts sharing a boundary point are ordered exactly by where their other ends lie (L5).
+- Before freezing a measurement of a plan's corners, compute what the receipts already fix: node degrees, V − E + F, and Σ degree − Σ valence at singular nodes (Poincaré–Hopf). A positive surplus means arcs that no quarter-turn sector can hold. That fixes the owner upstream, at the stage that traced them (TB-REV-191 adv. DD1–DD2).
+- A stage that DESIGN gives no degraded mode (§5.2) cannot be fixed by a consumer's degradation. Place the fix at the producing stage (TB-REV-191 adv. DD2).
 
 - Before freezing a typed STOP, check the published receipt for the configuration it stops; a STOP the witness must hit makes the gate RED by construction (TB-REV-167 adversarial P3).
 - A count that is not exact can still be a sound bound: check which side the consumer enforces before calling it unsafe (F = 1 + E − V + C0 ≤ E + 1; TB-REV-167 adversarial P4).

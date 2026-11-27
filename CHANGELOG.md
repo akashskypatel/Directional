@@ -1,3 +1,14 @@
+## 2026-11-27 — TB-REV-191 adversarial: sphere corner defect is A2a arrival ownership
+
+[Record](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md). Runtime-free; no product, test, selector or gate change. The 1008/1008 gate, CB-214 and its 16 receipt lines are upheld.
+- DD1: the sphere schedule's node lists give V18/E30/F14 with singular nodes 0–7. The 34 incidences decompose into 24 port traces, 6 T-junctions, 4 mutual stops and 10 singularity arrivals that claim no port (`SurfaceCellTracing.cpp:3617–3633`).
+- DD2: slivers 2, 4, 5 and 10 are one separatrix connection traced from both ends. The wedges need a cusp. A2a owns this under invariants 1 and 8, since DESIGN §5.2 gives A2a no degraded mode.
+- DD3: `interiorSingularityFree` is sound for vertex singularities.
+- DD4: the corners DEFN is resequenced after the A2a fix.
+- DD5: an A4 unequal-side construction step is added.
+
+DEFN-65C's A4D5 note is corrected. Next: `M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP`.
+
 ## 2026-11-27 — TB-REV-191 independent boundary-schedule adjudication
 
 [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md). 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81. Exact manifest `ca16b66da3cb52e77a3540c79f9357e3e9e59b211bae872f87d58f60c4434081`; result `15179335926`; reverse/forward replay confirms all four exact pre/postimages. No product, test, selector or build change. B1 held, B2/O50/A4D5 carried. Next only `M6-CP3-DEFN-P13-A4-DISC-CORNERS` after STATUS COMPLETE. Historical CB-211R/212 and TB189 execution/review records folded into Vol D3.

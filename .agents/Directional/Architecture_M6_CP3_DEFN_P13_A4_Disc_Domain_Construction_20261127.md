@@ -50,7 +50,10 @@ Vase is therefore measured once a later DEFN admits a Vase row. Row858 already r
   - `IncidenceNotFound`, a lookup failure.
 
   No check repeats a guarantee that A2b or A3 already validated (walk closure, parity, positivity, breakpoints). `IncidenceNotFound` has no unit witness, because validated A3 cannot reach it. Its absence on the sphere and genus_two is measured, not presumed.
-- **A4D5 — corner hypothesis, frozen as a falsifier for the corner slice.**
+- **A4D5 — corner hypothesis, frozen as a falsifier for the corner slice.** *Corrected by [TB-REV-191 adv.](Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md):*
+  - *The 34 incidences are 24 port traces plus 10 singularity arrivals. The "no integer mix" sentence below ignored arrivals.*
+  - *Falsifier 2 is excluded by the validator.*
+  - *The wedge corners are cusps from unclaimed arrivals (O51, A2a).*
   - On a disc with no interior singularity, whose boundary arcs are straight in the field's flat metric and whose corners lie only at walk nodes, Σ(2 − gapᵢ) = 4, where each gap is ≥ 1 quarter turn. That needs at least 4 convex corners.
   - Sphere regions 5 and 10 have 3 walk nodes each, so they cannot meet that condition. At least one of the following must hold:
     1. some arc turns, for example a slide-traced arc (RA-237/238);

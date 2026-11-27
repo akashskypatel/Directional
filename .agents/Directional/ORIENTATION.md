@@ -1,4 +1,9 @@
-**Current currency — TB-REV-191 (2026-11-27 UTC):** [Independent review](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md). 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81. A4D1–A4D5 remain frozen; A4D5 corners unresolved. Next `M6-CP3-DEFN-P13-A4-DISC-CORNERS`.
+**Current currency — TB-REV-191 (2026-11-27 UTC):** [Independent review](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md). 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81. [Adversarial continuation](Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md):
+- The 34 incidences are 24 port traces plus 10 singularity arrivals that claim no port.
+- Slivers 2, 4, 5 and 10 are separatrix connections traced from both ends, an A2a defect (DD1–DD4).
+- A4 unequal-side construction is added (DD5).
+
+Next `M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP`.
 
 # Directional — Project Orientation
 
@@ -145,7 +150,10 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-DEFN-P13-A4-DISC-CORNERS` defines A4D5 corner evidence and admits a gated Vase row. The [1008-row test gate](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md) is independently accepted; the schedule is not activated. B1 stays held; source-region producers and veto stay until 65D.
+**Current priority:** `M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP` (O51) resolves which port a singularity arrival owns, under A2a invariants 1 and 8. It freezes one behaviour-neutral classification slice ([TB-REV-191 adv.](Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md) DD1–DD4).
+- After it: the behaviour change, then the corners DEFN, a Vase row, and A4 unequal-side construction (DD5).
+- The [1008-row test gate](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md) is accepted; the schedule is not activated.
+- B1 stays held. The source-region producers and the veto stay until 65D.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
@@ -162,6 +170,7 @@ TB-REV-167 S6 (carried to CB-190): terminal-vertex edge-side diagnostics require
 
 ## 8. Recurring defect patterns
 
+- **Measure what the receipt already fixes (2026-11-27).** TB-REV-191 froze a corner measurement whose answer its own 16 lines already gave: a Poincaré–Hopf surplus of 10 arcs at singular nodes. Compute degrees, Euler's formula and the surplus first (LESSONS §4, TB-REV-191 adv.).
 - **Plan before producer domain, re-asked (2026-11-27).** RA-213 and RA-214 had already set A4's unit as the A2b disc. TB-REV-188 adv. and TB-REV-189 re-proposed a per-source-region decline receipt anyway; it is now withdrawn. Search the record before freezing a receipt (LESSONS 531).
 
 - TB189: global producer flags are not per-region attempt evidence. Source-topology region identity is not certified plan-region identity. BB3 disk prediction failed; singularity-support exclusion is independently located. Existing production-witness and partition-structure lessons apply.
