@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-TB-REV-188
-Status: IN_PROGRESS
-Successor: 
+Status: COMPLETE
+Successor: M6-CP3-CB-211R-P13-SPHERE-ROUTE-PLAN-WITNESS
 Started at: 2026-11-27T02:16:52Z
 Resumed at: 2026-11-27T02:41:32Z
-Ended at: 
+Ended at: 2026-11-27T02:57:58Z
 ---END_TURN_STATUS---
