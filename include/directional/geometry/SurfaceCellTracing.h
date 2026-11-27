@@ -741,6 +741,47 @@ private:
 [[nodiscard]] std::uint64_t field_aligned_curve_network_hash(
     const FieldAlignedCurveNetwork &network) noexcept;
 
+/** How a trace's last piece reaches the singular vertex it ends at. */
+enum class FieldAlignedArrivalApproach : std::uint8_t {
+  FaceInterior = 0,
+  RadialEdge = 1,
+};
+
+/**
+ * A trace that ends at a singularity, and the port of that singularity whose
+ * separatrix class its final approach realizes. `port` is empty when no class
+ * matches; `portTraced` says whether that port still departs along its own
+ * trace.
+ */
+struct FieldAlignedSingularityArrival {
+  authority::TraceId trace;
+  authority::FieldSingularityId singularity;
+  authority::NetworkNodeId node;
+  FieldAlignedArrivalApproach approach = FieldAlignedArrivalApproach::FaceInterior;
+  std::optional<authority::SourceEdgeTopologyKey> radialEdge;
+  std::optional<authority::SingularityPortId> port;
+  bool portTraced = false;
+
+  auto operator<=>(const FieldAlignedSingularityArrival &) const = default;
+};
+
+[[nodiscard]] const char *field_aligned_arrival_approach_name(
+    FieldAlignedArrivalApproach approach) noexcept;
+
+/**
+ * Every trace of `network` that ends at a singularity, in trace order. A last
+ * piece along a radial edge (a slide, or a face piece on the edge) matches the
+ * edge-supported port on that edge, else the class with a ray on it, else the
+ * class with a ray in each face of the edge. A last piece through a face
+ * interior matches the class whose ray in that face its branch runs back
+ * along. Empty when `fieldTransportAtlas` is not the atlas `network` was
+ * traced on or a trace's exact path is unavailable. Read by no stage.
+ */
+[[nodiscard]] std::optional<std::vector<FieldAlignedSingularityArrival>>
+classify_field_aligned_singularity_arrivals(
+    const FieldAlignedCurveNetwork &network,
+    const authority::FieldTransportAtlas &fieldTransportAtlas);
+
 namespace surface_cell_tracing_detail {
 
 using FieldVertexArrivalMode = directional::geometry::FieldVertexArrivalMode;

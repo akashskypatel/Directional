@@ -6662,6 +6662,118 @@ std::uint64_t field_aligned_curve_network_hash(
   return network.semantic_digest();
 }
 
+const char *field_aligned_arrival_approach_name(
+    const FieldAlignedArrivalApproach approach) noexcept {
+  switch (approach) {
+  case FieldAlignedArrivalApproach::FaceInterior:
+    return "face-interior";
+  case FieldAlignedArrivalApproach::RadialEdge:
+    return "radial-edge";
+  }
+  return "unknown";
+}
+
+std::optional<std::vector<FieldAlignedSingularityArrival>>
+classify_field_aligned_singularity_arrivals(
+    const FieldAlignedCurveNetwork &network,
+    const authority::FieldTransportAtlas &fieldTransportAtlas) {
+  if (network.atlas_digest() !=
+      authority::field_transport_atlas_hash(fieldTransportAtlas)) {
+    return std::nullopt;
+  }
+  const authority::FieldBranchTopology &topology =
+      fieldTransportAtlas.branch_topology();
+  const auto &rays = topology.singularity_rays();
+  const auto face_has_edge = [](const authority::SourceFaceTopologyKey &face,
+                                const authority::SourceEdgeTopologyKey &edge) {
+    const auto &vertices = face.vertices();
+    return std::find(vertices.begin(), vertices.end(), edge.first()) !=
+               vertices.end() &&
+           std::find(vertices.begin(), vertices.end(), edge.second()) !=
+               vertices.end();
+  };
+  std::vector<FieldAlignedSingularityArrival> arrivals;
+  for (const FieldAlignedCandidateTrace &trace : network.candidate_traces()) {
+    if (!trace.terminalSingularity || trace.segments.empty()) continue;
+    const auto pieces = exact_trace_segment_detail::exact_trace_segment_pieces(
+        trace, trace.segments.size() - 1U);
+    if (!pieces || pieces->empty()) return std::nullopt;
+    const auto *vertex =
+        std::get_if<authority::SourceVertexId>(&pieces->back().second);
+    if (vertex == nullptr) return std::nullopt;
+    const auto node = std::find_if(
+        network.nodes().begin(), network.nodes().end(),
+        [&](const FieldAlignedCurveNetworkNode &value) {
+          return value.sourceVertex == *vertex;
+        });
+    if (node == network.nodes().end()) return std::nullopt;
+
+    FieldAlignedSingularityArrival arrival{
+        trace.id,     *trace.terminalSingularity,
+        node->id,     FieldAlignedArrivalApproach::FaceInterior,
+        std::nullopt, std::nullopt,
+        false};
+    const auto of_target = [&](const authority::FieldSingularityRay &ray) {
+      return ray.singularity == arrival.singularity;
+    };
+    std::optional<int> slot;
+    if (const auto interval =
+            authority::exact_source_piece_edge_interval(pieces->back())) {
+      arrival.approach = FieldAlignedArrivalApproach::RadialEdge;
+      arrival.radialEdge = interval->edge;
+      for (const auto &attachment : topology.singularity_port_attachments()) {
+        if (!slot && attachment.singularity == arrival.singularity &&
+            attachment.firstOutgoingCarrier == interval->edge) {
+          slot = attachment.localSlot;
+        }
+      }
+      for (const auto &ray : rays) {
+        if (!slot && of_target(ray) && ray.alongRadialEdge == interval->edge) {
+          slot = ray.portSlot;
+        }
+      }
+      for (const auto &ray : rays) {
+        if (slot || !of_target(ray) || !face_has_edge(ray.startFace, interval->edge)) {
+          continue;
+        }
+        if (std::any_of(rays.begin(), rays.end(), [&](const auto &other) {
+              return of_target(other) && other.portSlot == ray.portSlot &&
+                     other.startFace != ray.startFace &&
+                     face_has_edge(other.startFace, interval->edge);
+            })) {
+          slot = ray.portSlot;
+        }
+      }
+    } else {
+      const FieldAlignedCandidateTraceSegment &last = trace.segments.back();
+      for (const auto &ray : rays) {
+        if (!slot && of_target(ray) && ray.startFace == last.sourceFace &&
+            ray.branch == last.branch.rotated(2)) {
+          slot = ray.portSlot;
+        }
+      }
+    }
+    if (slot) {
+      const auto &ports = network.singularity_ports();
+      const auto port = std::find_if(
+          ports.begin(), ports.end(), [&](const FieldAlignedSingularityPort &value) {
+            return value.singularity == arrival.singularity &&
+                   value.ordinal == *slot;
+          });
+      if (port != ports.end()) {
+        arrival.port = port->id;
+        arrival.portTraced = std::any_of(
+            network.candidate_traces().begin(), network.candidate_traces().end(),
+            [&](const FieldAlignedCandidateTrace &value) {
+              return value.port == port->id;
+            });
+      }
+    }
+    arrivals.push_back(std::move(arrival));
+  }
+  return arrivals;
+}
+
 } // namespace directional::geometry
 
 namespace directional::geometry::surface_cell_tracing_detail {

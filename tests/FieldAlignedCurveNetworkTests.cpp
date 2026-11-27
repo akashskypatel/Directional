@@ -24254,3 +24254,48 @@ TEST(FieldTransportAtlas, MechanicalSingularityRaysLieOnRadialEdgesAndNameTheirP
               *ray->alongRadialEdge);
   }
 }
+
+TEST(FieldAlignedCurveNetwork, MechanicalRetraceArrivalsRealizeTheRemovedPortsSeparatrix) {
+  using directional::geometry::FieldAlignedArrivalApproach;
+  const auto &fixture = cp4c_mechanical_atlas_fixture();
+  ASSERT_TRUE(fixture.atlas);
+  ASSERT_TRUE(fixture.network) << fixture.terminalFailureCode << '/'
+                               << fixture.terminalFailureDetailCode;
+  const auto &network = *fixture.network;
+  const auto arrivals = directional::geometry::classify_field_aligned_singularity_arrivals(
+      network, *fixture.atlas);
+  ASSERT_TRUE(arrivals.has_value());
+  std::vector<const directional::geometry::FieldAlignedCandidateTrace *> ending;
+  for (const auto &trace : network.candidate_traces()) {
+    if (trace.terminalSingularity) ending.push_back(&trace);
+  }
+  ASSERT_EQ(ending.size(), arrivals->size());
+  std::size_t retraced = 0U;
+  for (std::size_t index = 0U; index < arrivals->size(); ++index) {
+    const auto &arrival = (*arrivals)[index];
+    const auto &trace = *ending[index];
+    EXPECT_EQ(trace.id, arrival.trace);
+    EXPECT_EQ(*trace.terminalSingularity, arrival.singularity);
+    if (arrival.port) {
+      const auto port = std::find_if(network.singularity_ports().begin(),
+          network.singularity_ports().end(), [&](const auto &value) {
+            return value.id == *arrival.port;
+          });
+      ASSERT_NE(network.singularity_ports().end(), port);
+      EXPECT_EQ(arrival.singularity, port->singularity);
+      EXPECT_EQ(port->node, arrival.node);
+      EXPECT_EQ(std::any_of(network.candidate_traces().begin(),
+                    network.candidate_traces().end(),
+                    [&](const auto &value) { return value.port == *arrival.port; }),
+                arrival.portTraced);
+    }
+    if (!trace.arrivalPort) continue;
+    // An exact reciprocal retrace runs back along the removed trace, so its
+    // last piece lies on the removed port's ray and names that port.
+    ++retraced;
+    EXPECT_EQ(FieldAlignedArrivalApproach::RadialEdge, arrival.approach);
+    EXPECT_EQ(trace.arrivalPort, arrival.port);
+    EXPECT_FALSE(arrival.portTraced);
+  }
+  EXPECT_EQ(4U, retraced);
+}

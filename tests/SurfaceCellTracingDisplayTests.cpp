@@ -492,6 +492,59 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
     print_schedules("Sphere", sphere, true);
     print_schedules("Genus", genus, false);
   }
+  {
+    // Each trace that ends at a singularity and the separatrix class of that
+    // singularity its last piece realizes.
+    const auto print_arrivals = [](const char *label, const FixtureRun &run,
+                                   bool perArrival) {
+      const auto &snapshots = run.result.surfaceCellContext.productSnapshots;
+      if (!snapshots.fieldAlignedCurveNetwork || !snapshots.fieldTransportAtlas) {
+        std::cout << label << "SingularityArrivals unavailable\n";
+        return;
+      }
+      const auto arrivals =
+          directional::geometry::classify_field_aligned_singularity_arrivals(
+              *snapshots.fieldAlignedCurveNetwork, *snapshots.fieldTransportAtlas);
+      if (!arrivals) {
+        std::cout << label << "SingularityArrivals classified=0\n";
+        return;
+      }
+      std::size_t radialEdge = 0U;
+      std::size_t matched = 0U;
+      std::size_t portTraced = 0U;
+      for (const auto &arrival : *arrivals) {
+        if (arrival.approach ==
+            directional::geometry::FieldAlignedArrivalApproach::RadialEdge) {
+          ++radialEdge;
+        }
+        if (arrival.port) ++matched;
+        if (arrival.portTraced) ++portTraced;
+      }
+      std::cout << label << "SingularityArrivals classified=1 arrivals="
+                << arrivals->size() << " radialEdge=" << radialEdge
+                << " faceInterior=" << arrivals->size() - radialEdge
+                << " matched=" << matched << " portTraced=" << portTraced << '\n';
+      if (!perArrival) return;
+      for (const auto &arrival : *arrivals) {
+        std::cout << label << "SingularityArrival trace=" << arrival.trace.index()
+                  << " node=" << arrival.node.index() << " approach="
+                  << directional::geometry::field_aligned_arrival_approach_name(
+                         arrival.approach)
+                  << " edge="
+                  << (arrival.radialEdge
+                          ? std::to_string(arrival.radialEdge->first().index()) +
+                                "-" +
+                                std::to_string(arrival.radialEdge->second().index())
+                          : std::string("-"))
+                  << " port="
+                  << (arrival.port ? std::to_string(arrival.port->index())
+                                   : std::string("-"))
+                  << " portTraced=" << (arrival.portTraced ? 1 : 0) << '\n';
+      }
+    };
+    print_arrivals("Sphere", sphere, true);
+    print_arrivals("Genus", genus, false);
+  }
   const auto sphereDisplay = display_of(sphere);
   for (const auto *face : {&sphereLocus.sourceFace, &sphereLocus.relatedSourceFace,
                           &sphereLocus.edgeTraceFaceCorners}) {
