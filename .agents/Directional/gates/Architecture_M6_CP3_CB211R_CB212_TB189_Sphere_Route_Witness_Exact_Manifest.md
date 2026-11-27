@@ -1,6 +1,6 @@
 # CB-211R and CB-212 exact manifests and TB-EXEC-189 contract (2026-11-27 UTC)
 
-**Review artifact only.** Frozen by the [TB-REV-188 adversarial continuation](../Architecture_M6_CP3_TB_REV_188_Adversarial_Review_20261127.md), BB1–BB4. It supersedes the [CB-211 prose plan](Architecture_M6_CP3_CB211_P13_Completion_Input_Boundary_Witness_Plan_20261127.md). Nothing here has been applied, built or run.
+**Review artifact only.** Frozen by the [TB-REV-188 adversarial continuation](../Architecture_M6_CP3_TB_REV_188_Adversarial_Review_20261127.md), BB1–BB4. It supersedes the [CB-211 prose plan](../M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#cb-211-prose-plan-withdrawn-historical). Nothing here has been applied, built or run.
 
 **Checks done in Review** (throwaway `CLAUDE_` worktree, since removed):
 - `git apply --check`, exact replay and `git diff --check`.

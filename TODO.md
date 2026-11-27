@@ -1,6 +1,12 @@
-**Current turn outcome (2026-11-27 UTC):** TB-REV-189 independently accepts the activated 1006/1006 test gate (CP2 491/491; membership 1087 = 1006 gated + 81 deferred). 655 exact, 350 N1/N2 and one authorized row858 receipt change. NotApplicable confirms legacy fallback; 14 certified plan discs are not 14 actual A4 producer calls. Cell164 is a non-disk bridge excursion, repeated original node35, 24 singularity-support bridge pairs; BB3 disk prediction false. No produced sphere. V5 not rerun: Cylinder PASS 288, Vase RED, BunnyRandom ABNORMAL at 600 s. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md). [Adversarial continuation](.agents/Directional/Architecture_M6_CP3_TB_REV_189_Adversarial_Review_20261127.md): CB-213 WITHDRAWN (code-determined; repeats CB102); A4 unit already decided (DESIGN §5/§5.2, RA-213/214); next `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` (Review, runtime-free).
+**Current turn outcome (2026-11-27 UTC):** `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` (step 65C re-baselined; runtime-free) is complete; see the [record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md).
+- **A4D1:** A4's unit is the A2b region.
+- **A4D2:** the disc domain is built as boundary schedule → corners → fill.
+- **A4D3/A4D4:** the schedule has one owner in the A3 module, with three reachable typed failures. Debt O50 records the duplicate lookup.
+- **A4D5:** sphere regions 5 and 10 (3 walk nodes) falsify node-only corners for regular discs. The corner slice must measure this.
+- **Frozen:** exact CB-214 (`0fc97ddc…b02b`, four paths, behaviour-neutral, syntax-clean) and a 1008-row TB-EXEC-191 manifest (`ca16b66d…4081`).
+- **Next:** `M6-CP3-CB-214-P13-REGION-BOUNDARY-SCHEDULE`. Stable 67/17/50, debt 1, deferred 81, no promotion.
 
-## CURRENT — TB189 test gate accepted; CB-213 withdrawn; per-disc A4 route (65A–65D) resumed (2026-11-27 UTC)
+## CURRENT — per-disc A4 route: DEFN-65C complete; CB-214 boundary schedule next (2026-11-27 UTC)
 
 - [x] **COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.
@@ -26,29 +32,35 @@
   - CC4: the sphere's discs are 368 fragments on 192 faces, and no A4 code builds a fragment disc.
   - CC5: the 65A–65D route has never been opened.
   - It also corrects step 4 of TB-REV-188 adv. and its diagnostic-only CB-211R/212.
-- [-] **9 WITHDRAWN** `M6-CP3-CB-213-P13-A4-REGION-DECLINE-RECEIPT` and conditional TB-EXEC-190 / TB-REV-190 — [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB213_P13_A4_Region_Decline_Receipt_Exact_Manifest.md) (WITHDRAWN header). Do not apply.
-- [ ] **10 NEXT** `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` (step 65C re-baselined; Review, runtime-free). It must:
-  - (a) reconcile 65A–65D against HEAD, with sphere and Vase as witnesses;
-  - (b) freeze ONE exact, behaviour-neutral product slice: the per-A2b-disc domain (fragments, oriented walk, corners, per-arc A3 breakpoints) with a typed validator and a non-vacuity test, consumed by no producer;
-  - (c) record TB predictions: sphere 14 domains partitioning 192 faces; Vase 3; digest-neutral.
-- [ ] **11** CB domain slice, compile only → **12** TB-EXEC: full 1006 plus domain receipts → **13** TB-REV.
+- [-] **9 WITHDRAWN** `M6-CP3-CB-213-P13-A4-REGION-DECLINE-RECEIPT` and conditional TB-EXEC-190 / TB-REV-190 — [manifest](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#cb-213-exact-manifest-withdrawn-historical) (WITHDRAWN header). Do not apply.
+- [x] **10 COMPLETE** `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` — [record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md).
+  - 65A–65D reconciled: 65A is not on the sphere's path, 65B gates acceptance, 65C is this turn and 65D is dispatch.
+  - A4D1–A4D5 frozen.
+  - The withdrawn CB-211 plan and CB-213 manifest are folded into Vol D3.
+- [ ] **11 NEXT** `M6-CP3-CB-214-P13-REGION-BOUNDARY-SCHEDULE` — [exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB214_TB191_Region_Boundary_Schedule_Exact_Manifest.md). Compile only. One exact diff `0fc97ddc…b02b`, four paths:
+  - `build_region_boundary_schedules` with its typed failure;
+  - unit rows 1007/1008;
+  - 16 receipt lines in row858.
+- [ ] **12** `M6-CP3-TB-EXEC-191` on the 1008-row manifest `ca16b66d…4081`, no V5. Sphere prediction: 14 regions, 60 sides, 30 paired arcs, all even; genus_two `otherArcs=0`.
+- [ ] **13** `M6-CP3-TB-REV-191`.
 - [ ] **14+** One DEFN → CB → TB each, in order:
-  1. per-disc dispatch with typed declines, which also fixes the Amendment-19 declined flags at `RemeshPipeline.cpp:13310–13312`;
-  2. boundary and corners;
-  3. fill (§4.9);
-  4. aggregation and the O41 switch exit.
+  1. corners, which decides A4D5 and admits a gated Vase row;
+  2. fill domain (A2a′ fragments);
+  3. 65B reciprocal trace intervals;
+  4. 65D per-disc dispatch with typed declines, which retires O50 and fixes the Amendment-19 flags at `RemeshPipeline.cpp:13310–13312`;
+  5. O41 and the switch exit.
 
-  The source-region producers and the singularity veto stay until the per-disc producer exists (RA-213).
+  The source-region producers and the singularity veto stay until per-disc dispatch exists (RA-213).
 - [ ] **CARRIED:** B2, the BunnyRandom regression lead on a shared stage: the previous RED was `RotationSystemInconsistent` at A2b, and the run now times out at 600 s. The observation mechanism is frozen in a separate Review item. No acceptance or timeout increase.
 - [ ] **HELD:** B1 fallback repair (off-trajectory; the fallback cannot be certified, DESIGN §5.2); row858 legacy diagnostic lines (CB-210/211R/212) stay until the per-disc route supersedes them; CB-207D (no cap); CB-207C (size receipt only if needed); close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION
-Owner: Review agent only, runtime-free (step 65C, re-baselined). Implementation agent: no runnable turn. CB-213 is WITHDRAWN: do not apply its diff or run TB-EXEC-190/TB-REV-190.
-Authority: Architecture_M6_CP3_TB_REV_189_Adversarial_Review_20261127.md (CC1-CC5); DESIGN §2.1 item 7, §5, §5.1, §5.2, §7.2, §7.4; RA-213 §2-§4 and RA-214 §3-§5 (Vol D2); D10 record Architecture_M6_CP3_DEFN_P13_A4_Size_Grading_Decision_Review_20261112.md §5; TB189 result 15171482516 (sphere: 14 certified discs, 30 trace arcs, 368 fragments on 192 faces); source 39253c63c308a2699669095bdb12e4ece72d502a.
-Deliver: (a) reconcile 65A-65D with HEAD for the sphere and Vase witnesses; (b) freeze ONE exact behaviour-neutral product slice the architecture keeps (expected: per-A2b-disc domain = fragments, oriented walk, corners and per-arc A3 breakpoints, with a typed enum validator and a non-vacuity unit test), consumed by no producer; (c) falsifiable TB predictions (sphere 14 valid domains partitioning its 192 faces; Vase 3; 1006 rows otherwise unchanged, digest-neutral per RA-211). Exact diff + manifest, syntax-only check, <=4 paths.
-Then: CB (compile only) -> TB-EXEC full 1006 + domain receipts -> TB-REV -> next slice DEFN (per-disc dispatch with typed declines + Amendment-19 flags) -> boundary/corners -> fill -> aggregation/O41 switch. B2 observation mechanism: separate Review item.
-Do not: diagnostic-only CBs, remove or region-scope the singularity veto, change producer dispatch, repair B1 or the fallback, CB-207D, promote CP3/497/D0/H4, start J6/E5/CB-190.
+NEXT_TURN: M6-CP3-CB-214-P13-REGION-BOUNDARY-SCHEDULE
+Owner: Code + Build only. Apply one exact diff; compile the eight GMP/GMPXX targets, runtimeExecution=false. No runtime, no other source/test/fixture/selector/harness/workflow change.
+Authority: gates/Architecture_M6_CP3_CB214_TB191_Region_Boundary_Schedule_Exact_Manifest.md; Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md (A4D1-A4D5).
+  Diff Architecture_M6_CP3_CB214_P13_Region_Boundary_Schedule_Exact.diff SHA-256 0fc97ddc4ac033281a1bc6c8ce9eafd379e89a888f5906ccf3c74a1f59b8c02b (17,530 B, +316/-0); preimages GlobalConformityBaseline.h 4b8bf701..., GlobalConformityBaseline.cpp ed146974..., GlobalConformityBaselineTests.cpp 90b253a6..., SurfaceCellTracingDisplayTests.cpp 6149b26d...; postimages per manifest. STOP on hash/path/patch/compile mismatch; do not adapt.
+Then: TB-EXEC-191 (1008-row manifest ca16b66d...4081; rows 1007/1008 new; row858 +16 predicted lines; others N1-N3 = TB189 15171482516; no V5) -> TB-REV-191 -> corners DEFN (A4D5).
+Do not: run tests in CB, call the schedule from any producer, change dispatch or the veto, repair B1/fallback, CB-207D, promote CP3/497/D0/H4, start J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)

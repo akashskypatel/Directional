@@ -1,4 +1,4 @@
-**Current currency — TB-REV-189 (2026-11-27 UTC):** TB-REV-189 independently accepts the activated 1006/1006 test gate (CP2 491/491; membership 1087 = 1006 gated + 81 deferred). 655 exact, 350 N1/N2 and one authorized row858 receipt change. NotApplicable confirms legacy fallback; 14 certified plan discs are not 14 actual A4 producer calls. Cell164 is a non-disk bridge excursion, repeated original node35, 24 singularity-support bridge pairs; BB3 disk prediction false. No produced sphere. V5 not rerun: Cylinder PASS 288, Vase RED, BunnyRandom ABNORMAL at 600 s. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion. [Independent review](Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md). Next `M6-CP3-CB-213-P13-A4-REGION-DECLINE-RECEIPT`.
+**Current currency — DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION (2026-11-27 UTC):** step 65C re-baselined (runtime-free). A4's unit is the A2b region, and the disc domain is built as boundary schedule → corners → fill (A4D1–A4D5). CB-214 freezes the behaviour-neutral boundary schedule (A2b walk → A3 spans) and a 1008-row gate. Sphere regions 5 and 10 (3 walk nodes) are the corner-slice falsifier. TB-REV-189's 1006/1006 acceptance stands. Stable 67/17/50, debt 1, deferred 81; no promotion. [Record](Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md).
 
 # Directional — Project Orientation
 
@@ -48,7 +48,7 @@ Each arrow denotes a checked, immutable producer-to-consumer boundary. Details a
 | **M5 — closed** | Canonical periodic/quotient identities, certificates and direct producer evidence; **449/449**. |
 | **M6-CP1 — closed** | Occurrence, quotient and embedding separation; **479/479** (mechanism-only). |
 | **M6-CP2 — closed** | Independent `SurfaceProductVerifier`; accepted cumulative **491/491**. |
-| **M6-CP3 — active; multi-cut plan remains open** | CP2 491/491 accepted; [TB-REV-189](Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md) accepts the activated 1006/1006 test gate, not production. TB185V/TB187Q remain preactivation comparators; TB186 row971 test-authority RED is discharged at the measured contract. Sphere completion rejects a repeated original boundary node; V5 BunnyRandom timed out; no checkpoint promotion. |
+| **M6-CP3 — active; multi-cut plan remains open** | CP2 491/491 accepted; [TB-REV-189](Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md) accepts the activated 1006/1006 test gate, not production. The per-disc A4 route (65A–65D) resumed: [DEFN-65C](Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md) froze CB-214, the first domain slice. TB185V/TB187Q remain preactivation comparators; TB186 row971 test-authority RED is discharged at the measured contract. Sphere completion rejects a repeated original boundary node; V5 BunnyRandom timed out; no checkpoint promotion. |
 | **M7–M8 — planned** | Verifier-assigned disposition/degradation, then production hardening. |
 
 Stable accounting now includes the TB170 accepted-green recurrence: **67 events / 17 categories / 50 recurrences** with **one** produced-witness debt. Accepted M6 CP2 is **491/491**; CP3's 497 identities are frozen, not accepted. See the [handoff](Future_Chat_Session_Handoff.md), [RA-124 Review](M6_Consolidated_Record_Vol_C_CP3_Gate_Turns.md#architecture_m6_cp3_defn_iso_a_seam_node_representative_census_review_decision_20261021md "moved: Architecture_M6_CP3_DEFN_ISO_A_Seam_Node_Representative_Census_Review_Decision_20261021.md") and [regression tracker](Regression_Root_Cause_Tracker.md).
@@ -143,7 +143,7 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION` (Review, runtime-free; step 65C re-baselined by the [TB-REV-189 adversarial continuation](Architecture_M6_CP3_TB_REV_189_Adversarial_Review_20261127.md)). CB-213 is withdrawn. The DEFN freezes one behaviour-neutral per-A2b-disc domain slice. No V5, no producer repair and no veto change.
+**Current priority:** `M6-CP3-CB-214-P13-REGION-BOUNDARY-SCHEDULE`, compile only ([exact manifest](gates/Architecture_M6_CP3_CB214_TB191_Region_Boundary_Schedule_Exact_Manifest.md)). Then TB-EXEC-191 (1008 rows), TB-REV-191 and the corners DEFN. The legacy-fallback repair (B1) stays held; the source-region producers and the veto stay until 65D.
 
 
 **Historical priority (completed CB-194, not current):** `M6-CP3-CB-194-P13-CO-CARRIER-INTERVAL-IDENTITY-RECEIPT` — all-piece exact source-edge interval identity receipt only; no production reader or region-election change, no runtime in CB, no opposite-face crediting. [review](Architecture_M6_CP3_TB_REV_172_Along_Edge_Visit_Region_Receipt_Independent_Review_20261123.md).
@@ -159,6 +159,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 TB-REV-167 S6 (carried to CB-190): terminal-vertex edge-side diagnostics require a direct two-orientation witness. Diagnostic-only; no new stable regression.
 
 ## 8. Recurring defect patterns
+
+- **Plan before producer domain, re-asked (2026-11-27).** RA-213 and RA-214 had already set A4's unit as the A2b disc. TB-REV-188 adv. and TB-REV-189 re-proposed a per-source-region decline receipt anyway; it is now withdrawn. Search the record before freezing a receipt (LESSONS 531).
 
 - TB189: global producer flags are not per-region attempt evidence. Source-topology region identity is not certified plan-region identity. BB3 disk prediction failed; singularity-support exclusion is independently located. Existing production-witness and partition-structure lessons apply.
 

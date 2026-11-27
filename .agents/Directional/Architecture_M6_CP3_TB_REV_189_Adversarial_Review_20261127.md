@@ -18,7 +18,7 @@ Product and test bytes are unchanged.
   - the BB3 falsification (my prediction was wrong);
   - B1 held and B2 carried.
 - **Upheld, with a correction to me.** TB-REV-189 is right that A4 is scheduled per source-topology region, not per plan region. My TB-REV-188 adv. BB1/BB2 wrote "no A4 producer built any of the 14 plan regions", which implied the producers had been called per plan region. They never were.
-- **Withdrawn: [CB-213](gates/Architecture_M6_CP3_CB213_P13_A4_Region_Decline_Receipt_Exact_Manifest.md)**, and with it the conditional TB-EXEC-190 and TB-REV-190 (CC1, CC2).
+- **Withdrawn: [CB-213](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#cb-213-exact-manifest-withdrawn-historical)**, and with it the conditional TB-EXEC-190 and TB-REV-190 (CC1, CC2).
 - **Struck: the "DEFN on A4 ownership of closed-surface discs and §5.2 fallback".** DESIGN and RA-213/RA-214 already decide it (CC3).
 - **Realigned:** resume the per-disc A4 route, steps 65A–65D, which has been planned since 2026-11-08 and never opened (CC4, CC5).
 - **Corrections to my own work:**

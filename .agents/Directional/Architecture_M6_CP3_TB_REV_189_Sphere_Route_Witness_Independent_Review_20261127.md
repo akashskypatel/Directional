@@ -19,7 +19,7 @@ TB189 run 45936843671 job 140302018167, result 15171482516 ZIP `9cf3decbf3dea3a1
 
 ## Recommendation
 
-Freeze only [M6-CP3-CB-213-P13-A4-REGION-DECLINE-RECEIPT](gates/Architecture_M6_CP3_CB213_P13_A4_Region_Decline_Receipt_Exact_Manifest.md), diagnostic-only Code + Build, with exact four-path diff and falsifiable predictions for actual source-region attempts and support mapping. Apply/build only in that successor. Full gate execution then separate review conditional. No B1 repair, fallback change, parity/activation change, CB-207D, parameter deletion, J6/E5/CB-190 or promotion. Preserve B2 until the ownership definition decision. Existing production-witness and partition-structure lessons apply; no new general lesson.
+Freeze only [M6-CP3-CB-213-P13-A4-REGION-DECLINE-RECEIPT](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#cb-213-exact-manifest-withdrawn-historical), diagnostic-only Code + Build, with exact four-path diff and falsifiable predictions for actual source-region attempts and support mapping. Apply/build only in that successor. Full gate execution then separate review conditional. No B1 repair, fallback change, parity/activation change, CB-207D, parameter deletion, J6/E5/CB-190 or promotion. Preserve B2 until the ownership definition decision. Existing production-witness and partition-structure lessons apply; no new general lesson.
 
 ## Review closeout
 

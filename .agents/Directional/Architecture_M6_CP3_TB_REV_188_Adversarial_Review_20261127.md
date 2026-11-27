@@ -7,7 +7,7 @@ Continues `M6-CP3-TB-REV-188` after the [independent review](Architecture_M6_CP3
 - **Upheld:** the 1006/1006 activated test gate, the row971 discharge (A1), and V5 non-acceptance with B2 carried.
 - **Upheld with a correction:** B1's root class. The repeated node is in the original input cell.
 - **Realigned: the trajectory.** TB-REV-188 says the sphere "reaches completion". It does, but only the completion of the **legacy tracing fallback**, not of the architecture route. CB-211's question (which input cell repeats a node) is about that fallback. The decisive open question is why no A4 producer built any of the sphere's 14 plan regions.
-- **Withdrawn:** the [CB-211 prose plan](gates/Architecture_M6_CP3_CB211_P13_Completion_Input_Boundary_Witness_Plan_20261127.md).
+- **Withdrawn:** the [CB-211 prose plan](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#cb-211-prose-plan-withdrawn-historical).
   - It is a prose plan, not an exact diff.
   - It bundles a mapping between stages that it defines nowhere ("record UNKNOWN").
   - Replaced by two exact test-only diffs, CB-211R and CB-212, measured in one gate.

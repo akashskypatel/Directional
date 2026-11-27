@@ -1,3 +1,16 @@
+**DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION disposition (2026-11-27 UTC; [record](Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md)).** Runtime-free; no new stable regression. Stable 67/17/50, debt 1, deferred 81, CP2 491/491.
+- **O50 — duplicate arc-schedule lookup, non-stable debt.**
+  - **Root:** CB-214's schedule copies the curved producer's `bound_arc_schedule` path test and accepted-cut incidence join (`SurfaceCellTracing.cpp:14465–14489`, `:17280–17340`).
+  - **Falsifier:** the two disagree on any arc.
+  - **Owner:** 65D, which moves the producer onto `build_region_boundary_schedules`.
+  - **Prohibited:** a third copy.
+- **A4D5 — corner falsifier, non-stable open question.**
+  - **Root:** sphere regions 5 and 10 have 3 walk nodes. A regular field-aligned disc with corners only at nodes needs at least 4. So an arc turns (slide), `interiorSingularityFree` is wrong, or a node turns by more than a quarter.
+  - The 34 boundary-singularity incidences also fit no clean mix of port valences.
+  - **Owner:** the corners DEFN after TB-REV-191.
+  - **Prohibited:** repairing A2b certification or A3 from this hypothesis before the measurement.
+- **CB-213** is withdrawn (TB-REV-189 adv.). B1 stays held; B2 is carried to a separate Review item.
+
 **TB-REV-189 independent disposition (2026-11-27 UTC; [review](Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md)).** TB-REV-189 independently accepts the activated 1006/1006 test gate (CP2 491/491; membership 1087 = 1006 gated + 81 deferred). 655 exact, 350 N1/N2 and one authorized row858 receipt change. NotApplicable confirms legacy fallback; 14 certified plan discs are not 14 actual A4 producer calls. Cell164 is a non-disk bridge excursion, repeated original node35, 24 singularity-support bridge pairs; BB3 disk prediction false. No produced sphere. V5 not rerun: Cylinder PASS 288, Vase RED, BunnyRandom ABNORMAL at 600 s. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion. B1 held: actual calls are over SourceTopologyRegions, not the 14 plan regions. Predict global singularity-port guard for each actual call, not yet measured. CB-213 was WITHDRAWN by the [adversarial continuation](Architecture_M6_CP3_TB_REV_189_Adversarial_Review_20261127.md): the code fixes its result. Next `M6-CP3-DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION`. B2 remains open; no V5 rerun.
 
 **TB-REV-188 independent disposition (2026-11-27 UTC; [review](Architecture_M6_CP3_TB_REV_188_Completion_Receipt_Activated_Full_Gate_Independent_Review_20261127.md)).** Activated test gate 1006/1006 accepted, exact 1006 manifest and 81 deferred, 1087 members. Package 15162357312, source `0409304d6f9f423685ccddc26b19baf4e41ea61e`, result 15163822727, 2020/2020 checks. Row971 A1/RA-277-NV1 corrected for measured contract (10 source slides, 14 occurrences, 18 named rays, pinned parameters; not an independent geometry derivation). No stable loss: 67/17/50, debt1/deferred81.

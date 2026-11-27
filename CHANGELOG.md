@@ -1,3 +1,20 @@
+## 2026-11-27 — DEFN-P13-A4-DISC-DOMAIN-CONSTRUCTION: A4 disc domain defined; CB-214 frozen
+
+[Record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md). Step 65C re-baselined, runtime-free; no product or test byte changed on the branch.
+- **65A–65D reconciled.** 65A (boundary carriers) is not on the sphere's path. 65B (reciprocal trace intervals) gates the acceptance of produced discs. 65D (dispatch) still carries the source-region scheduler and the veto.
+- **Frozen definitions:**
+  - A4D1: A4's unit is the A2b region.
+  - A4D2: the disc domain is boundary schedule → corners → fill.
+  - A4D3: the schedule has one owner in the A3 module. Debt O50 records the duplicate lookup in the curved producer.
+  - A4D4: three reachable typed failures.
+  - A4D5: sphere regions 5 and 10 cannot be regular discs with corners only at nodes. The corner slice measures this.
+- **Frozen successor:** exact `M6-CP3-CB-214-P13-REGION-BOUNDARY-SCHEDULE` ([manifest](.agents/Directional/gates/Architecture_M6_CP3_CB214_TB191_Region_Boundary_Schedule_Exact_Manifest.md)).
+  - Diff `0fc97ddc…b02b`, four paths, +316/−0, behaviour-neutral.
+  - Syntax-only check: 0 errors, no new warnings.
+- **TB-EXEC-191 manifest:** 1008 rows (`ca16b66d…4081`). Rows 1–1006 are byte-identical to `a9b80832…0587`; two new GUARD rows.
+- **Consolidation:** the withdrawn CB-211 prose plan and CB-213 manifest are folded into Vol D3.
+- **Accounting:** stable 67/17/50, debt 1, deferred 81, CP2 491/491; no promotion.
+
 ## 2026-11-27 — TB-REV-189 adversarial continuation: CB-213 withdrawn; per-disc A4 route resumed
 
 [Record](.agents/Directional/Architecture_M6_CP3_TB_REV_189_Adversarial_Review_20261127.md). Runtime-free; product and test bytes are unchanged.
@@ -10,7 +27,7 @@
 
 ## 2026-11-27 — TB-REV-189 independently adjudicated
 
-TB-REV-189 independently accepts the activated 1006/1006 test gate (CP2 491/491; membership 1087 = 1006 gated + 81 deferred). 655 exact, 350 N1/N2 and one authorized row858 receipt change. NotApplicable confirms legacy fallback; 14 certified plan discs are not 14 actual A4 producer calls. Cell164 is a non-disk bridge excursion, repeated original node35, 24 singularity-support bridge pairs; BB3 disk prediction false. No produced sphere. V5 not rerun: Cylinder PASS 288, Vase RED, BunnyRandom ABNORMAL at 600 s. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md). Exact diagnostic-only successor `M6-CP3-CB-213-P13-A4-REGION-DECLINE-RECEIPT` frozen in [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB213_P13_A4_Region_Decline_Receipt_Exact_Manifest.md); no product/test/selector changes or execution.
+TB-REV-189 independently accepts the activated 1006/1006 test gate (CP2 491/491; membership 1087 = 1006 gated + 81 deferred). 655 exact, 350 N1/N2 and one authorized row858 receipt change. NotApplicable confirms legacy fallback; 14 certified plan discs are not 14 actual A4 producer calls. Cell164 is a non-disk bridge excursion, repeated original node35, 24 singularity-support bridge pairs; BB3 disk prediction false. No produced sphere. V5 not rerun: Cylinder PASS 288, Vase RED, BunnyRandom ABNORMAL at 600 s. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion. [Review](.agents/Directional/Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md). Exact diagnostic-only successor `M6-CP3-CB-213-P13-A4-REGION-DECLINE-RECEIPT` frozen in [manifest](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#cb-213-exact-manifest-withdrawn-historical); no product/test/selector changes or execution.
 
 ## 2026-11-27 — TB-EXEC-189 sphere route and completion input census executed
 
@@ -30,7 +47,7 @@ TB-REV-189 independently accepts the activated 1006/1006 test gate (CP2 491/491;
 
 ## 2026-11-27 — TB-REV-188 independent activated test gate review
 
-[Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_188_Completion_Receipt_Activated_Full_Gate_Independent_Review_20261127.md). TB-REV-188 independently accepts the activated 1006/1006 test gate (CP2 491/491; 1087 members = 1006 gated + 81 deferred). Row971 exact arc/ray contract passes; row858 reaches boundary parity repair and rejects a repeated original boundary node. V5 is not accepted: Cylinder PASS (288 quads, strict=0), Vase RED unchanged, BunnyRandom ABNORMAL at 600 s with no terminal verdict or resource receipt. Activation safety beyond the gate and production remain unproved. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion. Exact source `0409304d6f9f423685ccddc26b19baf4e41ea61e`, package 15162357312, full result 15163822727, V5 15165185584; prior TB161 14741883606. The repeated-node predicate is proved to refer to an original input occurrence; exact cell and producer remain unmeasured. Prior CB209 compile record folded in Vol D3 with full text and exact index. Next `M6-CP3-CB-211-P13-COMPLETION-INPUT-BOUNDARY-WITNESS` [bounded plan](.agents/Directional/gates/Architecture_M6_CP3_CB211_P13_Completion_Input_Boundary_Witness_Plan_20261127.md) only after STATUS COMPLETE. No runtime, product, test, fixture, selector, benchmark or build change in Review.
+[Independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_188_Completion_Receipt_Activated_Full_Gate_Independent_Review_20261127.md). TB-REV-188 independently accepts the activated 1006/1006 test gate (CP2 491/491; 1087 members = 1006 gated + 81 deferred). Row971 exact arc/ray contract passes; row858 reaches boundary parity repair and rejects a repeated original boundary node. V5 is not accepted: Cylinder PASS (288 quads, strict=0), Vase RED unchanged, BunnyRandom ABNORMAL at 600 s with no terminal verdict or resource receipt. Activation safety beyond the gate and production remain unproved. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion. Exact source `0409304d6f9f423685ccddc26b19baf4e41ea61e`, package 15162357312, full result 15163822727, V5 15165185584; prior TB161 14741883606. The repeated-node predicate is proved to refer to an original input occurrence; exact cell and producer remain unmeasured. Prior CB209 compile record folded in Vol D3 with full text and exact index. Next `M6-CP3-CB-211-P13-COMPLETION-INPUT-BOUNDARY-WITNESS` [bounded plan](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#cb-211-prose-plan-withdrawn-historical) only after STATUS COMPLETE. No runtime, product, test, fixture, selector, benchmark or build change in Review.
 
 ## 2026-11-27 — TB-EXEC-188 activated full gate PASS and V5 census
 

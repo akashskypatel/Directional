@@ -65,7 +65,7 @@ Bounded corrective route after the single CB-211 chain: use exact TB161 and CB-2
 
 ## Recommendation — one successor and outstanding obligations
 
-Only next after STATUS COMPLETE: `M6-CP3-CB-211-P13-COMPLETION-INPUT-BOUNDARY-WITNESS`, [bounded plan](gates/Architecture_M6_CP3_CB211_P13_Completion_Input_Boundary_Witness_Plan_20261127.md). Test-only existing audit receipt, compile eight GMP/GMPXX targets, no runtime. No successor work in this Review. Freeze a separate immutable gate only after its compile. B2 remains a carried obligation; no second current turn.
+Only next after STATUS COMPLETE: `M6-CP3-CB-211-P13-COMPLETION-INPUT-BOUNDARY-WITNESS`, [bounded plan](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#cb-211-prose-plan-withdrawn-historical). Test-only existing audit receipt, compile eight GMP/GMPXX targets, no runtime. No successor work in this Review. Freeze a separate immutable gate only after its compile. B2 remains a carried obligation; no second current turn.
 
 | Prior obligation | Disposition |
 |---|---|
@@ -98,7 +98,7 @@ Stable **67 events / 17 categories / 50 recurrences**, debt1/deferred81. The act
 | Selector manifest | Gate acceptance entry added; actual selector files unchanged. |
 | LESSONS | Existing §2 and §5 lessons cited; no new general pattern. |
 | Consolidation under CLEAN_UP_POLICY | CB209 compile record folded with full text, exact filename/line count/hash and live link replacements. Current CB210 and TB186/TB185V/TB187Q evidence remain load-bearing. |
-| Successor frozen | `M6-CP3-CB-211-P13-COMPLETION-INPUT-BOUNDARY-WITNESS`; [plan](gates/Architecture_M6_CP3_CB211_P13_Completion_Input_Boundary_Witness_Plan_20261127.md), one test path and falsifiers; no work started. |
+| Successor frozen | `M6-CP3-CB-211-P13-COMPLETION-INPUT-BOUNDARY-WITNESS`; [plan](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#cb-211-prose-plan-withdrawn-historical), one test path and falsifiers; no work started. |
 | Turn boundary held | Runtime-free; no product/test/fixture/selector/benchmark/build mutation. |
 | review_check.py boundary | Native invocation exit1 because the downloaded snapshot has no `.git` or rewrite-baseline object; not a pass. Independent GitHub compare confirms rewrite base `8b7299b43764a6ba3444e5bc774a2f1b65e99731` is ancestor (8476 ahead, 0 behind); reopened all three baseline documents and compared protected headings. Exact snapshot diff and path audit used instead; no missing durable heading. |
 | `STATUS` lifecycle maintained | Entry M6-CP3-TB-REV-188 IN_PROGRESS, started 2026-11-27T02:16:52Z, blank resumed/ended. Final direct beacon follows verified remote application/cleanup, not this patch. |
