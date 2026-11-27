@@ -8067,3 +8067,258 @@ After valid compile closeout, use the same immutable executor/harness `423f385b7
 
 Only the separate independent Review can accept the result. If the prediction holds, decide A4 ownership of closed-surface plan discs with boundary singularities and DESIGN §5.2 fallback in a separate DEFN. If not, retain evidence and reconsider the definition; no repair from this plan. B1 repair, B2 bounded BunnyRandom observation, CB-207D, CB-190, J6/E5, parameter deletion and promotions remain held. Stable counts unchanged.
 ~~~~
+
+
+## TB-REV-191 folded records — 2026-11-27 UTC
+
+Historical records only; their successor instructions are superseded. Source preimage `d1be6c5b3f31f61248e8971c914c63b4a937e363` (`git show d1be6c5b3f31f61248e8971c914c63b4a937e363:.agents/Directional/<filename>`). Current evidence: TB191 execution and independent review, CB-214, DEFN-65C.
+
+| Original file | Lines | Role/verdict | SHA-256 |
+|---|---:|---|---|
+| [Architecture_M6_CP3_CB211R_P13_Sphere_Route_Plan_Witness_Code_Build_Record_20261127.md](#tb191-folded-cb211r) | 35 | CB-211R compile-only evidence; 8 targets | `f55639c1c280148955ba9ec0cc13dda9f93a61b860a98f7292d6598a17f6e68c` |
+| [Architecture_M6_CP3_CB212_P13_Sphere_Completion_Input_Census_Code_Build_Record_20261127.md](#tb191-folded-cb212) | 48 | CB-212 compile-only evidence; 8 targets | `179b716dd412bcdeee4da7bacfd84fb8e577b6d7d4f31f1d9fc990b1ed45f44c` |
+| [Architecture_M6_CP3_TB189_Sphere_Route_Witness_Execution_Report_20261127.md](#tb191-folded-tbexec189) | 93 | TB-EXEC-189 1006/1006; 45 authorized receipts | `071e5decd339f71f25b078863576bada8e6e073dd9314e6e31de8e008b61cfa4` |
+| [Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md](#tb191-folded-tbrev189) | 47 | TB-REV-189 accepted gate only; BB3 falsified; successor superseded by adversarial continuation | `4b4966426fbc99f63b4d287777e9fac344d9139f550b233a0f2c09aed04e04db` |
+
+### tb191-folded-cb211r
+
+~~~~markdown
+# CB-211R — sphere route and plan witness (2026-11-27 UTC)
+
+## Situation
+
+`M6-CP3-CB-211R-P13-SPHERE-ROUTE-PLAN-WITNESS` meets the compile-only gate. The exact test receipt is committed and compiled. Runtime acceptance is not established. The only next turn is `M6-CP3-CB-212-P13-SPHERE-COMPLETION-INPUT-CENSUS` after the root STATUS beacon records completion.
+
+## Background
+
+The [exact manifest](gates/Architecture_M6_CP3_CB211R_CB212_TB189_Sphere_Route_Witness_Exact_Manifest.md) and [TB-REV-188 adversarial review BB1–BB4](Architecture_M6_CP3_TB_REV_188_Adversarial_Review_20261127.md) govern this turn. The exact CB-210 compiled source is `0409304d6f9f423685ccddc26b19baf4e41ea61e`, package `15162357312`. Comparison to that source confirms only document/control changes and this test receipt. The new output reports `SphereRoute`, `SpherePlan` and one `SpherePlanRegion` per retained plan region after `SphereCompletionFailure` in row858. No assertion is added or changed. The phase-front outcome, producer disposition, decline flags, seed/trace counts, and plan-region boundaries/certificates remain unmeasured.
+
+## Assessment
+
+| Evidence | Exact authority |
+|---|---|
+| Reviewed diff | 5,170 B, SHA-256 `288e99bf99a72a5ebf370b36ec001f12c0f17db96735a115bbfe537242ab0486`; `tests/SurfaceCellTracingDisplayTests.cpp` only, +87/−0. Preimage `0089c18ef38298c207a52574fb98ed995c2d65db6bceadea6ea1b5de219bc7a9`; postimage `ae573fe424753dec91ea7f691e9f38efbcb2b69cf5304acb367114acbdf7bdbd`. Local `git apply --check`, exact replay and `git diff --check` passed. Full-index transport body differs from reviewed diff only in expanded blob IDs. Remote blob `c4f3bfbe0eefaa139463935078a56a80f826f5c8`; direct commit comparison confirms exactly one path and +87/−0. |
+| Snapshot | [Run 45931826341](https://github.com/akashskypatel/Directional/actions/runs/45931826341), job `140286053407`, source `c9fc1c14ae9521f85e0cd798c5a9016b2609daf4`, artifact `15169150012`, ZIP SHA-256 `9b7a561db215128f965d7e31c3cc7f1f69872fb44d0d85cf2ee97bae45b06dc6`, archive SHA-256 `d918484a1a62f349202d0a6ee4d0d08b1ec729151cdc74b44e85c35a9d857f15`, 5873/5873 checks. |
+| Apply | [Run 45932143003](https://github.com/akashskypatel/Directional/actions/runs/45932143003), job `140287106662`, request `c82f0b255a2eec0bae5a52f621b665a927e51f70`, source `9412fee8bcac4cb023cde42f07e0cf62027f726c`. Full patch SHA-256 `199dc44f3f75e93a1f66d5cd0f60f00deb49e52d80ce648700406b15dc9d2b20`, diff body SHA-256 `67206a87d9a8e62b0fcaaf7b334f11549b1f6663064f6ebfd13be594b218686b`; result `15168839034`, ZIP SHA-256 `726402d69b2ca6f443ce56a1f8a1c61564e217e73f01056f2b5e64415093c2f5`; log `15168724193`, ZIP SHA-256 `d74d23651d0dfaaa420cb9f58a0a8c237bedf278dc294e2436aeff67b6640951`. Download verification and apply/push exit 0. Workflow identity lacked trash capability; owner connector retired the consumed Drive file. |
+| Compile | [Run 45932351805](https://github.com/akashskypatel/Directional/actions/runs/45932351805), job `140287730742`, request `7732d290b67c289688857907fd6faed4b101faa3`, source `9412fee8bcac4cb023cde42f07e0cf62027f726c`. Configure, preflight and build passed. |
+| Candidate | [15169033799](https://github.com/akashskypatel/Directional/actions/runs/45932351805/artifacts/15169033799), ZIP SHA-256 `da7bb71d6d4a47e314aa0d800e8b8306074ffeadb0e15d7215d53fdc1eb52bc6`, root manifest SHA-256 `80a5c1d21cc846774ecc0cb12ab9d319b7d24ffd5a3eefffa4894b2b6c47c5d4`, source archive SHA-256 `9d80097c440c5dc608e0081f6d874297fc0088f23b9dde22913d3b8c6624adcf`. 28/28 checks. Expires 2026-12-04T03:09:18Z. |
+| Compile log | [15168774628](https://github.com/akashskypatel/Directional/actions/runs/45932351805/artifacts/15168774628), ZIP SHA-256 `72c9de08cfc999a65f9ce1eeb1d818efe4a98c2e2aa18f3336029a945d38d14c`. |
+| Boundary | `runtimeExecution=false`, `semanticContracts=compiled-not-executed`, five source-status files empty, preflight/build exit 0, `DIRECTIONAL_ENABLE_GMP=ON`, link evidence includes `libgmpxx.so` and `libgmp.so`. Eight exact targets, two libraries and six executables; archived executable modes verified. |
+
+All 1191 archived regular files were compared with the verified snapshot. Only the exact test change and dispatcher request differ. No product, other test, fixture, selector, harness or workflow change. No local compilation, discovery, runtime tests or benchmarks.
+
+TB-REV-188 accepts the activated 1006/1006 gate, not production. CP2 491/491; stable 67/17/50, debt1/deferred81, membership1087. V5 remains unaccepted; BunnyRandom cost cause and fine-resolution close_sheets remain unmeasured. No CP3/497/D0/H4 promotion. The new diagnostics are not proof of the predicted route or region count.
+
+### Closeout checks
+
+- [Cleanup run 45932364993](https://github.com/akashskypatel/Directional/actions/runs/45932364993), job `140287710451`, result `15169260150` ZIP SHA-256 `6d3fe824a7de0022ad6880c717d008db5c90272a93f79f4ed68bd2da41f2ec14`, cleanup commit `46c251855bd4f11c322831bbd99158442dff5bf4`. Snapshot trigger and cleanup manifest removed; ten durable workflow files and dispatcher preserved.
+- Document drift audit: zero errors; existing ORIENTATION size warning. All explicitly durable headings retained. Corrected two ORIENTATION references to the withdrawn CB-211 prose plan; no policy or normative edit.
+- Process limitations: initial repository policy/handoff inspection preceded verified snapshot acquisition. Full mandatory pre-work policy/LESSONS and external turn-based-coding-agent skill review are not established. Initial local snapshot Git initialization hit ownership restrictions; a separate scratch replay repository verified the exact patch. Early mailbox reads were stale/absent; workflow-specific run lookup was unavailable and exact request-SHA run discovery succeeded. No duplicate workflow trigger. Cleanup took place while compile used the pinned immutable source. Exact multi-attempt tool ledger not retained. These limitations do not establish runtime or product acceptance.
+
+## Recommendation — CB-212 only, after CB-211R STATUS COMPLETE
+
+Use the [frozen manifest](gates/Architecture_M6_CP3_CB211R_CB212_TB189_Sphere_Route_Witness_Exact_Manifest.md) and CB-211R source `9412fee8bcac4cb023cde42f07e0cf62027f726c`. Verify the exact CB-212 reviewed diff SHA-256 `2483d16a2d5f563681b59267ca7d84cb302e6af84aa77da94ead52a27779545b`, one test path, +122/−0. Require preimage `ae573fe424753dec91ea7f691e9f38efbcb2b69cf5304acb367114acbdf7bdbd`, postimage `6149b26dc7564342261920c1b669e25dfd61cb3ba323cf844ecff07aa65f16cc`. Compile the same eight GMP/GMPXX targets only; no runtime. STOP on any mismatch. Do not combine the two CB turns or advance to TB-EXEC-189 until CB-212 completes. No V5, B1 repair, fallback repair, CB-207D, activation change or product promotion.
+~~~~
+
+### tb191-folded-cb212
+
+~~~~markdown
+# CB-212 — sphere completion input census (2026-11-27 UTC)
+
+## Situation
+
+`M6-CP3-CB-212-P13-SPHERE-COMPLETION-INPUT-CENSUS` meets the compile-only gate. The exact test receipt is committed and compiled. Runtime acceptance is not established. Only `M6-CP3-TB-EXEC-189` is authorized after the root STATUS beacon records completion.
+
+## Background
+
+The [exact manifest](gates/Architecture_M6_CP3_CB211R_CB212_TB189_Sphere_Route_Witness_Exact_Manifest.md) and [TB-REV-188 adversarial review BB1–BB4](Architecture_M6_CP3_TB_REV_188_Adversarial_Review_20261127.md) govern this turn. The [CB-211R record](Architecture_M6_CP3_CB211R_P13_Sphere_Route_Plan_Witness_Code_Build_Record_20261127.md) establishes source `9412fee8bcac4cb023cde42f07e0cf62027f726c`, package `15169033799`. Comparison to that source confirms only document/control changes and the exact census receipt. After the CB-211R receipt block, the test prints two `SphereCompletionInput` lines (arrangement and simplified complex), `SphereSimplification`, `SphereCompletionAudit`, and the audited input cell and same-cell twin bridges or the unavailable receipt. No assertion is added or changed.
+
+## Assessment
+
+| Evidence | Exact authority |
+|---|---|
+| Reviewed diff | 7,718 B, SHA-256 `2483d16a2d5f563681b59267ca7d84cb302e6af84aa77da94ead52a27779545b`; `tests/SurfaceCellTracingDisplayTests.cpp` only, +122/−0. Preimage `ae573fe424753dec91ea7f691e9f38efbcb2b69cf5304acb367114acbdf7bdbd`; postimage `6149b26dc7564342261920c1b669e25dfd61cb3ba323cf844ecff07aa65f16cc`. Local `git apply --check`, exact replay and `git diff --check` passed. Full-index transport body differs from reviewed diff only in expanded blob IDs. Remote blob `bab206adfc5e7de7289b3dceaa4f2588e5cd013c`; direct commit comparison confirms one path and +122/−0. |
+| Snapshot | [Run 45934178863](https://github.com/akashskypatel/Directional/actions/runs/45934178863), job `140293525501`, source `ada2ebdfb9f1c453ac0a64f6aea4015fad00c847`, artifact `15169563404`, ZIP SHA-256 `ccf2fe10265d8967800557da340f88678d6ae4c6ae0e8bb334aca5777238dcdf`, source archive SHA-256 `28762e3fb176b05162549a252d241f6ce72fd4a7f2d6ee3426b77769db7e6827`, 5874/5874 checks. |
+| Apply | [Run 45934418133](https://github.com/akashskypatel/Directional/actions/runs/45934418133), job `140294373289`, request `b9ba8cce79c0703e5a474f53f373822fd21376da`, source `39253c63c308a2699669095bdb12e4ece72d502a`. Full patch SHA-256 `e56f9785c945f45539c4f4e5c7a4ddeb6d1baee6527c2568892ab20b06f3e71e`, diff body SHA-256 `dd6a7279ff2f1fa9a27bbc8f6b2472ab74288b06d4fd7a6693d07cc74d76ca07`; result `15169253032` ZIP `5766f16c7e7d8caeb1dfc6c34de2aee5f40b0712313832404c24286975bedefd`; log `15169932226` ZIP `bebb66796b57ea59d10d9554a3344a8f37d7630988518705b8daead6682b86f2`. Download verification and apply/push exit 0. Owner connector retired consumed Drive file. |
+| Compile | [Run 45934565154](https://github.com/akashskypatel/Directional/actions/runs/45934565154), job `140294834100`, request `8c14c6ae5dfa883d57c8d1c6e1d85f3cb2bb0e0e`, source `39253c63c308a2699669095bdb12e4ece72d502a`. Configure, preflight and build passed. |
+| Candidate | [15170182914](https://github.com/akashskypatel/Directional/actions/runs/45934565154/artifacts/15170182914), ZIP SHA-256 `51cbdd7c323aa6cc29d42afd16a2905c24420d04efa5c1ecfff853f5ed2a5ebf`, root manifest SHA-256 `b7aac97b934933f863ebc4f8f72b048f966f8850025113bb536e57539d6d8124`, source archive SHA-256 `7c4194e692c13b0f897b974f95b18f292e60aba2746c3e8b1e8dcdc6ab73476a`. 28/28 checks. Expires 2026-12-04T03:31:58Z. |
+| Compile log | [15170168041](https://github.com/akashskypatel/Directional/actions/runs/45934565154/artifacts/15170168041), ZIP SHA-256 `c3d84b63524066b54cb260f786debec8293c489b0d94f1d3d4491b96fe7c3d07`. |
+| Boundary | `runtimeExecution=false`, `semanticContracts=compiled-not-executed`, five source-status files empty, preflight/build exit 0, `DIRECTIONAL_ENABLE_GMP=ON`, link evidence contains `libgmpxx.so` and `libgmp.so`. Eight exact targets, two libraries and six executables; executable modes verified. |
+
+All 1192 archived regular source files were compared with the verified snapshot. Only the exact test change and dispatcher request differ. No product, other test, fixture, selector, harness or workflow definition change. No local compilation, discovery, runtime tests or benchmarks. TB-REV-188 accepts the activated 1006/1006 gate, not production. CP2 491/491; stable 67/17/50, debt1/deferred81, membership1087. V5 remains unaccepted; BunnyRandom cost cause and fine-resolution close_sheets remain unmeasured. No CP3/497/D0/H4 promotion. The new receipts do not prove the predicted phase-front route, region count or audited node.
+
+### Closeout checks
+
+- [Cleanup run 45934591360](https://github.com/akashskypatel/Directional/actions/runs/45934591360), job `140294841909`, result `15169708859` ZIP `8cbc797e18bcbfa92edd825626a0a729313dbb9613f4e0d5c2b8db45cfa32e71`, log `15169499378` ZIP `d2f41fc0d1b6c5dce143148c149e866888afa7dd7db1dc5464abb11de6c78895`, cleanup commit `7fa6469a4ecce26d56e31a9bef9e82689e961ba2`. Snapshot marker and cleanup manifest removed. Ten durable workflow files and request slot preserved; zero PR comments removed.
+- Document drift audit returned zero errors; existing ORIENTATION size warning. Explicit durable-heading comparison passed. No policy or normative edit.
+- Process limitations: initial repository policy/handoff inspection preceded verified snapshot and initial STATUS write; the entry beacon used UNKNOWN although the reviewed successor was frozen; full mandatory pre-work policy/LESSONS review and exact tool-call ledger are not established. The external turn-based-coding-agent skill was reviewed after source application. Early mailbox/run discovery required the exact request-SHA lookup. No duplicate workflow trigger. Cleanup used the pinned immutable source boundary while compile ran. These procedural limitations do not establish runtime or product acceptance.
+
+## Recommendation — TB-EXEC-189 only, after CB-212 STATUS COMPLETE
+
+Use the [frozen manifest](gates/Architecture_M6_CP3_CB211R_CB212_TB189_Sphere_Route_Witness_Exact_Manifest.md) and the unchanged TB188 executor `cc25a6402cdd3ca1a33a9a9778250176b182bb2a`. The exact harness is `.agents/Directional/tools/m6_cp3_targeted_artifact_harness.sh` SHA-256 `423f385b73c3825ce9fe18fbd5ca395287620475deb621389f0efbaa601e572c`. Verify the source/package/ZIP/root manifest/source archive identities above, then use the durable `test_benchmark` dispatcher with the following inputs (no diagnostic mode, no V5):
+
+| Environment | Value |
+|---|---|
+| `CANDIDATE_ARTIFACT_ID` | `15170182914` |
+| `EXPECTED_SOURCE_SHA` | `39253c63c308a2699669095bdb12e4ece72d502a` |
+| `EXPECTED_CANDIDATE_ZIP_SHA256` | `51cbdd7c323aa6cc29d42afd16a2905c24420d04efa5c1ecfff853f5ed2a5ebf` |
+| `EXPECTED_ROOT_MANIFEST_SHA256` | `b7aac97b934933f863ebc4f8f72b048f966f8850025113bb536e57539d6d8124` |
+| `EXPECTED_SOURCE_ARCHIVE_SHA256` | `7c4194e692c13b0f897b974f95b18f292e60aba2746c3e8b1e8dcdc6ab73476a` |
+| `CASE_MANIFEST` | `.agents/Directional/gates/Architecture_M6_TB185_P13_Slide_Entry_Activation_Reach_Full_Gate_Case_Manifest.tsv` |
+| `CASE_MANIFEST_SHA256` | `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587` |
+| `EXPECTED_CASE_COUNT` | `1006` |
+| `MEMBERSHIP_LEDGER` | `.agents/Directional/gates/Architecture_M6_CP3_RP01_Off_Gate_Deferred_Ledger_v5.tsv` |
+| `MEMBERSHIP_LEDGER_SHA256` | `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce` |
+
+Execute the 1006 cases once via the immutable harness; verify 1087-member accounting, 81 deferred, 491 CP2 PASS and no mutation/rebuild. Compare all ordered ledgers and complete raw logs to TB188 result `15163822727` under frozen N1–N3. Row858 must PASS; preserve the exact bytes through the LF after `SphereCompletionFailure detail=BoundaryParityRepair:InvalidReplacementBoundary:repeated-boundary-node;AlternativeRepairBudgetExhausted;attempted=106;budget=106`; record only the frozen additional receipt lines in order, then remove those lines for comparison. Other rows must be N1–N3-equal. Predictions in the exact manifest are unmeasured: NotApplicable phase front, 14 regions, repeated original boundary node and audited disk/twins. `Produced` is STOP; `Rejected:<reason>` falsifies the BB1 inference, not by itself a test RED. STOP on any RED, missing receipt, unexpected material difference, crash or invalid boundary. Preserve result and log artifacts, full receipts and first failure; no rerun or timeout substitution. TB-REV-189 independently adjudicates. No B1 repair, fallback repair, CB-207D, parity/activation change, V5, parameter deletion or promotion.
+~~~~
+
+### tb191-folded-tbexec189
+
+~~~~markdown
+# TB-EXEC-189 — sphere route and completion input census (2026-11-27 UTC)
+
+## Situation
+
+The one immutable full gate executed successfully: 1006/1006 PASS. All comparison conditions pass. Row858 measures a negative display contract, not a produced sphere. BB1 is supported; BB3's disk prediction is false. No independent gate credit or production acceptance is assigned. Only TB-REV-189 follows formal execution closeout.
+
+## Background
+
+- [Exact manifest](gates/Architecture_M6_CP3_CB211R_CB212_TB189_Sphere_Route_Witness_Exact_Manifest.md); [CB-212 compile record](Architecture_M6_CP3_CB212_P13_Sphere_Completion_Input_Census_Code_Build_Record_20261127.md); [TB-REV-188 adversarial](Architecture_M6_CP3_TB_REV_188_Adversarial_Review_20261127.md). Source `39253c63c308a2699669095bdb12e4ece72d502a`, package `15170182914`, compile run `45934565154`. Candidate ZIP `51cbdd7c323aa6cc29d42afd16a2905c24420d04efa5c1ecfff853f5ed2a5ebf`, root manifest `b7aac97b934933f863ebc4f8f72b048f966f8850025113bb536e57539d6d8124`, archive `7c4194e692c13b0f897b974f95b18f292e60aba2746c3e8b1e8dcdc6ab73476a`, 28/28 checks and six executable modes 755 verified at entry. Executor `cc25a6402cdd3ca1a33a9a9778250176b182bb2a`, harness `423f385b73c3825ce9fe18fbd5ca395287620475deb621389f0efbaa601e572c`.
+- [Run 45936843671](https://github.com/akashskypatel/Directional/actions/runs/45936843671), runtime job `140302018167`, attempt 1, dispatch `4605b75e3c04810e7fc9cd6c2297315c9a791d76`, request SHA-256 `39b585b31b0b2a70b206e106d424e1ce326a36d07cc35bb80349b4469ad91e20`. Mailbox `m6-cp3-tb189-exec` on `workflow-mailbox` matches source, event, request and artifact metadata. Both schema validators, parse, runtime and mailbox succeed; drive_apply, compile and noop skipped. Wrapper 03:54:57–04:11:17 UTC (980 s), exit0. One execution, no retry, V5 or local runtime.
+- [Continuation record](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb189-execution-continuation-historical) records snapshot run `45936682612`, job `140301445280`, artifact `15170603088`, source `7e5cf68b50e3e876211eacfd33af511a917ed440`, ZIP `3fce894afc7f48757b149be29b47912d9b76128354123341ff945f6573687193`, 5875/5875 checks; cleanup run `45936974764`, commit `10aabd6e85338381e01ec132e8b85ffd30c93567`. Comparison to resume commit `035d093adf969a4e5f3477cb74a52f58f1dff520` shows only continuation record, dispatcher request, removed snapshot marker and STATUS changes; no intended document or semantic source changed.
+
+## Assessment — execution and comparison
+
+| Artifact | ID | ZIP SHA-256 |
+|---|---|---|
+| Result | 15171482516 | `9cf3decbf3dea3a11aa645ec5d5db12307508e73611f962d65c78862ec9b70da` |
+| Harness log | 15171143285 | `6dd901111d919be5364f54a7a6ff8be778517ff203403aeeff5bec39f6075ddf` |
+| Wrapper log | 15171586912 | `f321579127840554f6440b50f47d40ce05c3e9d99a34d40b55e2282c1fe9bbb2` |
+| TB188 reference result | 15163822727 | `59957c5adbb95a5e5a90f1eada11f3aec60366ee3a8c22694edf8de799293780` |
+
+All outer hashes match, exact ZIP inventory and 2020/2020 result checks. Manifest `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587`; header + CP2 prefix 491 `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`; deferred `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`. Membership 1087 = 1006 gated + 81 deferred across five binaries; exact set match and bytes equal TB188 `29f997463824520bb66544ac9b33830067013366328cb63e7ccc301bc40b54f9`. Ledger `593739b86139d1341d85740608cf6dec9915a08787c5670d61e5504277824310`; boundary `c10e026df2b6e1ff25967b3585d995ac829fea0452993335eedcb4901909c6b4`. All 1006 ordered manifest/ledger identities, raw hashes in both ledgers, single-test envelopes, resource exit0 and ordered harness receipts verified. CP2 491/491 PASS. Planned/executed/PASS 1006, zero RED/abnormal/missing/skipped/duplicate/control_bad/unexpected_pass/later_positive_red/red_site_bad; postflight true, exit0; configure, compile, relink and benchmark false.
+
+All ledger fields except raw-log hashes match TB188. Among 1005 other rows: 655 byte-identical, 350 N1/N2 equal, zero N3-only and zero material differences. N1 removes only elapsed GoogleTest summary fields; N2 CRLF; N3 not needed because no off-row differences remain after N1/N2. Prior normalizer bytes were unavailable; an equivalent narrow N1/N2 comparison used positive elapsed/CRLF and negative semantic/non-summary controls. No new normalization or whitelist. All 13 named control rows match under N1/N2. Row858: exact byte prefix 69,446 through LF after SphereCompletionFailure, SHA-256 `68839fe0a5bc1ed0128e90cd9c96ab0ee55aaddb1c85f711494da0fa9d954266`; first 69,196 bytes match frozen SHA-256 `32d6de52259ed91a9968109bda21b68d3dc4d37a3b1aed7b59193301c61a42d9`. Raw TB189 SHA-256 `5edee978137edad1bb5c992a3b0724babcba1131873bafc5576afab074d329d5`; exactly 45 new lines in the frozen order, then N1/N2-equal suffix. No missing/extra receipt or unexpected material difference. Row858 PASS, exit0, GoogleTest 9.199 s. Previous negative completion failure string remains exact.
+
+### Row858 — verbatim added receipt
+
+```text
+SphereRoute producerDisposition=NotApplicable phaseFront=NotApplicable uniformDeclined=0 periodicDeclined=0 boundedDiskDeclined=0 seeds=98 traces=392
+SpherePlan retained=1 arcs=30 mandatory=0 trace=30 cut=0 regions=14 certificates=14
+SpherePlanRegion region=0 boundaryArcs=4 walkNodes=4 repeatedArcs=0 missingArcs=0 mandatory=0 trace=4 cut=0 sourceFaces=46 disc=1 interiorSingularityFree=1 boundarySingularities=2
+SpherePlanRegion region=1 boundaryArcs=6 walkNodes=6 repeatedArcs=0 missingArcs=0 mandatory=0 trace=6 cut=0 sourceFaces=14 disc=1 interiorSingularityFree=1 boundarySingularities=3
+SpherePlanRegion region=2 boundaryArcs=4 walkNodes=4 repeatedArcs=0 missingArcs=0 mandatory=0 trace=4 cut=0 sourceFaces=16 disc=1 interiorSingularityFree=1 boundarySingularities=2
+SpherePlanRegion region=3 boundaryArcs=4 walkNodes=4 repeatedArcs=0 missingArcs=0 mandatory=0 trace=4 cut=0 sourceFaces=46 disc=1 interiorSingularityFree=1 boundarySingularities=3
+SpherePlanRegion region=4 boundaryArcs=4 walkNodes=4 repeatedArcs=0 missingArcs=0 mandatory=0 trace=4 cut=0 sourceFaces=16 disc=1 interiorSingularityFree=1 boundarySingularities=2
+SpherePlanRegion region=5 boundaryArcs=3 walkNodes=3 repeatedArcs=0 missingArcs=0 mandatory=0 trace=3 cut=0 sourceFaces=16 disc=1 interiorSingularityFree=1 boundarySingularities=2
+SpherePlanRegion region=6 boundaryArcs=5 walkNodes=5 repeatedArcs=0 missingArcs=0 mandatory=0 trace=5 cut=0 sourceFaces=14 disc=1 interiorSingularityFree=1 boundarySingularities=3
+SpherePlanRegion region=7 boundaryArcs=4 walkNodes=4 repeatedArcs=0 missingArcs=0 mandatory=0 trace=4 cut=0 sourceFaces=32 disc=1 interiorSingularityFree=1 boundarySingularities=2
+SpherePlanRegion region=8 boundaryArcs=4 walkNodes=4 repeatedArcs=0 missingArcs=0 mandatory=0 trace=4 cut=0 sourceFaces=46 disc=1 interiorSingularityFree=1 boundarySingularities=2
+SpherePlanRegion region=9 boundaryArcs=4 walkNodes=4 repeatedArcs=0 missingArcs=0 mandatory=0 trace=4 cut=0 sourceFaces=53 disc=1 interiorSingularityFree=1 boundarySingularities=3
+SpherePlanRegion region=10 boundaryArcs=3 walkNodes=3 repeatedArcs=0 missingArcs=0 mandatory=0 trace=3 cut=0 sourceFaces=9 disc=1 interiorSingularityFree=1 boundarySingularities=2
+SpherePlanRegion region=11 boundaryArcs=5 walkNodes=5 repeatedArcs=0 missingArcs=0 mandatory=0 trace=5 cut=0 sourceFaces=14 disc=1 interiorSingularityFree=1 boundarySingularities=3
+SpherePlanRegion region=12 boundaryArcs=4 walkNodes=4 repeatedArcs=0 missingArcs=0 mandatory=0 trace=4 cut=0 sourceFaces=32 disc=1 interiorSingularityFree=1 boundarySingularities=2
+SpherePlanRegion region=13 boundaryArcs=6 walkNodes=6 repeatedArcs=0 missingArcs=0 mandatory=0 trace=6 cut=0 sourceFaces=14 disc=1 interiorSingularityFree=1 boundarySingularities=3
+SphereCompletionInput complex=arrangement retained=1 nodes=973 halfedges=2038 cells=168 closed=168 disk=164 cutCellDisk=0 bridgeExcursion=4 supportOnlyCycle=0 multiCycle=0 oddBounded=68 repeatedNodeCells=4 sameCellTwinCells=4 diskWithRepeatedNode=0 invalidHalfedges=0
+SphereCompletionInput complex=simplified retained=1 nodes=973 halfedges=2038 cells=168 closed=168 disk=164 cutCellDisk=0 bridgeExcursion=4 supportOnlyCycle=0 multiCycle=0 oddBounded=68 repeatedNodeCells=4 sameCellTwinCells=4 diskWithRepeatedNode=0 invalidHalfedges=0
+SphereSimplification candidates=576 healingCandidates=12 committed=0 rejected=12 transactions=12 oddBeforeRepair=68
+SphereCompletionAudit present=1 failure=repeated-boundary-node cell=164 halfedge=67 node=35 sourceFace=4
+SphereAuditedInputCell cell=164 halfedges=154 distinctNodes=128 auditedNodeOccurrences=2 boundaryCycle=0 closed=1 disk=0 cutCellDisk=0 bridgeExcursion=1 supportOnlyCycle=0 components=1 cycleOffsets=1 euler=0 sameCellTwinHalfedges=48 region=0
+SphereAuditedBridge halfedge=10 twin=11 from=3 to=7 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=1 curve=-1
+SphereAuditedBridge halfedge=42 twin=43 from=7 to=17 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=2 curve=-1
+SphereAuditedBridge halfedge=28 twin=29 from=17 to=18 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=3 curve=-1
+SphereAuditedBridge halfedge=82 twin=83 from=18 to=34 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=4 curve=-1
+SphereAuditedBridge halfedge=60 twin=61 from=34 to=35 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=5 curve=-1
+SphereAuditedBridge halfedge=1710 twin=1711 from=824 to=828 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=105 curve=-1
+SphereAuditedBridge halfedge=1788 twin=1789 from=828 to=860 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=106 curve=-1
+SphereAuditedBridge halfedge=1780 twin=1781 from=860 to=861 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=107 curve=-1
+SphereAuditedBridge halfedge=1868 twin=1869 from=861 to=898 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=108 curve=-1
+SphereAuditedBridge halfedge=1862 twin=1863 from=898 to=899 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=109 curve=-1
+SphereAuditedBridge halfedge=1954 twin=1955 from=899 to=937 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=110 curve=-1
+SphereAuditedBridge halfedge=1942 twin=1943 from=937 to=938 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=111 curve=-1
+SphereAuditedBridge halfedge=2034 twin=2035 from=970 to=931 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=33 curve=-1
+SphereAuditedBridge halfedge=1926 twin=1927 from=931 to=932 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=34 curve=-1
+SphereAuditedBridge halfedge=1938 twin=1939 from=932 to=891 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=35 curve=-1
+SphereAuditedBridge halfedge=1840 twin=1841 from=891 to=892 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=36 curve=-1
+SphereAuditedBridge halfedge=1856 twin=1857 from=892 to=897 family=0 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=37 curve=-1
+SphereAuditedBridge halfedge=1678 twin=1679 from=816 to=792 family=1 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=89 curve=-1
+SphereAuditedBridge halfedge=1618 twin=1619 from=792 to=784 family=1 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=90 curve=-1
+SphereAuditedBridge halfedge=1600 twin=1601 from=784 to=756 family=1 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=91 curve=-1
+SphereAuditedBridge halfedge=1544 twin=1545 from=756 to=751 family=1 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=92 curve=-1
+SphereAuditedBridge halfedge=1532 twin=1533 from=751 to=718 family=1 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=93 curve=-1
+SphereAuditedBridge halfedge=1464 twin=1465 from=718 to=708 family=1 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=94 curve=-1
+SphereAuditedBridge halfedge=1438 twin=1439 from=708 to=709 family=1 layoutSupport=1 singularitySupport=1 hardFeature=0 sourceArc=95 curve=-1
+```
+
+### Frozen predictions and evidence boundary
+
+| Prediction | Measured result |
+|---|---|
+| BB1: NotApplicable outcome/disposition, three decline flags 0 | Matches; 98 seeds, 392 traces. Whole-surface legacy fallback, not authoritative A4 regional construction. |
+| Retained plan with 14 regions | Matches: 30 trace arcs, 14 certificates; each region reports simple arc walk, disc certificate, no interior singularity, 2 or 3 boundary singularities. Source-face counts are per region, not a disjoint face-row partition. |
+| B1: repeated-boundary-node audit and at least two original node occurrences | Matches: typed `RepeatedBoundaryNode` serialized `repeated-boundary-node`, cell164, halfedge67, node35, sourceFace4; audited node occurs twice in retained simplified input. |
+| BB3: audited cell disk=1 and cut-cell disk or same-cell twins | **Falsified**: disk=0, cutCellDisk=0, bridgeExcursion=1, one boundary component/cycle offset, Euler0, 48 same-cell twin halfedges (24 distinct pairs). A false prediction is not a gate failure. |
+
+The two census records have the same aggregate counts: 973 nodes, 2038 halfedges, 168 closed cells; 164 disks, four bridge excursions, four repeated-node cells and four same-cell twin cells; zero cut-cell disks, multi-cycle, support-only cycles, disks with repeated nodes or invalid halfedges. 68 odd bounded cells. Simplification records 576 candidates, 12 healing candidates, zero commits, 12 rejects and 12 transactions. This does not prove byte-identical complexes. Cell164 has 154 halfedges and 128 distinct nodes. All 24 listed bridge pairs carry layoutSupport=1, singularitySupport=1, hardFeature=0, curve=-1. The optional bridge-healing filter excludes singularity support (`src/geometry/SurfaceComplexSimplification.cpp:1587–1594`); this supports the ineligibility of the reported bridge edges, not the cause of each of the 12 rejected transactions. The parity rebuild requires simple boundaries even though it admits non-disk incidence (TB-REV-188 BB3). The owner of the fallback's bad input remains unadjudicated. The three aggregate decline flags do not identify individual A4 producer reasons. The unresolved question remains A4 coverage of the certified plan; do not repair fallback or increase parity budget from this evidence.
+
+Stable accounting remains 67/17/50, debt1/deferred81. No accepted-green loss and no new stable regression event. B1 remains a measured non-stable fallback contract mismatch; B2 BunnyRandom cost candidate and close_sheets fine-resolution evidence remain unchanged. TB188 independently accepted 1006/1006; TB189 is an executed candidate awaiting independent review. No CP3/497/D0/H4 promotion.
+
+## Recommendation — TB-REV-189 only after execution closeout
+
+Independently verify the full gate, all raw logs, 45 added lines and receipt producers. Adjudicate BB1 and the falsified BB3. If upheld, the existing review sequence calls for an exact per-region A4 decline receipt, then a definition decision on A4 ownership of closed-surface discs with boundary singularities and the DESIGN section 5.2 fallback. B2 remains a later bounded observation. No B1 repair, V5 execution, CB-207D, activation or parity change, parameter deletion, J6/E5/CB-190. No successor work executed in this turn.
+
+Process limits: prior attempt's policy-review and tool-ledger limitations remain in its continuation record. The retained verified snapshot was reused after checking the exact remote path diff. N3 was not needed; no prior normalizer recovery is claimed. Full historical-policy review is not established. No PR metadata, protected policy or product change. The document drift audit is a local structural check, not independent acceptance.
+~~~~
+
+### tb191-folded-tbrev189
+
+~~~~markdown
+# M6-CP3-TB-REV-189 — independent review and plan (2026-11-27 UTC)
+
+## Situation
+
+TB-REV-189 independently accepts the activated 1006/1006 test gate (CP2 491/491; membership 1087 = 1006 gated + 81 deferred). 655 exact, 350 N1/N2 and one authorized row858 receipt change. NotApplicable confirms legacy fallback; 14 certified plan discs are not 14 actual A4 producer calls. Cell164 is a non-disk bridge excursion, repeated original node35, 24 singularity-support bridge pairs; BB3 disk prediction false. No produced sphere. V5 not rerun: Cylinder PASS 288, Vase RED, BunnyRandom ABNORMAL at 600 s. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion.
+
+## Background — immutable authority
+
+CB212 package 15170182914, source `39253c63c308a2699669095bdb12e4ece72d502a`, run 45934565154, job 140294834100. Independently verified ZIP `51cbdd7c323aa6cc29d42afd16a2905c24420d04efa5c1ecfff853f5ed2a5ebf`, 28/28 manifest checks, eight targets, six executables, GMP/GMPXX, runtimeExecution=false. Source archive `7c4194e692c13b0f897b974f95b18f292e60aba2746c3e8b1e8dcdc6ab73476a`. Review snapshot `c30089e67c3b11cde5db4e22112f5ce3fa6ce0a2`, run 45941663878, artifact 15173450934, ZIP `7f06214f683b53797e6e4f1da7493313e1df1bd071e5255108fbe038fbdd21fa`, 5877/5877 manifest checks. Compared 420 semantic paths with package source: identical. GitHub ancestry confirms 19 commits ahead, zero behind, only documents/control changes. PR #8 draft/open. Cleanup run 45942252700 reports success.
+
+TB189 run 45936843671 job 140302018167, result 15171482516 ZIP `9cf3decbf3dea3a11aa645ec5d5db12307508e73611f962d65c78862ec9b70da`; 2020/2020 checks. Executor `cc25a6402cdd3ca1a33a9a9778250176b182bb2a`, harness `423f385b73c3825ce9fe18fbd5ca395287620475deb621389f0efbaa601e572c`; exit0, postflight PASS, no compile. TB188 comparator 15163822727 ZIP `59957c5adbb95a5e5a90f1eada11f3aec60366ee3a8c22694edf8de799293780`, 2020/2020. The execution report is [here](Architecture_M6_CP3_TB189_Sphere_Route_Witness_Execution_Report_20261127.md). Review did not execute any test, benchmark or compiler.
+
+## Assessment — independent evidence
+
+- Recomputed all 1006 identities and command/resource exits, no duplicates. Both suites 1006 PASS, 996 GUARD + 10 POSITIVE. Manifest `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587`; CP2 491 prefix `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`; deferred `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`; membership `29f997463824520bb66544ac9b33830067013366328cb63e7ccc301bc40b54f9`. N1/N2 normalize only elapsed GoogleTest lines and CRLF, with positive/negative controls. 655 raw identical, 350 N1/N2, 1 allowed receipt. No N3 necessary. Controls 393,648,669,843,844,963,968,971,972,978,979,1005,1006 unchanged. Row858 prefix 69,446 B `68839fe0a5bc1ed0128e90cd9c96ab0ee55aaddb1c85f711494da0fa9d954266`, activated 69,196 B `32d6de52259ed91a9968109bda21b68d3dc4d37a3b1aed7b59193301c61a42d9`; 45 new lines in exact order (1+1+14+2+1+1+1+24), remaining log equal under allowed normalization. Current raw `5edee978137edad1bb5c992a3b0724babcba1131873bafc5576afab074d329d5`. Reversed and forward-replayed exact CB212 and CB211R diffs on package bytes, matching all three test hashes. They change output only, not assertions. Row858 is a negative display contract: checks reported locations, not an independent produced-sphere witness.
+- BB1 supported: phaseFront and producerDisposition NotApplicable, decline flags all zero, 98 seeds, 392 traces. `SurfaceCellTracing.cpp:20225–20233` returns NotApplicable if producers fail and no hard features; 22447–22458 re-traces legacy fallback. `RemeshPipeline.cpp:13310–13312` sets flags only on UnsupportedSourceSheetTopology. Zero flags are not evidence of no decline. Plan contains 30 trace arcs, 14 certified discs, 60 arc incidences; each has 3–6 distinct boundary nodes/arcs, no missing/repeated arcs, interiorSingularityFree, 2–3 boundary singularities. **Correct prior scheduling premise:** 20052–20149 iterates SourceTopologyRegions, not GlobalTopologyPlan::regions. Plan source-face support can overlap between fragments. The three early global singularity guards (14803, 15675–15678, 17155–17158; helper 6717–6721) consult the whole network's singularity ports. Strong static prediction of global guard, not measured per-call evidence. Curved producer consumes accepted cut only for hard-feature path (17191). Number of actual A1 regions unmeasured. BB2 DESIGN §2.1 item 7 and §5.2 ownership conflict is held for separate DEFN after receipt, not resolved by fallback repair.
+- BB3 falsified: arrangement and simplified census each 973 nodes, 2038 halfedges, 168 closed cells, 164 disk, four bridge-excursion/repeated-node/same-cell-twin cells; 0 cut-cell disks, multi-cycle, support-only cycles, disk with repeated node or invalid halfedges; 68 odd bounded. Same counts do not prove same bytes. 576 simplification candidates, 12 healing candidates, zero commits, 12 rejected transactions. First invalid input is cell164, halfedge67, original node35 source face4, 154 halfedges/128 distinct nodes, node35 twice, closed, Euler0, one component, one cycle offset, non-disk bridge excursion. 48 same-cell twin halfedges = 24 unique pairs. All pairs have layoutSupport and singularitySupport, no hardFeature, curve -1. `SurfaceComplexSimplification.cpp:1348–1361` combines provenance; 1587–1595 excludes singularity-support edges before disk check. The 24 pairs therefore cannot enter optional healing; no claim about all 12 rejected transactions' causes. `SurfaceCellFeasibilityRepair.cpp:493–529` simple-boundary audit, 1682 excludes same-cell twins; original node, not fresh parity split. B1 remains non-stable and held.
+- BB4 exact receipts executed; B2 remains open. V5 not rerun. Prior TB161 BunnyRandom RED at 325.23 s vs TB188 ABNORMAL exit124 at 600 s, both pending-wall contacts before timeout, no terminal or resource receipt. Do not infer cost cause from last line. Later bounded same-package observation required. Cylinder PASS 288, Vase RED, fine close_sheets unmeasured. Row971 remains accepted at frozen arc/ray contract, not an independent geometric oracle. No regression count change or promotions.
+
+## Recommendation
+
+Freeze only [M6-CP3-CB-213-P13-A4-REGION-DECLINE-RECEIPT](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#cb-213-exact-manifest-withdrawn-historical), diagnostic-only Code + Build, with exact four-path diff and falsifiable predictions for actual source-region attempts and support mapping. Apply/build only in that successor. Full gate execution then separate review conditional. No B1 repair, fallback change, parity/activation change, CB-207D, parameter deletion, J6/E5/CB-190 or promotion. Preserve B2 until the ownership definition decision. Existing production-witness and partition-structure lessons apply; no new general lesson.
+
+## Review closeout
+
+| Duty | Result |
+|---|---|
+| Accepted selector prefix | Independently SHA-256 verified CP2 491 and exact 1006 manifest. |
+| Decisive claims independently derived | 28/28 package, 2020/2020 each result, exact 1006 comparisons; row858 45 receipts and predicates. |
+| Non-vacuity | Normalization controls; exact negative display scope, no output credit; BB3 prediction contradicted. |
+| Prior obligations | BB1 supported with scheduling premise corrected; BB2 carried; BB3 falsified, B1 held; BB4 satisfied; B2 carried; row971 measured contract retained. |
+| Stable accounting | 67/17/50; debt1/deferred81; CP2 491/491, activated 1006/1006 only. |
+| New candidates/obligations | Actual-call receipt; tracker and exact plan. No stable loss. |
+| ORIENTATION currency | Updated TB-REV-189. |
+| ORIENTATION sections 3/4/7/8 | Updated state, fixture witness, priority and recurring pattern. |
+| CHANGELOG | Entry added. |
+| ROADMAP | Current state updated, no milestone transition. |
+| Selector manifest | Updated acceptance metadata only. |
+| LESSONS | Existing production-witness and partition-structure lessons, no new general lesson. |
+| Consolidation | Superseded TB189 continuation preserved verbatim in Vol D3, reference updated. |
+| Successor frozen | Exact manifest and diff, not applied. |
+| Turn boundary | No product/test/selector/benchmark/build changes; runtime-free. |
+| review_check.py boundary | Local boundary passes product, selector and durable presence checks; four history checks fail because the exact snapshot lacks remote Git history. Independent GitHub ancestry and baseline-heading checks satisfy those specific obligations without fabricating history. |
+| STATUS lifecycle | Entry beacon written; final root STATUS must follow verified patch application. |
+| Pushed to origin / branch sync | Require dispatcher success and readback before final beacon; final confirmation in turn response. |
+
+Review process limitation: initial handoff/policy inspection preceded the required entry beacon and verified snapshot; subsequent source inspection used the verified snapshot. The complete pre-work reading sequence and exact tool ledger are not certified. Local snapshot has no remote Git history; the boundary check uses an exact-byte local baseline, with rewrite ancestry and durable headings independently checked from GitHub. No acceptance depends on pretending this is a full-history check.
+~~~~

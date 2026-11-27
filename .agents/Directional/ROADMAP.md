@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3. [TB-REV-189](Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md) accepts the activated 1006/1006 test gate, not production; CP2 491/491 remains the closed checkpoint. The legacy-fallback completion stays held, because DESIGN §5.2 rules it out as certified output. The per-disc A4 route (65A–65D) has resumed: DEFN-65C froze CB-214, the first domain slice (a boundary schedule), with no checkpoint transition. V5 Cylinder PASS (288 quads, strict=0), Vase RED, BunnyRandom timeout. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion.
+**Completed:** M0–M5 · **Now:** M6 / CP3. [TB-REV-191](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md) accepts the 1008/1008 test gate, not production; CP2 491/491 remains the closed checkpoint. The legacy-fallback completion stays held, because DESIGN §5.2 rules it out as certified output. The per-disc A4 route (65A–65D) has resumed: DEFN-65C froze CB-214, the first domain slice (a boundary schedule), accepted for the pinned schedule witnesses, with corners definition next and no checkpoint transition. V5 Cylinder PASS (288 quads, strict=0), Vase RED, BunnyRandom timeout. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

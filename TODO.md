@@ -1,8 +1,8 @@
-**Current turn outcome (2026-11-27 UTC):** `M6-CP3-TB-EXEC-191` executed the frozen gate; [report](.agents/Directional/Architecture_M6_CP3_TB191_Region_Boundary_Schedule_Execution_Report_20261127.md). Root STATUS governs completion.
-- TB191 1008/1008 PASS, CP2 491/491, membership1089 = 1008 gated + 81 deferred; 766 exact + 239 N1/N2 + one authorized row858 change; both new GUARD rows PASS. Sphere 14 regions/60 sides/30 paired arcs, all even and positive span counts; genus_two 14 regions/184 sides/92 paired arcs, otherArcs=0. All predictions match; no produced sphere, no activation or promotion. Stable 67/17/50, debt1/deferred81. TB189 remains independently accepted; TB-REV-191 pending.
-- **Next:** `M6-CP3-TB-REV-191` only.
+**Current turn outcome (2026-11-27 UTC):** `M6-CP3-TB-REV-191` independently adjudicated the frozen gate; [review](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md). Root STATUS governs completion.
+- 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81.
+- **Next:** `M6-CP3-DEFN-P13-A4-DISC-CORNERS` only.
 
-## CURRENT — per-disc A4 route: TB-EXEC-191 executed; TB-REV-191 next (2026-11-27 UTC)
+## CURRENT — per-disc A4 route: TB-REV-191 reviewed; corners DEFN next (2026-11-27 UTC)
 
 - [x] **COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.
@@ -17,10 +17,10 @@
 - [x] **3 COMPLETE (execution)** `M6-CP3-TB-EXEC-188` — [report](https://github.com/akashskypatel/Directional/blob/agent/surface_cell_quad/p5-recover-bridge-healing/.agents/Directional/Architecture_M6_CP3_TB188_Completion_Receipt_Activated_Full_Gate_Execution_Report_20261127.md), 1006/1006 PASS; V5 PASS1/RED1/ABNORMAL1; independent disposition pending.
 - [x] **4 REVIEWED** `M6-CP3-TB-REV-188` — [independent review](.agents/Directional/Architecture_M6_CP3_TB_REV_188_Completion_Receipt_Activated_Full_Gate_Independent_Review_20261127.md); 1006/1006 gate accepted, V5 timeout candidate, row858 input-boundary contract mismatch.
 - [x] **COMPLETE** TB-REV-188 adversarial — [record](.agents/Directional/Architecture_M6_CP3_TB_REV_188_Adversarial_Review_20261127.md): sphere on the legacy fallback (BB1); repairing B1 is off the trajectory under DESIGN §2.1 item 7 and §5.2 (BB2); B1 audit covers every cell; BB3 disk prediction subsequently falsified by TB189; prose CB-211 withdrawn and replaced by exact CB-211R and CB-212 (BB4). Corrects TB-REV-185 adv. X1 and TB-REV-186 adv. AA3.
-- [x] **5 COMPLETE (compile only)** `M6-CP3-CB-211R-P13-SPHERE-ROUTE-PLAN-WITNESS` — [record](.agents/Directional/Architecture_M6_CP3_CB211R_P13_Sphere_Route_Plan_Witness_Code_Build_Record_20261127.md); exact test-only diff `288e99bf…0486`, eight GMP/GMPXX targets, no runtime.
-- [x] **6 COMPLETE (compile only)** `M6-CP3-CB-212-P13-SPHERE-COMPLETION-INPUT-CENSUS` — [record](.agents/Directional/Architecture_M6_CP3_CB212_P13_Sphere_Completion_Input_Census_Code_Build_Record_20261127.md); exact diff `2483d16a…545b`, eight GMP/GMPXX targets, no runtime.
-- [x] **7 COMPLETE (execution)** `M6-CP3-TB-EXEC-189` — 1006/1006 PASS; only authorized 45 row858 lines differ. NotApplicable, non-disk cell164 bridge excursion; no V5. [Execution report](.agents/Directional/Architecture_M6_CP3_TB189_Sphere_Route_Witness_Execution_Report_20261127.md).
-- [x] **8 REVIEWED** `M6-CP3-TB-REV-189` — [review](.agents/Directional/Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md); test gate accepted, BB3 falsified.
+- [x] **5 COMPLETE (compile only)** `M6-CP3-CB-211R-P13-SPHERE-ROUTE-PLAN-WITNESS` — [record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb191-folded-cb211r); exact test-only diff `288e99bf…0486`, eight GMP/GMPXX targets, no runtime.
+- [x] **6 COMPLETE (compile only)** `M6-CP3-CB-212-P13-SPHERE-COMPLETION-INPUT-CENSUS` — [record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb191-folded-cb212); exact diff `2483d16a…545b`, eight GMP/GMPXX targets, no runtime.
+- [x] **7 COMPLETE (execution)** `M6-CP3-TB-EXEC-189` — 1006/1006 PASS; only authorized 45 row858 lines differ. NotApplicable, non-disk cell164 bridge excursion; no V5. [Execution report](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb191-folded-tbexec189).
+- [x] **8 REVIEWED** `M6-CP3-TB-REV-189` — [review](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb191-folded-tbrev189); test gate accepted, BB3 falsified.
 - [x] **COMPLETE** TB-REV-189 adversarial — [record](.agents/Directional/Architecture_M6_CP3_TB_REV_189_Adversarial_Review_20261127.md). Findings:
   - CC1: CB-213's result is code-determined. There is one closed source-topology region (χ=2), and all three producers decline at the source-global singularity guard.
   - CC2: CB-213 repeats CB102, which RA-213 withdrew, and breaks RA-214 §1.3. It is withdrawn; its mechanics verified clean.
@@ -38,8 +38,9 @@
   - unit rows 1007/1008;
   - 16 receipt lines in row858.
 - [x] **12 COMPLETE (execution)** `M6-CP3-TB-EXEC-191` — [report](.agents/Directional/Architecture_M6_CP3_TB191_Region_Boundary_Schedule_Execution_Report_20261127.md); 1008/1008 PASS; all predicted records match; no V5. Independent review pending.
-- [ ] **13 NEXT** `M6-CP3-TB-REV-191`.
-- [ ] **14+** One DEFN → CB → TB each, in order:
+- [x] **13 REVIEWED** `M6-CP3-TB-REV-191` — [review](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md); 1008-row test gate accepted only; all frozen predictions met.
+- [ ] **14 NEXT** `M6-CP3-DEFN-P13-A4-DISC-CORNERS` — A4D5 definition only; freeze evidence before a separate Code + Build.
+- [ ] **15+** One DEFN → CB → TB each, in order (the first DEFN is item 14):
   1. corners, which decides A4D5 and admits a gated Vase row;
   2. fill domain (A2a′ fragments);
   3. 65B reciprocal trace intervals;
@@ -51,12 +52,10 @@
 - [ ] **HELD:** B1 fallback repair (off-trajectory; the fallback cannot be certified, DESIGN §5.2); row858 legacy diagnostic lines (CB-210/211R/212) stay until the per-disc route supersedes them; CB-207D (no cap); CB-207C (size receipt only if needed); close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-191
-Owner: independent Review only, runtime-free. Adjudicate the frozen 1008-row gate, membership and all row858 predictions; verify two new GUARD rows and inherited comparisons.
-Authority: Architecture_M6_CP3_TB191_Region_Boundary_Schedule_Execution_Report_20261127.md; gates/Architecture_M6_CP3_CB214_TB191_Region_Boundary_Schedule_Exact_Manifest.md.
-  Source/executor 9ed5560822ae435e55101206dcb6ecda59bca706; candidate 15175464398; result 15179335926 ZIP bab546af9cc089db9deb405ede41b3dd859b9e4547f81507d669c58c911bb519; TB189 reference 15171482516.
-  No gate credit before review; no produced sphere or production acceptance. STOP on evidence mismatch; preserve evidence.
-Then: corners DEFN (A4D5) only if authorized by review.
+NEXT_TURN: M6-CP3-DEFN-P13-A4-DISC-CORNERS
+Owner: DEFN / Review only, runtime-free. Define the corners part of A4D2 and its exact measurable evidence; adjudicate A4D5 against DESIGN §7.4 and RA-237/238. Do not implement or execute it in the definition turn.
+Authority: Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md; Architecture_M6_CP3_DEFN_P13_A4_Disc_Domain_Construction_20261127.md; row858 TB191 result 15179335926; exact 1008-row gate and accepted CP2 prefix.
+Falsifiers: regions 5 and 10 each have three walk nodes; distinguish arc turning, incorrect interiorSingularityFree, and node turns greater than a quarter turn. Account for all 34 boundary-singularity incidences and port valences; include a gated Vase witness. Do not presume a regular disc from even span counts. Stop on missing authority or ambiguous ownership; preserve the frozen gate and defer a separate CB/TB.
 Do not: repair B1/fallback, change dispatch or the veto, activate the schedule, CB-207D, promote CP3/497/D0/H4, start J6/E5/CB-190.
 ```
 

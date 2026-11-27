@@ -1,6 +1,6 @@
 # TB-REV-189 adversarial continuation (2026-11-27 UTC)
 
-Continues `M6-CP3-TB-REV-189` after the [independent review](Architecture_M6_CP3_TB_REV_189_Sphere_Route_Witness_Independent_Review_20261127.md). Runtime-free: static source and record review.
+Continues `M6-CP3-TB-REV-189` after the [independent review](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb191-folded-tbrev189). Runtime-free: static source and record review.
 
 Haiku agents did the following:
 - replayed the CB-213 diff and ran syntax-only checks in throwaway `CLAUDE_` worktrees, since removed;
