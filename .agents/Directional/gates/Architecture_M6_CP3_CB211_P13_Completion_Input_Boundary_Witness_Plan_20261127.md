@@ -1,5 +1,7 @@
 # CB-211 — completion input boundary witness (2026-11-27 UTC)
 
+**WITHDRAWN (2026-11-27, [TB-REV-188 adversarial continuation](../Architecture_M6_CP3_TB_REV_188_Adversarial_Review_20261127.md) BB1–BB4).** This is a prose plan with an undefined mapping between stages, and it targets the legacy fallback rather than the architecture route. Superseded by the exact [CB-211R/CB-212/TB-EXEC-189 manifest](Architecture_M6_CP3_CB211R_CB212_TB189_Sphere_Route_Witness_Exact_Manifest.md). Do not execute this plan.
+
 **Owner:** `M6-CP3-CB-211-P13-COMPLETION-INPUT-BOUNDARY-WITNESS`. Code + Build only. This is a frozen review plan; no test or product source is changed by Review. Source authority `0409304d6f9f423685ccddc26b19baf4e41ea61e`, CB-210 package `15162357312`, accepted TB188 result `15163822727`, [Review](../Architecture_M6_CP3_TB_REV_188_Completion_Receipt_Activated_Full_Gate_Independent_Review_20261127.md).
 
 ## Situation
