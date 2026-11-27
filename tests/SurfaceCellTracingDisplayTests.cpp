@@ -12,8 +12,10 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <numbers>
 #include <optional>
+#include <set>
 #include <stdexcept>
 #include <string>
 
@@ -208,6 +210,91 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
             << '\n';
   std::cout << "SphereCompletionFailure detail="
             << sphere.result.surfaceCellContext.completionFailure << '\n';
+  {
+    // Recorded witness of the route the sphere took after its plan was built:
+    // the authoritative phase-front outcome and the plan regions it was
+    // offered. Output only; nothing here is asserted.
+    const auto &context = sphere.result.surfaceCellContext;
+    const auto flag = [](const bool value) { return value ? 1 : 0; };
+    std::string phaseFront = "NotRetained";
+    if (context.hasTraceNetwork) {
+      const auto &front = context.productSnapshots.traceNetwork.phaseFront;
+      if (front.is_not_applicable()) {
+        phaseFront = "NotApplicable";
+      } else if (front.produced_product() != nullptr) {
+        phaseFront = "Produced";
+      } else if (const auto *failure = front.rejection(); failure != nullptr) {
+        phaseFront = std::string("Rejected:") +
+                     directional::geometry::surface_phase_front_failure_reason_name(
+                         failure->reason);
+      }
+    }
+    std::cout << "SphereRoute producerDisposition="
+              << sphereDiagnostics.surfaceCellAuthoritativeProducerDisposition
+              << " phaseFront=" << phaseFront << " uniformDeclined="
+              << flag(sphereDiagnostics.surfaceCellUniformPhaseFrontProducerDeclined)
+              << " periodicDeclined="
+              << flag(sphereDiagnostics.surfaceCellPeriodicPhaseFrontProducerDeclined)
+              << " boundedDiskDeclined="
+              << flag(sphereDiagnostics.surfaceCellBoundedDiskPhaseFrontProducerDeclined)
+              << " seeds=" << context.productSnapshots.traceNetwork.seeds.size()
+              << " traces=" << context.productSnapshots.traceNetwork.traces.size()
+              << '\n';
+    const auto &plan = context.productSnapshots.globalTopologyPlan;
+    if (!plan.has_value()) {
+      std::cout << "SpherePlan retained=0\n";
+    } else {
+      std::array<int, 3> arcKinds{0, 0, 0};
+      for (const auto &arc : plan->arcs()) {
+        const auto kind = static_cast<std::size_t>(arc.kind);
+        if (kind < arcKinds.size()) ++arcKinds[kind];
+      }
+      std::cout << "SpherePlan retained=1 arcs=" << plan->arcs().size()
+                << " mandatory=" << arcKinds[0] << " trace=" << arcKinds[1]
+                << " cut=" << arcKinds[2] << " regions=" << plan->regions().size()
+                << " certificates=" << plan->region_certificates().size() << '\n';
+      for (const auto &region : plan->regions()) {
+        std::set<std::size_t> walkNodes;
+        std::map<std::size_t, int> arcUses;
+        std::array<int, 3> kinds{0, 0, 0};
+        int missingArcs = 0;
+        for (const auto &oriented : region.boundary) {
+          const auto *arc = plan->find_arc(oriented.arc);
+          if (arc == nullptr) {
+            ++missingArcs;
+            continue;
+          }
+          ++arcUses[oriented.arc.index()];
+          walkNodes.insert(
+              (oriented.orientation == directional::authority::Orientation::Forward
+                   ? arc->firstNode
+                   : arc->secondNode)
+                  .index());
+          const auto kind = static_cast<std::size_t>(arc->kind);
+          if (kind < kinds.size()) ++kinds[kind];
+        }
+        int repeatedArcs = 0;
+        for (const auto &use : arcUses) repeatedArcs += flag(use.second > 1);
+        std::cout << "SpherePlanRegion region=" << region.id.index()
+                  << " boundaryArcs=" << region.boundary.size()
+                  << " walkNodes=" << walkNodes.size() << " repeatedArcs=" << repeatedArcs
+                  << " missingArcs=" << missingArcs << " mandatory=" << kinds[0]
+                  << " trace=" << kinds[1] << " cut=" << kinds[2]
+                  << " sourceFaces=" << region.sourceFaces.size();
+        const auto *certificate = plan->find_region_certificate(region.id);
+        if (certificate == nullptr) {
+          std::cout << " certificate=-";
+        } else {
+          std::cout << " disc=" << flag(certificate->proves_disc_topology())
+                    << " interiorSingularityFree="
+                    << flag(certificate->interiorSingularityFree)
+                    << " boundarySingularities="
+                    << certificate->boundarySingularities.size();
+        }
+        std::cout << '\n';
+      }
+    }
+  }
   const auto sphereDisplay = display_of(sphere);
   for (const auto *face : {&sphereLocus.sourceFace, &sphereLocus.relatedSourceFace,
                           &sphereLocus.edgeTraceFaceCorners}) {
