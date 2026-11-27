@@ -18,6 +18,9 @@
 #include <set>
 #include <stdexcept>
 #include <string>
+#include <utility>
+#include <variant>
+#include <vector>
 
 namespace {
 
@@ -416,6 +419,78 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
     } else {
       std::cout << "SphereAuditedInputCell unavailable\n";
     }
+  }
+  {
+    // The A4 input of each certified plan region: its walk bound to A3.
+    const auto print_schedules = [](const char *label, const FixtureRun &run,
+                                    bool perRegion) {
+      const auto &snapshots = run.result.surfaceCellContext.productSnapshots;
+      if (!snapshots.globalTopologyPlan || !snapshots.globalConformityBaseline) {
+        std::cout << label << "RegionBoundarySchedules unavailable\n";
+        return;
+      }
+      const auto built = directional::geometry::build_region_boundary_schedules(
+          *snapshots.globalTopologyPlan, *snapshots.globalConformityBaseline);
+      if (const auto *failure =
+              std::get_if<directional::geometry::RegionBoundaryScheduleFailure>(
+                  &built)) {
+        std::cout << label << "RegionBoundarySchedules built=0 failure="
+                  << directional::geometry::region_boundary_schedule_failure_reason_name(
+                         failure->reason)
+                  << " region="
+                  << (failure->region ? std::to_string(failure->region->index()) : "-")
+                  << " ordinal="
+                  << (failure->boundaryOrdinal
+                          ? std::to_string(*failure->boundaryOrdinal)
+                          : "-")
+                  << '\n';
+        return;
+      }
+      const auto &schedules =
+          std::get<std::vector<directional::geometry::RegionBoundarySchedule>>(built);
+      std::map<std::size_t, std::vector<std::pair<bool, std::string>>> uses;
+      std::size_t sides = 0U;
+      for (const auto &schedule : schedules) {
+        sides += schedule.sides.size();
+        for (const auto &side : schedule.sides) {
+          uses[side.arc.arc.index()].push_back(
+              {side.arc.orientation == directional::authority::Orientation::Forward,
+               side.spanCount.to_string()});
+        }
+      }
+      std::size_t paired = 0U;
+      for (const auto &[arc, occurrences] : uses) {
+        (void)arc;
+        if (occurrences.size() == 2U &&
+            occurrences[0].first != occurrences[1].first &&
+            occurrences[0].second == occurrences[1].second) {
+          ++paired;
+        }
+      }
+      std::cout << label << "RegionBoundarySchedules built=1 regions="
+                << schedules.size() << " sides=" << sides
+                << " arcs=" << uses.size() << " pairedArcs=" << paired
+                << " otherArcs=" << uses.size() - paired << '\n';
+      if (!perRegion) return;
+      for (const auto &schedule : schedules) {
+        std::cout << label << "RegionBoundarySchedule region="
+                  << schedule.region.index() << " sides=" << schedule.sides.size()
+                  << " boundaryCount=" << schedule.boundaryCount.to_string()
+                  << " even="
+                  << (schedule.boundaryCount % EInt(2) == EInt(0) ? 1 : 0)
+                  << " counts=";
+        for (const auto &side : schedule.sides) {
+          std::cout << side.spanCount.to_string() << ',';
+        }
+        std::cout << " nodes=";
+        for (const auto &side : schedule.sides) {
+          std::cout << side.startNode.index() << ',';
+        }
+        std::cout << '\n';
+      }
+    };
+    print_schedules("Sphere", sphere, true);
+    print_schedules("Genus", genus, false);
   }
   const auto sphereDisplay = display_of(sphere);
   for (const auto *face : {&sphereLocus.sourceFace, &sphereLocus.relatedSourceFace,

@@ -338,6 +338,66 @@ validate_global_conformity_baseline(const GlobalTopologyPlan &topology,
                                     const GlobalConformityBaselineInput &input,
                                     const GlobalConformityBaselinePlan &plan);
 
+/** Why a region's boundary walk could not be bound to the A3 plan. */
+enum class RegionBoundaryScheduleFailureReason : std::uint8_t {
+  /** The A3 plan was built for a different A2b plan. */
+  TopologyPlanMismatch = 0,
+  /** No A3 span has the arc's path as the support slice its binding names. */
+  ArcNotScheduled = 1,
+  /** No A3 incidence carries this walk occurrence with the arc's span and
+   *  orientation. */
+  IncidenceNotFound = 2,
+};
+
+[[nodiscard]] const char *region_boundary_schedule_failure_reason_name(
+    RegionBoundaryScheduleFailureReason reason) noexcept;
+
+/** One occurrence of an A2b arc in a region's boundary walk, bound to the A3
+ *  span that schedules it. */
+struct RegionBoundaryScheduleSide {
+  GlobalTopologyOrientedArc arc;
+  /** The walk enters the arc at startNode and leaves it at endNode. */
+  authority::NetworkNodeId startNode;
+  authority::NetworkNodeId endNode;
+  ConformitySpanId span;
+  ConformityBoundaryIncidenceId incidence;
+  /** Position of the arc in its span's chain; 0 for a single-arc span. */
+  std::size_t chainOrdinal = 0U;
+  /** True when the walk runs in the span's chain direction. */
+  bool alongSpan = true;
+  EInt spanCount;
+};
+
+/** The A3 boundary schedule of one A2b region, in the region's walk order.
+ *  boundaryCount adds each incidence's span count once. */
+struct RegionBoundarySchedule {
+  authority::NetworkRegionId region;
+  std::vector<RegionBoundaryScheduleSide> sides;
+  EInt boundaryCount;
+};
+
+struct RegionBoundaryScheduleFailure {
+  RegionBoundaryScheduleFailureReason reason =
+      RegionBoundaryScheduleFailureReason::TopologyPlanMismatch;
+  std::optional<authority::NetworkRegionId> region;
+  std::optional<std::size_t> boundaryOrdinal;
+};
+
+using RegionBoundaryScheduleResult =
+    std::variant<std::vector<RegionBoundarySchedule>,
+                 RegionBoundaryScheduleFailure>;
+
+/**
+ * The input A4 consumes per region: every region of the A2b plan, in plan
+ * order, with each walk occurrence bound to its A3 span, incidence and count,
+ * or the first occurrence that cannot be bound. Read-only over both plans.
+ * An arc shared by two regions binds to the same span from both walks
+ * (DESIGN §7.4).
+ */
+[[nodiscard]] RegionBoundaryScheduleResult
+build_region_boundary_schedules(const GlobalTopologyPlan &topology,
+                                const GlobalConformityBaselinePlan &baseline);
+
 } // namespace directional::geometry
 
 #endif

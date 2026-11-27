@@ -845,4 +845,97 @@ GlobalConformityBaselinePlan::validation_candidate() const {
   return {schedule_, incidences_, certificate_, semanticDigest_};
 }
 
+const char *region_boundary_schedule_failure_reason_name(
+    RegionBoundaryScheduleFailureReason reason) noexcept {
+  switch (reason) {
+  case RegionBoundaryScheduleFailureReason::TopologyPlanMismatch:
+    return "topology-plan-mismatch";
+  case RegionBoundaryScheduleFailureReason::ArcNotScheduled:
+    return "arc-not-scheduled";
+  case RegionBoundaryScheduleFailureReason::IncidenceNotFound:
+    return "incidence-not-found";
+  }
+  return "unknown";
+}
+
+RegionBoundaryScheduleResult
+build_region_boundary_schedules(const GlobalTopologyPlan &topology,
+                                const GlobalConformityBaselinePlan &baseline) {
+  using Reason = RegionBoundaryScheduleFailureReason;
+  if (baseline.topology_plan_digest() != topology.semantic_digest()) {
+    return RegionBoundaryScheduleFailure{Reason::TopologyPlanMismatch,
+                                         std::nullopt, std::nullopt};
+  }
+  std::map<ConformityBoundaryIncidenceId, const BaselineConformityIncidence *>
+      incidences;
+  for (const BaselineConformityIncidence &incidence : baseline.incidences()) {
+    incidences.emplace(incidence.id, &incidence);
+  }
+  std::vector<RegionBoundarySchedule> schedules;
+  schedules.reserve(topology.regions().size());
+  for (const GlobalTopologyRegion &region : topology.regions()) {
+    RegionBoundarySchedule schedule{region.id, {}, EInt(0)};
+    std::set<std::size_t> countedIncidences;
+    const std::size_t walkSize = region.boundary.size();
+    for (std::size_t ordinal = 0U; ordinal < walkSize; ++ordinal) {
+      const GlobalTopologyOrientedArc &oriented = region.boundary[ordinal];
+      const GlobalTopologyArc *arc = topology.find_arc(oriented.arc);
+      const BaselineConformityArcBinding *binding =
+          arc != nullptr ? baseline.find_arc_binding(arc->id) : nullptr;
+      const ConformityScheduleEntry *entry =
+          binding != nullptr ? baseline.find_schedule(binding->span) : nullptr;
+      if (entry == nullptr) {
+        return RegionBoundaryScheduleFailure{Reason::ArcNotScheduled, region.id,
+                                             ordinal};
+      }
+      // D5 (RA-219): the arc's path, in its chain orientation, is the slice of
+      // the span's support that starts at the binding's first support piece.
+      const authority::ExactSourcePath path =
+          authority::exact_source_path_for_orientation(arc->sourcePath,
+                                                       binding->orientation);
+      const auto &support = entry->supportPieces;
+      if (binding->firstSupportPiece > support.size() ||
+          path.size() > support.size() - binding->firstSupportPiece ||
+          !std::equal(path.begin(), path.end(),
+                      support.begin() + static_cast<std::ptrdiff_t>(
+                                            binding->firstSupportPiece))) {
+        return RegionBoundaryScheduleFailure{Reason::ArcNotScheduled, region.id,
+                                             ordinal};
+      }
+      // D5 (RA-220): a span's incidence is read at its identifying arc, which
+      // the walk meets chainOrdinal arcs before this one when it follows the
+      // chain and as many after it otherwise.
+      if (binding->chainOrdinal >= walkSize) {
+        return RegionBoundaryScheduleFailure{Reason::IncidenceNotFound,
+                                             region.id, ordinal};
+      }
+      const bool alongSpan = oriented.orientation == binding->orientation;
+      const ConformityBoundaryIncidenceId incidenceId{
+          region.id, (alongSpan ? ordinal + walkSize - binding->chainOrdinal
+                                : ordinal + binding->chainOrdinal) %
+                         walkSize};
+      const auto found = incidences.find(incidenceId);
+      if (found == incidences.end() || found->second->span != binding->span ||
+          found->second->orientation != (alongSpan
+                                             ? authority::Orientation::Forward
+                                             : authority::Orientation::Reverse)) {
+        return RegionBoundaryScheduleFailure{Reason::IncidenceNotFound,
+                                             region.id, ordinal};
+      }
+      if (countedIncidences
+              .insert(incidenceId.canonicalBoundaryOccurrenceOrdinal)
+              .second) {
+        schedule.boundaryCount += entry->count;
+      }
+      const bool forward = oriented.orientation == authority::Orientation::Forward;
+      schedule.sides.push_back(RegionBoundaryScheduleSide{
+          oriented, forward ? arc->firstNode : arc->secondNode,
+          forward ? arc->secondNode : arc->firstNode, binding->span,
+          incidenceId, binding->chainOrdinal, alongSpan, entry->count});
+    }
+    schedules.push_back(std::move(schedule));
+  }
+  return schedules;
+}
+
 } // namespace directional::geometry

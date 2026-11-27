@@ -12,6 +12,7 @@
 #include <string>
 #include <type_traits>
 #include <utility>
+#include <variant>
 #include <vector>
 
 #include <Eigen/Core>
@@ -243,6 +244,20 @@ GlobalConformityBaselineInput make_baseline_input(
   return input;
 }
 
+// The pipeline's per-arc A3 input: one span per A2b arc, supported by the
+// arc's own path.
+GlobalConformityBaselineInput make_per_arc_baseline_input(
+    const TopologyFixture &fixture, double targetSize) {
+  GlobalConformityBaselineInput input;
+  input.sourceVertices = fixture.mesh.V;
+  input.targetSize = Eigen::VectorXd::Constant(fixture.mesh.V.rows(), targetSize);
+  for (const auto &arc : fixture.topology.arcs()) {
+    input.spans.push_back(
+        {ConformitySpanId::from_network_arc(arc.id), arc.sourcePath});
+  }
+  return input;
+}
+
 std::vector<int> exact_counts(const GlobalConformityBaselinePlan &plan) {
   std::vector<int> out;
   for (const auto &entry : plan.schedule()) {
@@ -368,6 +383,79 @@ TEST(GlobalConformityBaseline,
   ASSERT_EQ(1U, built.value().certificate().regions.size());
   EXPECT_TRUE(built.value().certificate().regions.front().finalParityEven);
   EXPECT_EQ(built.value().incidences().size(), fixture.topology.regions().front().boundary.size());
+}
+
+TEST(GlobalConformityBaseline,
+     RegionBoundarySchedulesBindEveryWalkOccurrenceToItsSpan) {
+  const auto fixture = make_topology_fixture(make_square_mesh());
+  const auto baseline = directional::geometry::build_global_conformity_baseline(
+      fixture.topology, make_per_arc_baseline_input(fixture, 0.5));
+  ASSERT_TRUE(baseline);
+  const auto built = directional::geometry::build_region_boundary_schedules(
+      fixture.topology, baseline.value());
+  const auto *schedules =
+      std::get_if<std::vector<directional::geometry::RegionBoundarySchedule>>(
+          &built);
+  ASSERT_NE(nullptr, schedules);
+  ASSERT_EQ(fixture.topology.regions().size(), schedules->size());
+  for (std::size_t index = 0U; index < schedules->size(); ++index) {
+    const auto &region = fixture.topology.regions()[index];
+    const auto &schedule = (*schedules)[index];
+    EXPECT_EQ(region.id, schedule.region);
+    ASSERT_EQ(region.boundary.size(), schedule.sides.size());
+    EInt sum(0);
+    for (std::size_t ordinal = 0U; ordinal < schedule.sides.size(); ++ordinal) {
+      const auto &side = schedule.sides[ordinal];
+      EXPECT_EQ(region.boundary[ordinal], side.arc);
+      EXPECT_EQ(ConformitySpanId::from_network_arc(side.arc.arc), side.span);
+      EXPECT_EQ(0U, side.chainOrdinal);
+      EXPECT_EQ(ordinal, side.incidence.canonicalBoundaryOccurrenceOrdinal);
+      EXPECT_EQ(side.endNode,
+                schedule.sides[(ordinal + 1U) % schedule.sides.size()].startNode);
+      const auto *entry = baseline.value().find_schedule(side.span);
+      ASSERT_NE(nullptr, entry);
+      EXPECT_TRUE(side.spanCount == entry->count);
+      EXPECT_TRUE(EInt(0) < side.spanCount);
+      sum += side.spanCount;
+    }
+    EXPECT_TRUE(sum == schedule.boundaryCount);
+    EXPECT_TRUE(schedule.boundaryCount % EInt(2) == EInt(0));
+  }
+}
+
+TEST(GlobalConformityBaseline,
+     RegionBoundarySchedulesRejectAnotherPlanOrAForeignSupport) {
+  using directional::geometry::RegionBoundaryScheduleFailure;
+  using directional::geometry::RegionBoundaryScheduleFailureReason;
+  const auto square = make_topology_fixture(make_square_mesh());
+  const auto triangle = make_topology_fixture(make_triangle_mesh());
+  const auto squareBaseline =
+      directional::geometry::build_global_conformity_baseline(
+          square.topology, make_per_arc_baseline_input(square, 0.5));
+  ASSERT_TRUE(squareBaseline);
+  const auto otherPlan = directional::geometry::build_region_boundary_schedules(
+      triangle.topology, squareBaseline.value());
+  const auto *mismatch = std::get_if<RegionBoundaryScheduleFailure>(&otherPlan);
+  ASSERT_NE(nullptr, mismatch);
+  EXPECT_EQ(RegionBoundaryScheduleFailureReason::TopologyPlanMismatch,
+            mismatch->reason);
+  EXPECT_FALSE(mismatch->region.has_value());
+
+  // make_baseline_input supports every span by one fixed edge, so at least
+  // one boundary arc's path is not its span's support.
+  const auto foreignBaseline =
+      directional::geometry::build_global_conformity_baseline(
+          square.topology, make_baseline_input(square, 1.0));
+  ASSERT_TRUE(foreignBaseline);
+  const auto foreign = directional::geometry::build_region_boundary_schedules(
+      square.topology, foreignBaseline.value());
+  const auto *unbound = std::get_if<RegionBoundaryScheduleFailure>(&foreign);
+  ASSERT_NE(nullptr, unbound);
+  EXPECT_EQ(RegionBoundaryScheduleFailureReason::ArcNotScheduled,
+            unbound->reason);
+  ASSERT_TRUE(unbound->region.has_value());
+  EXPECT_EQ(square.topology.regions().front().id, *unbound->region);
+  EXPECT_TRUE(unbound->boundaryOrdinal.has_value());
 }
 
 TEST(GlobalConformityBaseline,
