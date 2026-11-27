@@ -2,13 +2,13 @@
 
 >This rewrite was expressly requested on 2026-10-16.
 
-**Updated:** 2026-11-26 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
+**Updated:** 2026-11-27 · **Track:** experimental direct surface-cell quadrangulation (Pipeline B) · **Target:** certified, production-ready output.
 
 This roadmap answers **what is done, what comes next, and what each milestone delivers**. It is not a turn log, task queue, test ledger, definition spec, or implementation handoff. The product and acceptance contract is [DESIGN.md](DESIGN.md) (especially §§2 and 14); status, detailed plans, unresolved findings, and exact next-turn authorization live in [ORIENTATION.md](ORIENTATION.md), [Future_Chat_Session_Handoff.md](Future_Chat_Session_Handoff.md), [TODO.md](../../TODO.md), and [Regression_Root_Cause_Tracker.md](Regression_Root_Cause_Tracker.md).
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3. CB-210 compiled the exact two-line sphere completion failure receipt; no runtime. [Record](Architecture_M6_CP3_CB210_P13_Sphere_Completion_Failure_Receipt_Code_Build_Record_20261127.md). TB186 remains 1005/1006 RED; row971 ray/coverage evidence is unproved. TB185V/TB187Q 1006/1006 preactivation only; CP2 491/491, stable 67/17/50, debt1/deferred81, membership1087. Row858 exact PASS; completion rejection detail and V5 remain unmeasured. No CP3/497/D0/H4 promotion. Next `M6-CP3-TB-EXEC-188` after STATUS COMPLETE.
+**Completed:** M0–M5 · **Now:** M6 / CP3. [TB-REV-188](Architecture_M6_CP3_TB_REV_188_Completion_Receipt_Activated_Full_Gate_Independent_Review_20261127.md) accepts the activated 1006/1006 test gate, not production; CP2 491/491 remains the closed checkpoint. Sphere completion rejects a repeated original boundary node. V5 Cylinder PASS (288 quads, strict=0), Vase RED, BunnyRandom timeout. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

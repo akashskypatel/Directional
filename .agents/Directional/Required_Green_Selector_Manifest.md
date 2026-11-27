@@ -882,3 +882,5 @@ identities; hashes here are over **LF-normalized** bytes, which is what the publ
 checkout stores CRLF, so a raw file hash will not match.
 
 Regenerate after any turn that appends a selector, and never edit a selector file to make it agree with this one.
+
+TB-REV-188 accepts TB188 package `15162357312`, result `15163822727`, source `0409304d6f9f423685ccddc26b19baf4e41ea61e`, **1006/1006** on the activated test gate. Frozen manifest SHA-256 `a9b8083269ebd0786f0584d66c1f89f43362d884840ab95b95c3d0fa59ca0587` matches accepted TB187Q exactly; membership 1087 = 1006 gated + 81 deferred. The separate V5 census is not accepted; no deferred identity, CP3 selector497, D0, H4 or global production promotion. [Independent review](Architecture_M6_CP3_TB_REV_188_Completion_Receipt_Activated_Full_Gate_Independent_Review_20261127.md). No selector bytes changed.
