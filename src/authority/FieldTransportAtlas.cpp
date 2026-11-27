@@ -568,7 +568,7 @@ build_singularity_attachments(
     const std::vector<BuiltFaceBranchFrame> &builtFramesByRow,
     const std::vector<FieldBranchTransportAdjacency> &branchTransports,
     const std::vector<FieldSingularityFact> &singularities,
-    FieldAtlasBuildError &error) {
+    std::vector<FieldSingularityRay> &rays, FieldAtlasBuildError &error) {
   std::vector<FieldSingularityPortAttachment> result;
   for (const FieldSingularityFact &singularity : singularities) {
     const int expected = 4 - singularity.indexNumerator;
@@ -596,6 +596,7 @@ build_singularity_attachments(
     std::vector<FieldSingularityPortAttachment> incidences;
     std::vector<std::size_t> incidenceFanIndex;
     std::vector<std::vector<std::size_t>> incidenceByFan(fan->size());
+    std::vector<std::optional<SourceEdgeTopologyKey>> incidenceRadialEdges;
     for (std::size_t fanIndex = 0; fanIndex < fan->size(); ++fanIndex) {
       const IncidentFanFace &face = (*fan)[fanIndex];
       if (face.row.index() >= builtFramesByRow.size()) {
@@ -680,6 +681,20 @@ build_singularity_attachments(
             singularity.sourceComponent});
         incidenceFanIndex.push_back(fanIndex);
         incidenceByFan[fanIndex].push_back(incidenceIndex);
+        // A ray with no weight on one far vertex runs along the radial edge
+        // to the other.
+        std::optional<SourceEdgeTopologyKey> radialEdge;
+        const auto &rayVertices = face.topology.vertices();
+        for (std::size_t index = 0U; index < rayVertices.size(); ++index) {
+          if (rayVertices[index] != singularity.sourceVertex &&
+              pairing.direction[index] == FieldExactRational::from_integer(0)) {
+            radialEdge = typed_edge(singularity.sourceVertex,
+                                    rayVertices[index] == face.nextVertex
+                                        ? face.previousVertex
+                                        : face.nextVertex);
+          }
+        }
+        incidenceRadialEdges.push_back(radialEdge);
       }
     }
     if (incidences.empty()) {
@@ -1042,7 +1057,26 @@ build_singularity_attachments(
           static_cast<int>(slot);
       result.push_back(orderedRepresentatives[slot].attachment);
     }
+    // Each class's rays take the slot of its port, the class's first ray.
+    for (const auto &[unusedRoot, classIndices] : classes) {
+      (void)unusedRoot;
+      const auto port = std::find_if(
+          orderedRepresentatives.begin(), orderedRepresentatives.end(),
+          [&](const OrderedRepresentative &ordered) {
+            return std::tie(ordered.attachment.startFace,
+                            ordered.attachment.branch,
+                            ordered.attachment.firstOutgoingCarrier) ==
+                   topologyKey(classIndices.front());
+          });
+      for (const std::size_t index : classIndices) {
+        rays.push_back(FieldSingularityRay{
+            singularity.id, singularity.sourceVertex,
+            incidences[index].startFace, incidences[index].branch,
+            port->attachment.localSlot, incidenceRadialEdges[index]});
+      }
+    }
   }
+  std::sort(rays.begin(), rays.end());
   std::sort(result.begin(), result.end(),
             [](const FieldSingularityPortAttachment &a,
                const FieldSingularityPortAttachment &b) {
@@ -3344,9 +3378,10 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
 
   FieldAtlasBuildError attachmentError{
       FieldAtlasBuildErrorCode::InvalidSingularityPortAttachment};
+  std::vector<FieldSingularityRay> singularityRays;
   const auto singularityAttachments = build_singularity_attachments(
       sourceMesh, rowTopology, builtFramesByRow, *branchTransports,
-      singularities, attachmentError);
+      singularities, singularityRays, attachmentError);
   if (!singularityAttachments.has_value()) {
     attachmentError.regionTransportDiagnostics = regionTransportDiagnostics;
     return FieldTransportAtlasBuildResult(std::move(attachmentError));
@@ -3360,7 +3395,8 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
       branchDigest);
   FieldBranchTopology branchTopology(
       std::move(branchFrames), std::move(*branchTransports),
-      std::move(*singularityAttachments), branchDigest);
+      std::move(*singularityAttachments), std::move(singularityRays),
+      branchDigest);
   FieldQuadrangulabilityCertificate certificate(
       std::move(certificateWitnesses), true, sourceDigest, atlasDigest);
   return FieldTransportAtlasBuildResult(FieldTransportAtlas(

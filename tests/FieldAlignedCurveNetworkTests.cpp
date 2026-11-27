@@ -24207,3 +24207,50 @@ TEST(TraceTerminationCorrection, SlideEntryActivationReachByReaderRecipe) {
             << '\n';
   EXPECT_EQ(9U + polylineFixtures, receipts.size());
 }
+
+TEST(FieldTransportAtlas, MechanicalSingularityRaysLieOnRadialEdgesAndNameTheirPortSlot) {
+  const auto &fixture = cp4c_mechanical_atlas_fixture();
+  ASSERT_TRUE(fixture.atlas);
+  const auto &topology = fixture.atlas->branch_topology();
+  const auto &rays = topology.singularity_rays();
+  const auto &attachments = topology.singularity_port_attachments();
+  ASSERT_EQ(12U, attachments.size());
+  ASSERT_EQ(12U, rays.size());
+  EXPECT_TRUE(std::is_sorted(rays.begin(), rays.end()));
+  // Every mechanical class has one ray, so each ray is its port's attachment.
+  for (const auto &attachment : attachments) {
+    EXPECT_EQ(1, std::count_if(rays.begin(), rays.end(), [&](const auto &ray) {
+                return ray.singularity == attachment.singularity &&
+                       ray.sourceVertex == attachment.sourceVertex &&
+                       ray.startFace == attachment.startFace &&
+                       ray.branch == attachment.branch &&
+                       ray.portSlot == attachment.localSlot;
+              }));
+  }
+  struct ExpectedRay {
+    std::size_t vertex;
+    std::array<int, 3> face;
+    int branch;
+    std::array<int, 2> edge;
+  };
+  const std::array<ExpectedRay, 12> expected{{
+      {10U, {8, 10, 11}, 1, {10, 11}},   {10U, {10, 11, 79}, 3, {10, 79}},
+      {10U, {8, 10, 151}, 2, {8, 10}},   {35U, {28, 34, 35}, 1, {34, 35}},
+      {35U, {35, 95, 135}, 0, {35, 95}}, {35U, {29, 35, 91}, 2, {29, 35}},
+      {47U, {45, 46, 47}, 2, {45, 47}},  {47U, {45, 47, 73}, 1, {47, 73}},
+      {47U, {46, 47, 72}, 2, {46, 47}},  {71U, {64, 65, 71}, 1, {65, 71}},
+      {71U, {65, 71, 92}, 1, {71, 92}},  {71U, {70, 71, 92}, 2, {70, 71}}}};
+  const auto extent = static_cast<std::size_t>(fixture.mesh.V.rows());
+  for (const auto &want : expected) {
+    const auto face =
+        topology_face(want.face[0], want.face[1], want.face[2], extent);
+    const auto ray = std::find_if(rays.begin(), rays.end(), [&](const auto &value) {
+      return value.sourceVertex.index() == want.vertex && value.startFace == face &&
+             static_cast<int>(value.branch.value()) == want.branch;
+    });
+    ASSERT_NE(rays.end(), ray) << "vertex " << want.vertex;
+    ASSERT_TRUE(ray->alongRadialEdge.has_value()) << "vertex " << want.vertex;
+    EXPECT_EQ(topology_edge(want.edge[0], want.edge[1], extent),
+              *ray->alongRadialEdge);
+  }
+}

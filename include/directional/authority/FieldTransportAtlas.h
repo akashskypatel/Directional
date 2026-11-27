@@ -778,6 +778,25 @@ struct FieldSingularityPortAttachment {
   auto operator<=>(const FieldSingularityPortAttachment &) const = default;
 };
 
+/**
+ * One field ray leaving a singular vertex into an incident face's wedge, and
+ * the slot of its separatrix class's port. Rays of neighbouring faces whose
+ * branches transport into each other across a radial edge form one class; the
+ * class's port is its first ray in face-topology order. alongRadialEdge is the
+ * radial edge the ray lies on, when it lies on one. An edge-supported port has
+ * no face ray.
+ */
+struct FieldSingularityRay {
+  FieldSingularityId singularity;
+  SourceVertexId sourceVertex;
+  SourceFaceTopologyKey startFace;
+  FieldBranch branch;
+  int portSlot = 0;
+  std::optional<SourceEdgeTopologyKey> alongRadialEdge;
+
+  auto operator<=>(const FieldSingularityRay &) const = default;
+};
+
 [[nodiscard]] DIRECTIONAL_API bool direction_in_vertex_sector(
     const TriMesh &sourceMesh, SourceFaceId sourceFace, SourceVertexId vertex,
     const FieldBranchDirection &direction);
@@ -803,6 +822,13 @@ public:
     return singularityPortAttachments_;
   }
 
+  /** Every face ray of every port class, in ray order. semantic_digest() does
+   * not cover them: they derive from the frames and transports it covers. */
+  [[nodiscard]] const std::vector<FieldSingularityRay> &
+  singularity_rays() const noexcept {
+    return singularityRays_;
+  }
+
   [[nodiscard]] std::uint64_t semantic_digest() const noexcept {
     return semanticDigest_;
   }
@@ -824,14 +850,17 @@ private:
       std::vector<FieldFaceBranchFrame> frames,
       std::vector<FieldBranchTransportAdjacency> transports,
       std::vector<FieldSingularityPortAttachment> singularityPortAttachments,
+      std::vector<FieldSingularityRay> singularityRays,
       std::uint64_t semanticDigest)
       : frames_(std::move(frames)), transports_(std::move(transports)),
         singularityPortAttachments_(std::move(singularityPortAttachments)),
+        singularityRays_(std::move(singularityRays)),
         semanticDigest_(semanticDigest) {}
 
   std::vector<FieldFaceBranchFrame> frames_;
   std::vector<FieldBranchTransportAdjacency> transports_;
   std::vector<FieldSingularityPortAttachment> singularityPortAttachments_;
+  std::vector<FieldSingularityRay> singularityRays_;
   std::uint64_t semanticDigest_ = 0U;
 };
 
