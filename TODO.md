@@ -1,4 +1,4 @@
-**Current turn outcome (2026-11-27 UTC):** `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION` passed the compile-only gate; [record](.agents/Directional/Architecture_M6_CP3_CB216_P13_Singularity_Arrival_Classification_Code_Build_Record_20261127.md). Root STATUS governs completion. Last accepted test gate: [TB-REV-191](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md).
+**Current turn outcome (2026-11-27 UTC):** `M6-CP3-TB-EXEC-192` passed 1010/1010. [execution report](.agents/Directional/Architecture_M6_CP3_TB192_Singularity_Arrival_Execution_Report_20261127.md). Root STATUS governs formal closeout. Independent review pending. Last accepted test gate: [TB-REV-191](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md).
 - 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81.
 - **TB-REV-191 adversarial** ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md)): upholds the gate and CB-214. Its findings:
   - DD1: the 34 incidences are 24 port traces plus 10 singularity arrivals that claim no port.
@@ -11,9 +11,10 @@
   - Before CB-215, A1 published one ray per separatrix class. All 10 sphere arrivals slide along the radial edge that a class straddles while that port keeps its own trace (O51, partial co-traces).
   - It froze CB-215 (A1 rays) and CB-216 (A2a classifier), then TB-EXEC-192.
   - It corrects TB-REV-191 adv. DD2's "no reduction" claim.
-- **Next:** `M6-CP3-TB-EXEC-192` only, after CB-216 formal closeout.
+- **TB192 measurement:** 1091 members (1010 gated + 81 deferred), 770 exact inherited logs, 237 N1/N2 and 12 authorized row858 lines. All 10 sphere arrivals match existing traced ports. Rows1009/1010 PASS. O51 open, AP4 user decision pending. No production acceptance or checkpoint promotion.
+- **Next:** `M6-CP3-TB-REV-192` only, after TB-EXEC-192 formal closeout.
 
-## CURRENT — per-disc A4 route: A2a arrival DEFN froze CB-215/216 (2026-11-27 UTC)
+## CURRENT — per-disc A4 route: TB192 arrival classification evidence (2026-11-27 UTC)
 
 - [x] **COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.
@@ -63,8 +64,8 @@
   - (c) one slice is frozen as two stacked diffs (A1 rays, A2a classifier). The [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB215_CB216_TB192_Singularity_Arrival_Exact_Manifest.md) has the hashes and predictions.
 - [x] **15 COMPLETE (compile only)** `M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES`: [record](.agents/Directional/Architecture_M6_CP3_CB215_P13_Singularity_Ray_Classes_Code_Build_Record_20261127.md); exact diff, eight GMP/GMPXX targets, candidate `15186681282`, 28/28 checks, row 1009 not executed.
 - [x] **16 COMPLETE (compile only)** `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION`: [record](.agents/Directional/Architecture_M6_CP3_CB216_P13_Singularity_Arrival_Classification_Code_Build_Record_20261127.md); exact diff, source `c76e74b35ffa5ba6aa1f3f8662f592e077c63033`, eight GMP/GMPXX targets, candidate `15192246171`, 28/28 checks; row 1010 and row858 additions not executed.
-- [ ] **17 NEXT** `M6-CP3-TB-EXEC-192`: the 1010-row manifest `c9f6325e…e9f5`, membership 1091. Sphere prediction: 10 radial-edge arrivals, all matched and all `portTraced=1`.
-- [ ] **17a** `M6-CP3-TB-REV-192`.
+- [x] **17 COMPLETE (execution)** `M6-CP3-TB-EXEC-192`: [execution report](.agents/Directional/Architecture_M6_CP3_TB192_Singularity_Arrival_Execution_Report_20261127.md); 1010/1010 PASS, membership 1091, row858 predictions match, rows1009/1010 PASS.
+- [ ] **17a NEXT** `M6-CP3-TB-REV-192`: independent evidence review only, no runtime or build.
 - [ ] **18** The behaviour DEFN (AP4): how a partially co-traced port trace is removed. Option A, suppress and re-trace to a fixed point, is recommended. It needs new §7.2 step-7 text, so the DEFN STOPs for a user decision. Then CB → TB → TB-REV.
 - [ ] **19+** One DEFN → CB → TB each, in order:
   1. corners (A4D2 part 2) on the corrected plan;
@@ -80,12 +81,12 @@
 - [ ] **HELD:** B1 fallback repair (off-trajectory; the fallback cannot be certified, DESIGN §5.2); row858 legacy diagnostic lines (CB-210/211R/212) stay until the per-disc route supersedes them; CB-207D (no cap); CB-207C (size receipt only if needed); close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-TB-EXEC-192
-Owner: Test + Benchmark only, after CB-216 formal closeout. Use the immutable CB-216 package `15192246171`, source c76e74b35ffa5ba6aa1f3f8662f592e077c63033, ZIP e92edf8686722ac4ec96dc07217e7a13923d8786cf89dc6d513793aac381b004. No rebuild or source changes.
-Authority: gates/Architecture_M6_CP3_CB215_CB216_TB192_Singularity_Arrival_Exact_Manifest.md; [CB-216 record](Architecture_M6_CP3_CB216_P13_Singularity_Arrival_Classification_Code_Build_Record_20261127.md).
-  Manifest 1010 rows SHA-256 c9f6325eee41ebead3d516d3bfcbef3141c9dee8c7051cef1e08ad146f60e9f5; membership 1091. Rows 1009/1010 new; row858 +12 predicted lines; all other rows N1-N3 = TB191 artifact 15179335926. STOP for review on mismatch.
-Then: TB-REV-192 -> behaviour DEFN (AP4, user decision) -> corners DEFN.
-Do not: rebuild, retry, substitute timeouts, run V5, repair B1/fallback, change tracing/retrace selection/A2b/A3/dispatch/veto, CB-207D, promote CP3/497/D0/H4, start J6/E5/CB-190.
+NEXT_TURN: M6-CP3-TB-REV-192
+Owner: independent evidence review only, after TB-EXEC-192 formal closeout. No runtime or build.
+Authority: TB192 report, frozen manifest, CB-215/216 records and TB191 accepted review.
+  Candidate 15192246171, result 15195820651, comparator 15179335926. Recheck 1010 cases, membership1091, inherited logs, exact row858 prefix and 12 predicted lines, rows1009/1010 and O51 interpretation.
+Then, only if accepted: behaviour DEFN (AP4, user decision) -> corners DEFN.
+Do not: rebuild, retry, run V5, repair B1/fallback, change tracing/retrace selection/A2b/A3/dispatch/veto, CB-207D, promote CP3/497/D0/H4, start J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)

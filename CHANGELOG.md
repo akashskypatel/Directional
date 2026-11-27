@@ -1,3 +1,7 @@
+
+## 2026-11-27 — TB-EXEC-192 singularity arrival classification execution
+
+[execution report](.agents/Directional/Architecture_M6_CP3_TB192_Singularity_Arrival_Execution_Report_20261127.md). Immutable CB-216 artifact `15192246171`, source `c76e74b35ffa5ba6aa1f3f8662f592e077c63033`, run `45992751511`, result `15195820651` (2028/2028 checks). 1010/1010 PASS, 491/491 CP2, 1091 membership. 770 exact inherited rows, 237 N1/N2, authorized 12-line row858 change. Ten sphere arrivals match ten distinct traced ports; genus_two zero arrivals. Rows1009/1010 PASS. No new stable regression, 67/17/50, debt1/deferred81. O51 open; AP4 requires later user decision. No V5, production or checkpoint promotion. Next `M6-CP3-TB-REV-192`, independent adjudication only.
 ## 2026-11-27 — CB-216 singularity arrival classification (compile only)
 
 [record](.agents/Directional/Architecture_M6_CP3_CB216_P13_Singularity_Arrival_Classification_Code_Build_Record_20261127.md). Exact frozen diff `d6e980a8…4bfa` (+251/−0, four paths); source `c76e74b35ffa5ba6aa1f3f8662f592e077c63033`. Added a read-only arrival classifier and frozen diagnostic/test witnesses. [Compile run 45986095420](https://github.com/akashskypatel/Directional/actions/runs/45986095420), candidate `15192246171`, 28/28 checks, eight GMP/GMPXX targets, no runtime. Rows 1009/1010 compiled only; row858 additions not measured. TB-REV-191 1008/1008 and CP2 491/491 remain accepted gates. O51 open; stable 67/17/50, debt1/deferred81 unchanged. No production or checkpoint promotion. Next: `M6-CP3-TB-EXEC-192`.
