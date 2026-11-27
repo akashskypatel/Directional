@@ -1,2 +1,0 @@
-# TB-REV-191 snapshot trigger only
-.agents/connector-triggers/source-snapshot/m6-cp3-tb-rev-191.txt
