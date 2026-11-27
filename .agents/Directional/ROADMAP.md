@@ -8,7 +8,7 @@ This roadmap answers **what is done, what comes next, and what each milestone de
 
 ## At a glance
 
-**Completed:** M0–M5 · **Now:** M6 / CP3. [Independent review](Architecture_M6_CP3_TB_REV_186_P13_Activated_Sphere_Full_Gate_Independent_Review_20261126.md). TB-REV-186: independent adjudication of valid semantic RED 1005/1006; row971 invalid arc/segment test premise, no stable product regression proved. Row858 exact PASS; 26 material differences reconciled, three possible completion preparation failures remain. V5 held; preactivation TB185V/TB187Q 1006/1006 accepted only; CP2 491/491, stable 67/17/50, debt1/deferred81, membership1087. No CP3/497/D0/H4 promotion. Next M6-CP3-CB-209-P13-SLIDE-ARC-RAY-ORACLE compile only, after STATUS COMPLETE.
+**Completed:** M0–M5 · **Now:** M6 / CP3. CB-209 compiled the exact row971 test-only correction; no runtime. [Record](Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Code_Build_Record_20261127.md). TB186 remains 1005/1006 RED; row971 ray/coverage evidence is unproved. TB185V/TB187Q 1006/1006 preactivation only; CP2 491/491, stable 67/17/50, debt1/deferred81, membership1087. Row858 exact PASS; completion rejection detail and V5 remain unmeasured. No CP3/497/D0/H4 promotion. Next `M6-CP3-CB-210-P13-SPHERE-COMPLETION-FAILURE-RECEIPT` compile only, after STATUS COMPLETE.
 
 | Milestone | Outcome | Status | Accepted milestone evidence |
 |---|---|---|---|

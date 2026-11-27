@@ -1,3 +1,7 @@
+## 2026-11-27 — CB-209 exact slide arc ray oracle compiled
+
+[Code + Build record](.agents/Directional/Architecture_M6_CP3_CB209_P13_Slide_Arc_Ray_Oracle_Code_Build_Record_20261127.md). Exact test-only diff `6f17d7c8…fcc4`, +186/−19; source `62e888727803fcc2640dd5fba4a9369229d8df2b`, [compile run 45913923121](https://github.com/akashskypatel/Directional/actions/runs/45913923121), package `15161541555`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Row971 ray and coverage obligations remain unexecuted. Stable 67/17/50, debt1/deferred81; no CP3/497/D0/H4 promotion. Next only `M6-CP3-CB-210-P13-SPHERE-COMPLETION-FAILURE-RECEIPT`.
+
 ## 2026-11-26 — TB-REV-186 adversarial continuation
 
 [Record](.agents/Directional/Architecture_M6_CP3_TB_REV_186_Adversarial_Review_20261126.md). CB-209 upheld and syntax-clean (0 errors). The stored `completionFailure` string distinguishes every PreparationRejected site, so CB-210 [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB210_TB188_Completion_Receipt_Activated_Full_Gate_Exact_Manifest.md) (two-line receipt, diff `696efc1e…`) precedes the single TB-EXEC-188 full gate + V5. No runtime, no product change.
