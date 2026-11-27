@@ -1,0 +1,208 @@
+diff --git a/include/directional/authority/FieldTransportAtlas.h b/include/directional/authority/FieldTransportAtlas.h
+index a0ed39d77..6d7947462 100644
+--- a/include/directional/authority/FieldTransportAtlas.h
++++ b/include/directional/authority/FieldTransportAtlas.h
+@@ -778,6 +778,25 @@ struct FieldSingularityPortAttachment {
+   auto operator<=>(const FieldSingularityPortAttachment &) const = default;
+ };
+ 
++/**
++ * One field ray leaving a singular vertex into an incident face's wedge, and
++ * the slot of its separatrix class's port. Rays of neighbouring faces whose
++ * branches transport into each other across a radial edge form one class; the
++ * class's port is its first ray in face-topology order. alongRadialEdge is the
++ * radial edge the ray lies on, when it lies on one. An edge-supported port has
++ * no face ray.
++ */
++struct FieldSingularityRay {
++  FieldSingularityId singularity;
++  SourceVertexId sourceVertex;
++  SourceFaceTopologyKey startFace;
++  FieldBranch branch;
++  int portSlot = 0;
++  std::optional<SourceEdgeTopologyKey> alongRadialEdge;
++
++  auto operator<=>(const FieldSingularityRay &) const = default;
++};
++
+ [[nodiscard]] DIRECTIONAL_API bool direction_in_vertex_sector(
+     const TriMesh &sourceMesh, SourceFaceId sourceFace, SourceVertexId vertex,
+     const FieldBranchDirection &direction);
+@@ -803,6 +822,13 @@ public:
+     return singularityPortAttachments_;
+   }
+ 
++  /** Every face ray of every port class, in ray order. semantic_digest() does
++   * not cover them: they derive from the frames and transports it covers. */
++  [[nodiscard]] const std::vector<FieldSingularityRay> &
++  singularity_rays() const noexcept {
++    return singularityRays_;
++  }
++
+   [[nodiscard]] std::uint64_t semantic_digest() const noexcept {
+     return semanticDigest_;
+   }
+@@ -824,14 +850,17 @@ private:
+       std::vector<FieldFaceBranchFrame> frames,
+       std::vector<FieldBranchTransportAdjacency> transports,
+       std::vector<FieldSingularityPortAttachment> singularityPortAttachments,
++      std::vector<FieldSingularityRay> singularityRays,
+       std::uint64_t semanticDigest)
+       : frames_(std::move(frames)), transports_(std::move(transports)),
+         singularityPortAttachments_(std::move(singularityPortAttachments)),
++        singularityRays_(std::move(singularityRays)),
+         semanticDigest_(semanticDigest) {}
+ 
+   std::vector<FieldFaceBranchFrame> frames_;
+   std::vector<FieldBranchTransportAdjacency> transports_;
+   std::vector<FieldSingularityPortAttachment> singularityPortAttachments_;
++  std::vector<FieldSingularityRay> singularityRays_;
+   std::uint64_t semanticDigest_ = 0U;
+ };
+ 
+diff --git a/src/authority/FieldTransportAtlas.cpp b/src/authority/FieldTransportAtlas.cpp
+index 6cc9a513b..769b6b7fb 100644
+--- a/src/authority/FieldTransportAtlas.cpp
++++ b/src/authority/FieldTransportAtlas.cpp
+@@ -568,7 +568,7 @@ build_singularity_attachments(
+     const std::vector<BuiltFaceBranchFrame> &builtFramesByRow,
+     const std::vector<FieldBranchTransportAdjacency> &branchTransports,
+     const std::vector<FieldSingularityFact> &singularities,
+-    FieldAtlasBuildError &error) {
++    std::vector<FieldSingularityRay> &rays, FieldAtlasBuildError &error) {
+   std::vector<FieldSingularityPortAttachment> result;
+   for (const FieldSingularityFact &singularity : singularities) {
+     const int expected = 4 - singularity.indexNumerator;
+@@ -596,6 +596,7 @@ build_singularity_attachments(
+     std::vector<FieldSingularityPortAttachment> incidences;
+     std::vector<std::size_t> incidenceFanIndex;
+     std::vector<std::vector<std::size_t>> incidenceByFan(fan->size());
++    std::vector<std::optional<SourceEdgeTopologyKey>> incidenceRadialEdges;
+     for (std::size_t fanIndex = 0; fanIndex < fan->size(); ++fanIndex) {
+       const IncidentFanFace &face = (*fan)[fanIndex];
+       if (face.row.index() >= builtFramesByRow.size()) {
+@@ -680,6 +681,20 @@ build_singularity_attachments(
+             singularity.sourceComponent});
+         incidenceFanIndex.push_back(fanIndex);
+         incidenceByFan[fanIndex].push_back(incidenceIndex);
++        // A ray with no weight on one far vertex runs along the radial edge
++        // to the other.
++        std::optional<SourceEdgeTopologyKey> radialEdge;
++        const auto &rayVertices = face.topology.vertices();
++        for (std::size_t index = 0U; index < rayVertices.size(); ++index) {
++          if (rayVertices[index] != singularity.sourceVertex &&
++              pairing.direction[index] == FieldExactRational::from_integer(0)) {
++            radialEdge = typed_edge(singularity.sourceVertex,
++                                    rayVertices[index] == face.nextVertex
++                                        ? face.previousVertex
++                                        : face.nextVertex);
++          }
++        }
++        incidenceRadialEdges.push_back(radialEdge);
+       }
+     }
+     if (incidences.empty()) {
+@@ -1042,7 +1057,26 @@ build_singularity_attachments(
+           static_cast<int>(slot);
+       result.push_back(orderedRepresentatives[slot].attachment);
+     }
++    // Each class's rays take the slot of its port, the class's first ray.
++    for (const auto &[unusedRoot, classIndices] : classes) {
++      (void)unusedRoot;
++      const auto port = std::find_if(
++          orderedRepresentatives.begin(), orderedRepresentatives.end(),
++          [&](const OrderedRepresentative &ordered) {
++            return std::tie(ordered.attachment.startFace,
++                            ordered.attachment.branch,
++                            ordered.attachment.firstOutgoingCarrier) ==
++                   topologyKey(classIndices.front());
++          });
++      for (const std::size_t index : classIndices) {
++        rays.push_back(FieldSingularityRay{
++            singularity.id, singularity.sourceVertex,
++            incidences[index].startFace, incidences[index].branch,
++            port->attachment.localSlot, incidenceRadialEdges[index]});
++      }
++    }
+   }
++  std::sort(rays.begin(), rays.end());
+   std::sort(result.begin(), result.end(),
+             [](const FieldSingularityPortAttachment &a,
+                const FieldSingularityPortAttachment &b) {
+@@ -3344,9 +3378,10 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
+ 
+   FieldAtlasBuildError attachmentError{
+       FieldAtlasBuildErrorCode::InvalidSingularityPortAttachment};
++  std::vector<FieldSingularityRay> singularityRays;
+   const auto singularityAttachments = build_singularity_attachments(
+       sourceMesh, rowTopology, builtFramesByRow, *branchTransports,
+-      singularities, attachmentError);
++      singularities, singularityRays, attachmentError);
+   if (!singularityAttachments.has_value()) {
+     attachmentError.regionTransportDiagnostics = regionTransportDiagnostics;
+     return FieldTransportAtlasBuildResult(std::move(attachmentError));
+@@ -3360,7 +3395,8 @@ FieldTransportAtlasBuildResult FieldTransportAtlas::make(
+       branchDigest);
+   FieldBranchTopology branchTopology(
+       std::move(branchFrames), std::move(*branchTransports),
+-      std::move(*singularityAttachments), branchDigest);
++      std::move(*singularityAttachments), std::move(singularityRays),
++      branchDigest);
+   FieldQuadrangulabilityCertificate certificate(
+       std::move(certificateWitnesses), true, sourceDigest, atlasDigest);
+   return FieldTransportAtlasBuildResult(FieldTransportAtlas(
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 4beb89bec..4e2c148c5 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -24207,3 +24207,50 @@ TEST(TraceTerminationCorrection, SlideEntryActivationReachByReaderRecipe) {
+             << '\n';
+   EXPECT_EQ(9U + polylineFixtures, receipts.size());
+ }
++
++TEST(FieldTransportAtlas, MechanicalSingularityRaysLieOnRadialEdgesAndNameTheirPortSlot) {
++  const auto &fixture = cp4c_mechanical_atlas_fixture();
++  ASSERT_TRUE(fixture.atlas);
++  const auto &topology = fixture.atlas->branch_topology();
++  const auto &rays = topology.singularity_rays();
++  const auto &attachments = topology.singularity_port_attachments();
++  ASSERT_EQ(12U, attachments.size());
++  ASSERT_EQ(12U, rays.size());
++  EXPECT_TRUE(std::is_sorted(rays.begin(), rays.end()));
++  // Every mechanical class has one ray, so each ray is its port's attachment.
++  for (const auto &attachment : attachments) {
++    EXPECT_EQ(1, std::count_if(rays.begin(), rays.end(), [&](const auto &ray) {
++                return ray.singularity == attachment.singularity &&
++                       ray.sourceVertex == attachment.sourceVertex &&
++                       ray.startFace == attachment.startFace &&
++                       ray.branch == attachment.branch &&
++                       ray.portSlot == attachment.localSlot;
++              }));
++  }
++  struct ExpectedRay {
++    std::size_t vertex;
++    std::array<int, 3> face;
++    int branch;
++    std::array<int, 2> edge;
++  };
++  const std::array<ExpectedRay, 12> expected{{
++      {10U, {8, 10, 11}, 1, {10, 11}},   {10U, {10, 11, 79}, 3, {10, 79}},
++      {10U, {8, 10, 151}, 2, {8, 10}},   {35U, {28, 34, 35}, 1, {34, 35}},
++      {35U, {35, 95, 135}, 0, {35, 95}}, {35U, {29, 35, 91}, 2, {29, 35}},
++      {47U, {45, 46, 47}, 2, {45, 47}},  {47U, {45, 47, 73}, 1, {47, 73}},
++      {47U, {46, 47, 72}, 2, {46, 47}},  {71U, {64, 65, 71}, 1, {65, 71}},
++      {71U, {65, 71, 92}, 1, {71, 92}},  {71U, {70, 71, 92}, 2, {70, 71}}}};
++  const auto extent = static_cast<std::size_t>(fixture.mesh.V.rows());
++  for (const auto &want : expected) {
++    const auto face =
++        topology_face(want.face[0], want.face[1], want.face[2], extent);
++    const auto ray = std::find_if(rays.begin(), rays.end(), [&](const auto &value) {
++      return value.sourceVertex.index() == want.vertex && value.startFace == face &&
++             static_cast<int>(value.branch.value()) == want.branch;
++    });
++    ASSERT_NE(rays.end(), ray) << "vertex " << want.vertex;
++    ASSERT_TRUE(ray->alongRadialEdge.has_value()) << "vertex " << want.vertex;
++    EXPECT_EQ(topology_edge(want.edge[0], want.edge[1], extent),
++              *ray->alongRadialEdge);
++  }
++}

@@ -6,9 +6,14 @@
   - DD3: `interiorSingularityFree` is sound.
   - DD4: the corners DEFN is resequenced after the A2a fix.
   - DD5: A4 unequal-side construction is added to the sequence.
-- **Next:** `M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP` only.
+- **A2a arrival DEFN** ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md)):
+  - Ownership is already D13 = A.
+  - A1 publishes one ray per separatrix class. All 10 sphere arrivals slide along the radial edge that a class straddles while that port keeps its own trace (O51, partial co-traces).
+  - It froze CB-215 (A1 rays) and CB-216 (A2a classifier), then TB-EXEC-192.
+  - It corrects TB-REV-191 adv. DD2's "no reduction" claim.
+- **Next:** `M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES` only.
 
-## CURRENT — per-disc A4 route: TB-REV-191 adversarial realigns to A2a arrival ownership (2026-11-27 UTC)
+## CURRENT — per-disc A4 route: A2a arrival DEFN froze CB-215/216 (2026-11-27 UTC)
 
 - [x] **COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.
@@ -52,14 +57,15 @@
   - DD4: the corners DEFN is resequenced.
   - DD5: unequal opposite sides are the common case (regions 0, 3, 6, 8, 9 and 11).
 - [-] **RESEQUENCED** `M6-CP3-DEFN-P13-A4-DISC-CORNERS`, frozen by TB-REV-191, moves to item 19 (DD4).
-- [ ] **14 NEXT** `M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP` (runtime-free). It does three things:
-  1. confirms the arrival lifecycle;
-  2. resolves from invariants 1 and 8 which port an arrival owns, with a STOP for a user decision if that needs new normative text;
-  3. freezes one exact, behaviour-neutral classification slice.
-
-  The slice is a free function, not a hashed member: for each arrival it records the target, the carrier, the matched port or `NoPortCarrier`, and whether that port's own trace exists. It adds a unit row and row858 sphere and genus_two receipts, and predicts 10 sphere arrivals.
-- [ ] **15** CB, compile only. **16** TB-EXEC, full gate. **17** TB-REV.
-- [ ] **18** A behaviour DEFN: a claimed port's redundant trace is removed (invariant 8). It states the predicted sphere plan and the changed gate rows. Then CB → TB → TB-REV.
+- [x] **14 COMPLETE** `M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP` — [record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md):
+  - (a) the lifecycle is confirmed;
+  - (b) ownership is D13 = A;
+  - (c) one slice is frozen as two stacked diffs (A1 rays, A2a classifier). The [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB215_CB216_TB192_Singularity_Arrival_Exact_Manifest.md) has the hashes and predictions.
+- [ ] **15 NEXT** `M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES`, compile only: diff `e6176e8f…4e83`, three paths, +115/−3, gate row 1009.
+- [ ] **16** `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION`, compile only, on CB-215: diff `d6e980a8…4bfa`, four paths, +251/−0, gate row 1010, and 12 lines in row858.
+- [ ] **17** `M6-CP3-TB-EXEC-192`: the 1010-row manifest `c9f6325e…e9f5`, membership 1091. Sphere prediction: 10 radial-edge arrivals, all matched and all `portTraced=1`.
+- [ ] **17a** `M6-CP3-TB-REV-192`.
+- [ ] **18** The behaviour DEFN (AP4): how a partially co-traced port trace is removed. Option A, suppress and re-trace to a fixed point, is recommended. It needs new §7.2 step-7 text, so the DEFN STOPs for a user decision. Then CB → TB → TB-REV.
 - [ ] **19+** One DEFN → CB → TB each, in order:
   1. corners (A4D2 part 2) on the corrected plan;
   2. a gated Vase witness row;
@@ -74,12 +80,12 @@
 - [ ] **HELD:** B1 fallback repair (off-trajectory; the fallback cannot be certified, DESIGN §5.2); row858 legacy diagnostic lines (CB-210/211R/212) stay until the per-disc route supersedes them; CB-207D (no cap); CB-207C (size receipt only if needed); close_sheets fine-resolution measurement; parameter deletion → V3b → R1 → O48; CB-190, J6, E5. No unrelated work.
 
 ```text
-NEXT_TURN: M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP
-Owner: DEFN / Review only, runtime-free. Freeze exactly one behaviour-neutral compile-only successor; do not implement or execute.
-Authority: Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md (DD1-DD5); DESIGN §5.2, §7.2 steps 1/5/7, A2a invariants 1 and 8; row858 TB191 result 15179335926; accepted 1008-row gate.
-Scope: (a) confirm the arrival lifecycle from source (SurfaceCellTracing.cpp:3617-3633, :2301-2338, :4755-4758; SurfaceCellTracing.h:770-777). (b) Resolve from invariants 1/8 which port an arrival owns; STOP for a user decision if new normative text is needed. (c) Freeze one exact diff: a free A2a function classifying each singularity arrival (target; arrival carrier = face+branch or radial edge; matched port or NoPortCarrier; whether that port's own trace exists), enum + _name(), read by no stage, not a hashed member (RA-211); one non-vacuity unit row; row858 sphere + genus_two receipts. Predict 10 sphere arrivals, all at nodes 0,1,2,5,6,7.
-Then: CB (compile) -> TB-EXEC -> TB-REV -> behaviour DEFN (claimed port's redundant trace removed) -> CB/TB -> corners DEFN -> Vase row -> A4 unequal-side construction -> fill -> 65B -> 65D -> O41.
-Do not: change tracing, A2b or A3 behaviour, dispatch or the veto; add tiny-region collapse; repair B1/fallback; CB-207D; promote CP3/497/D0/H4; start J6/E5/CB-190.
+NEXT_TURN: M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES
+Owner: Code + Build only. Apply one exact diff; compile the eight GMP/GMPXX targets, runtimeExecution=false. No runtime, no other source/test/fixture/selector/harness/workflow change.
+Authority: gates/Architecture_M6_CP3_CB215_CB216_TB192_Singularity_Arrival_Exact_Manifest.md; Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md (AP0-AP5).
+  Diff Architecture_M6_CP3_CB215_P13_Singularity_Ray_Classes_Exact.diff SHA-256 e6176e8f0a12eccb191356e57819eb4c22402e7e28ff84b6e6dffdc5aeb44e83 (10,226 B, +115/-3); preimages FieldTransportAtlas.h 06217407..., FieldTransportAtlas.cpp 7b0b8138..., FieldAlignedCurveNetworkTests.cpp a371dffb...; postimages per manifest. STOP on hash/path/patch/compile mismatch; do not adapt.
+Then: CB-216 (diff d6e980a8...4bfa on CB-215, compile only) -> TB-EXEC-192 (1010-row manifest c9f6325e...e9f5; rows 1009/1010 new; row858 +12 predicted lines; others N1-N3 = TB191 15179335926) -> TB-REV-192 -> behaviour DEFN (AP4, user decision) -> corners DEFN.
+Do not: run tests in CB, change tracing/retrace selection/A2b/A3/dispatch/veto, repair B1/fallback, CB-207D, promote CP3/497/D0/H4, start J6/E5/CB-190.
 ```
 
 ## HISTORY — TB-REV-187Q independent: QF1 A/B preserve behaviour; CB-206 next (2026-11-26 UTC)

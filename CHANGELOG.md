@@ -1,3 +1,18 @@
+## 2026-11-27 — DEFN A2a singularity arrival port ownership: CB-215/216 frozen
+
+[Record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md); [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB215_CB216_TB192_Singularity_Arrival_Exact_Manifest.md). Runtime-free; no product, test or selector change on the branch.
+- Ownership is already D13 = A.
+- A1 publishes one ray per separatrix class (`FieldTransportAtlas.cpp:922–944`). The sphere has 48 rays in 24 two-ray classes. All 10 arrivals slide along the radial edge a class straddles, and that port keeps its own trace: 10 partial co-traces (O51).
+- Frozen:
+  - CB-215 (A1 `singularity_rays()`, `e6176e8f…4e83`, +115/−3, row 1009);
+  - CB-216 (A2a `classify_field_aligned_singularity_arrivals`, `d6e980a8…4bfa`, +251/−0, row 1010, row858 +12);
+  - TB-EXEC-192 (1010 rows, `c9f6325e…e9f5`).
+- Syntax-only: 0 errors, identical warning sets.
+- Corrects TB-REV-191 adv. DD2: D13 already removes exact along-edge retraces.
+- The removal rule for partial co-traces (AP4) is user-pending at the behaviour DEFN.
+
+Next: `M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES`.
+
 ## 2026-11-27 — TB-REV-191 adversarial: sphere corner defect is A2a arrival ownership
 
 [Record](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md). Runtime-free; no product, test, selector or gate change. The 1008/1008 gate, CB-214 and its 16 receipt lines are upheld.

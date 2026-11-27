@@ -3,7 +3,13 @@
 - Slivers 2, 4, 5 and 10 are separatrix connections traced from both ends, an A2a defect (DD1–DD4).
 - A4 unequal-side construction is added (DD5).
 
-Next `M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP`.
+[A2a arrival DEFN](Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md):
+- Ownership is already D13 = A.
+- A1 publishes one ray per separatrix class. All 10 sphere arrivals slide along a straddled radial edge while that port keeps its own trace (O51).
+- It froze CB-215 and CB-216, then TB-EXEC-192 (1010 rows).
+- It corrects the adversarial DD2.
+
+Next `M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES`.
 
 # Directional — Project Orientation
 
@@ -150,8 +156,8 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-DEFN-P13-A2A-SINGULARITY-ARRIVAL-PORT-OWNERSHIP` (O51) resolves which port a singularity arrival owns, under A2a invariants 1 and 8. It freezes one behaviour-neutral classification slice ([TB-REV-191 adv.](Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md) DD1–DD4).
-- After it: the behaviour change, then the corners DEFN, a Vase row, and A4 unequal-side construction (DD5).
+**Current priority:** `M6-CP3-CB-215-P13-SINGULARITY-RAY-CLASSES` (A1 rays), then CB-216 (A2a arrival classifier), then TB-EXEC-192 and TB-REV-192 ([A2a arrival DEFN](Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md); O51).
+- After it: the behaviour DEFN (AP4, a user decision on removing partial co-traces), then the corners DEFN, a Vase row, and A4 unequal-side construction (DD5).
 - The [1008-row test gate](Architecture_M6_CP3_TB_REV_191_Region_Boundary_Schedule_Independent_Review_20261127.md) is accepted; the schedule is not activated.
 - B1 stays held. The source-region producers and the veto stay until 65D.
 

@@ -1,0 +1,292 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index 63a30df18..28ff10cac 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -741,6 +741,47 @@ private:
+ [[nodiscard]] std::uint64_t field_aligned_curve_network_hash(
+     const FieldAlignedCurveNetwork &network) noexcept;
+ 
++/** How a trace's last piece reaches the singular vertex it ends at. */
++enum class FieldAlignedArrivalApproach : std::uint8_t {
++  FaceInterior = 0,
++  RadialEdge = 1,
++};
++
++/**
++ * A trace that ends at a singularity, and the port of that singularity whose
++ * separatrix class its final approach realizes. `port` is empty when no class
++ * matches; `portTraced` says whether that port still departs along its own
++ * trace.
++ */
++struct FieldAlignedSingularityArrival {
++  authority::TraceId trace;
++  authority::FieldSingularityId singularity;
++  authority::NetworkNodeId node;
++  FieldAlignedArrivalApproach approach = FieldAlignedArrivalApproach::FaceInterior;
++  std::optional<authority::SourceEdgeTopologyKey> radialEdge;
++  std::optional<authority::SingularityPortId> port;
++  bool portTraced = false;
++
++  auto operator<=>(const FieldAlignedSingularityArrival &) const = default;
++};
++
++[[nodiscard]] const char *field_aligned_arrival_approach_name(
++    FieldAlignedArrivalApproach approach) noexcept;
++
++/**
++ * Every trace of `network` that ends at a singularity, in trace order. A last
++ * piece along a radial edge (a slide, or a face piece on the edge) matches the
++ * edge-supported port on that edge, else the class with a ray on it, else the
++ * class with a ray in each face of the edge. A last piece through a face
++ * interior matches the class whose ray in that face its branch runs back
++ * along. Empty when `fieldTransportAtlas` is not the atlas `network` was
++ * traced on or a trace's exact path is unavailable. Read by no stage.
++ */
++[[nodiscard]] std::optional<std::vector<FieldAlignedSingularityArrival>>
++classify_field_aligned_singularity_arrivals(
++    const FieldAlignedCurveNetwork &network,
++    const authority::FieldTransportAtlas &fieldTransportAtlas);
++
+ namespace surface_cell_tracing_detail {
+ 
+ using FieldVertexArrivalMode = directional::geometry::FieldVertexArrivalMode;
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 7d469ee72..2a14b996f 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -6662,6 +6662,118 @@ std::uint64_t field_aligned_curve_network_hash(
+   return network.semantic_digest();
+ }
+ 
++const char *field_aligned_arrival_approach_name(
++    const FieldAlignedArrivalApproach approach) noexcept {
++  switch (approach) {
++  case FieldAlignedArrivalApproach::FaceInterior:
++    return "face-interior";
++  case FieldAlignedArrivalApproach::RadialEdge:
++    return "radial-edge";
++  }
++  return "unknown";
++}
++
++std::optional<std::vector<FieldAlignedSingularityArrival>>
++classify_field_aligned_singularity_arrivals(
++    const FieldAlignedCurveNetwork &network,
++    const authority::FieldTransportAtlas &fieldTransportAtlas) {
++  if (network.atlas_digest() !=
++      authority::field_transport_atlas_hash(fieldTransportAtlas)) {
++    return std::nullopt;
++  }
++  const authority::FieldBranchTopology &topology =
++      fieldTransportAtlas.branch_topology();
++  const auto &rays = topology.singularity_rays();
++  const auto face_has_edge = [](const authority::SourceFaceTopologyKey &face,
++                                const authority::SourceEdgeTopologyKey &edge) {
++    const auto &vertices = face.vertices();
++    return std::find(vertices.begin(), vertices.end(), edge.first()) !=
++               vertices.end() &&
++           std::find(vertices.begin(), vertices.end(), edge.second()) !=
++               vertices.end();
++  };
++  std::vector<FieldAlignedSingularityArrival> arrivals;
++  for (const FieldAlignedCandidateTrace &trace : network.candidate_traces()) {
++    if (!trace.terminalSingularity || trace.segments.empty()) continue;
++    const auto pieces = exact_trace_segment_detail::exact_trace_segment_pieces(
++        trace, trace.segments.size() - 1U);
++    if (!pieces || pieces->empty()) return std::nullopt;
++    const auto *vertex =
++        std::get_if<authority::SourceVertexId>(&pieces->back().second);
++    if (vertex == nullptr) return std::nullopt;
++    const auto node = std::find_if(
++        network.nodes().begin(), network.nodes().end(),
++        [&](const FieldAlignedCurveNetworkNode &value) {
++          return value.sourceVertex == *vertex;
++        });
++    if (node == network.nodes().end()) return std::nullopt;
++
++    FieldAlignedSingularityArrival arrival{
++        trace.id,     *trace.terminalSingularity,
++        node->id,     FieldAlignedArrivalApproach::FaceInterior,
++        std::nullopt, std::nullopt,
++        false};
++    const auto of_target = [&](const authority::FieldSingularityRay &ray) {
++      return ray.singularity == arrival.singularity;
++    };
++    std::optional<int> slot;
++    if (const auto interval =
++            authority::exact_source_piece_edge_interval(pieces->back())) {
++      arrival.approach = FieldAlignedArrivalApproach::RadialEdge;
++      arrival.radialEdge = interval->edge;
++      for (const auto &attachment : topology.singularity_port_attachments()) {
++        if (!slot && attachment.singularity == arrival.singularity &&
++            attachment.firstOutgoingCarrier == interval->edge) {
++          slot = attachment.localSlot;
++        }
++      }
++      for (const auto &ray : rays) {
++        if (!slot && of_target(ray) && ray.alongRadialEdge == interval->edge) {
++          slot = ray.portSlot;
++        }
++      }
++      for (const auto &ray : rays) {
++        if (slot || !of_target(ray) || !face_has_edge(ray.startFace, interval->edge)) {
++          continue;
++        }
++        if (std::any_of(rays.begin(), rays.end(), [&](const auto &other) {
++              return of_target(other) && other.portSlot == ray.portSlot &&
++                     other.startFace != ray.startFace &&
++                     face_has_edge(other.startFace, interval->edge);
++            })) {
++          slot = ray.portSlot;
++        }
++      }
++    } else {
++      const FieldAlignedCandidateTraceSegment &last = trace.segments.back();
++      for (const auto &ray : rays) {
++        if (!slot && of_target(ray) && ray.startFace == last.sourceFace &&
++            ray.branch == last.branch.rotated(2)) {
++          slot = ray.portSlot;
++        }
++      }
++    }
++    if (slot) {
++      const auto &ports = network.singularity_ports();
++      const auto port = std::find_if(
++          ports.begin(), ports.end(), [&](const FieldAlignedSingularityPort &value) {
++            return value.singularity == arrival.singularity &&
++                   value.ordinal == *slot;
++          });
++      if (port != ports.end()) {
++        arrival.port = port->id;
++        arrival.portTraced = std::any_of(
++            network.candidate_traces().begin(), network.candidate_traces().end(),
++            [&](const FieldAlignedCandidateTrace &value) {
++              return value.port == port->id;
++            });
++      }
++    }
++    arrivals.push_back(std::move(arrival));
++  }
++  return arrivals;
++}
++
+ } // namespace directional::geometry
+ 
+ namespace directional::geometry::surface_cell_tracing_detail {
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 4e2c148c5..5caa6cda7 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -24254,3 +24254,48 @@ TEST(FieldTransportAtlas, MechanicalSingularityRaysLieOnRadialEdgesAndNameTheirP
+               *ray->alongRadialEdge);
+   }
+ }
++
++TEST(FieldAlignedCurveNetwork, MechanicalRetraceArrivalsRealizeTheRemovedPortsSeparatrix) {
++  using directional::geometry::FieldAlignedArrivalApproach;
++  const auto &fixture = cp4c_mechanical_atlas_fixture();
++  ASSERT_TRUE(fixture.atlas);
++  ASSERT_TRUE(fixture.network) << fixture.terminalFailureCode << '/'
++                               << fixture.terminalFailureDetailCode;
++  const auto &network = *fixture.network;
++  const auto arrivals = directional::geometry::classify_field_aligned_singularity_arrivals(
++      network, *fixture.atlas);
++  ASSERT_TRUE(arrivals.has_value());
++  std::vector<const directional::geometry::FieldAlignedCandidateTrace *> ending;
++  for (const auto &trace : network.candidate_traces()) {
++    if (trace.terminalSingularity) ending.push_back(&trace);
++  }
++  ASSERT_EQ(ending.size(), arrivals->size());
++  std::size_t retraced = 0U;
++  for (std::size_t index = 0U; index < arrivals->size(); ++index) {
++    const auto &arrival = (*arrivals)[index];
++    const auto &trace = *ending[index];
++    EXPECT_EQ(trace.id, arrival.trace);
++    EXPECT_EQ(*trace.terminalSingularity, arrival.singularity);
++    if (arrival.port) {
++      const auto port = std::find_if(network.singularity_ports().begin(),
++          network.singularity_ports().end(), [&](const auto &value) {
++            return value.id == *arrival.port;
++          });
++      ASSERT_NE(network.singularity_ports().end(), port);
++      EXPECT_EQ(arrival.singularity, port->singularity);
++      EXPECT_EQ(port->node, arrival.node);
++      EXPECT_EQ(std::any_of(network.candidate_traces().begin(),
++                    network.candidate_traces().end(),
++                    [&](const auto &value) { return value.port == *arrival.port; }),
++                arrival.portTraced);
++    }
++    if (!trace.arrivalPort) continue;
++    // An exact reciprocal retrace runs back along the removed trace, so its
++    // last piece lies on the removed port's ray and names that port.
++    ++retraced;
++    EXPECT_EQ(FieldAlignedArrivalApproach::RadialEdge, arrival.approach);
++    EXPECT_EQ(trace.arrivalPort, arrival.port);
++    EXPECT_FALSE(arrival.portTraced);
++  }
++  EXPECT_EQ(4U, retraced);
++}
+diff --git a/tests/SurfaceCellTracingDisplayTests.cpp b/tests/SurfaceCellTracingDisplayTests.cpp
+index 9e62bec21..c6453ddf1 100644
+--- a/tests/SurfaceCellTracingDisplayTests.cpp
++++ b/tests/SurfaceCellTracingDisplayTests.cpp
+@@ -492,6 +492,59 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
+     print_schedules("Sphere", sphere, true);
+     print_schedules("Genus", genus, false);
+   }
++  {
++    // Each trace that ends at a singularity and the separatrix class of that
++    // singularity its last piece realizes.
++    const auto print_arrivals = [](const char *label, const FixtureRun &run,
++                                   bool perArrival) {
++      const auto &snapshots = run.result.surfaceCellContext.productSnapshots;
++      if (!snapshots.fieldAlignedCurveNetwork || !snapshots.fieldTransportAtlas) {
++        std::cout << label << "SingularityArrivals unavailable\n";
++        return;
++      }
++      const auto arrivals =
++          directional::geometry::classify_field_aligned_singularity_arrivals(
++              *snapshots.fieldAlignedCurveNetwork, *snapshots.fieldTransportAtlas);
++      if (!arrivals) {
++        std::cout << label << "SingularityArrivals classified=0\n";
++        return;
++      }
++      std::size_t radialEdge = 0U;
++      std::size_t matched = 0U;
++      std::size_t portTraced = 0U;
++      for (const auto &arrival : *arrivals) {
++        if (arrival.approach ==
++            directional::geometry::FieldAlignedArrivalApproach::RadialEdge) {
++          ++radialEdge;
++        }
++        if (arrival.port) ++matched;
++        if (arrival.portTraced) ++portTraced;
++      }
++      std::cout << label << "SingularityArrivals classified=1 arrivals="
++                << arrivals->size() << " radialEdge=" << radialEdge
++                << " faceInterior=" << arrivals->size() - radialEdge
++                << " matched=" << matched << " portTraced=" << portTraced << '\n';
++      if (!perArrival) return;
++      for (const auto &arrival : *arrivals) {
++        std::cout << label << "SingularityArrival trace=" << arrival.trace.index()
++                  << " node=" << arrival.node.index() << " approach="
++                  << directional::geometry::field_aligned_arrival_approach_name(
++                         arrival.approach)
++                  << " edge="
++                  << (arrival.radialEdge
++                          ? std::to_string(arrival.radialEdge->first().index()) +
++                                "-" +
++                                std::to_string(arrival.radialEdge->second().index())
++                          : std::string("-"))
++                  << " port="
++                  << (arrival.port ? std::to_string(arrival.port->index())
++                                   : std::string("-"))
++                  << " portTraced=" << (arrival.portTraced ? 1 : 0) << '\n';
++      }
++    };
++    print_arrivals("Sphere", sphere, true);
++    print_arrivals("Genus", genus, false);
++  }
+   const auto sphereDisplay = display_of(sphere);
+   for (const auto *face : {&sphereLocus.sourceFace, &sphereLocus.relatedSourceFace,
+                           &sphereLocus.edgeTraceFaceCorners}) {

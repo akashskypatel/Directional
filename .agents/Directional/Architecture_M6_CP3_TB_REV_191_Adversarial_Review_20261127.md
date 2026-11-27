@@ -63,6 +63,9 @@ Continues `M6-CP3-TB-REV-191` after the [independent review](Architecture_M6_CP3
 - **Who owns the defect.** DESIGN A2a invariant 1: "every required singularity port is owned exactly once". Invariant 8 and §7.2 step 7 let network reduction "remove redundant traces".
   - An arrival realizes the separatrix of the port whose carrier it enters. In a constant-per-face field, a trace reaching a vertex through a face interior is collinear with that face's field ray from the vertex, which is a port ray.
   - The code neither claims that port nor removes its own trace. Contacts are taken only from `ProperCrossing` (`:4755–4758`), so a coincident or overlapping pair never meets. No reduction step was found by search.
+  - *Corrected by the [A2a arrival DEFN](Architecture_M6_CP3_DEFN_P13_A2a_Singularity_Arrival_Port_Ownership_20261127.md) §1:*
+    - *D13 = A, through CB-196…199B, already removes exact along-edge reciprocal retraces and records `arrivalPort`.*
+    - *The sphere's 10 arrivals are inexact (r = 0). They slide along the radial edge that a port class straddles.*
 - **Why A4 cannot absorb it.** DESIGN §5.2 gives A2a no degraded mode; :457 and :1050 forbid tiny-region collapse after the plan. Routing these regions to D3 in A4 would work around an A2a defect.
 - Recorded as **O51** in the tracker; A4D5 is updated there.
 

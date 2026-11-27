@@ -347,6 +347,7 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - Check a tie rule against the required positive cases before freezing it. Cuts sharing a boundary point are ordered exactly by where their other ends lie (L5).
 - Before freezing a measurement of a plan's corners, compute what the receipts already fix: node degrees, V − E + F, and Σ degree − Σ valence at singular nodes (Poincaré–Hopf). A positive surplus means arcs that no quarter-turn sector can hold. That fixes the owner upstream, at the stage that traced them (TB-REV-191 adv. DD1–DD2).
 - A stage that DESIGN gives no degraded mode (§5.2) cannot be fixed by a consumer's degradation. Place the fix at the producing stage (TB-REV-191 adv. DD2).
+- Before claiming that a producer lacks a reduction or ownership step, grep its published fields and the decision record (D-numbers). `arrivalPort` and D13 already existed when TB-REV-191 adv. said "no reduction step" (A2a arrival DEFN §1).
 
 - Before freezing a typed STOP, check the published receipt for the configuration it stops; a STOP the witness must hit makes the gate RED by construction (TB-REV-167 adversarial P3).
 - A count that is not exact can still be a sound bound: check which side the consumer enforces before calling it unsafe (F = 1 + E − V + C0 ≤ E + 1; TB-REV-167 adversarial P4).
