@@ -47,6 +47,7 @@ Policies cannot be deleted or modified without explicit user authorization. The 
 
 ```text
 NEXT_TURN: M6-CP3-CB-220-P13-REGION-CORNER-SIDES
+CB-220 resume checkpoint: exact four-path diff applied and independently verified at source e55f01b9ac86e2dc0159771a45521cb6f35049be (+434/-0); apply run 46131286374, result 15257955978, log 15257661372; staged Drive patch retired. Compile request 763e2576950212f966556605686108b5d2baeab0, mailbox m6-cp3-cb220-compile on workflow-mailbox, exact source e55f01b9ac86e2dc0159771a45521cb6f35049be. Cleanup run 46131439515, receipt 15258016877, commit b59ecef20b12bd041924e5bd6c27b173c9ac11af. Resume receipt/package verification; do NOT reapply or duplicate dispatch. No runtime. Compile result not yet verified.
 Owner: Code + Build only. Apply one exact diff; compile the eight GMP/GMPXX targets, runtimeExecution=false. No runtime, no other source/test/fixture/selector/harness/workflow change.
 Authority: gates/Architecture_M6_CP3_CB220_TB195_Region_Corner_Sides_Exact_Manifest.md; corners DEFN CR1-CR4.
   Diff Architecture_M6_CP3_CB220_P13_Region_Corner_Sides_Exact.diff SHA-256 35a164a8b4490ae1e6ab29f480745d49f8bbd0f79db84c0334d94f87bb7141fa (22,405 B, +434/-0; new src/geometry/RegionCornerSides.cpp + CMakeLists line); preimages CMakeLists.txt 7b3eadf6..., GlobalConformityBaseline.h 8a7e7494..., SurfaceCellTracingDisplayTests.cpp 730c06d9...; postimages per manifest. STOP on hash/path/patch/compile mismatch; do not adapt.
