@@ -1,3 +1,4 @@
+- **Switch DEFN: Amendment 35 activation frozen as CB-219; falsifiers to TB-EXEC-194; O51 closes only on TB-REV-194 acceptance; no new stable event.**
 - **TB-REV-193: 1013/1013 test gate accepted; O51 deletion witness independently confirmed (option off); obligations 1–3 to the switch DEFN; no new stable event, 67/17/50.**
 - **TB-EXEC-193: O51 deletion witness PASS (row1012) with the option off in production; no new stable event, 67/17/50.**
 - **AP4 DEFN (2026-11-27):** O51's removal rule is decided: A0 deletion, DESIGN Amendment 35. It is staged off until the switch DEFN, and its sphere witness is frozen (CB-218 row 1012). O51 stays open until the switch is accepted. O52 is unchanged and goes to the corners DEFN. No new stable event; 67/17/50 unchanged.

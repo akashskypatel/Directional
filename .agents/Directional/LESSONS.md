@@ -154,6 +154,8 @@ This document records **reusable failure-derived engineering lessons**, not an e
   `make_from_candidate` accepts only the canonical tracing, so a wired contact path has only real
   fixtures as witnesses. Factor its arithmetic into pure functions that unit tests can reach (RA-248).
 
+- **Before activating a step that removes or re-indexes elements, census tests that index vectors by element id (`traces[contact.moving]`).** Positional lookup silently reads the wrong element once ids stop being dense. Keep a control that observes the pre-selection product for tests whose subject is the earlier stage (switch DEFN, 2026-11-28).
+
 ## Semantic ownership, identity, and dataflow
 
 - **Each semantic fact has one producing authority.** An accepted producer publishes the canonical value

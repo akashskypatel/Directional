@@ -1,4 +1,4 @@
-**Current turn outcome (2026-11-28 UTC):** `M6-CP3-TB-REV-193` accepts TB-EXEC-193's 1013/1013 for the test gate only ([review](.agents/Directional/Architecture_M6_CP3_TB_REV_193_CoTrace_Deletion_Independent_Review_20261128.md), [report](.agents/Directional/Architecture_M6_CP3_TB193_CoTrace_Deletion_Execution_Report_20261128.md)). Row 1012 confirms the EE3 sphere deletion witness with the option on; production stays off. Previous: `M6-CP3-TB-EXEC-193` ran the 1013-row gate on CB-218 candidate `15249606947` (result `15250401219`).  Earlier: `M6-CP3-CB-218-P13-CLAIMED-COTRACE-DELETION` is compiled ([record](.agents/Directional/Architecture_M6_CP3_CB218_P13_Claimed_CoTrace_Deletion_Code_Build_Record_20261128.md)). Earlier: `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` decides AP4: A0 deletion with typed fail-closed, DESIGN Amendment 35, staged behind an option that defaults off ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_Partial_CoTrace_Removal_20261127.md)).
+**Current turn outcome (2026-11-28 UTC):** `M6-CP3-DEFN-P13-A2A-COTRACE-DELETION-SWITCH` freezes DESIGN Amendment 35 activation as CB-219 (option defaults on; control kept for tracing-loop tests; falsifiers to TB-EXEC-194) ([switch DEFN](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_CoTrace_Deletion_Switch_20261128.md), [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB219_TB194_CoTrace_Deletion_Switch_Exact_Manifest.md)). Previous: `M6-CP3-TB-REV-193` accepts TB-EXEC-193's 1013/1013 for the test gate only ([review](.agents/Directional/Architecture_M6_CP3_TB_REV_193_CoTrace_Deletion_Independent_Review_20261128.md), [report](.agents/Directional/Architecture_M6_CP3_TB193_CoTrace_Deletion_Execution_Report_20261128.md)). Row 1012 confirms the EE3 sphere deletion witness with the option on; production stays off. Previous: `M6-CP3-TB-EXEC-193` ran the 1013-row gate on CB-218 candidate `15249606947` (result `15250401219`).  Earlier: `M6-CP3-CB-218-P13-CLAIMED-COTRACE-DELETION` is compiled ([record](.agents/Directional/Architecture_M6_CP3_CB218_P13_Claimed_CoTrace_Deletion_Code_Build_Record_20261128.md)). Earlier: `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` decides AP4: A0 deletion with typed fail-closed, DESIGN Amendment 35, staged behind an option that defaults off ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_Partial_CoTrace_Removal_20261127.md)).
 - TB191 comparator: 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81.
 - **TB-REV-191 adversarial** ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md)): upholds the gate and CB-214. Its findings:
   - DD1: the 34 incidences are 24 port traces plus 10 singularity arrivals that claim no port.
@@ -29,17 +29,17 @@
   2. `M6-CP3-CB-218-P13-CLAIMED-COTRACE-DELETION` (COMPLETE, compile only).
   3. `M6-CP3-TB-EXEC-193` (COMPLETE, 1013/1013 PASS).
   4. `M6-CP3-TB-REV-193` (COMPLETE, test gate accepted only).
-  5. `M6-CP3-DEFN-P13-A2A-COTRACE-DELETION-SWITCH` (NEXT; 27-row premise census, `arrivalPort` readers) → CB/TB.
-  6. `M6-CP3-DEFN-P13-A4-DISC-CORNERS` + O52 → Vase row → A4 unequal-side construction.
+  5. `M6-CP3-DEFN-P13-A2A-COTRACE-DELETION-SWITCH` (COMPLETE; CB-219 frozen).
+  6. `M6-CP3-CB-219-P13-COTRACE-DELETION-SWITCH` (NEXT, compile only) → `M6-CP3-TB-EXEC-194` → `M6-CP3-TB-REV-194`.
+  7. `M6-CP3-DEFN-P13-A4-DISC-CORNERS` + O52 → Vase row → A4 unequal-side construction.
 
 ```text
-NEXT_TURN: M6-CP3-DEFN-P13-A2A-COTRACE-DELETION-SWITCH
-Owner: Review/DEFN only, runtime-free. Freeze the default flip of `deleteClaimedCoTraces` and the exact re-derived expectations of every gated reader it changes; no build or runtime.
-Authority: TB-REV-193 obligations 1-3; AP4 DEFN PC2/PC7; DESIGN Amendment 35 (Activation); TB193 row1012 witness; TB-REV-192 adv. EE3 and region table.
-  Census first: (1) the 27 sphere-carrying gated rows (380,388,393,394,396,397,644,645,648,669,686,691,693,694,698,699,700,843,844,858,963,968,971,972,978,979,1006) and every assertion/print depending on sphere trace/node/arc/region counts; (2) every src reader of one-trace-per-port ownership and arrivalPort; (3) cost with the option on (V5 BunnyRandom at its 600 s cap).
-  Freeze exact diff(s) and a full-gate manifest whose changed rows are named in advance; split reader changes into their own CBs if needed.
-Then: flip CB(s) -> TB-EXEC -> TB-REV -> corners DEFN + O52 -> Vase row -> A4 unequal-side construction.
-Do not: flip the default without the census, re-trace, change D13 selection/A2b/A3/dispatch/veto, repair B1/fallback, promote CP3/497/D0/H4.
+NEXT_TURN: M6-CP3-CB-219-P13-COTRACE-DELETION-SWITCH
+Owner: Code + Build only. Apply one exact diff; compile the eight GMP/GMPXX targets, runtimeExecution=false. No runtime, no other source/test/fixture/selector/harness/workflow change.
+Authority: gates/Architecture_M6_CP3_CB219_TB194_CoTrace_Deletion_Switch_Exact_Manifest.md; switch DEFN SW1-SW6; DESIGN Amendment 35 (Activation).
+  Diff Architecture_M6_CP3_CB219_P13_CoTrace_Deletion_Switch_Exact.diff SHA-256 636ee790b73e883a0a542812e571d21bff54d83521217235ec8ba8ded24db89d (26,716 B, +137/-76); preimages SurfaceCellTracing.h 522cfebb..., SurfaceCellTracing.cpp 3a67db44..., FieldAlignedCurveNetworkTests.cpp d02c8507...; postimages per manifest. STOP on hash/path/patch/compile mismatch; do not adapt.
+Then: TB-EXEC-194 (same 1013-row manifest b910f2a9...2fc2; comparator TB193 15250401219; 27 sphere rows + 1012/1013 may differ and must PASS with row858/698/686 predictions; all other rows N1-N3-equal) -> TB-REV-194 -> corners DEFN + O52.
+Do not: run tests in CB, re-trace, change D13 selection/A2b/A3/dispatch/veto, repair B1/fallback, CB-207D, promote CP3/497/D0/H4.
 ```
 
 ## CURRENT — per-disc A4 route: TB192 arrival classification evidence (2026-11-27 UTC)

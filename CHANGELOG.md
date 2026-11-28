@@ -1,3 +1,7 @@
+## 2026-11-28 — switch DEFN: claimed co-trace deletion activation (Amendment 35)
+
+[record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_CoTrace_Deletion_Switch_20261128.md), [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB219_TB194_CoTrace_Deletion_Switch_Exact_Manifest.md). Freezes CB-219 (diff `636ee790…4db89d`, +137/−76) to default `deleteClaimedCoTraces` on in every derivation. Censuses: 7 assertion rows and 5 print-only sphere rows change; no src reader indexes by trace id. TB-EXEC-194 reuses the 1013-row manifest with falsifiers in the manifest. Runtime-free; no build or runtime here.
+
 ## 2026-11-28 — TB-REV-193 independent co-trace deletion review
 
 [review](.agents/Directional/Architecture_M6_CP3_TB_REV_193_CoTrace_Deletion_Independent_Review_20261128.md). Accepts TB-EXEC-193's 1013/1013 for the test gate only: manifest `b910f2a9…`, membership 1094, result `15250401219`. Row 1012 confirms the EE3 sphere deletion witness with the option on; the option stays off in production. Obligations 1–3 (27-row census, `arrivalPort` readers, cost) go to the switch DEFN. No new stable event; 67/17/50 unchanged.

@@ -720,7 +720,7 @@ withdrawn except where an amendment says so explicitly.
     - a claimed trace is itself an arrival (reciprocal or chained claims);
     - a kept trace ends on a trace to be deleted, which would leave it ending nowhere (invariant 3).
   - **Evidence.** On the prescribed sphere, ten of the twelve separatrices are co-traced this way and no kept trace stops on a claimed one. Deletion gives 14 traces, 12 nodes, 18 arcs and 8 regions ([TB-REV-192 adv.](Architecture_M6_CP3_TB_REV_192_Adversarial_Review_20261127.md)).
-  - **Activation.** The rule takes effect at its activation switch. Until then the canonical derivation carries it behind an option that defaults off, and a witness measures it on the sphere. 27 gated rows carry the sphere network, so the switch is its own change, with those rows' expectations re-derived from the measured witness.
+  - **Activation.** CB-219 activates the rule: the option defaults on in every derivation, and a build and its validation always use the same value. `false` remains only to observe the traced network before step-7 selection (tests of the tracing loop, tracing diagnostics, unstaged slide-entry controls); it is removed when those controls are retired.
   - **Scope.** A separatrix traced twice where neither trace arrives (O52) is outside this rule. Removing either trace would leave a port owned by a curve that ends at a T-node, which alters port topology.
   - **Choice.** The user delegated the choice between this deletion rule and a suppress-and-re-trace fixed point to the design. Re-tracing would loop step 7 back into steps 3–5. Under arc-length contact order it is not monotone, so a re-trace can withdraw an earlier claim.
 
