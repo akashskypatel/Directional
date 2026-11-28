@@ -615,16 +615,17 @@ public:
       const authority::FieldTransportAtlas &fieldTransportAtlas,
       const std::vector<SurfaceCellRail> &authoritativeRails);
 
-  // `deleteClaimedCoTraces` validates against, and publishes, the canonical
-  // derivation with the staged claimed co-trace deletion (see
-  // `diagnose_with_arrival_priority`). Production `make` never passes it.
+  // `deleteClaimedCoTraces` selects the canonical derivation the candidate is
+  // validated against and published from (see
+  // `diagnose_with_arrival_priority`). Production keeps the default; false
+  // only observes the traced network in tests and diagnostics.
   [[nodiscard]] static FieldAlignedCurveNetworkBuildResult make_from_candidate(
       const TriMesh &sourceMesh,
       const SourceTopologyRegions &sourceAuthority,
       const authority::FieldTransportAtlas &fieldTransportAtlas,
       const std::vector<SurfaceCellRail> &authoritativeRails,
       FieldAlignedCurveNetworkCandidate candidate,
-      bool deleteClaimedCoTraces = false);
+      bool deleteClaimedCoTraces = true);
 
   // Diagnostic/offline comparison surface only. Production `make` has no
   // priority parameter and always selects ArcLengthFiltered.
@@ -633,9 +634,10 @@ public:
   // than that trace reaches it, stops at the crossing before entering
   // (`field_aligned_slide_entry_stops_moving_trace`). Production `make` never
   // stops there.
-  // `deleteClaimedCoTraces` stages DESIGN 7.2 Amendment 35 after the exact
+  // `deleteClaimedCoTraces` applies DESIGN 7.2 Amendment 35 after the exact
   // retrace selection (`surface_cell_tracing_detail::
-  // field_aligned_delete_claimed_co_traces`). Production `make` never deletes.
+  // field_aligned_delete_claimed_co_traces`). Production default true; false
+  // only observes the traced network in tests and diagnostics.
   [[nodiscard]] static FieldAlignedCurveNetworkBuildResult
   diagnose_with_arrival_priority(
       const TriMesh &sourceMesh,
@@ -643,7 +645,7 @@ public:
       const authority::FieldTransportAtlas &fieldTransportAtlas,
       const std::vector<SurfaceCellRail> &authoritativeRails,
       FieldTraceArrivalPriority priority, bool stopAtLaterSlideEntry = false,
-      bool deleteClaimedCoTraces = false);
+      bool deleteClaimedCoTraces = true);
 
   [[nodiscard]] const std::vector<FieldAlignedCurveNetworkNode> &nodes() const
       noexcept {
@@ -1062,6 +1064,8 @@ using FieldAlignedTraceScaleCensusResult =
 measure_field_aligned_trace_parameter_scale(
     const authority::FieldExactRational &parameter);
 
+// Observes, validates and digests the traced network: the canonical derivation
+// without claimed co-trace deletion.
 [[nodiscard]] FieldAlignedTraceScaleCensusResult
 diagnose_field_aligned_trace_scale_census(
     const TriMesh &sourceMesh,

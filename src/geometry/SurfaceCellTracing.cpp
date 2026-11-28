@@ -5507,7 +5507,7 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
         FieldTraceArrivalPriority::ArcLengthFiltered,
     FieldAlignedTraceScaleCensus *scaleCensus = nullptr,
     const bool stopAtLaterSlideEntry = true,
-    const bool deleteClaimedCoTraces = false) {
+    const bool deleteClaimedCoTraces = true) {
   if (scaleCensus != nullptr) *scaleCensus = FieldAlignedTraceScaleCensus{};
   const Eigen::MatrixXi &sourceFaces = sourceMesh.F;
   const std::size_t sourceVertexCount =
@@ -6000,7 +6000,7 @@ std::optional<FieldAlignedCurveNetworkError> validate_field_aligned_candidate(
     const authority::FieldTransportAtlas &fieldTransportAtlas,
     const std::vector<SurfaceCellRail> &authoritativeRails,
     FieldAlignedCurveNetworkCandidate candidate,
-    const bool deleteClaimedCoTraces = false) {
+    const bool deleteClaimedCoTraces = true) {
   const FieldAlignedCandidateResult canonical = canonical_field_aligned_candidate(
       sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails,
       nullptr, FieldTraceArrivalPriority::ArcLengthFiltered, nullptr, true,
@@ -6437,7 +6437,8 @@ FieldAlignedTraceScaleCensusResult diagnose_field_aligned_trace_scale_census(
   try {
     const FieldAlignedCandidateResult canonical = canonical_field_aligned_candidate(
         sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails,
-        nullptr, FieldTraceArrivalPriority::ArcLengthFiltered, &census);
+        nullptr, FieldTraceArrivalPriority::ArcLengthFiltered, &census, true,
+        false);
     finalize();
     if (const auto *error =
             std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
@@ -6447,7 +6448,7 @@ FieldAlignedTraceScaleCensusResult diagnose_field_aligned_trace_scale_census(
         std::get<FieldAlignedCurveNetworkCandidate>(canonical);
     if (const auto error = validate_field_aligned_candidate(
             sourceMesh, sourceAuthority, fieldTransportAtlas,
-            authoritativeRails, candidate);
+            authoritativeRails, candidate, false);
         error.has_value()) {
       return FieldAlignedTraceScaleCensusFailure{std::move(census), *error};
     }
@@ -6478,7 +6479,8 @@ FieldAlignedContactCensusResult diagnose_field_aligned_contact_census(
     FieldAlignedContactCensus census;
     const FieldAlignedCandidateResult canonical = canonical_field_aligned_candidate(
         sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails,
-        &census);
+        &census, FieldTraceArrivalPriority::ArcLengthFiltered, nullptr, true,
+        false);
     if (const auto *error =
             std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
       return *error;
