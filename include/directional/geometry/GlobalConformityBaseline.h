@@ -398,6 +398,85 @@ using RegionBoundaryScheduleResult =
 build_region_boundary_schedules(const GlobalTopologyPlan &topology,
                                 const GlobalConformityBaselinePlan &baseline);
 
+/** Why a region's boundary corners could not be read from the field. */
+enum class RegionCornerSidesFailureReason : std::uint8_t {
+  /** A schedule names a region or arc the A2b plan does not have. */
+  TopologyPlanMismatch = 0,
+  /** The A2a network is not the one the A2b plan was built from. */
+  NetworkMismatch = 1,
+  /** A walk node joins a mandatory or cut arc. */
+  UnsupportedArcKind = 2,
+  /** A walk node that is not a singularity port node joins two trace arcs
+   *  that neither continue one trace nor meet at a three-arc T-node. */
+  UnsupportedContactNode = 3,
+  /** At a singularity port node an arc end is neither its trace's departure
+   *  from a port of that node nor its arrival at one. */
+  PortNotFound = 4,
+  /** A region certified free of interior singularities does not turn by
+   *  exactly four quarter turns: the sum of (2 - gap) over its walk nodes. */
+  TurningNotFourQuarterTurns = 5,
+};
+
+[[nodiscard]] const char *region_corner_sides_failure_reason_name(
+    RegionCornerSidesFailureReason reason) noexcept;
+
+/** A walk node where the region's boundary turns: its interior gap is not two
+ *  field quarter turns. */
+struct RegionBoundaryCorner {
+  authority::NetworkNodeId node;
+  /** The schedule side the walk leaves this node along. */
+  std::size_t scheduleSide = 0U;
+  /** Interior angle at the node in field quarter turns. */
+  int quarterTurns = 0;
+};
+
+/** The schedule sides between two consecutive corners. */
+struct RegionCornerSide {
+  /** First schedule side; the run continues cyclically for sideCount sides. */
+  std::size_t firstScheduleSide = 0U;
+  std::size_t scheduleSideCount = 0U;
+  /** Sum of the run's span counts. */
+  EInt count;
+};
+
+/** The corners of one region's boundary and the sides they delimit. Corners
+ *  follow the schedule's walk order starting at the corner with the lowest
+ *  schedule side; sides[k] runs from corners[k] to the next corner. A region
+ *  without corners has no sides. */
+struct RegionCornerSides {
+  authority::NetworkRegionId region;
+  std::vector<RegionBoundaryCorner> corners;
+  std::vector<RegionCornerSide> sides;
+};
+
+struct RegionCornerSidesFailure {
+  RegionCornerSidesFailureReason reason =
+      RegionCornerSidesFailureReason::TopologyPlanMismatch;
+  std::optional<authority::NetworkRegionId> region;
+  /** The schedule side leaving the failing node. */
+  std::optional<std::size_t> scheduleSide;
+};
+
+using RegionCornerSidesResult =
+    std::variant<std::vector<RegionCornerSides>, RegionCornerSidesFailure>;
+
+/**
+ * The field turning at every walk node of every region schedule, in field
+ * quarter turns, from the walk's incoming arc to its outgoing arc on the
+ * region's side: 2 where one trace continues through the node; 1 at a
+ * three-arc T-node between two traces; at a singularity port node, the number
+ * of port sectors swept counter-clockwise from the outgoing arc's port to the
+ * incoming arc's port (the region lies counter-clockwise of its outgoing arc
+ * in the plan's rotation system). Corners are the nodes whose gap is not 2.
+ * Every other node is a typed failure, as is a region certified free of
+ * interior singularities whose sum of (2 - gap) is not 4. Read-only over the
+ * schedules, the plan and the network.
+ */
+[[nodiscard]] RegionCornerSidesResult
+build_region_corner_sides(const GlobalTopologyPlan &topology,
+                          const FieldAlignedCurveNetwork &network,
+                          const std::vector<RegionBoundarySchedule> &schedules);
+
 } // namespace directional::geometry
 
 #endif

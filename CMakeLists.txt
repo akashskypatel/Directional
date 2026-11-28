@@ -186,6 +186,7 @@ add_library(
   src/geometry/GlobalConformityBaseline.cpp
   src/geometry/GlobalConformityBaselineSupport.cpp
   src/geometry/GlobalConformityBaselineValidator.cpp
+  src/geometry/RegionCornerSides.cpp
   src/geometry/GlobalConformityParityGraph.cpp
   src/geometry/GlobalConformityExactSolver.cpp
   src/geometry/GlobalConformityCP2.cpp
