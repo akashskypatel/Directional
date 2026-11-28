@@ -1,4 +1,4 @@
-**Current turn outcome (2026-11-28 UTC):** [corners DEFN](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Corners_20261128.md) freezes CB-220 (CR1 corner rule and corner-delimited sides; compile only, not wired; TB-EXEC-195 gate and falsifiers in its [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB220_TB195_Region_Corner_Sides_Exact_Manifest.md)). Previous: [TB-REV-194](.agents/Directional/Architecture_M6_CP3_TB_REV_194_CoTrace_Deletion_Switch_Independent_Review_20261128.md) accepts 1013/1013 test gate and pinned O51 trace ownership. Two incorrect prediction premises corrected; independent exact D7 numeric derivation is carried. CP2 491/491; stable 67/17/50, debt1/deferred81. No production or CP3/497/D0/H4 promotion. Next [M6-CP3-DEFN-P13-A4-DISC-CORNERS](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Corners_Review_Entry_20261128.md). [TB194 execution report](.agents/Directional/Architecture_M6_CP3_TB194_CoTrace_Deletion_Switch_Execution_Report_20261128.md); candidate `15252943713`, source `26eef1ce54b7b311cbf1cedf597ee0c106be52c2`, result `15255025606`. Historical TB193 comparator and CB219 authority retained in the handoff.
+**Current turn outcome (2026-11-28 UTC):** [CB-220](.agents/Directional/Architecture_M6_CP3_CB220_P13_Region_Corner_Sides_Code_Build_Record_20261128.md) passes compile only: source `e55f01b9ac86e2dc0159771a45521cb6f35049be`, candidate `15257943465`, 28/28 manifest checks. Corner rule CR1 and corner-delimited sides are not wired to production. Next `M6-CP3-TB-EXEC-195` ([exact manifest](.agents/Directional/gates/Architecture_M6_CP3_CB220_TB195_Region_Corner_Sides_Exact_Manifest.md)). TB-REV-194 accepts the 1013/1013 test gate and pinned O51 trace ownership; independent D7 numeric evidence is carried. CP2 491/491, stable 67/17/50, debt1/deferred81; no production or CP3/497/D0/H4 promotion.
 - **TB-REV-194 adv. FF1:** both TB-EXEC-194 STOPs were reviewer prediction errors (merged-arc count 37, fragment diagnostics); the 983 count was arithmetic (984).
 - **TB-REV-194 adv. FF2:** the D7 re-derivation is not a precondition of the corners definition; it is an optional independent oracle item.
 - **TB-REV-194 adv. FF3:** O52 slivers 2/4 are ordinary four-corner discs with equal opposite sides; a quality item (DESIGN §4.11, Amendment 30), not a validity defect.
@@ -36,19 +36,18 @@
   5. `M6-CP3-DEFN-P13-A2A-COTRACE-DELETION-SWITCH` (COMPLETE; CB-219 frozen).
   6. `M6-CP3-CB-219-P13-COTRACE-DELETION-SWITCH` (COMPLETE, compile only) → `M6-CP3-TB-EXEC-194` (COMPLETE, prediction STOP) → `M6-CP3-TB-REV-194` (COMPLETE, test gate and pinned O51 accepted; D7 exact numeric evidence carried).
   7. `M6-CP3-DEFN-P13-A4-DISC-CORNERS` (COMPLETE; CB-220 frozen).
-  8. `M6-CP3-CB-220-P13-REGION-CORNER-SIDES` (NEXT, compile only) → 9. TB-EXEC-195 → 10. TB-REV-195.
+  8. `M6-CP3-CB-220-P13-REGION-CORNER-SIDES` (COMPLETE, compile only) → 9. TB-EXEC-195 (NEXT) → 10. TB-REV-195.
   11. `M6-CP3-DEFN-P13-A4-UNEQUAL-SIDE-CONSTRUCTION` (DD5) → CB/TB → Vase row → fill → 65B → 65D (O50, Amendment-19) → O41/switch.
 
 ```text
-NEXT_TURN: M6-CP3-CB-220-P13-REGION-CORNER-SIDES
-Owner: Code + Build only. Apply one exact diff; compile the eight GMP/GMPXX targets, runtimeExecution=false. No runtime, no other source/test/fixture/selector/harness/workflow change.
-Authority: gates/Architecture_M6_CP3_CB220_TB195_Region_Corner_Sides_Exact_Manifest.md; corners DEFN CR1-CR4.
-  Diff Architecture_M6_CP3_CB220_P13_Region_Corner_Sides_Exact.diff SHA-256 35a164a8b4490ae1e6ab29f480745d49f8bbd0f79db84c0334d94f87bb7141fa (22,405 B, +434/-0; new src/geometry/RegionCornerSides.cpp + CMakeLists line); preimages CMakeLists.txt 7b3eadf6..., GlobalConformityBaseline.h 8a7e7494..., SurfaceCellTracingDisplayTests.cpp 730c06d9...; postimages per manifest. STOP on hash/path/patch/compile mismatch; do not adapt.
-Then: TB-EXEC-195 (1015-row manifest 34a4e864...b821; rows 1-1013 except 858 N1-N3 = TB194 15255025606; row858 + RegionCornerSides lines per CR2 predictions; rows 1014/1015 new) -> TB-REV-195 -> DEFN A4 unequal-side construction (DD5).
-Do not: run tests in CB, activate corners/schedule in production, change A3 counts, delete slivers, repair B1/fallback, change dispatch/veto, promote CP3/497/D0/H4.
+NEXT_TURN: M6-CP3-TB-EXEC-195
+Owner: Test + Benchmark only. Use immutable CB-220 candidate 15257943465, source e55f01b9ac86e2dc0159771a45521cb6f35049be, ZIP SHA-256 eb7e5ea11cb129c9d0ff33931967cf9bcf7227a831ff9af59014f44f9faa4f71. No rebuild, source/test/fixture/selector/harness/workflow changes, retry, timeout substitution or V5.
+Authority: .agents/Directional/gates/Architecture_M6_CP3_CB220_TB195_Region_Corner_Sides_Exact_Manifest.md; corners DEFN CR1–CR4; .agents/Directional/Architecture_M6_CP3_CB220_P13_Region_Corner_Sides_Code_Build_Record_20261128.md. Harness 423f385b73c3825ce9fe18fbd5ca395287620475deb621389f0efbaa601e572c. Full gate 1015-row manifest 34a4e86406f043739c56eec6bc104615bee05fc08960be2dc6ae4a303b43b821; deferred ledger fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce (81), membership 1096. Comparator TB194 result 15255025606, ZIP 5fedd54ddf3416bf1cdb475a8e53206ab6382fcd75e9ea8b4a3bfebb4f8d99b4.
+Require 1015/1015 PASS; rows 1–1013 except 858 N1–N3 equal to TB194. Row858 exactly the 10 new RegionCornerSides lines at the frozen insertion point and unchanged suffix per manifest; compare CR2 predictions, measure genus summary, execute guards 1014/1015. Any mismatch is STOP for TB-REV-195, not repair.
+Then: TB-REV-195 -> DEFN A4 unequal-side construction (DD5), subject to review. No production activation, A3 count changes, sliver deletion, fallback repair, dispatch/veto change or CP3/497/D0/H4 promotion.
 ```
 
-## CURRENT — per-disc A4 route: TB-REV-194 accepted pinned gate; disc-corner definition next (2026-11-28 UTC)
+## CURRENT — per-disc A4 route: CB-220 compile only; TB-EXEC-195 next (2026-11-28 UTC)
 
 - [x] **COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.

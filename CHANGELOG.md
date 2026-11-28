@@ -1,3 +1,7 @@
+## 2026-11-28 — CB-220 region corner sides (compile only)
+
+[record](.agents/Directional/Architecture_M6_CP3_CB220_P13_Region_Corner_Sides_Code_Build_Record_20261128.md). Exact diff `35a164a8…41fa` (+434/−0), source `e55f01b9ac86e2dc0159771a45521cb6f35049be`, compile run `46131427922`, candidate `15257943465` ZIP `eb7e5ea11cb129c9d0ff33931967cf9bcf7227a831ff9af59014f44f9faa4f71`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Corner derivation is not wired. No runtime, gate or production promotion. Next M6-CP3-TB-EXEC-195.
+
 ## 2026-11-28 — corners DEFN: A4 disc corners and corner-delimited sides (CB-220 frozen)
 
 [record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Corners_20261128.md), [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB220_TB195_Region_Corner_Sides_Exact_Manifest.md). Defines the corner rule CR1 (flat 2, T-node 1, singular-node port sectors; Σ(2 − gap) = 4 as a checked invariant) and freezes CB-220 (diff `35a164a8…41fa`, +434/−0, compile only, not wired). TB-EXEC-195 gate: 1015-row manifest `34a4e864…b821` (rows 1014/1015 are GUARD rows). Next: CB-220, then DD5 unequal-side construction.
