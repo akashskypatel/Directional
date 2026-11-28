@@ -1,1 +1,18 @@
-{"schema_version":1,"operation":"drive_apply","request_id":"m6-cp3-cb219-apply","mailbox_key":"m6-cp3-cb219-apply","file_id":"11HmHKtI1U6xmi-18nVXIgwLmuagGnRva","patch_sha256":"c9e62f8e924738d7d844a3e5614548bfe329f1415d736c7d495e93d0ae429e1b","base_sha":"0c65a41dbc89fb809f69eb3e2648bcb25ef01cff","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"Activate claimed co-trace deletion (CB-219 exact patch)","retention_days":14}
+{
+  "schema_version": 1,
+  "operation": "compile",
+  "request_id": "m6-cp3-cb219-compile",
+  "mailbox_key": "m6-cp3-cb219-compile",
+  "source_sha": "26eef1ce54b7b311cbf1cedf597ee0c106be52c2",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb219"
+}
