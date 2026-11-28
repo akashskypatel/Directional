@@ -1,3 +1,7 @@
+## 2026-11-28 — corners DEFN: A4 disc corners and corner-delimited sides (CB-220 frozen)
+
+[record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Corners_20261128.md), [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB220_TB195_Region_Corner_Sides_Exact_Manifest.md). Defines the corner rule CR1 (flat 2, T-node 1, singular-node port sectors; Σ(2 − gap) = 4 as a checked invariant) and freezes CB-220 (diff `35a164a8…41fa`, +434/−0, compile only, not wired). TB-EXEC-195 gate: 1015-row manifest `34a4e864…b821` (rows 1014/1015 are GUARD rows). Next: CB-220, then DD5 unequal-side construction.
+
 ## 2026-11-28 — TB-REV-194 adversarial review (FF1–FF4)
 
 [adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_194_Adversarial_Review_20261128.md). Upholds the TB-REV-194 gate and O51 witness. Both TB-EXEC-194 STOPs were reviewer prediction errors (FF1). The D7 re-derivation is not a corners precondition (FF2). O52 slivers are a quality item (FF3). DD5 unequal sides are the binding sphere blocker for 6 of 8 regions (FF4). Corners DEFN is next; no code or runtime.

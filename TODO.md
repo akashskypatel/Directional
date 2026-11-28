@@ -1,4 +1,4 @@
-**Current turn outcome (2026-11-28 UTC):** [TB-REV-194](.agents/Directional/Architecture_M6_CP3_TB_REV_194_CoTrace_Deletion_Switch_Independent_Review_20261128.md) accepts 1013/1013 test gate and pinned O51 trace ownership. Two incorrect prediction premises corrected; independent exact D7 numeric derivation is carried. CP2 491/491; stable 67/17/50, debt1/deferred81. No production or CP3/497/D0/H4 promotion. Next [M6-CP3-DEFN-P13-A4-DISC-CORNERS](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Corners_Review_Entry_20261128.md). [TB194 execution report](.agents/Directional/Architecture_M6_CP3_TB194_CoTrace_Deletion_Switch_Execution_Report_20261128.md); candidate `15252943713`, source `26eef1ce54b7b311cbf1cedf597ee0c106be52c2`, result `15255025606`. Historical TB193 comparator and CB219 authority retained in the handoff.
+**Current turn outcome (2026-11-28 UTC):** [corners DEFN](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Corners_20261128.md) freezes CB-220 (CR1 corner rule and corner-delimited sides; compile only, not wired; TB-EXEC-195 gate and falsifiers in its [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB220_TB195_Region_Corner_Sides_Exact_Manifest.md)). Previous: [TB-REV-194](.agents/Directional/Architecture_M6_CP3_TB_REV_194_CoTrace_Deletion_Switch_Independent_Review_20261128.md) accepts 1013/1013 test gate and pinned O51 trace ownership. Two incorrect prediction premises corrected; independent exact D7 numeric derivation is carried. CP2 491/491; stable 67/17/50, debt1/deferred81. No production or CP3/497/D0/H4 promotion. Next [M6-CP3-DEFN-P13-A4-DISC-CORNERS](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Corners_Review_Entry_20261128.md). [TB194 execution report](.agents/Directional/Architecture_M6_CP3_TB194_CoTrace_Deletion_Switch_Execution_Report_20261128.md); candidate `15252943713`, source `26eef1ce54b7b311cbf1cedf597ee0c106be52c2`, result `15255025606`. Historical TB193 comparator and CB219 authority retained in the handoff.
 - **TB-REV-194 adv. FF1:** both TB-EXEC-194 STOPs were reviewer prediction errors (merged-arc count 37, fragment diagnostics); the 983 count was arithmetic (984).
 - **TB-REV-194 adv. FF2:** the D7 re-derivation is not a precondition of the corners definition; it is an optional independent oracle item.
 - **TB-REV-194 adv. FF3:** O52 slivers 2/4 are ordinary four-corner discs with equal opposite sides; a quality item (DESIGN §4.11, Amendment 30), not a validity defect.
@@ -35,18 +35,17 @@
   4. `M6-CP3-TB-REV-193` (COMPLETE, test gate accepted only).
   5. `M6-CP3-DEFN-P13-A2A-COTRACE-DELETION-SWITCH` (COMPLETE; CB-219 frozen).
   6. `M6-CP3-CB-219-P13-COTRACE-DELETION-SWITCH` (COMPLETE, compile only) → `M6-CP3-TB-EXEC-194` (COMPLETE, prediction STOP) → `M6-CP3-TB-REV-194` (COMPLETE, test gate and pinned O51 accepted; D7 exact numeric evidence carried).
-  7. `M6-CP3-DEFN-P13-A4-DISC-CORNERS` (NEXT, runtime-free): define the corner rule from A1 field turning at walk nodes; freeze one compile-only CB publishing corner-delimited sides on the region boundary schedule, with the FF4 table as falsifiers.
-  8. `M6-CP3-CB-220-P13-REGION-CORNER-SIDES` (compile only) → 9. TB-EXEC-195 → 10. TB-REV-195.
+  7. `M6-CP3-DEFN-P13-A4-DISC-CORNERS` (COMPLETE; CB-220 frozen).
+  8. `M6-CP3-CB-220-P13-REGION-CORNER-SIDES` (NEXT, compile only) → 9. TB-EXEC-195 → 10. TB-REV-195.
   11. `M6-CP3-DEFN-P13-A4-UNEQUAL-SIDE-CONSTRUCTION` (DD5) → CB/TB → Vase row → fill → 65B → 65D (O50, Amendment-19) → O41/switch.
 
 ```text
-NEXT_TURN: M6-CP3-DEFN-P13-A4-DISC-CORNERS
-Owner: Review/DEFN only, runtime-free. Define the A4 corner rule for A2b trace-bounded discs and freeze one compile-only CB that publishes corner-delimited sides on the region boundary schedule; no build or runtime.
-Authority: TB-REV-194 (+adv. FF1-FF4); DEFN-65C A4D2 item 2 and A4D5; DESIGN §5, §7.2.1 Amendment 35, §4.11 + Amendment 30 (thinness is quality); A3 counts consumed as the validated single-writer product.
-  Rule: a corner is the field turning at a walk node from A1 transport (quarter-turn gap), one rule for singular nodes and T-nodes; Sum(2 - gap) = 4 per singularity-free disc. No D7 re-derivation precondition (FF2); slivers 2/4 are ordinary discs, a quality item (FF3).
-  Sphere predictions (falsifiers, from FF4): 8 regions x 4 corners; sides r0 30,35,35,32; r1 31,35,35,31 (T-nodes 8,9 flat); r2 1,32,1,32; r3 30,32,35,35; r4 1,32,1,32; r5 32,30,35,35; r6 32,35,35,30; r7 35,31,31,35 (T-nodes 10,11 flat); opposite sides equal only in r2, r4. genus_two measured.
-Then: CB-220 corner sides (compile only) -> TB-EXEC-195 -> TB-REV-195 -> DEFN A4 unequal-side construction (DD5) -> Vase row -> fill -> 65B -> 65D.
-Do not: re-derive or change A3 counts, delete or collapse slivers, repair B1/fallback, change dispatch/veto, activate the schedule in production, promote CP3/497/D0/H4.
+NEXT_TURN: M6-CP3-CB-220-P13-REGION-CORNER-SIDES
+Owner: Code + Build only. Apply one exact diff; compile the eight GMP/GMPXX targets, runtimeExecution=false. No runtime, no other source/test/fixture/selector/harness/workflow change.
+Authority: gates/Architecture_M6_CP3_CB220_TB195_Region_Corner_Sides_Exact_Manifest.md; corners DEFN CR1-CR4.
+  Diff Architecture_M6_CP3_CB220_P13_Region_Corner_Sides_Exact.diff SHA-256 35a164a8b4490ae1e6ab29f480745d49f8bbd0f79db84c0334d94f87bb7141fa (22,405 B, +434/-0; new src/geometry/RegionCornerSides.cpp + CMakeLists line); preimages CMakeLists.txt 7b3eadf6..., GlobalConformityBaseline.h 8a7e7494..., SurfaceCellTracingDisplayTests.cpp 730c06d9...; postimages per manifest. STOP on hash/path/patch/compile mismatch; do not adapt.
+Then: TB-EXEC-195 (1015-row manifest 34a4e864...b821; rows 1-1013 except 858 N1-N3 = TB194 15255025606; row858 + RegionCornerSides lines per CR2 predictions; rows 1014/1015 new) -> TB-REV-195 -> DEFN A4 unequal-side construction (DD5).
+Do not: run tests in CB, activate corners/schedule in production, change A3 counts, delete slivers, repair B1/fallback, change dispatch/veto, promote CP3/497/D0/H4.
 ```
 
 ## CURRENT — per-disc A4 route: TB-REV-194 accepted pinned gate; disc-corner definition next (2026-11-28 UTC)

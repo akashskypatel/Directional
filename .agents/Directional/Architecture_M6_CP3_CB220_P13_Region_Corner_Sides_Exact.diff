@@ -1,0 +1,477 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 3548d7b84..ae573f5f8 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -186,6 +186,7 @@ add_library(
+   src/geometry/GlobalConformityBaseline.cpp
+   src/geometry/GlobalConformityBaselineSupport.cpp
+   src/geometry/GlobalConformityBaselineValidator.cpp
++  src/geometry/RegionCornerSides.cpp
+   src/geometry/GlobalConformityParityGraph.cpp
+   src/geometry/GlobalConformityExactSolver.cpp
+   src/geometry/GlobalConformityCP2.cpp
+diff --git a/include/directional/geometry/GlobalConformityBaseline.h b/include/directional/geometry/GlobalConformityBaseline.h
+index 35941c2e3..3770fc0cd 100644
+--- a/include/directional/geometry/GlobalConformityBaseline.h
++++ b/include/directional/geometry/GlobalConformityBaseline.h
+@@ -398,6 +398,85 @@ using RegionBoundaryScheduleResult =
+ build_region_boundary_schedules(const GlobalTopologyPlan &topology,
+                                 const GlobalConformityBaselinePlan &baseline);
+ 
++/** Why a region's boundary corners could not be read from the field. */
++enum class RegionCornerSidesFailureReason : std::uint8_t {
++  /** A schedule names a region or arc the A2b plan does not have. */
++  TopologyPlanMismatch = 0,
++  /** The A2a network is not the one the A2b plan was built from. */
++  NetworkMismatch = 1,
++  /** A walk node joins a mandatory or cut arc. */
++  UnsupportedArcKind = 2,
++  /** A walk node that is not a singularity port node joins two trace arcs
++   *  that neither continue one trace nor meet at a three-arc T-node. */
++  UnsupportedContactNode = 3,
++  /** At a singularity port node an arc end is neither its trace's departure
++   *  from a port of that node nor its arrival at one. */
++  PortNotFound = 4,
++  /** A region certified free of interior singularities does not turn by
++   *  exactly four quarter turns: the sum of (2 - gap) over its walk nodes. */
++  TurningNotFourQuarterTurns = 5,
++};
++
++[[nodiscard]] const char *region_corner_sides_failure_reason_name(
++    RegionCornerSidesFailureReason reason) noexcept;
++
++/** A walk node where the region's boundary turns: its interior gap is not two
++ *  field quarter turns. */
++struct RegionBoundaryCorner {
++  authority::NetworkNodeId node;
++  /** The schedule side the walk leaves this node along. */
++  std::size_t scheduleSide = 0U;
++  /** Interior angle at the node in field quarter turns. */
++  int quarterTurns = 0;
++};
++
++/** The schedule sides between two consecutive corners. */
++struct RegionCornerSide {
++  /** First schedule side; the run continues cyclically for sideCount sides. */
++  std::size_t firstScheduleSide = 0U;
++  std::size_t scheduleSideCount = 0U;
++  /** Sum of the run's span counts. */
++  EInt count;
++};
++
++/** The corners of one region's boundary and the sides they delimit. Corners
++ *  follow the schedule's walk order starting at the corner with the lowest
++ *  schedule side; sides[k] runs from corners[k] to the next corner. A region
++ *  without corners has no sides. */
++struct RegionCornerSides {
++  authority::NetworkRegionId region;
++  std::vector<RegionBoundaryCorner> corners;
++  std::vector<RegionCornerSide> sides;
++};
++
++struct RegionCornerSidesFailure {
++  RegionCornerSidesFailureReason reason =
++      RegionCornerSidesFailureReason::TopologyPlanMismatch;
++  std::optional<authority::NetworkRegionId> region;
++  /** The schedule side leaving the failing node. */
++  std::optional<std::size_t> scheduleSide;
++};
++
++using RegionCornerSidesResult =
++    std::variant<std::vector<RegionCornerSides>, RegionCornerSidesFailure>;
++
++/**
++ * The field turning at every walk node of every region schedule, in field
++ * quarter turns, from the walk's incoming arc to its outgoing arc on the
++ * region's side: 2 where one trace continues through the node; 1 at a
++ * three-arc T-node between two traces; at a singularity port node, the number
++ * of port sectors swept counter-clockwise from the outgoing arc's port to the
++ * incoming arc's port (the region lies counter-clockwise of its outgoing arc
++ * in the plan's rotation system). Corners are the nodes whose gap is not 2.
++ * Every other node is a typed failure, as is a region certified free of
++ * interior singularities whose sum of (2 - gap) is not 4. Read-only over the
++ * schedules, the plan and the network.
++ */
++[[nodiscard]] RegionCornerSidesResult
++build_region_corner_sides(const GlobalTopologyPlan &topology,
++                          const FieldAlignedCurveNetwork &network,
++                          const std::vector<RegionBoundarySchedule> &schedules);
++
+ } // namespace directional::geometry
+ 
+ #endif
+diff --git a/src/geometry/RegionCornerSides.cpp b/src/geometry/RegionCornerSides.cpp
+new file mode 100644
+index 000000000..929c0a9ec
+--- /dev/null
++++ b/src/geometry/RegionCornerSides.cpp
+@@ -0,0 +1,170 @@
++#include <directional/geometry/GlobalConformityBaseline.h>
++
++#include "EmbeddedGraphTopology.h"
++
++#include <map>
++#include <optional>
++#include <vector>
++
++// The A4 corner reading of the A3 region boundary schedule. It is kept out of
++// GlobalConformityBaseline.cpp, whose parity binder stays free of arc kinds.
++
++namespace directional::geometry {
++
++const char *region_corner_sides_failure_reason_name(
++    RegionCornerSidesFailureReason reason) noexcept {
++  switch (reason) {
++  case RegionCornerSidesFailureReason::TopologyPlanMismatch:
++    return "topology-plan-mismatch";
++  case RegionCornerSidesFailureReason::NetworkMismatch:
++    return "network-mismatch";
++  case RegionCornerSidesFailureReason::UnsupportedArcKind:
++    return "unsupported-arc-kind";
++  case RegionCornerSidesFailureReason::UnsupportedContactNode:
++    return "unsupported-contact-node";
++  case RegionCornerSidesFailureReason::PortNotFound:
++    return "port-not-found";
++  case RegionCornerSidesFailureReason::TurningNotFourQuarterTurns:
++    return "turning-not-four-quarter-turns";
++  }
++  return "unknown";
++}
++
++RegionCornerSidesResult
++build_region_corner_sides(const GlobalTopologyPlan &topology,
++                          const FieldAlignedCurveNetwork &network,
++                          const std::vector<RegionBoundarySchedule> &schedules) {
++  using Reason = RegionCornerSidesFailureReason;
++  if (embedded_graph_topology_detail::network_binding_digest(network) !=
++      topology.network_digest()) {
++    return RegionCornerSidesFailure{Reason::NetworkMismatch, std::nullopt,
++                                    std::nullopt};
++  }
++  std::map<authority::TraceId, const FieldAlignedCandidateTrace *> traces;
++  for (const FieldAlignedCandidateTrace &trace : network.candidate_traces()) {
++    traces.emplace(trace.id, &trace);
++  }
++  std::map<authority::SingularityPortId, const FieldAlignedSingularityPort *>
++      ports;
++  std::map<authority::NetworkNodeId, int> portCountByNode;
++  for (const FieldAlignedSingularityPort &port : network.singularity_ports()) {
++    ports.emplace(port.id, &port);
++    ++portCountByNode[port.node];
++  }
++  // The port an arc end occupies at `node`: its trace's own port where the end
++  // is the trace's departure, its arrival port where it is the trace's
++  // singular arrival.
++  const auto port_at = [&](const GlobalTopologyArc &arc, const bool atFirstNode,
++                           const authority::NetworkNodeId node)
++      -> const FieldAlignedSingularityPort * {
++    const auto trace = traces.find(*arc.trace);
++    if (trace == traces.end()) return nullptr;
++    std::optional<authority::SingularityPortId> id;
++    if (atFirstNode && arc.firstSegment == 0U) {
++      id = trace->second->port;
++    } else if (!atFirstNode &&
++               arc.onePastLastSegment == trace->second->segments.size() &&
++               trace->second->terminalSingularity.has_value()) {
++      id = trace->second->arrivalPort;
++    }
++    if (!id.has_value()) return nullptr;
++    const auto port = ports.find(*id);
++    return port != ports.end() && port->second->node == node ? port->second
++                                                              : nullptr;
++  };
++  // Consecutive pieces of one trace: the next piece starts in the segment the
++  // previous one ends in (a cut inside it) or at the following segment.
++  const auto follows = [](const GlobalTopologyArc &previous,
++                          const GlobalTopologyArc &next) {
++    return next.firstSegment <= previous.onePastLastSegment &&
++           next.firstSegment + 1U >= previous.onePastLastSegment;
++  };
++
++  std::vector<RegionCornerSides> result;
++  result.reserve(schedules.size());
++  for (const RegionBoundarySchedule &schedule : schedules) {
++    const GlobalTopologyRegionDiscCertificate *certificate =
++        topology.find_region_certificate(schedule.region);
++    if (certificate == nullptr) {
++      return RegionCornerSidesFailure{Reason::TopologyPlanMismatch,
++                                      schedule.region, std::nullopt};
++    }
++    const std::size_t sideCount = schedule.sides.size();
++    std::vector<const GlobalTopologyArc *> arcs(sideCount, nullptr);
++    for (std::size_t index = 0U; index < sideCount; ++index) {
++      arcs[index] = topology.find_arc(schedule.sides[index].arc.arc);
++      if (arcs[index] == nullptr) {
++        return RegionCornerSidesFailure{Reason::TopologyPlanMismatch,
++                                        schedule.region, index};
++      }
++    }
++    RegionCornerSides region{schedule.region, {}, {}};
++    int turning = 0;
++    for (std::size_t outgoing = 0U; outgoing < sideCount; ++outgoing) {
++      const std::size_t incoming = (outgoing + sideCount - 1U) % sideCount;
++      const GlobalTopologyArc &in = *arcs[incoming];
++      const GlobalTopologyArc &out = *arcs[outgoing];
++      const authority::NetworkNodeId node = schedule.sides[outgoing].startNode;
++      const auto failure = [&](const Reason reason) {
++        return RegionCornerSidesFailure{reason, schedule.region, outgoing};
++      };
++      if (in.kind != GlobalTopologyArcKind::Trace ||
++          out.kind != GlobalTopologyArcKind::Trace || !in.trace.has_value() ||
++          !out.trace.has_value()) {
++        return failure(Reason::UnsupportedArcKind);
++      }
++      const bool inForward = schedule.sides[incoming].arc.orientation ==
++                             authority::Orientation::Forward;
++      const bool outForward = schedule.sides[outgoing].arc.orientation ==
++                              authority::Orientation::Forward;
++      int gap = 0;
++      const auto valence = portCountByNode.find(node);
++      if (*in.trace == *out.trace && in.id != out.id && inForward == outForward &&
++          (inForward ? follows(in, out) : follows(out, in))) {
++        gap = 2;
++      } else if (valence != portCountByNode.end()) {
++        // The walk leaves the outgoing arc at its first node when it runs
++        // forward, and reaches the incoming arc's first node when it runs
++        // reversed. The region lies counter-clockwise of the outgoing arc and
++        // port ordinals grow counter-clockwise.
++        const FieldAlignedSingularityPort *from = port_at(out, outForward, node);
++        const FieldAlignedSingularityPort *to = port_at(in, !inForward, node);
++        if (from == nullptr || to == nullptr) {
++          return failure(Reason::PortNotFound);
++        }
++        const int sectors = valence->second;
++        gap = ((to->ordinal - from->ordinal) % sectors + sectors) % sectors;
++        if (gap == 0) gap = sectors;
++      } else {
++        const GlobalTopologyNodeRotation *rotation = topology.find_rotation(node);
++        if (rotation == nullptr || rotation->counterClockwise.size() != 3U ||
++            *in.trace == *out.trace) {
++          return failure(Reason::UnsupportedContactNode);
++        }
++        gap = 1;
++      }
++      turning += 2 - gap;
++      if (gap != 2) region.corners.push_back({node, outgoing, gap});
++    }
++    if (certificate->interiorSingularityFree && turning != 4) {
++      return RegionCornerSidesFailure{Reason::TurningNotFourQuarterTurns,
++                                      schedule.region, std::nullopt};
++    }
++    for (std::size_t corner = 0U; corner < region.corners.size(); ++corner) {
++      const std::size_t first = region.corners[corner].scheduleSide;
++      const std::size_t next =
++          region.corners[(corner + 1U) % region.corners.size()].scheduleSide;
++      const std::size_t run =
++          next > first ? next - first : next + sideCount - first;
++      EInt count(0);
++      for (std::size_t offset = 0U; offset < run; ++offset) {
++        count += schedule.sides[(first + offset) % sideCount].spanCount;
++      }
++      region.sides.push_back({first, run, count});
++    }
++    result.push_back(std::move(region));
++  }
++  return result;
++}
++
++} // namespace directional::geometry
+diff --git a/tests/SurfaceCellTracingDisplayTests.cpp b/tests/SurfaceCellTracingDisplayTests.cpp
+index c6453ddf1..8e1989972 100644
+--- a/tests/SurfaceCellTracingDisplayTests.cpp
++++ b/tests/SurfaceCellTracingDisplayTests.cpp
+@@ -545,6 +545,64 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
+     print_arrivals("Sphere", sphere, true);
+     print_arrivals("Genus", genus, false);
+   }
++  {
++    // The corners of each region boundary from the field's turning at its walk
++    // nodes, and the schedule sides between them.
++    const auto print_corner_sides = [](const char *label, const FixtureRun &run,
++                                       bool perRegion) {
++      const auto &snapshots = run.result.surfaceCellContext.productSnapshots;
++      if (!snapshots.fieldAlignedCurveNetwork || !snapshots.globalTopologyPlan ||
++          !snapshots.globalConformityBaseline) {
++        std::cout << label << "RegionCornerSides unavailable\n";
++        return;
++      }
++      const auto schedules = directional::geometry::build_region_boundary_schedules(
++          *snapshots.globalTopologyPlan, *snapshots.globalConformityBaseline);
++      const auto *bound =
++          std::get_if<std::vector<directional::geometry::RegionBoundarySchedule>>(
++              &schedules);
++      if (bound == nullptr) {
++        std::cout << label << "RegionCornerSides unavailable\n";
++        return;
++      }
++      const auto built = directional::geometry::build_region_corner_sides(
++          *snapshots.globalTopologyPlan, *snapshots.fieldAlignedCurveNetwork, *bound);
++      if (const auto *failure =
++              std::get_if<directional::geometry::RegionCornerSidesFailure>(&built)) {
++        std::cout << label << "RegionCornerSides built=0 failure="
++                  << directional::geometry::region_corner_sides_failure_reason_name(
++                         failure->reason)
++                  << '\n';
++        return;
++      }
++      const auto &regions =
++          std::get<std::vector<directional::geometry::RegionCornerSides>>(built);
++      std::size_t corners = 0U;
++      std::size_t sides = 0U;
++      for (const auto &region : regions) {
++        corners += region.corners.size();
++        sides += region.sides.size();
++      }
++      std::cout << label << "RegionCornerSides built=1 regions=" << regions.size()
++                << " corners=" << corners << " sides=" << sides << '\n';
++      if (!perRegion) return;
++      for (const auto &region : regions) {
++        std::cout << label << "RegionCornerSide region=" << region.region.index()
++                  << " corners=";
++        for (std::size_t index = 0U; index < region.corners.size(); ++index) {
++          std::cout << (index == 0U ? "" : ";") << region.corners[index].node.index()
++                    << ',' << region.corners[index].quarterTurns;
++        }
++        std::cout << " sides=";
++        for (std::size_t index = 0U; index < region.sides.size(); ++index) {
++          std::cout << (index == 0U ? "" : ",") << region.sides[index].count.to_string();
++        }
++        std::cout << '\n';
++      }
++    };
++    print_corner_sides("Sphere", sphere, true);
++    print_corner_sides("Genus", genus, false);
++  }
+   const auto sphereDisplay = display_of(sphere);
+   for (const auto *face : {&sphereLocus.sourceFace, &sphereLocus.relatedSourceFace,
+                           &sphereLocus.edgeTraceFaceCorners}) {
+@@ -695,3 +753,129 @@ TEST(SurfaceCellTracingDisplay, TerminalFaceLocusIsShownByItsCorners) {
+                             return note == "code: CutSearchExhaustedBeforeCellularity";
+                           }));
+ }
++
++namespace {
++
++const FixtureRun &prescribed_sphere_run() {
++  static const FixtureRun run = run_fixture("sphere_prescribed");
++  return run;
++}
++
++} // namespace
++
++// Every region of the prescribed sphere's production plan turns through four
++// one-quarter-turn corners, and the corners delimit the sides measured from
++// its A3 schedule. A T-node is flat where one trace continues through it.
++TEST(RegionCornerSides, PrescribedSphereRegionsTurnAtFourQuarterTurnCorners) {
++  const auto &snapshots =
++      prescribed_sphere_run().result.surfaceCellContext.productSnapshots;
++  ASSERT_TRUE(snapshots.fieldAlignedCurveNetwork.has_value());
++  ASSERT_TRUE(snapshots.globalTopologyPlan.has_value());
++  ASSERT_TRUE(snapshots.globalConformityBaseline.has_value());
++  const auto schedules = directional::geometry::build_region_boundary_schedules(
++      *snapshots.globalTopologyPlan, *snapshots.globalConformityBaseline);
++  const auto *bound =
++      std::get_if<std::vector<directional::geometry::RegionBoundarySchedule>>(
++          &schedules);
++  ASSERT_NE(nullptr, bound);
++  const auto built = directional::geometry::build_region_corner_sides(
++      *snapshots.globalTopologyPlan, *snapshots.fieldAlignedCurveNetwork, *bound);
++  const auto *regions =
++      std::get_if<std::vector<directional::geometry::RegionCornerSides>>(&built);
++  ASSERT_NE(nullptr, regions)
++      << directional::geometry::region_corner_sides_failure_reason_name(
++             std::get<directional::geometry::RegionCornerSidesFailure>(built)
++                 .reason);
++
++  struct Expected {
++    std::vector<std::size_t> corners;
++    std::vector<std::size_t> sides;
++    std::set<std::size_t> flat;
++  };
++  const std::map<std::size_t, Expected> expected{
++      {0U, {{8U, 0U, 4U, 5U}, {30U, 35U, 35U, 32U}, {}}},
++      {1U, {{0U, 1U, 3U, 2U}, {31U, 35U, 35U, 31U}, {8U, 9U}}},
++      {2U, {{1U, 8U, 5U, 10U}, {1U, 32U, 1U, 32U}, {}}},
++      {3U, {{0U, 9U, 6U, 4U}, {30U, 32U, 35U, 35U}, {}}},
++      {4U, {{9U, 2U, 11U, 6U}, {1U, 32U, 1U, 32U}, {}}},
++      {5U, {{1U, 10U, 7U, 3U}, {32U, 30U, 35U, 35U}, {}}},
++      {6U, {{11U, 2U, 3U, 7U}, {32U, 35U, 35U, 30U}, {}}},
++      {7U, {{4U, 6U, 7U, 5U}, {35U, 31U, 31U, 35U}, {10U, 11U}}}};
++  ASSERT_EQ(bound->size(), regions->size());
++  ASSERT_EQ(expected.size(), regions->size());
++  for (std::size_t index = 0U; index < regions->size(); ++index) {
++    const auto &region = (*regions)[index];
++    const auto &schedule = (*bound)[index];
++    SCOPED_TRACE(::testing::Message() << "region=" << region.region.index());
++    ASSERT_EQ(schedule.region, region.region);
++    const auto found = expected.find(region.region.index());
++    ASSERT_NE(expected.end(), found);
++    const Expected &want = found->second;
++    ASSERT_EQ(want.corners.size(), region.corners.size());
++    ASSERT_EQ(want.sides.size(), region.sides.size());
++    std::set<std::size_t> flat;
++    for (const auto &side : schedule.sides) flat.insert(side.startNode.index());
++    std::size_t covered = 0U;
++    for (std::size_t k = 0U; k < region.corners.size(); ++k) {
++      const auto &corner = region.corners[k];
++      EXPECT_EQ(want.corners[k], corner.node.index());
++      EXPECT_EQ(1, corner.quarterTurns);
++      ASSERT_LT(corner.scheduleSide, schedule.sides.size());
++      EXPECT_EQ(corner.node, schedule.sides[corner.scheduleSide].startNode);
++      flat.erase(corner.node.index());
++      const auto &side = region.sides[k];
++      EXPECT_EQ(corner.scheduleSide, side.firstScheduleSide);
++      EXPECT_EQ(std::to_string(want.sides[k]), side.count.to_string());
++      covered += side.scheduleSideCount;
++    }
++    EXPECT_EQ(schedule.sides.size(), covered);
++    EXPECT_EQ(want.flat, flat);
++  }
++}
++
++// A walk run backwards keeps its arcs and nodes but puts the region on the
++// other side: each one-quarter-turn singular corner reads as the remaining
++// two of its node's three sectors, so the region does not turn by four
++// quarter turns.
++TEST(RegionCornerSides, ReversedPrescribedSphereWalkIsRejectedByItsTurning) {
++  using directional::geometry::RegionCornerSidesFailure;
++  using directional::geometry::RegionCornerSidesFailureReason;
++  const auto &snapshots =
++      prescribed_sphere_run().result.surfaceCellContext.productSnapshots;
++  ASSERT_TRUE(snapshots.fieldAlignedCurveNetwork.has_value());
++  ASSERT_TRUE(snapshots.globalTopologyPlan.has_value());
++  ASSERT_TRUE(snapshots.globalConformityBaseline.has_value());
++  const auto schedules = directional::geometry::build_region_boundary_schedules(
++      *snapshots.globalTopologyPlan, *snapshots.globalConformityBaseline);
++  const auto *bound =
++      std::get_if<std::vector<directional::geometry::RegionBoundarySchedule>>(
++          &schedules);
++  ASSERT_NE(nullptr, bound);
++  ASSERT_FALSE(bound->empty());
++  ASSERT_TRUE(std::holds_alternative<
++              std::vector<directional::geometry::RegionCornerSides>>(
++      directional::geometry::build_region_corner_sides(
++          *snapshots.globalTopologyPlan, *snapshots.fieldAlignedCurveNetwork,
++          *bound)));
++
++  auto reversed = *bound;
++  auto &walk = reversed.front().sides;
++  std::reverse(walk.begin(), walk.end());
++  for (auto &side : walk) {
++    side.arc.orientation =
++        side.arc.orientation == directional::authority::Orientation::Forward
++            ? directional::authority::Orientation::Reverse
++            : directional::authority::Orientation::Forward;
++    std::swap(side.startNode, side.endNode);
++  }
++  const auto built = directional::geometry::build_region_corner_sides(
++      *snapshots.globalTopologyPlan, *snapshots.fieldAlignedCurveNetwork,
++      reversed);
++  const auto *failure = std::get_if<RegionCornerSidesFailure>(&built);
++  ASSERT_NE(nullptr, failure);
++  EXPECT_EQ(RegionCornerSidesFailureReason::TurningNotFourQuarterTurns,
++            failure->reason);
++  ASSERT_TRUE(failure->region.has_value());
++  EXPECT_EQ(reversed.front().region, *failure->region);
++  EXPECT_FALSE(failure->scheduleSide.has_value());
++}
