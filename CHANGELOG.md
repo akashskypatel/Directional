@@ -1,3 +1,7 @@
+## 2026-11-28 — TB-EXEC-193 claimed co-trace deletion full gate
+
+[report](.agents/Directional/Architecture_M6_CP3_TB193_CoTrace_Deletion_Execution_Report_20261128.md). Run `46110979697` (request `f62bec70…`, mailbox `m6-cp3-tb193-exec`), result `15250401219` ZIP `c771dab6…aa7b`, 2034/2034 checks, 1013/1013 PASS, membership 1094. Rows 1-1010 vs TB192 `15195820651`: 586 identical, 424 N1 (elapsed time), 0 N2/N3/different; row858 N1 only. New rows 1011-1013 PASS; row 1012 is the EE3 sphere deletion witness. Deletion option off in production. TB-REV-193 is next, with no gate credit before it.
+
 ## 2026-11-28 — CB-218 claimed co-trace deletion (compile only)
 
 [record](.agents/Directional/Architecture_M6_CP3_CB218_P13_Claimed_CoTrace_Deletion_Code_Build_Record_20261128.md). Diff `b0be915a…cfab5` applied on the CB-217 postimages as commit `abe40f6a…`. Compile run `46109710449` (request `5299951f…`, mailbox `m6-cp3-cb218-compile`), candidate artifact `15249606947` ZIP `3d893445…6a6f`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. The deletion option defaults off; rows 1012/1013 are compiled, not run. TB-EXEC-193 is next.
