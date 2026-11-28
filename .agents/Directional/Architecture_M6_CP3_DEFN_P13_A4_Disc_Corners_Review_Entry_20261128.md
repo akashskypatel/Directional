@@ -17,3 +17,7 @@ Authority: [TB-REV-194](Architecture_M6_CP3_TB_REV_194_CoTrace_Deletion_Switch_I
 ## Recommendation
 
 Begin this definition only after root STATUS confirms TB-REV-194 complete. No successor implementation is authorized by this entry contract.
+
+## Amendment — TB-REV-194 adversarial (2026-11-28)
+
+Step 1 (D7 exact-input precondition) is withdrawn as a precondition of this definition (FF2); an independent D7 oracle is an optional test-oracle item off the critical path. Step 2's O52 STOP is superseded: slivers 2/4 are ordinary four-corner discs and a quality item under DESIGN §4.11 / Amendment 30 (FF3). Scope and predictions: the NEXT_TURN in the handoff.

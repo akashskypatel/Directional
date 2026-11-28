@@ -1,4 +1,8 @@
 **Current turn outcome (2026-11-28 UTC):** [TB-REV-194](.agents/Directional/Architecture_M6_CP3_TB_REV_194_CoTrace_Deletion_Switch_Independent_Review_20261128.md) accepts 1013/1013 test gate and pinned O51 trace ownership. Two incorrect prediction premises corrected; independent exact D7 numeric derivation is carried. CP2 491/491; stable 67/17/50, debt1/deferred81. No production or CP3/497/D0/H4 promotion. Next [M6-CP3-DEFN-P13-A4-DISC-CORNERS](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Corners_Review_Entry_20261128.md). [TB194 execution report](.agents/Directional/Architecture_M6_CP3_TB194_CoTrace_Deletion_Switch_Execution_Report_20261128.md); candidate `15252943713`, source `26eef1ce54b7b311cbf1cedf597ee0c106be52c2`, result `15255025606`. Historical TB193 comparator and CB219 authority retained in the handoff.
+- **TB-REV-194 adv. FF1:** both TB-EXEC-194 STOPs were reviewer prediction errors (merged-arc count 37, fragment diagnostics); the 983 count was arithmetic (984).
+- **TB-REV-194 adv. FF2:** the D7 re-derivation is not a precondition of the corners definition; it is an optional independent oracle item.
+- **TB-REV-194 adv. FF3:** O52 slivers 2/4 are ordinary four-corner discs with equal opposite sides; a quality item (DESIGN §4.11, Amendment 30), not a validity defect.
+- **TB-REV-194 adv. FF4:** DD5 unequal-side construction is the binding blocker for 6 of 8 sphere regions (predictions in the corners NEXT_TURN).
 - TB191 comparator: 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81.
 - **TB-REV-191 adversarial** ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md)): upholds the gate and CB-214. Its findings:
   - DD1: the 34 incidences are 24 port traces plus 10 singularity arrivals that claim no port.
@@ -31,12 +35,18 @@
   4. `M6-CP3-TB-REV-193` (COMPLETE, test gate accepted only).
   5. `M6-CP3-DEFN-P13-A2A-COTRACE-DELETION-SWITCH` (COMPLETE; CB-219 frozen).
   6. `M6-CP3-CB-219-P13-COTRACE-DELETION-SWITCH` (COMPLETE, compile only) → `M6-CP3-TB-EXEC-194` (COMPLETE, prediction STOP) → `M6-CP3-TB-REV-194` (COMPLETE, test gate and pinned O51 accepted; D7 exact numeric evidence carried).
-  7. NEXT, exact D7 evidence before count-dependent work: `M6-CP3-DEFN-P13-A4-DISC-CORNERS` + O52 → Vase row → A4 unequal-side construction.
+  7. `M6-CP3-DEFN-P13-A4-DISC-CORNERS` (NEXT, runtime-free): define the corner rule from A1 field turning at walk nodes; freeze one compile-only CB publishing corner-delimited sides on the region boundary schedule, with the FF4 table as falsifiers.
+  8. `M6-CP3-CB-220-P13-REGION-CORNER-SIDES` (compile only) → 9. TB-EXEC-195 → 10. TB-REV-195.
+  11. `M6-CP3-DEFN-P13-A4-UNEQUAL-SIDE-CONSTRUCTION` (DD5) → CB/TB → Vase row → fill → 65B → 65D (O50, Amendment-19) → O41/switch.
 
 ```text
 NEXT_TURN: M6-CP3-DEFN-P13-A4-DISC-CORNERS
-Owner: runtime-free definition review only. Use TB-REV-194 and the retained A2b/A3 schedules to define exact A4 disc-corner ownership, including O52 slivers 2/4. Entry precondition: obtain or independently derive the D7 metric and parity input for the two joined arcs (new node pairs 1–3 and 4–5); do not assume 35 or 37. If evidence is absent, STOP with a bounded exact-input receipt plan before freezing any count-dependent implementation. See Architecture_M6_CP3_DEFN_P13_A4_Disc_Corners_Review_Entry_20261128.md for scope and falsifiers.
-Authority: Architecture_M6_CP3_TB_REV_194_CoTrace_Deletion_Switch_Independent_Review_20261128.md; DESIGN §5, §7.2.1 Amendment 35, D7 and 65C; TB194 result 15255025606/source 26eef1ce54b7b311cbf1cedf597ee0c106be52c2; original frozen contract preserved. Do not implement, build, execute tests, use legacy fallback, activate chains, or promote production. O52 is open; O51 trace ownership accepted for the pinned witness only. Subsequent Vase and unequal-side work remain held until the definition is frozen.
+Owner: Review/DEFN only, runtime-free. Define the A4 corner rule for A2b trace-bounded discs and freeze one compile-only CB that publishes corner-delimited sides on the region boundary schedule; no build or runtime.
+Authority: TB-REV-194 (+adv. FF1-FF4); DEFN-65C A4D2 item 2 and A4D5; DESIGN §5, §7.2.1 Amendment 35, §4.11 + Amendment 30 (thinness is quality); A3 counts consumed as the validated single-writer product.
+  Rule: a corner is the field turning at a walk node from A1 transport (quarter-turn gap), one rule for singular nodes and T-nodes; Sum(2 - gap) = 4 per singularity-free disc. No D7 re-derivation precondition (FF2); slivers 2/4 are ordinary discs, a quality item (FF3).
+  Sphere predictions (falsifiers, from FF4): 8 regions x 4 corners; sides r0 30,35,35,32; r1 31,35,35,31 (T-nodes 8,9 flat); r2 1,32,1,32; r3 30,32,35,35; r4 1,32,1,32; r5 32,30,35,35; r6 32,35,35,30; r7 35,31,31,35 (T-nodes 10,11 flat); opposite sides equal only in r2, r4. genus_two measured.
+Then: CB-220 corner sides (compile only) -> TB-EXEC-195 -> TB-REV-195 -> DEFN A4 unequal-side construction (DD5) -> Vase row -> fill -> 65B -> 65D.
+Do not: re-derive or change A3 counts, delete or collapse slivers, repair B1/fallback, change dispatch/veto, activate the schedule in production, promote CP3/497/D0/H4.
 ```
 
 ## CURRENT — per-disc A4 route: TB-REV-194 accepted pinned gate; disc-corner definition next (2026-11-28 UTC)

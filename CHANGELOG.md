@@ -1,3 +1,7 @@
+## 2026-11-28 — TB-REV-194 adversarial review (FF1–FF4)
+
+[adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_194_Adversarial_Review_20261128.md). Upholds the TB-REV-194 gate and O51 witness. Both TB-EXEC-194 STOPs were reviewer prediction errors (FF1). The D7 re-derivation is not a corners precondition (FF2). O52 slivers are a quality item (FF3). DD5 unequal sides are the binding sphere blocker for 6 of 8 regions (FF4). Corners DEFN is next; no code or runtime.
+
 ## 2026-11-28 — TB-REV-194 independent co-trace deletion activation review
 
 [TB-REV-194](.agents/Directional/Architecture_M6_CP3_TB_REV_194_CoTrace_Deletion_Switch_Independent_Review_20261128.md). Candidate `15252943713`, source `26eef1ce54b7b311cbf1cedf597ee0c106be52c2`, result `15255025606`, run `46122222893`. Independent 1013/1013, 984 unchanged, 29 authorized differences, membership1094, exact archive checks. Pinned O51 trace-removal witness accepted; two wrong prediction premises corrected, D7 numeric proof carried before count-dependent A4. O52/O50 open, B1 held, B2 unmeasured; CP2 491/491, stable67/17/50, debt1/deferred81. No production/CP3/497/D0/H4 promotion, build or runtime. Next [M6-CP3-DEFN-P13-A4-DISC-CORNERS](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Corners_Review_Entry_20261128.md).

@@ -700,6 +700,8 @@ This document records **reusable failure-derived engineering lessons**, not an e
   and a DESIGN slit gap. A one-fixture-per-process scratch probe with stack sampling found all three in
   minutes, and Review scratch probes are a duty, not a breach of "runtime-free" (RA-166.6 F6, RA-188.1).
 
+- **A frozen prediction must carry every caveat of its source, and a census item marked inferred must not become a frozen prediction.** TB-REV-194: the switch DEFN froze 37 although TB-REV-192 adv. said "counts assume additive segment counts" (D7 counts are global parity-constrained roundings), and froze "fragment diagnostics unchanged" although census 2 marked diagnostics inferred (they are emitted during plan construction, one record per region) (2026-11-28).
+
 ## Build, artifact, workflow, and tool mechanics
 
 - **Preserve exact source/package authority across stages.** Pre-package and package checks must name
