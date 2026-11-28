@@ -1,4 +1,4 @@
-**Current turn outcome (2026-11-28 UTC):** [TB-REV-195](.agents/Directional/Architecture_M6_CP3_TB_REV_195_Region_Corner_Sides_Independent_Review_20261128.md): 1015/1015 test gate independently accepted; 1012 unchanged inherited comparisons, exact ten-line row858 insertion, 1096 members, two nonvacuous guards. CR1–CR4 accepted for the pinned test witness only; 8 sphere discs, 32 gap-1 corners and sides, 6 unequal opposite-side discs (0,1,3,5,6,7), 2 equal-side slivers (2,4; O52 quality), genus permitted unsupported-arc-kind. Corner derivation not wired; no general or production claim. Next `M6-CP3-DEFN-P13-A4-UNEQUAL-SIDE-CONSTRUCTION`. CP2 491/491; stable 67/17/50, debt1/deferred81; O51 pinned witness accepted, D7 numeric oracle carried (not a precondition), O50 open, B1 held, B2 unmeasured. No V5 or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-28 UTC):** [CB-221](.agents/Directional/Architecture_M6_CP3_CB221_P13_Four_Sided_Disc_Quadrangulation_Code_Build_Record_20261128.md): compile-only PASS, immutable candidate `15263941488`, no runtime or production wiring. Next `M6-CP3-TB-EXEC-196`. Previous accepted review: [TB-REV-195](.agents/Directional/Architecture_M6_CP3_TB_REV_195_Region_Corner_Sides_Independent_Review_20261128.md): 1015/1015 test gate independently accepted; 1012 unchanged inherited comparisons, exact ten-line row858 insertion, 1096 members, two nonvacuous guards. CR1–CR4 accepted for the pinned test witness only; 8 sphere discs, 32 gap-1 corners and sides, 6 unequal opposite-side discs (0,1,3,5,6,7), 2 equal-side slivers (2,4; O52 quality), genus permitted unsupported-arc-kind. Corner derivation not wired; no general or production claim. Unequal-side DEFN complete. CP2 491/491; stable 67/17/50, debt1/deferred81; O51 pinned witness accepted, D7 numeric oracle carried (not a precondition), O50 open, B1 held, B2 unmeasured. No V5 or CP3/497/D0/H4 promotion.
 - **TB-REV-194 adv. FF1:** both TB-EXEC-194 STOPs were reviewer prediction errors (merged-arc count 37, fragment diagnostics); the 983 count was arithmetic (984).
 - **TB-REV-194 adv. FF2:** the D7 re-derivation is not a precondition of the corners definition; it is an optional independent oracle item.
 - **TB-REV-194 adv. FF3:** O52 slivers 2/4 are ordinary four-corner discs with equal opposite sides; a quality item (DESIGN §4.11, Amendment 30), not a validity defect.
@@ -32,7 +32,7 @@
 - **GG2 (split DD5):** no existing component fills a four-corner disc with unequal opposite counts and interior vertices (ClosedForm needs equal pairs; Pattern/BoundedCombinatorial boundary-only and capped at 128 < 132); no Tutte embedding exists. Split into combinatorial construction → injective embedding → sphere wiring, each DEFN → CB → TB.
 - **GG3 (corner rule before Vase):** CR1 refuses Mandatory/Cut arcs; genus_two's refusal is inferred from cut arcs; Vase rails need the D5/O38 rim-corner product and a typed corner extension before the Vase row.
 - **GG4 (parity falsifiers):** for even total, a − c ≡ b − d (mod 2); odd/odd regions 0, 3, 5, 6; even/even regions 1, 7; slivers 2, 4 (0, 0); the combinatorial step needs an exhaustive small-case sweep covering both classes.
-- **Unequal-side DEFN (UC1–UC5):** CB-221 frozen: a pure combinatorial quadrangulation of four-corner discs on the UC4 domain (grid; pentagon–triangle), reviewer-default irregular-vertex policy UC2 (owner may override), UC3 impossibility for (3,1,1,1) and (4,1,2,1). Embedding is the next DEFN after TB-REV-196.
+- **Unequal-side DEFN (UC1–UC5):** CB-221 compiled (not wired): a pure combinatorial quadrangulation of four-corner discs on the UC4 domain (grid; pentagon–triangle), reviewer-default irregular-vertex policy UC2 (owner may override), UC3 impossibility for (3,1,1,1) and (4,1,2,1). Embedding is the next DEFN after TB-REV-196.
 - **Turn sequence:**
   1. `M6-CP3-CB-217-P13-UNIQUE-ARRIVAL-CLASSIFICATION` (COMPLETE, compile only).
   2. `M6-CP3-CB-218-P13-CLAIMED-COTRACE-DELETION` (COMPLETE, compile only).
@@ -43,15 +43,15 @@
   7. `M6-CP3-DEFN-P13-A4-DISC-CORNERS` (COMPLETE; CB-220 frozen).
   8. `M6-CP3-CB-220-P13-REGION-CORNER-SIDES` (COMPLETE, compile only) → 9. TB-EXEC-195 (COMPLETE) → 10. TB-REV-195 (COMPLETE, +adv. GG1–GG4).
   11. `M6-CP3-DEFN-P13-A4-UNEQUAL-SIDE-CONSTRUCTION` (COMPLETE; CB-221 frozen, UC1–UC5).
-  12. `M6-CP3-CB-221-P13-FOUR-SIDED-DISC-QUADRANGULATION` (NEXT, compile only) → 13. TB-EXEC-196 → 14. TB-REV-196 → 15. `M6-CP3-DEFN-P13-A4-DISC-EMBEDDING` → 16. `M6-CP3-DEFN-P13-A4-SPHERE-REGION-CONSTRUCTION` → 17. `M6-CP3-DEFN-P13-A4-RAIL-AND-CUT-CORNERS` → Vase row → 65B → 65D (O50, Amendment-19) → O41/switch.
+  12. `M6-CP3-CB-221-P13-FOUR-SIDED-DISC-QUADRANGULATION` (COMPLETE, compile only) → 13. TB-EXEC-196 (NEXT) → 14. TB-REV-196 → 15. `M6-CP3-DEFN-P13-A4-DISC-EMBEDDING` → 16. `M6-CP3-DEFN-P13-A4-SPHERE-REGION-CONSTRUCTION` → 17. `M6-CP3-DEFN-P13-A4-RAIL-AND-CUT-CORNERS` → Vase row → 65B → 65D (O50, Amendment-19) → O41/switch.
 
 ```text
-NEXT_TURN: M6-CP3-CB-221-P13-FOUR-SIDED-DISC-QUADRANGULATION
-Owner: Code + Build only. Apply one exact diff; compile the eight GMP/GMPXX targets, runtimeExecution=false. No runtime, no other source/test/fixture/selector/harness/workflow change.
-Authority: gates/Architecture_M6_CP3_CB221_TB196_Four_Sided_Disc_Exact_Manifest.md; unequal-side DEFN UC1-UC5.
-  Diff Architecture_M6_CP3_CB221_P13_Four_Sided_Disc_Quadrangulation_Exact.diff SHA-256 2da0eb50a18f0dd38c730a8bc06f07706123c58235670553dfe4670f06a905cd (29,628 B, +644/-0; three new files + two CMake list lines); preimages CMakeLists.txt 25f2fd0a..., cmake/DirectionalTests.cmake 50c9f938...; postimages per manifest. STOP on hash/path/patch/compile mismatch; do not adapt.
-Then: TB-EXEC-196 (1019-row manifest 6c8be9c2...9833; rows 1-1015 N1-N3 = TB195 15259492817; rows 1016-1019 new PASS) -> TB-REV-196 -> DEFN A4 disc embedding -> DEFN sphere region construction -> DEFN rail/cut corners -> Vase row.
-Do not: run tests in CB, wire into production, change A3 counts or corner ownership, delete slivers, repair B1/fallback, change dispatch/veto, promote CP3/497/D0/H4.
+NEXT_TURN: M6-CP3-TB-EXEC-196
+Owner: Test + Benchmark only. Immutable CB-221 candidate 15263941488, source eb55a07a728037b3942dbe20871c37233e0364d2, ZIP SHA-256 218cc0cfc5ff0df5971f06e13b81fc4d389195122d5d2625f71857f0e79d63eb; [CB-221 record](.agents/Directional/Architecture_M6_CP3_CB221_P13_Four_Sided_Disc_Quadrangulation_Code_Build_Record_20261128.md). No rebuild, retry, timeout substitution or V5.
+Authority: gates/Architecture_M6_CP3_CB221_TB196_Four_Sided_Disc_Exact_Manifest.md; unequal-side DEFN UC1-UC5. Gate 1019 rows, manifest SHA-256 6c8be9c29548a346d97bcd2fb82f1b30cdc6c72f18e4da1806c02865cb29833b; harness 423f385b73c3825ce9fe18fbd5ca395287620475deb621389f0efbaa601e572c; deferred 81, membership 1100.
+Require: all 1019 PASS; rows 1-1015 (including row858) N1-N3 equal to TB195 result 15259492817 (ZIP f2fb104ac182cc24f1f8d6f68116eeb0fcb6d0e95f166c73d6a322aadd8f2a4b); GUARD rows 1016-1019 PASS. STOP on any mismatch; record failing input and check; do not adapt.
+Then: TB-REV-196 -> DEFN A4 disc embedding -> DEFN sphere region construction -> DEFN rail/cut corners -> Vase row.
+Do not: wire into production, change A3 counts or corner ownership, delete slivers, repair B1/fallback, change dispatch/veto, promote CP3/497/D0/H4.
 ```
 
 ## CURRENT — per-disc A4 route: TB-REV-195 gate accepted; DD5 definition next (2026-11-28 UTC)
