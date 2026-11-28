@@ -1,18 +1,1 @@
-{
-  "schema_version": 1,
-  "operation": "compile",
-  "request_id": "m6-cp3-cb221-compile",
-  "mailbox_key": "m6-cp3-cb221-compile",
-  "source_sha": "eb55a07a728037b3942dbe20871c37233e0364d2",
-  "targets": [
-    "directional_core",
-    "directional_pipeline",
-    "directional_surface_cell_authority_kernel_tests",
-    "directional_surface_cell_producer_tests",
-    "directional_surface_cell_completion_tests",
-    "directional_surface_cell_validation_tests",
-    "directional_compiled_api_tests",
-    "directional_benchmarks"
-  ],
-  "artifact_prefix": "m6-cp3-cb221-result"
-}
+{"schema_version":1,"operation":"drive_apply","request_id":"m6-cp3-cb221-docs","mailbox_key":"m6-cp3-cb221-docs","file_id":"1a8z5Yb43kRQdDSV5pD5AzxIZLF_TQlbB","patch_sha256":"73ec21a6859e892b6965d20b846eda930cbec3ff180d46cbdbbb47e21c1e82cc","base_sha":"655f3a7d005776b047b2744297c02a5ea1ee3346","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"docs: record CB221 compile and next gate","retention_days":14}
