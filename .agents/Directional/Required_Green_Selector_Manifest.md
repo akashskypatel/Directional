@@ -903,3 +903,5 @@ TB-REV-193 (2026-11-28): accepted for the test gate only; no selector or gate by
 No selector file changed; CP2 491 is unchanged.
 
 [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md) independently accepts the 1010-row test gate only; 1000 GUARD + 10 POSITIVE, 81 deferred, membership 1091. CP2 491 and TB191 prefix 1008 are byte-identical. No selector bytes changed; no production or checkpoint promotion.
+
+TB-REV-194 (2026-11-28): [TB-REV-194](Architecture_M6_CP3_TB_REV_194_CoTrace_Deletion_Switch_Independent_Review_20261128.md) accepts the pinned 1013-row test gate on candidate `15252943713`, source `26eef1ce54b7b311cbf1cedf597ee0c106be52c2`, result `15255025606`. Same manifest `b910f2a96626660f46042c34360a8062c7546f35fb1980432d038ba8f41d2fc2`, CP2 prefix `483f11016d1f51049921aed879c2b23f523d045efc1a2833889a12bb9852a038`; 1003 GUARD + 10 POSITIVE, 81 deferred, 1094 members. Two incorrect diagnostic predictions adjudicated, D7 exact numeric evidence carried. No frozen selector or case manifest bytes changed; no production or checkpoint promotion.

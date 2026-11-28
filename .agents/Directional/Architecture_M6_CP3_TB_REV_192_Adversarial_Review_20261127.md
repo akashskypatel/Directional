@@ -79,7 +79,9 @@ The [independent review](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Inde
 
 **Upheld:** gate 1010/1010 for test only, the AP1–AP3 dispositions, the falsifier list and the user-decision STOP. Refined: the decision is A0 against option A, and EE3's prediction is the oracle.
 
-## Predicted post-removal regions (counts assume additive segment counts)
+## Predicted post-removal regions (historical; additive count premise withdrawn)
+
+**TB-REV-194 correction:** [TB-REV-194](Architecture_M6_CP3_TB_REV_194_CoTrace_Deletion_Switch_Independent_Review_20261128.md) disproves the additive scheduled-count premise under DESIGN D7. The four count sequences with 37 below are historical predictions, not normative oracles. The graph and trace ownership predictions stand; exact current counts require independent metric/parity inputs, not a replacement guess.
 
 Boundary nodes use the current ids (singular 0–7, T-nodes 12–15).
 

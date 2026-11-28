@@ -1,3 +1,7 @@
+## 2026-11-28 — TB-REV-194 independent co-trace deletion activation review
+
+[TB-REV-194](.agents/Directional/Architecture_M6_CP3_TB_REV_194_CoTrace_Deletion_Switch_Independent_Review_20261128.md). Candidate `15252943713`, source `26eef1ce54b7b311cbf1cedf597ee0c106be52c2`, result `15255025606`, run `46122222893`. Independent 1013/1013, 984 unchanged, 29 authorized differences, membership1094, exact archive checks. Pinned O51 trace-removal witness accepted; two wrong prediction premises corrected, D7 numeric proof carried before count-dependent A4. O52/O50 open, B1 held, B2 unmeasured; CP2 491/491, stable67/17/50, debt1/deferred81. No production/CP3/497/D0/H4 promotion, build or runtime. Next [M6-CP3-DEFN-P13-A4-DISC-CORNERS](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Disc_Corners_Review_Entry_20261128.md).
+
 ## 2026-11-28 — TB-EXEC-194 co-trace deletion activation (execution complete, prediction STOP)
 
 [report](.agents/Directional/Architecture_M6_CP3_TB194_CoTrace_Deletion_Switch_Execution_Report_20261128.md). Run `46122222893`, result `15255025606` ZIP `5fedd54ddf3416bf1cdb475a8e53206ab6382fcd75e9ea8b4a3bfebb4f8d99b4`, immutable CB-219 source `26eef1ce54b7b311cbf1cedf597ee0c106be52c2`, 2034/2034 checks, 1013/1013 PASS, membership1094. All 984 unchanged rows match N1–N3; 29 allowed differences. Row858: 10 arrivals, matched10, portTraced0; graph V/E/F12/18/8, schedules8/36/18. Four side-count multisets and M3 projection equality mismatch frozen predictions. Stop for TB-REV-194; no acceptance or promotion. No rebuild, retry or V5. Stable 67/17/50, debt1/deferred81.
@@ -20,11 +24,11 @@
 
 ## 2026-11-28 — CB-218 claimed co-trace deletion (compile only)
 
-[record](.agents/Directional/Architecture_M6_CP3_CB218_P13_Claimed_CoTrace_Deletion_Code_Build_Record_20261128.md). Diff `b0be915a…cfab5` applied on the CB-217 postimages as commit `abe40f6a…`. Compile run `46109710449` (request `5299951f…`, mailbox `m6-cp3-cb218-compile`), candidate artifact `15249606947` ZIP `3d893445…6a6f`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. The deletion option defaults off; rows 1012/1013 are compiled, not run. TB-EXEC-193 is next.
+[record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb194-folded-cb218). Diff `b0be915a…cfab5` applied on the CB-217 postimages as commit `abe40f6a…`. Compile run `46109710449` (request `5299951f…`, mailbox `m6-cp3-cb218-compile`), candidate artifact `15249606947` ZIP `3d893445…6a6f`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. The deletion option defaults off; rows 1012/1013 are compiled, not run. TB-EXEC-193 is next.
 
 ## 2026-11-28 — CB-217 unique arrival classification (compile only)
 
-[record](.agents/Directional/Architecture_M6_CP3_CB217_P13_Unique_Arrival_Classification_Code_Build_Record_20261128.md). Diff `d3d3102e…aff8` applied on `c76e74b3…3033` as commit `3e5a26b4…`. Compile run `46108573400` (request `86a74343…`, mailbox `m6-cp3-cb217-compile`), candidate artifact `15248359837` ZIP `4a2d85cf…abf`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Row 1011 is compiled, not run. CB-218 is next.
+[record](.agents/Directional/M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb194-folded-cb217). Diff `d3d3102e…aff8` applied on `c76e74b3…3033` as commit `3e5a26b4…`. Compile run `46108573400` (request `86a74343…`, mailbox `m6-cp3-cb217-compile`), candidate artifact `15248359837` ZIP `4a2d85cf…abf`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Row 1011 is compiled, not run. CB-218 is next.
 
 ## 2026-11-27 — AP4 DEFN: A2a claimed co-trace deletion (Amendment 35)
 

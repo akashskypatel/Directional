@@ -27,6 +27,8 @@ Keep the option as a control with production default true (not removed). The aut
 
 ## SW4 — Frozen CB and TB contract
 
+**TB-REV-194 disposition:** [TB-REV-194](Architecture_M6_CP3_TB_REV_194_CoTrace_Deletion_Switch_Independent_Review_20261128.md) accepts the pinned test gate and trace ownership. The historical exact execution manifest remains unmodified. Its 983 unchanged-row arithmetic is 984; its additive 37 counts and unchanged plan-projection prediction are false for the reasons in AA2/AA3. D7 and the unchanged fallback evidence requirements remain in force; do not treat measured 35 as a new independent oracle.
+
 See the [exact manifest](gates/Architecture_M6_CP3_CB219_TB194_CoTrace_Deletion_Switch_Exact_Manifest.md).
 
 ## SW5 — Risks carried to TB-EXEC-194 (falsifiers, STOP not repair)
