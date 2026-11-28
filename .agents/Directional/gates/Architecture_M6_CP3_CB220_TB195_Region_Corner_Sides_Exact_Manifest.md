@@ -39,7 +39,7 @@ No rebuild, retry, timeout substitution or V5.
 **Comparisons:**
 - All 1015 rows must PASS.
 - Rows 1–1013 except 858 must be N1–N3-equal to TB194. Any difference is STOP.
-- Row 858 must equal the TB194 bytes with only the new `RegionCornerSides` lines inserted at the printer's insertion point. The exact insertion point is derived from the diff and stated in the TB-EXEC-195 report before comparison. Its suffix must be N1/N2-equal.
+- Row 858 must equal the TB194 bytes with only the new `RegionCornerSides` lines inserted at the printer's insertion point. Insertion point (from the diff: `print_corner_sides("Sphere", …)` and `print_corner_sides("Genus", …)` run immediately after `print_arrivals("Genus", …)`): every byte of TB194 row858 through the end of the `GenusSingularityArrivals …` line must be equal; then exactly 10 new lines follow — one `SphereRegionCornerSides …` summary, eight `SphereRegionCornerSide …` lines, one `GenusRegionCornerSides …` line; then the remaining TB194 suffix must be N1/N2-equal.
 
 **Predictions.** A mismatch is STOP for review, never a repair.
 - `SphereRegionCornerSides built=1 regions=8 corners=32 sides=32`.
