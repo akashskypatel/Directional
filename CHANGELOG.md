@@ -1,3 +1,7 @@
+## 2026-11-28 — TB-EXEC-196 four-sided disc quadrangulation (execution PASS)
+
+[TB196 report](.agents/Directional/Architecture_M6_CP3_TB196_Four_Sided_Disc_Execution_Report_20261128.md). Run `46148326661`, result `15265246492` ZIP `ed16ec508923a3edd8448a040cc2b48cd5e5eaf7f8fd43ace40c775f23749a14`, immutable CB-221 candidate `15263941488`, source `eb55a07a728037b3942dbe20871c37233e0364d2`. 2046/2046 checks, 1019/1019 PASS, membership1100. All 1015 inherited cases match TB195 (797 exact, 218 N1, including row858). Guards 1016–1019 PASS. No rebuild, retry, V5 or production activation. Stable 67/17/50, debt1/deferred81 unchanged; next independent `M6-CP3-TB-REV-196`.
+
 ## 2026-11-28 — CB-221 four-sided disc quadrangulation (compile only)
 
 [Record](.agents/Directional/Architecture_M6_CP3_CB221_P13_Four_Sided_Disc_Quadrangulation_Code_Build_Record_20261128.md). Exact diff `2da0eb50…5cd` (+644/−0), source `eb55a07a728037b3942dbe20871c37233e0364d2`, compile run `46146537510`, candidate `15263941488` ZIP `218cc0cfc5ff0df5971f06e13b81fc4d389195122d5d2625f71857f0e79d63eb`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. The combinatorial grid and pentagon–triangle families compiled; no production caller. Frozen 1019-row gate, 1015-row prefix unchanged and four new GUARD rows. Stable 67/17/50, debt1/deferred81. No runtime or promotion. Next `M6-CP3-TB-EXEC-196`.
