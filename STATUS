@@ -1,8 +1,8 @@
 ---TURN_STATUS---
 Turn: M6-CP3-CB-221-P13-FOUR-SIDED-DISC-QUADRANGULATION
-Status: IN_PROGRESS
-Successor: UNKNOWN
+Status: COMPLETE
+Successor: M6-CP3-TB-EXEC-196
 Started at: 2026-11-28T12:44:23Z
 Resumed at: 
-Ended at: 
+Ended at: 2026-11-28T12:54:52Z
 ---END_TURN_STATUS---
