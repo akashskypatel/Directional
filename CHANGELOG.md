@@ -1,3 +1,7 @@
+## 2026-11-28 — CB-218 claimed co-trace deletion (compile only)
+
+[record](.agents/Directional/Architecture_M6_CP3_CB218_P13_Claimed_CoTrace_Deletion_Code_Build_Record_20261128.md). Diff `b0be915a…cfab5` applied on the CB-217 postimages as commit `abe40f6a…`. Compile run `46109710449` (request `5299951f…`, mailbox `m6-cp3-cb218-compile`), candidate artifact `15249606947` ZIP `3d893445…6a6f`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. The deletion option defaults off; rows 1012/1013 are compiled, not run. TB-EXEC-193 is next.
+
 ## 2026-11-28 — CB-217 unique arrival classification (compile only)
 
 [record](.agents/Directional/Architecture_M6_CP3_CB217_P13_Unique_Arrival_Classification_Code_Build_Record_20261128.md). Diff `d3d3102e…aff8` applied on `c76e74b3…3033` as commit `3e5a26b4…`. Compile run `46108573400` (request `86a74343…`, mailbox `m6-cp3-cb217-compile`), candidate artifact `15248359837` ZIP `4a2d85cf…abf`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Row 1011 is compiled, not run. CB-218 is next.

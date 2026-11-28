@@ -29,7 +29,7 @@ Content: `classify_field_aligned_candidate_arrivals` returns `FieldAlignedArriva
 
 Candidate checks: two static libraries (`libdirectional_core.a`, `libdirectional_pipeline.a`), six executables, eight targets listed in `compiled-targets.txt`, `build-exit-code` 0, `preflight-exit-code` 0, five empty source-status records, source commit `3e5a26b4…`. GMP receipts: `GMP_ROOT=/usr`, GMP and GMPXX found, one authoritative link command (`directional_surface_cell_authority_kernel_tests`) with `libgmpxx.so` and `libgmp.so`, `exactArithmeticBackend=GMP`. Command boundary: `runtimeExecution=false`, `turnBoundary=Code+Build-only`, `semanticContracts=compiled-not-executed`.
 
-No runtime, test, benchmark or local compile was run. Rows 1011 compiled only, not run. No promotion. Accepted gate TB-REV-192 1010/1010, CP2 491/491, membership 1089, stable 67/17/50, debt1/deferred81. V5 unaccepted. B1 held, B2 carried. O51 remains open.
+No runtime, test, benchmark or local compile was run. Rows 1011 compiled only, not run. No promotion. Accepted gate TB-REV-192 1010/1010, CP2 491/491, membership 1091, stable 67/17/50, debt1/deferred81. V5 unaccepted. B1 held, B2 carried. O51 remains open.
 
 ## Recommendation
 

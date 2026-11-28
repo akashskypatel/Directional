@@ -1,4 +1,4 @@
-**Current turn outcome (2026-11-28 UTC):** `M6-CP3-CB-217-P13-UNIQUE-ARRIVAL-CLASSIFICATION` is compiled (compile only, row 1011 compiled and not run): source `3e5a26b4…`, compile run `46108573400`, candidate artifact `15248359837` 28/28 ([record](.agents/Directional/Architecture_M6_CP3_CB217_P13_Unique_Arrival_Classification_Code_Build_Record_20261128.md)). CB-218 diff is frozen on the CB-217 postimages, next. Previous: `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` decides AP4: A0 deletion with typed fail-closed, DESIGN Amendment 35, staged behind an option that defaults off ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_Partial_CoTrace_Removal_20261127.md)).
+**Current turn outcome (2026-11-28 UTC):** `M6-CP3-CB-218-P13-CLAIMED-COTRACE-DELETION` is compiled (compile only; deletion option defaults off; rows 1012/1013 compiled, not run): source `abe40f6a…`, compile run `46109710449`, candidate artifact `15249606947` 28/28 ([record](.agents/Directional/Architecture_M6_CP3_CB218_P13_Claimed_CoTrace_Deletion_Code_Build_Record_20261128.md)). CB-217 is COMPLETE ([record](.agents/Directional/Architecture_M6_CP3_CB217_P13_Unique_Arrival_Classification_Code_Build_Record_20261128.md)). Previous: `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` decides AP4: A0 deletion with typed fail-closed, DESIGN Amendment 35, staged behind an option that defaults off ([record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_Partial_CoTrace_Removal_20261127.md)).
 - TB191 comparator: 1008/1008 independently accepted for the test gate only; CP2 491/491 unchanged. Membership 1089 = 1008 gated + 81 deferred; 766 exact, 239 N1/N2, one authorized row858 change; rows1007/1008 PASS. Sphere: 14 regions, 60 sides, 30 opposite-direction equal-count pairs, all positive/even. Genus_two: 14 regions, 184 sides, 92 paired arcs, no other arcs (aggregate receipt). No produced sphere, schedule activation, production or checkpoint promotion. Stable 67/17/50, debt1/deferred81.
 - **TB-REV-191 adversarial** ([record](.agents/Directional/Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md)): upholds the gate and CB-214. Its findings:
   - DD1: the 34 incidences are 24 port traces plus 10 singularity arrivals that claim no port.
@@ -26,19 +26,20 @@
   - PC5: TB-EXEC-193 requires rows 1–1010 N1–N3-equal to TB192.
 - **Turn sequence:**
   1. `M6-CP3-CB-217-P13-UNIQUE-ARRIVAL-CLASSIFICATION` (COMPLETE, compile only).
-  2. `M6-CP3-CB-218-P13-CLAIMED-COTRACE-DELETION` (NEXT, compile only).
-  3. `M6-CP3-TB-EXEC-193` (1013 rows).
+  2. `M6-CP3-CB-218-P13-CLAIMED-COTRACE-DELETION` (COMPLETE, compile only).
+  3. `M6-CP3-TB-EXEC-193` (NEXT, 1013 rows).
   4. `M6-CP3-TB-REV-193`.
   5. `M6-CP3-DEFN-P13-A2A-COTRACE-DELETION-SWITCH` (27-row premise census, `arrivalPort` readers) → CB/TB.
   6. `M6-CP3-DEFN-P13-A4-DISC-CORNERS` + O52 → Vase row → A4 unequal-side construction.
 
 ```text
-NEXT_TURN: M6-CP3-CB-218-P13-CLAIMED-COTRACE-DELETION
-Owner: Code + Build only. Apply one exact diff on CB-217; compile the eight GMP/GMPXX targets, runtimeExecution=false. No runtime, no other source/test/fixture/selector/harness/workflow change.
-Authority: gates/Architecture_M6_CP3_CB217_CB218_TB193_CoTrace_Deletion_Exact_Manifest.md; AP4 DEFN PC4; DESIGN Amendment 35.
-  Diff Architecture_M6_CP3_CB218_P13_Claimed_CoTrace_Deletion_Exact.diff SHA-256 b0be915a4fd5f967a96e354fb6fa2fb78eaba6849028b12014eb50bae98cfab5 (32,417 B, +498/-12); preimages = CB-217 postimages (SurfaceCellTracing.h 57097999..., SurfaceCellTracing.cpp aed29306..., FieldAlignedCurveNetworkTests.cpp c220a00a...); postimages per manifest. STOP on hash/path/patch/compile mismatch; do not adapt.
-Then: TB-EXEC-193 (1013-row manifest b910f2a9...2fc2; rows 1-1010 N1-N3 = TB192 15195820651 incl. row858; rows 1011-1013 new) -> TB-REV-193 -> co-trace deletion switch DEFN (27-row census) -> corners DEFN + O52.
-Do not: run tests in CB, turn the option on, re-trace, change D13 selection/A2b/A3/dispatch/veto, repair B1/fallback, CB-207D, promote CP3/497/D0/H4.
+NEXT_TURN: M6-CP3-TB-EXEC-193
+Owner: Test + Benchmark execution only on the immutable CB-218 candidate (artifact 15249606947, ZIP 3d89344569f498cf2ad21afa0d3e61d25e256abe3d9dbbdf15b0cff172665a6f, source abe40f6a16e353b25a44a1eafce8f7e46aaee0cb). No rebuild, retry, timeout substitution, source/test/selector/harness change or V5.
+Authority: gates/Architecture_M6_CP3_CB217_CB218_TB193_CoTrace_Deletion_Exact_Manifest.md (TB-EXEC-193 section).
+  Manifest 1013 rows b910f2a96626660f46042c34360a8062c7546f35fb1980432d038ba8f41d2fc2 (header + rows 1-1010 = TB192 c9f6325e...e9f5); harness 423f385b73c3825ce9fe18fbd5ca395287620475deb621389f0efbaa601e572c; deferred fd433f54...64ce (81); membership 1094.
+  All 1013 rows PASS; rows 1-1010 incl. row858 N1-N3-equal to TB192 result 15195820651; rows 1011-1013 PASS. Any mismatch: STOP and record, never repair.
+Then: TB-REV-193 -> co-trace deletion switch DEFN (27-row census) -> corners DEFN + O52.
+Do not: turn the deletion option on outside rows 1012/1013, change tracing/D13/A2b/A3/dispatch/veto, repair B1/fallback, promote CP3/497/D0/H4.
 ```
 
 ## CURRENT — per-disc A4 route: TB192 arrival classification evidence (2026-11-27 UTC)
