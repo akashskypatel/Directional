@@ -1,0 +1,2 @@
+# M6-CP3-TB-REV-195 temporary state only
+.agents/connector-triggers/source-snapshot/m6-cp3-tb-rev-195.txt
