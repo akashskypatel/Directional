@@ -769,18 +769,55 @@ struct FieldAlignedSingularityArrival {
     FieldAlignedArrivalApproach approach) noexcept;
 
 /**
- * Every trace of `network` that ends at a singularity, in trace order. A last
- * piece along a radial edge (a slide, or a face piece on the edge) matches the
- * edge-supported port on that edge, else the class with a ray on it, else the
- * class with a ray in each face of the edge. A last piece through a face
- * interior matches the class whose ray in that face its branch runs back
- * along. Empty when `fieldTransportAtlas` is not the atlas `network` was
- * traced on or a trace's exact path is unavailable. Read by no stage.
+ * Every trace of `network` that ends at a singularity, in trace order, as
+ * classify_field_aligned_candidate_arrivals classifies it against the atlas's
+ * singularity rays and port attachments. `port` is set when exactly one port
+ * slot matches. Empty when `fieldTransportAtlas` is not the atlas `network`
+ * was traced on, a trace's exact path is unavailable, or any arrival matches
+ * more than one port slot. Read by no stage.
  */
 [[nodiscard]] std::optional<std::vector<FieldAlignedSingularityArrival>>
 classify_field_aligned_singularity_arrivals(
     const FieldAlignedCurveNetwork &network,
     const authority::FieldTransportAtlas &fieldTransportAtlas);
+
+/** How many port slots of its singularity an arrival's last piece matches. */
+enum class FieldAlignedArrivalPortMatch : std::uint8_t {
+  Unique = 0,
+  NoPortSlot = 1,
+  SeveralPortSlots = 2,
+};
+
+/**
+ * One arrival of a candidate and how its last piece matches the port slots
+ * of the singularity it ends at. `arrival.port` is set only when `match` is
+ * Unique and the candidate publishes a port of that singularity with that
+ * slot as its ordinal.
+ */
+struct FieldAlignedCandidateArrival {
+  FieldAlignedSingularityArrival arrival;
+  FieldAlignedArrivalPortMatch match = FieldAlignedArrivalPortMatch::NoPortSlot;
+
+  auto operator<=>(const FieldAlignedCandidateArrival &) const = default;
+};
+
+/**
+ * Every trace of `candidate` that ends at a singularity, in trace order.
+ * Collects every port slot of that singularity that the last piece matches.
+ * A last piece along a radial edge (a slide, or a face piece on the edge)
+ * matches the slot of an edge-supported attachment on that edge, of a ray
+ * on that edge, and of a class with rays in both faces of the edge. A last
+ * piece through a face interior matches the slot of a ray in that face whose
+ * branch its own branch runs back along. A slot matched by several rules
+ * counts once. `node` is the lowest-id node at the vertex the last piece
+ * ends at. Empty when a trace's exact last piece is unavailable or does not
+ * end at a node's vertex.
+ */
+[[nodiscard]] std::optional<std::vector<FieldAlignedCandidateArrival>>
+classify_field_aligned_candidate_arrivals(
+    const FieldAlignedCurveNetworkCandidate &candidate,
+    const std::vector<authority::FieldSingularityRay> &rays,
+    const std::vector<authority::FieldSingularityPortAttachment> &attachments);
 
 namespace surface_cell_tracing_detail {
 

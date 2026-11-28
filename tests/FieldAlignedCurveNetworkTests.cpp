@@ -24299,3 +24299,99 @@ TEST(FieldAlignedCurveNetwork, MechanicalRetraceArrivalsRealizeTheRemovedPortsSe
   }
   EXPECT_EQ(4U, retraced);
 }
+
+TEST(FieldAlignedCurveNetwork, CandidateArrivalClassificationRequiresExactlyOnePortSlot) {
+  using directional::geometry::FieldAlignedArrivalApproach;
+  using directional::geometry::FieldAlignedArrivalPortMatch;
+  using directional::geometry::classify_field_aligned_candidate_arrivals;
+  const auto &fixture = cp4c_mechanical_atlas_fixture();
+  ASSERT_TRUE(fixture.atlas);
+  ASSERT_TRUE(fixture.network) << fixture.terminalFailureCode << '/'
+                               << fixture.terminalFailureDetailCode;
+  const auto &network = *fixture.network;
+  const auto &rays = fixture.atlas->branch_topology().singularity_rays();
+  const auto &attachments =
+      fixture.atlas->branch_topology().singularity_port_attachments();
+  const FieldAlignedCurveNetworkCandidate candidate = network.validation_candidate();
+  const auto published = directional::geometry::classify_field_aligned_singularity_arrivals(
+      network, *fixture.atlas);
+  const auto classified =
+      classify_field_aligned_candidate_arrivals(candidate, rays, attachments);
+  ASSERT_TRUE(published.has_value());
+  ASSERT_TRUE(classified.has_value());
+  ASSERT_EQ(published->size(), classified->size());
+  // Inside the canonical derivation nodes are still in id order, not in the
+  // published (vertex, id) order; the chosen node must not depend on it.
+  FieldAlignedCurveNetworkCandidate reordered = candidate;
+  std::reverse(reordered.nodes.begin(), reordered.nodes.end());
+  EXPECT_EQ(classified, classify_field_aligned_candidate_arrivals(reordered, rays, attachments));
+  std::optional<std::size_t> chosen;
+  std::size_t retraced = 0U;
+  for (std::size_t index = 0U; index < classified->size(); ++index) {
+    const auto &value = (*classified)[index];
+    EXPECT_EQ((*published)[index], value.arrival);
+    EXPECT_NE(FieldAlignedArrivalPortMatch::SeveralPortSlots, value.match);
+    const auto trace = std::find_if(
+        candidate.candidateTraces.begin(), candidate.candidateTraces.end(),
+        [&](const auto &item) { return item.id == value.arrival.trace; });
+    ASSERT_NE(candidate.candidateTraces.end(), trace);
+    if (!trace->arrivalPort) continue;
+    // An exact retrace's arrival runs back along the removed port's ray.
+    ++retraced;
+    EXPECT_EQ(FieldAlignedArrivalPortMatch::Unique, value.match);
+    EXPECT_EQ(trace->arrivalPort, value.arrival.port);
+    if (!chosen && value.arrival.approach == FieldAlignedArrivalApproach::RadialEdge) {
+      chosen = index;
+    }
+  }
+  EXPECT_EQ(4U, retraced);
+  ASSERT_TRUE(chosen.has_value());
+  const auto &witness = (*classified)[*chosen].arrival;
+  ASSERT_TRUE(witness.port.has_value());
+  ASSERT_TRUE(witness.radialEdge.has_value());
+  const auto port = std::find_if(
+      candidate.singularityPorts.begin(), candidate.singularityPorts.end(),
+      [&](const auto &value) { return value.id == *witness.port; });
+  ASSERT_NE(candidate.singularityPorts.end(), port);
+  const int slot = port->ordinal;
+  const auto other = std::find_if(
+      candidate.singularityPorts.begin(), candidate.singularityPorts.end(),
+      [&](const auto &value) {
+        return value.singularity == witness.singularity && value.ordinal != slot;
+      });
+  ASSERT_NE(candidate.singularityPorts.end(), other);
+
+  // A second class ray on the arrival's radial edge: two slots, no port.
+  auto doubled = rays;
+  const auto targetRay = std::find_if(rays.begin(), rays.end(), [&](const auto &ray) {
+    return ray.singularity == witness.singularity;
+  });
+  ASSERT_NE(rays.end(), targetRay);
+  auto extra = *targetRay;
+  extra.alongRadialEdge = *witness.radialEdge;
+  extra.portSlot = other->ordinal;
+  doubled.push_back(extra);
+  const auto several = classify_field_aligned_candidate_arrivals(candidate, doubled, attachments);
+  ASSERT_TRUE(several.has_value());
+  ASSERT_EQ(classified->size(), several->size());
+  EXPECT_EQ(witness.trace, (*several)[*chosen].arrival.trace);
+  EXPECT_EQ(FieldAlignedArrivalPortMatch::SeveralPortSlots, (*several)[*chosen].match);
+  EXPECT_FALSE((*several)[*chosen].arrival.port.has_value());
+
+  // Without the matched slot's rays and attachment no slot matches.
+  auto withoutSlotRays = rays;
+  std::erase_if(withoutSlotRays, [&](const auto &ray) {
+    return ray.singularity == witness.singularity && ray.portSlot == slot;
+  });
+  auto withoutSlotAttachments = attachments;
+  std::erase_if(withoutSlotAttachments, [&](const auto &attachment) {
+    return attachment.singularity == witness.singularity && attachment.localSlot == slot;
+  });
+  const auto none = classify_field_aligned_candidate_arrivals(
+      candidate, withoutSlotRays, withoutSlotAttachments);
+  ASSERT_TRUE(none.has_value());
+  ASSERT_EQ(classified->size(), none->size());
+  EXPECT_EQ(witness.trace, (*none)[*chosen].arrival.trace);
+  EXPECT_EQ(FieldAlignedArrivalPortMatch::NoPortSlot, (*none)[*chosen].match);
+  EXPECT_FALSE((*none)[*chosen].arrival.port.has_value());
+}
