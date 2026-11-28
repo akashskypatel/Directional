@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "workflow_key": "agent-turn-cleanup",
+  "workflow": "Agent Turn Temporary-State Cleanup",
+  "workflow_ref": "akashskypatel/Directional/.github/workflows/agent-turn-cleanup.yml@refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "repository": "akashskypatel/Directional",
+  "event": "push",
+  "event_sha": "715a9416ec762f2dba2cc0b94b6520fa6da135d8",
+  "source_sha": "5cf4b72410a2773fc1746460f6691e92060e6618",
+  "source_ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref": "refs/heads/agent/surface_cell_quad/p5-recover-bridge-healing",
+  "ref_name": "agent/surface_cell_quad/p5-recover-bridge-healing",
+  "run_id": 46135180087,
+  "run_attempt": 1,
+  "run_number": 1016,
+  "run_url": "https://github.com/akashskypatel/Directional/actions/runs/46135180087",
+  "result": "success",
+  "summary": "Turn temporary-state cleanup.",
+  "reported_at": "2026-11-28T10:27:04Z",
+  "mailbox_branch": "workflow-mailbox",
+  "artifacts": [
+    {
+      "id": 15259596139,
+      "name": "agent-turn-cleanup-result-46135180087",
+      "size_in_bytes": 490,
+      "digest": "sha256:64bcb34158db839a8c86265bf44737bb858d81b1d571005881c6db206a7335a6",
+      "expired": false,
+      "created_at": "2026-11-28T10:26:43Z",
+      "expires_at": "2026-12-05T10:26:42Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/46135180087/artifacts/15259596139",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/15259596139/zip"
+    },
+    {
+      "id": 15259272928,
+      "name": "agent-workflow-schema-validation-46135180087",
+      "size_in_bytes": 439,
+      "digest": "sha256:94a313da69f98c104d139fdd445b0e38af8bd31865f0c57c3c7a1c54ea946cc8",
+      "expired": false,
+      "created_at": "2026-11-28T10:26:27Z",
+      "expires_at": "2026-12-05T10:26:27Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/46135180087/artifacts/15259272928",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/15259272928/zip"
+    },
+    {
+      "id": 15259003456,
+      "name": "agent-workflow-schema-validator-log-46135180087",
+      "size_in_bytes": 490,
+      "digest": "sha256:232f024ebbed3a2f99434eaff1c3e7045ada39d6096d347f53ea6b11bf1cc9d6",
+      "expired": false,
+      "created_at": "2026-11-28T10:26:28Z",
+      "expires_at": "2026-12-05T10:26:28Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/46135180087/artifacts/15259003456",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/15259003456/zip"
+    },
+    {
+      "id": 15258893869,
+      "name": "workflow-mailbox-publisher-log-46135180087-attempt-1",
+      "size_in_bytes": 390,
+      "digest": "sha256:4881a5c98572848307a9488eb77e83ea877fb432fb25b74816f9d60c6442c467",
+      "expired": false,
+      "created_at": "2026-11-28T10:27:04Z",
+      "expires_at": "2026-12-12T10:27:03Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/46135180087/artifacts/15258893869",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/15258893869/zip"
+    },
+    {
+      "id": 15258762961,
+      "name": "agent-turn-cleanup-log-46135180087",
+      "size_in_bytes": 932,
+      "digest": "sha256:f3ba460fc2f7e127ce6cdc6cccd8a625177f05246da69f9de279e7bb2768e4c0",
+      "expired": false,
+      "created_at": "2026-11-28T10:26:44Z",
+      "expires_at": "2026-12-05T10:26:43Z",
+      "artifact_url": "https://github.com/akashskypatel/Directional/actions/runs/46135180087/artifacts/15258762961",
+      "archive_download_url": "https://api.github.com/repos/akashskypatel/Directional/actions/artifacts/15258762961/zip"
+    }
+  ]
+}
