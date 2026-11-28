@@ -1,1 +1,18 @@
-{"schema_version":1,"operation":"drive_apply","request_id":"m6-cp3-cb221-apply","mailbox_key":"m6-cp3-cb221-apply","file_id":"1Wrg5pRcFGiNIPITdcXPT-C_BOwZIkBBU","patch_sha256":"eaab0b5113996c5a7f4f63418a67daabca6fd24779d06cebd95e87e20273c734","base_sha":"9a6b5809949b1847727df7c8ac2dbad6687d61b8","target_branch":"agent/surface_cell_quad/p5-recover-bridge-healing","commit_message":"feat: add four-sided disc quadrangulation","retention_days":14}
+{
+  "schema_version": 1,
+  "operation": "compile",
+  "request_id": "m6-cp3-cb221-compile",
+  "mailbox_key": "m6-cp3-cb221-compile",
+  "source_sha": "eb55a07a728037b3942dbe20871c37233e0364d2",
+  "targets": [
+    "directional_core",
+    "directional_pipeline",
+    "directional_surface_cell_authority_kernel_tests",
+    "directional_surface_cell_producer_tests",
+    "directional_surface_cell_completion_tests",
+    "directional_surface_cell_validation_tests",
+    "directional_compiled_api_tests",
+    "directional_benchmarks"
+  ],
+  "artifact_prefix": "m6-cp3-cb221-result"
+}
