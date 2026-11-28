@@ -1,3 +1,7 @@
+## 2026-11-28 — TB-EXEC-194 co-trace deletion activation (execution complete, prediction STOP)
+
+[report](.agents/Directional/Architecture_M6_CP3_TB194_CoTrace_Deletion_Switch_Execution_Report_20261128.md). Run `46122222893`, result `15255025606` ZIP `5fedd54ddf3416bf1cdb475a8e53206ab6382fcd75e9ea8b4a3bfebb4f8d99b4`, immutable CB-219 source `26eef1ce54b7b311cbf1cedf597ee0c106be52c2`, 2034/2034 checks, 1013/1013 PASS, membership1094. All 984 unchanged rows match N1–N3; 29 allowed differences. Row858: 10 arrivals, matched10, portTraced0; graph V/E/F12/18/8, schedules8/36/18. Four side-count multisets and M3 projection equality mismatch frozen predictions. Stop for TB-REV-194; no acceptance or promotion. No rebuild, retry or V5. Stable 67/17/50, debt1/deferred81.
+
 ## 2026-11-28 — CB-219 co-trace deletion switch (compile only)
 
 [record](.agents/Directional/Architecture_M6_CP3_CB219_P13_CoTrace_Deletion_Switch_Code_Build_Record_20261128.md). Exact frozen diff `636ee790…4db89d` applied as commit `26eef1ce54b7b311cbf1cedf597ee0c106be52c2`. Compile run `46118862242`, candidate `15252943713` ZIP `b12b9ede5678f6d8942559e821c134c602b6ba7446b6a338152573f4cb722f35`, 28/28 manifest checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Default on, frozen control retained. No runtime, gate or production promotion. Next TB-EXEC-194.
