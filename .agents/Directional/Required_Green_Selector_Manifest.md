@@ -898,6 +898,8 @@ DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL (2026-11-27): TB-EXEC-193 uses the 1013-row
 - `FieldAlignedCurveNetwork.PrescribedSphereClaimedCoTraceDeletionKeepsOneTracePerSeparatrix`;
 - `FieldAlignedCurveNetwork.PrescribedSphereClaimedCoTraceDeletionRejectsInadmissibleClaims`.
 
+TB-REV-193 (2026-11-28): accepted for the test gate only; no selector or gate bytes changed.
+
 No selector file changed; CP2 491 is unchanged.
 
 [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md) independently accepts the 1010-row test gate only; 1000 GUARD + 10 POSITIVE, 81 deferred, membership 1091. CP2 491 and TB191 prefix 1008 are byte-identical. No selector bytes changed; no production or checkpoint promotion.

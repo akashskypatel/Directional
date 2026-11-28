@@ -1,3 +1,7 @@
+## 2026-11-28 — TB-REV-193 independent co-trace deletion review
+
+[review](.agents/Directional/Architecture_M6_CP3_TB_REV_193_CoTrace_Deletion_Independent_Review_20261128.md). Accepts TB-EXEC-193's 1013/1013 for the test gate only: manifest `b910f2a9…`, membership 1094, result `15250401219`. Row 1012 confirms the EE3 sphere deletion witness with the option on; the option stays off in production. Obligations 1–3 (27-row census, `arrivalPort` readers, cost) go to the switch DEFN. No new stable event; 67/17/50 unchanged.
+
 ## 2026-11-28 — TB-EXEC-193 claimed co-trace deletion full gate
 
 [report](.agents/Directional/Architecture_M6_CP3_TB193_CoTrace_Deletion_Execution_Report_20261128.md). Run `46110979697` (request `f62bec70…`, mailbox `m6-cp3-tb193-exec`), result `15250401219` ZIP `c771dab6…aa7b`, 2034/2034 checks, 1013/1013 PASS, membership 1094. Rows 1-1010 vs TB192 `15195820651`: 586 identical, 424 N1 (elapsed time), 0 N2/N3/different; row858 N1 only. New rows 1011-1013 PASS; row 1012 is the EE3 sphere deletion witness. Deletion option off in production. TB-REV-193 is next, with no gate credit before it.
