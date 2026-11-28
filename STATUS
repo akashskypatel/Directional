@@ -1,8 +1,8 @@
 ---TURN_STATUS---
-Turn: M6-CP3-CB-220-P13-REGION-CORNER-SIDES
-Status: COMPLETE
-Successor: M6-CP3-TB-EXEC-195
-Started at: 2026-11-28T09:33:44Z
-Resumed at: 2026-11-28T09:57:12Z
-Ended at: 2026-11-28T10:01:40Z
+Turn: M6-CP3-TB-EXEC-195
+Status: IN_PROGRESS
+Successor: M6-CP3-TB-REV-195
+Started at: 2026-11-28T10:20:44Z
+Resumed at: 
+Ended at: 
 ---END_TURN_STATUS---
