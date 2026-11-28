@@ -1,3 +1,7 @@
+## 2026-11-28 — CB-219 co-trace deletion switch (compile only)
+
+[record](.agents/Directional/Architecture_M6_CP3_CB219_P13_CoTrace_Deletion_Switch_Code_Build_Record_20261128.md). Exact frozen diff `636ee790…4db89d` applied as commit `26eef1ce54b7b311cbf1cedf597ee0c106be52c2`. Compile run `46118862242`, candidate `15252943713` ZIP `b12b9ede5678f6d8942559e821c134c602b6ba7446b6a338152573f4cb722f35`, 28/28 manifest checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Default on, frozen control retained. No runtime, gate or production promotion. Next TB-EXEC-194.
+
 ## 2026-11-28 — switch DEFN: claimed co-trace deletion activation (Amendment 35)
 
 [record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_CoTrace_Deletion_Switch_20261128.md), [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB219_TB194_CoTrace_Deletion_Switch_Exact_Manifest.md). Freezes CB-219 (diff `636ee790…4db89d`, +137/−76) to default `deleteClaimedCoTraces` on in every derivation. Censuses: 7 assertion rows and 5 print-only sphere rows change; no src reader indexes by trace id. TB-EXEC-194 reuses the 1013-row manifest with falsifiers in the manifest. Runtime-free; no build or runtime here.

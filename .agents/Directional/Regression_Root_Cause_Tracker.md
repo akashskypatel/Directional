@@ -1,3 +1,4 @@
+- **CB-219 compile-only:** Amendment 35 activation compiled ([record](Architecture_M6_CP3_CB219_P13_CoTrace_Deletion_Switch_Code_Build_Record_20261128.md)); candidate `15252943713`. O51 remains open until TB-REV-194 acceptance. O52/O50 open, B1 held, B2 carried. No new stable event; 67/17/50, debt1/deferred81.
 - **Switch DEFN: Amendment 35 activation frozen as CB-219; falsifiers to TB-EXEC-194; O51 closes only on TB-REV-194 acceptance; no new stable event.**
 - **TB-REV-193: 1013/1013 test gate accepted; O51 deletion witness independently confirmed (option off); obligations 1–3 to the switch DEFN; no new stable event, 67/17/50.**
 - **TB-EXEC-193: O51 deletion witness PASS (row1012) with the option off in production; no new stable event, 67/17/50.**

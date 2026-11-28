@@ -1,4 +1,4 @@
-**Current currency — switch DEFN (2026-11-28 UTC):** [switch DEFN](Architecture_M6_CP3_DEFN_P13_A2a_CoTrace_Deletion_Switch_20261128.md) freezes Amendment 35 activation as CB-219 ([manifest](gates/Architecture_M6_CP3_CB219_TB194_CoTrace_Deletion_Switch_Exact_Manifest.md)). The TB-REV-193 test-gate acceptance ([review](Architecture_M6_CP3_TB_REV_193_CoTrace_Deletion_Independent_Review_20261128.md)) stands. Row 1012 confirms the EE3 sphere deletion witness with the option on; the option stays off in production. The deletion switch DEFN is next. Stable 67/17/50, debt1/deferred81. [AP4 DEFN](Architecture_M6_CP3_DEFN_P13_A2a_Partial_CoTrace_Removal_20261127.md) decides O51's removal rule: A0 deletion, DESIGN Amendment 35, staged off by default because 27 gated rows carry the sphere. The 1013-row TB-EXEC-193 contract is frozen. [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md) (+[adv.](Architecture_M6_CP3_TB_REV_192_Adversarial_Review_20261127.md)) accepted 1010/1010 for the test gate only; CP2 491/491. Sliver regions 2 and 4 are O52. Stable 67/17/50, debt1/deferred81. No production, schedule activation or checkpoint promotion.
+**Current currency — CB-219 (2026-11-28 UTC):** [CB-219 record](Architecture_M6_CP3_CB219_P13_CoTrace_Deletion_Switch_Code_Build_Record_20261128.md) confirms compile-only activation; runtime acceptance pending. [switch DEFN](Architecture_M6_CP3_DEFN_P13_A2a_CoTrace_Deletion_Switch_20261128.md) freezes Amendment 35 activation as CB-219 ([manifest](gates/Architecture_M6_CP3_CB219_TB194_CoTrace_Deletion_Switch_Exact_Manifest.md)). The TB-REV-193 test-gate acceptance ([review](Architecture_M6_CP3_TB_REV_193_CoTrace_Deletion_Independent_Review_20261128.md)) stands. Row 1012 confirmed the EE3 sphere deletion witness with the option on before activation. The default now switches on in CB-219; TB-EXEC-194 is next. Stable 67/17/50, debt1/deferred81. [AP4 DEFN](Architecture_M6_CP3_DEFN_P13_A2a_Partial_CoTrace_Removal_20261127.md) decides O51's removal rule: A0 deletion, DESIGN Amendment 35, staged off by default because 27 gated rows carry the sphere. The 1013-row TB-EXEC-193 contract is frozen. [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md) (+[adv.](Architecture_M6_CP3_TB_REV_192_Adversarial_Review_20261127.md)) accepted 1010/1010 for the test gate only; CP2 491/491. Sliver regions 2 and 4 are O52. Stable 67/17/50, debt1/deferred81. No production, schedule activation or checkpoint promotion.
 
 [Adversarial continuation](Architecture_M6_CP3_TB_REV_191_Adversarial_Review_20261127.md):
 - The 34 incidences are 24 port traces plus 10 singularity arrivals that claim no port.
@@ -11,7 +11,7 @@
 - It froze CB-215 and CB-216, then TB-EXEC-192 (1010 rows).
 - It corrects the adversarial DD2.
 
-Next `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` only after TB-REV-192 formal closeout; runtime-free and STOP for user decision AP4.
+Historical next turn (complete): `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` after TB-REV-192 formal closeout; runtime-free, AP4 decided.
 
 # Directional — Project Orientation
 
@@ -160,10 +160,10 @@ The separation is deliberate: accepted selector continuity and frozen invariants
 
 ## 7. Open problems
 
-**Current priority:** `M6-CP3-CB-219-P13-COTRACE-DELETION-SWITCH` → TB-EXEC-194 → TB-REV-194 → corners DEFN + O52 ([AP4 DEFN](Architecture_M6_CP3_DEFN_P13_A2a_Partial_CoTrace_Removal_20261127.md)).
-- [TB-REV-192 adv.](Architecture_M6_CP3_TB_REV_192_Adversarial_Review_20261127.md): removal is plain deletion on the sphere (A0 recommended); CB-217 classifier hardening, then CB-218 removal, then TB-EXEC-193.
+**Current priority:** TB-EXEC-194 → TB-REV-194 → corners DEFN + O52 ([AP4 DEFN](Architecture_M6_CP3_DEFN_P13_A2a_Partial_CoTrace_Removal_20261127.md)).
+- [TB-REV-192 adv.](Architecture_M6_CP3_TB_REV_192_Adversarial_Review_20261127.md): removal is plain deletion on the sphere (A0 recommended); CB-217 classifier hardening, CB-218 removal and TB-EXEC-193 are complete. CB-219 compiled the activation; runtime verification is next.
 - After an authorized removal rule and separate CB/TB/REV: corners DEFN with O52 (slivers 2/4, near-miss doubled separatrices), a Vase row and A4 unequal-side construction (DD5).
-- The 1010-row test gate is accepted; the schedule is not activated.
+- The 1013-row test gate is accepted for TB193 only. The CB-219 activation still requires TB-EXEC-194 and independent review.
 - B1 stays held. The source-region producers and the veto stay until 65D.
 
 
