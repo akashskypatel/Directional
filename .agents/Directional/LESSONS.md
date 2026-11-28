@@ -364,6 +364,8 @@ This document records **reusable failure-derived engineering lessons**, not an e
 - Before a switch TB, replay the pure helper on the published receipt in both face windings. A real face accepts exactly one winding, and the accepted windings must agree across shared edges (TB-REV-169 adv. W2).
 - A receipt that prints segment-level ends cannot witness a reader that consumes arc-piece ends. Add the finer print only when a RED is ambiguous (TB-REV-169 adv. W3).
 
+- **Before requiring a construction to cover every input, check realizability under the boundary rule: with a regular boundary (corners valence 2, others 3), some even-total four-sided boundaries have no pure-quad filling ((3,1,1,1), (4,1,2,1)). State an explicit domain with a typed refusal, and test the domain predicate both ways** (unequal-side DEFN, 2026-11-28).
+
 ## Diagnostics, classifiers, and causal investigation
 
 - **Read the printer before its label; one decomposition before per-class rules (TB-REV-165 adversarial).**

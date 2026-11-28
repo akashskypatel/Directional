@@ -902,6 +902,8 @@ TB-REV-193 (2026-11-28): accepted for the test gate only; no selector or gate by
 
 CB-220 / TB-EXEC-195 (2026-11-28): the 1015-row gate manifest `gates/Architecture_M6_CP3_CB220_TB195_Region_Corner_Sides_Full_Gate_Case_Manifest.tsv` (SHA-256 `34a4e86406f043739c56eec6bc104615bee05fc08960be2dc6ae4a303b43b821`) appends two GUARD rows (1014, 1015) to the 1013-row manifest.
 
+CB-221 / TB-EXEC-196 (2026-11-28): the 1019-row gate manifest `gates/Architecture_M6_CP3_CB221_TB196_Four_Sided_Disc_Full_Gate_Case_Manifest.tsv` (SHA-256 `6c8be9c29548a346d97bcd2fb82f1b30cdc6c72f18e4da1806c02865cb29833b`) appends four GUARD rows (1016–1019) to the 1015-row manifest.
+
 No selector file changed; CP2 491 is unchanged.
 
 [TB-REV-192](Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md) independently accepts the 1010-row test gate only; 1000 GUARD + 10 POSITIVE, 81 deferred, membership 1091. CP2 491 and TB191 prefix 1008 are byte-identical. No selector bytes changed; no production or checkpoint promotion.

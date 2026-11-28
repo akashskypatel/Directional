@@ -10,6 +10,10 @@
 
 [record](.agents/Directional/Architecture_M6_CP3_CB220_P13_Region_Corner_Sides_Code_Build_Record_20261128.md). Exact diff `35a164a8…41fa` (+434/−0), source `e55f01b9ac86e2dc0159771a45521cb6f35049be`, compile run `46131427922`, candidate `15257943465` ZIP `eb7e5ea11cb129c9d0ff33931967cf9bcf7227a831ff9af59014f44f9faa4f71`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Corner derivation is not wired. No runtime, gate or production promotion. Next M6-CP3-TB-EXEC-195.
 
+## 2026-11-28 — unequal-side DEFN: four-sided disc quadrangulation (CB-221 frozen)
+
+[record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A4_Unequal_Side_Construction_20261128.md), [manifest](.agents/Directional/gates/Architecture_M6_CP3_CB221_TB196_Four_Sided_Disc_Exact_Manifest.md). Freezes CB-221 (diff `2da0eb50…5cd`, +644/−0, compile only, not wired): grid and pentagon–triangle constructions on the stated domain. A regular boundary rule makes some even-total boundaries unfillable ((3,1,1,1), (4,1,2,1)). TB-EXEC-196 gate: 1019-row manifest `6c8be9c2…833` (rows 1016–1019 are GUARD rows). Next: TB-EXEC-196 after CB-221.
+
 ## 2026-11-28 — TB-REV-195 adversarial review (GG1–GG4)
 
 [adversarial review](.agents/Directional/Architecture_M6_CP3_TB_REV_195_Adversarial_Review_20261128.md). Upholds the 1015/1015 test gate and CR1–CR4. Splits DD5 along DESIGN §4.9 into combinatorial construction, injective embedding and sphere wiring; census: no existing component fills an unequal four-corner disc with interior vertices, and no Tutte embedding exists. Corner rule covers trace arcs only; rails/cuts need a typed extension before Vase. Next: the combinatorial DEFN (CB-221 frozen there). No code or runtime.

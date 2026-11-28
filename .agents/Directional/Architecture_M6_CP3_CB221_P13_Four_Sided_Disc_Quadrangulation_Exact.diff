@@ -1,0 +1,684 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ae573f5f8..1fc6a6b67 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -200,6 +200,7 @@ add_library(
+   src/geometry/PatchDescriptor.cpp
+   src/geometry/PolyToConstantSubdivision.cpp
+   src/geometry/PureQuadCompletion.cpp
++  src/geometry/FourSidedDiscQuadrangulation.cpp
+   src/geometry/RegularizedProxyMesh.cpp
+   src/geometry/ReliefTopology.cpp
+   src/geometry/Streamlines.cpp
+diff --git a/cmake/DirectionalTests.cmake b/cmake/DirectionalTests.cmake
+index cdf060880..16320355c 100644
+--- a/cmake/DirectionalTests.cmake
++++ b/cmake/DirectionalTests.cmake
+@@ -512,6 +512,7 @@ directional_configure_test_target(directional_surface_cell_authority_kernel_test
+ add_executable(
+   directional_surface_cell_completion_tests
+   tests/FlowRepStrandsPhase15Tests.cpp
++  tests/FourSidedDiscQuadrangulationTests.cpp
+   tests/PatchDescriptorMilestoneETests.cpp
+   tests/PureQuadCompletionPhase18Tests.cpp
+   tests/SurfaceArrangementRowIdentityTests.cpp
+diff --git a/include/directional/geometry/FourSidedDiscQuadrangulation.h b/include/directional/geometry/FourSidedDiscQuadrangulation.h
+new file mode 100644
+index 000000000..fd4d5e201
+--- /dev/null
++++ b/include/directional/geometry/FourSidedDiscQuadrangulation.h
+@@ -0,0 +1,87 @@
++// This file is part of Directional, a library for directional field processing.
++//
++// This Source Code Form is subject to the terms of the Mozilla Public License
++// v. 2.0. If a copy of the MPL was not distributed with this file, You can
++// obtain one at http://mozilla.org/MPL/2.0/.
++
++#pragma once
++
++#ifndef DIRECTIONAL_GEOMETRY_FOUR_SIDED_DISC_QUADRANGULATION_H
++#define DIRECTIONAL_GEOMETRY_FOUR_SIDED_DISC_QUADRANGULATION_H
++
++#include <array>
++#include <compare>
++#include <cstddef>
++#include <cstdint>
++#include <variant>
++#include <vector>
++
++namespace directional::geometry {
++
++/** Why a four-corner disc could not be quadrangulated. */
++enum class FourSidedDiscQuadrangulationFailure : std::uint8_t {
++  /** The side counts add up to an odd number of boundary edges. */
++  OddBoundary = 0,
++  /** A side has no edge. */
++  NonPositiveSide = 1,
++  /** A side exceeds kFourSidedDiscMaxSideCount. */
++  SideBeyondSizeBound = 2,
++  /** The side counts lie outside the domain of the construction family
++   *  (see quadrangulate_four_sided_disc). */
++  OutsideConstructionDomain = 3,
++};
++
++[[nodiscard]] const char *four_sided_disc_quadrangulation_failure_name(
++    FourSidedDiscQuadrangulationFailure failure) noexcept;
++
++/** Largest side count accepted, so every vertex count fits in std::size_t. */
++inline constexpr std::size_t kFourSidedDiscMaxSideCount = std::size_t{1} << 16U;
++
++/** An interior vertex whose valence is not 4. */
++struct FourSidedDiscIrregularVertex {
++  std::size_t vertex = 0U;
++  int valence = 0;
++
++  auto operator<=>(const FourSidedDiscIrregularVertex &) const = default;
++};
++
++/**
++ * A combinatorial pure-quad disc. Vertices are 0 .. vertexCount - 1. The
++ * boundary cycle starts at the corner where side 0 begins and runs in walk
++ * order; side k is boundary[sideStarts[k]] .. boundary[sideStarts[k+1]]
++ * (cyclically), so sideStarts[k] is the sum of the earlier side counts. Every
++ * quad lists its vertices in the boundary's orientation: each boundary edge
++ * (boundary[i], boundary[i + 1]) appears in its quad in that direction.
++ * Corners have valence 2, every other boundary vertex valence 3, and interior
++ * vertices valence 4 except irregularVertices (valence 3 or 5, sorted by id).
++ */
++struct FourSidedDiscQuadrangulation {
++  std::size_t vertexCount = 0U;
++  std::vector<std::array<std::size_t, 4>> quads;
++  std::vector<std::size_t> boundary;
++  std::array<std::size_t, 4> sideStarts{};
++  std::vector<FourSidedDiscIrregularVertex> irregularVertices;
++
++  auto operator<=>(const FourSidedDiscQuadrangulation &) const = default;
++};
++
++using FourSidedDiscQuadrangulationResult =
++    std::variant<FourSidedDiscQuadrangulation, FourSidedDiscQuadrangulationFailure>;
++
++/**
++ * Quadrangulates the four-corner disc whose sides, in walk order, have
++ * sideCounts[0..3] edges, with a regular boundary and the fewest interior
++ * irregular vertices the family needs. Deterministic; no geometry.
++ *
++ * Domain: an even total and either equal opposite sides (the grid, no
++ * irregular vertex) or a rotation (A, B, C, D) of the side counts with
++ *   A >= 2, B >= 2, C + D >= A + B + 4 and A + B >= |C - D| + 4
++ * (one valence-3 and one valence-5 vertex). The family's derivation is in
++ * FourSidedDiscQuadrangulation.cpp.
++ */
++[[nodiscard]] FourSidedDiscQuadrangulationResult
++quadrangulate_four_sided_disc(const std::array<std::size_t, 4> &sideCounts);
++
++} // namespace directional::geometry
++
++#endif
+diff --git a/src/geometry/FourSidedDiscQuadrangulation.cpp b/src/geometry/FourSidedDiscQuadrangulation.cpp
+new file mode 100644
+index 000000000..333df5d2b
+--- /dev/null
++++ b/src/geometry/FourSidedDiscQuadrangulation.cpp
+@@ -0,0 +1,279 @@
++#include <directional/geometry/FourSidedDiscQuadrangulation.h>
++
++#include <algorithm>
++#include <optional>
++
++// Construction family and its bound.
++//
++// Counting. Let a quad disc have corners of valence 2 and every other boundary
++// vertex of valence 3. With V - E + F = 1 and 4F = 2E - |boundary|, the sum
++// over interior vertices of (4 - valence) is 0. So with valences 3 and 5 only,
++// #valence-3 = #valence-5, and a disc with no interior irregular vertex is a
++// flat quad grid with four convex corners: the w x h grid, which needs equal
++// opposite sides. Hence any filling with unequal opposite sides has at least
++// two interior irregular vertices.
++//
++// Grid class. a = c and b = d: the a x b grid, no irregular vertex.
++//
++// Pentagon-triangle class. Glue rectangular grid blocks edge to edge. At a
++// vertex, each block it is a corner of contributes one quarter turn and each
++// block side it lies inside contributes two; the valence equals the number of
++// quarter turns, plus one on the boundary. Five blocks around one hub (hub5)
++// with spokes g1..g5 form a pentagon whose side i is g(i-1) + g(i+1); three
++// blocks around hub3 with spokes hg, hu, hv form a triangle with sides hu + hv
++// (glued), hg + hv (U) and hu + hg (V). Gluing the triangle's first side onto
++// pentagon side 5 (needs g4 + g1 = hu + hv) flattens both ends of the glued
++// side, leaving four corners. Every vertex then has two quarter turns on the
++// boundary (valence 3) or four inside (valence 4), except the four corners
++// (one quarter turn, valence 2), hub3 (valence 3) and hub5 (valence 5). In
++// walk order from pentagon corner X2 the sides are
++//   A = g1 + g3,  B = g2 + g4,  C = g3 + g5 + hg + hv,  D = hu + hg + g5 + g2.
++// With g1 = x, g3 = A - x, g4 = y and g2 = B - y, the side and gluing
++// equations give g5 + hg = (C + D - A - B) / 2, hv = x + (B - A + C - D) / 2
++// and hu = y + (A - B + D - C) / 2; the halvings are exact because the total
++// is even. hv grows with x, hu with y, and g5 and hg share a fixed sum, so
++// x = A - 1, y = B - 1 and g5 = 1 are optimal: g2 = g3 = g5 = 1,
++// hg = (C + D - A - B) / 2 - 1, hv = (A + B - 2 + C - D) / 2 and
++// hu = (A + B - 2 - C + D) / 2. All parameters are positive exactly when
++//   A >= 2, B >= 2, C + D >= A + B + 4 and A + B >= |C - D| + 4,
++// so these inequalities are this layout's exact domain. Rotations are tried
++// in order 0..3 and the first that fits is used; a reflection adds nothing,
++// since it swaps A with B and C with D, which leaves the inequalities as
++// they are.
++//
++// Theorem. Every even-total input with equal opposite sides is filled with no
++// irregular vertex, and every even-total input with a rotation satisfying the
++// inequalities above with exactly one valence-3 and one valence-5 vertex,
++// which is the minimum for unequal opposite sides. The family is uniform in
++// the parity class of the opposite differences: (a - c, b - d) both odd, as
++// (30, 35, 35, 32) through the rotation (32, 30, 35, 35), and both even and not
++// both zero, as (31, 35, 35, 31) through (31, 31, 35, 35). Over rotations,
++// C + D - A - B takes the values +-(a - c) +- (b - d), so the class needs
++// |a - c| + |b - d| >= 4. Inputs outside the domain are reported, not
++// repaired. Some are not fillable at all under this boundary rule: two
++// adjacent one-edge sides force all four sides to one edge, and b = d = 1
++// forces a = c.
++
++namespace directional::geometry {
++namespace {
++
++using Chain = std::vector<std::size_t>;
++
++Chain reversed(Chain chain) {
++  std::reverse(chain.begin(), chain.end());
++  return chain;
++}
++
++// chain[first] .. chain[last], inclusive.
++Chain slice(const Chain &chain, const std::size_t first, const std::size_t last) {
++  return Chain(chain.begin() + static_cast<std::ptrdiff_t>(first),
++               chain.begin() + static_cast<std::ptrdiff_t>(last) + 1);
++}
++
++// `first` followed by `second`, which starts where `first` ends.
++Chain joined(Chain first, const Chain &second) {
++  first.insert(first.end(), second.begin() + 1, second.end());
++  return first;
++}
++
++class QuadDiscBuilder {
++public:
++  std::size_t vertex() { return vertexCount_++; }
++
++  // `length` edges from `from` to `to`, with new vertices between them.
++  Chain path(const std::size_t from, const std::size_t to,
++             const std::size_t length) {
++    Chain chain{from};
++    for (std::size_t step = 1U; step < length; ++step) chain.push_back(vertex());
++    chain.push_back(to);
++    return chain;
++  }
++
++  // A w x h grid block bounded, in walk order, by bottom (w edges), right
++  // (h), top (w) and left (h); each chain starts where the previous one ends.
++  void block(const Chain &bottom, const Chain &right, const Chain &top,
++             const Chain &left) {
++    const std::size_t w = bottom.size() - 1U;
++    const std::size_t h = right.size() - 1U;
++    std::vector<std::size_t> grid((w + 1U) * (h + 1U), 0U);
++    const auto at = [&](const std::size_t i, const std::size_t j)
++        -> std::size_t & { return grid[i * (h + 1U) + j]; };
++    for (std::size_t j = 0U; j <= h; ++j) {
++      for (std::size_t i = 0U; i <= w; ++i) {
++        if (j == 0U) {
++          at(i, j) = bottom[i];
++        } else if (i == w) {
++          at(i, j) = right[j];
++        } else if (j == h) {
++          at(i, j) = top[w - i];
++        } else if (i == 0U) {
++          at(i, j) = left[h - j];
++        } else {
++          at(i, j) = vertex();
++        }
++      }
++    }
++    for (std::size_t j = 0U; j < h; ++j) {
++      for (std::size_t i = 0U; i < w; ++i) {
++        quads_.push_back({at(i, j), at(i + 1U, j), at(i + 1U, j + 1U),
++                          at(i, j + 1U)});
++      }
++    }
++  }
++
++  // sides[k] runs from the corner before side k to the corner after it.
++  FourSidedDiscQuadrangulation finish(
++      const std::array<Chain, 4> &sides,
++      std::vector<FourSidedDiscIrregularVertex> irregular) {
++    FourSidedDiscQuadrangulation result;
++    for (std::size_t side = 0U; side < 4U; ++side) {
++      result.sideStarts[side] = result.boundary.size();
++      result.boundary.insert(result.boundary.end(), sides[side].begin(),
++                             sides[side].end() - 1);
++    }
++    std::sort(irregular.begin(), irregular.end());
++    result.vertexCount = vertexCount_;
++    result.quads = std::move(quads_);
++    result.irregularVertices = std::move(irregular);
++    return result;
++  }
++
++private:
++  std::size_t vertexCount_ = 0U;
++  std::vector<std::array<std::size_t, 4>> quads_;
++};
++
++bool pentagon_triangle_fits(const std::size_t a, const std::size_t b,
++                            const std::size_t c, const std::size_t d) {
++  const std::size_t sideDifference = c > d ? c - d : d - c;
++  return a >= 2U && b >= 2U && c + d >= a + b + 4U &&
++         a + b >= sideDifference + 4U;
++}
++
++FourSidedDiscQuadrangulation grid(const std::array<std::size_t, 4> &counts) {
++  QuadDiscBuilder builder;
++  std::array<std::size_t, 4> corner{};
++  for (auto &value : corner) value = builder.vertex();
++  std::array<Chain, 4> sides;
++  for (std::size_t side = 0U; side < 4U; ++side) {
++    sides[side] =
++        builder.path(corner[side], corner[(side + 1U) % 4U], counts[side]);
++  }
++  builder.block(sides[0], sides[1], sides[2], sides[3]);
++  return builder.finish(sides, {});
++}
++
++// Sides (A, B, C, D) are counts[rotation], counts[rotation + 1], ...
++FourSidedDiscQuadrangulation pentagon_triangle(
++    const std::array<std::size_t, 4> &counts, const std::size_t rotation) {
++  const std::size_t a = counts[rotation];
++  const std::size_t b = counts[(rotation + 1U) % 4U];
++  const std::size_t c = counts[(rotation + 2U) % 4U];
++  const std::size_t d = counts[(rotation + 3U) % 4U];
++  // Spoke lengths, index 1..5 around hub5 (index 0 unused).
++  const std::array<std::size_t, 6> g{0U, a - 1U, 1U, 1U, b - 1U, 1U};
++  const std::size_t gluedLength = g[1] + g[4];
++  const std::size_t hg = (c + d - a - b) / 2U - 1U;
++  const std::size_t hv = (a + b + c - 2U - d) / 2U;
++  const std::size_t hu = (a + b + d - 2U - c) / 2U;
++  const auto previous = [](const std::size_t i) { return i == 1U ? 5U : i - 1U; };
++  const auto next = [](const std::size_t i) { return i == 5U ? 1U : i + 1U; };
++
++  QuadDiscBuilder builder;
++  std::array<std::size_t, 6> corner{};  // pentagon corners X1..X5
++  for (std::size_t i = 1U; i <= 5U; ++i) corner[i] = builder.vertex();
++  const std::size_t freeCorner = builder.vertex();  // the triangle's corner
++  const std::size_t hub5 = builder.vertex();
++  const std::size_t hub3 = builder.vertex();
++  std::array<std::size_t, 6> spokeEnd{};
++  for (std::size_t i = 1U; i <= 4U; ++i) spokeEnd[i] = builder.vertex();
++  const std::size_t onU = builder.vertex();
++  const std::size_t onV = builder.vertex();
++  // Pentagon side 5 from X1 to X5, shared with the triangle.
++  const Chain glued = builder.path(corner[1], corner[5], gluedLength);
++  spokeEnd[5] = glued[g[1]];
++  const std::size_t onGlued = glued[hv];
++
++  std::array<Chain, 6> spoke;
++  for (std::size_t i = 1U; i <= 5U; ++i) {
++    spoke[i] = builder.path(hub5, spokeEnd[i], g[i]);
++  }
++  // Pentagon side i: X(i) -> spokeEnd(i) -> X(i + 1).
++  std::array<Chain, 6> toSpokeEnd;
++  std::array<Chain, 6> fromSpokeEnd;
++  for (std::size_t i = 1U; i <= 4U; ++i) {
++    toSpokeEnd[i] = builder.path(corner[i], spokeEnd[i], g[previous(i)]);
++    fromSpokeEnd[i] = builder.path(spokeEnd[i], corner[next(i)], g[next(i)]);
++  }
++  toSpokeEnd[5] = reversed(slice(glued, g[1], gluedLength));
++  fromSpokeEnd[5] = reversed(slice(glued, 0U, g[1]));
++  for (std::size_t i = 1U; i <= 5U; ++i) {
++    builder.block(spoke[i], fromSpokeEnd[i], toSpokeEnd[next(i)],
++                  reversed(spoke[next(i)]));
++  }
++
++  const Chain spokeG = builder.path(hub3, onGlued, hg);
++  const Chain spokeU = builder.path(hub3, onU, hu);
++  const Chain spokeV = builder.path(hub3, onV, hv);
++  const Chain uFirst = builder.path(corner[5], onU, hg);
++  const Chain uSecond = builder.path(onU, freeCorner, hv);
++  const Chain vFirst = builder.path(freeCorner, onV, hu);
++  const Chain vSecond = builder.path(onV, corner[1], hg);
++  builder.block(spokeG, slice(glued, hv, gluedLength), uFirst, reversed(spokeU));
++  builder.block(spokeU, uSecond, vFirst, reversed(spokeV));
++  builder.block(spokeV, vSecond, slice(glued, 0U, hv), reversed(spokeG));
++
++  const std::array<Chain, 4> canonical{
++      joined(toSpokeEnd[2], fromSpokeEnd[2]),
++      joined(toSpokeEnd[3], fromSpokeEnd[3]),
++      joined(joined(joined(toSpokeEnd[4], fromSpokeEnd[4]), uFirst), uSecond),
++      joined(joined(joined(vFirst, vSecond), toSpokeEnd[1]), fromSpokeEnd[1])};
++  std::array<Chain, 4> sides;
++  for (std::size_t side = 0U; side < 4U; ++side) {
++    sides[side] = canonical[(side + 4U - rotation) % 4U];
++  }
++  return builder.finish(sides, {{hub5, 5}, {hub3, 3}});
++}
++
++} // namespace
++
++const char *four_sided_disc_quadrangulation_failure_name(
++    const FourSidedDiscQuadrangulationFailure failure) noexcept {
++  switch (failure) {
++  case FourSidedDiscQuadrangulationFailure::OddBoundary:
++    return "odd-boundary";
++  case FourSidedDiscQuadrangulationFailure::NonPositiveSide:
++    return "non-positive-side";
++  case FourSidedDiscQuadrangulationFailure::SideBeyondSizeBound:
++    return "side-beyond-size-bound";
++  case FourSidedDiscQuadrangulationFailure::OutsideConstructionDomain:
++    return "outside-construction-domain";
++  }
++  return "unknown";
++}
++
++FourSidedDiscQuadrangulationResult
++quadrangulate_four_sided_disc(const std::array<std::size_t, 4> &sideCounts) {
++  using Failure = FourSidedDiscQuadrangulationFailure;
++  std::size_t total = 0U;
++  for (const std::size_t count : sideCounts) {
++    if (count == 0U) return Failure::NonPositiveSide;
++    if (count > kFourSidedDiscMaxSideCount) return Failure::SideBeyondSizeBound;
++    total += count;
++  }
++  if (total % 2U != 0U) return Failure::OddBoundary;
++  if (sideCounts[0] == sideCounts[2] && sideCounts[1] == sideCounts[3]) {
++    return grid(sideCounts);
++  }
++  for (std::size_t rotation = 0U; rotation < 4U; ++rotation) {
++    if (pentagon_triangle_fits(sideCounts[rotation],
++                               sideCounts[(rotation + 1U) % 4U],
++                               sideCounts[(rotation + 2U) % 4U],
++                               sideCounts[(rotation + 3U) % 4U])) {
++      return pentagon_triangle(sideCounts, rotation);
++    }
++  }
++  return Failure::OutsideConstructionDomain;
++}
++
++} // namespace directional::geometry
+diff --git a/tests/FourSidedDiscQuadrangulationTests.cpp b/tests/FourSidedDiscQuadrangulationTests.cpp
+new file mode 100644
+index 000000000..a875e70fb
+--- /dev/null
++++ b/tests/FourSidedDiscQuadrangulationTests.cpp
+@@ -0,0 +1,276 @@
++#include <directional/geometry/FourSidedDiscQuadrangulation.h>
++
++#include <gtest/gtest.h>
++
++#include <algorithm>
++#include <array>
++#include <cstddef>
++#include <deque>
++#include <map>
++#include <optional>
++#include <set>
++#include <string>
++#include <utility>
++#include <variant>
++#include <vector>
++
++namespace {
++
++using directional::geometry::FourSidedDiscQuadrangulation;
++using directional::geometry::FourSidedDiscQuadrangulationFailure;
++using directional::geometry::quadrangulate_four_sided_disc;
++using Sides = std::array<std::size_t, 4>;
++
++std::string sides_text(const Sides &sides) {
++  return "(" + std::to_string(sides[0]) + "," + std::to_string(sides[1]) + "," +
++         std::to_string(sides[2]) + "," + std::to_string(sides[3]) + ")";
++}
++
++// Independent structural check: the first defect found, or none.
++std::optional<std::string> structural_defect(const FourSidedDiscQuadrangulation &disc,
++                                             const Sides &sides) {
++  const std::size_t vertexCount = disc.vertexCount;
++  std::size_t total = 0U;
++  for (const std::size_t count : sides) total += count;
++  if (disc.boundary.size() != total) return "boundary length";
++  std::size_t offset = 0U;
++  for (std::size_t side = 0U; side < 4U; ++side) {
++    if (disc.sideStarts[side] != offset) return "side start";
++    offset += sides[side];
++  }
++
++  std::map<std::pair<std::size_t, std::size_t>, std::size_t> directed;
++  std::vector<std::set<std::size_t>> neighbours(vertexCount);
++  std::vector<bool> used(vertexCount, false);
++  for (const auto &quad : disc.quads) {
++    if (std::set<std::size_t>(quad.begin(), quad.end()).size() != 4U) {
++      return "quad repeats a vertex";
++    }
++    for (std::size_t k = 0U; k < 4U; ++k) {
++      const std::size_t from = quad[k];
++      const std::size_t to = quad[(k + 1U) % 4U];
++      if (from >= vertexCount || to >= vertexCount) return "vertex out of range";
++      if (++directed[{from, to}] > 1U) return "directed edge in two quads";
++      neighbours[from].insert(to);
++      neighbours[to].insert(from);
++      used[from] = true;
++    }
++  }
++  if (std::find(used.begin(), used.end(), false) != used.end()) {
++    return "vertex in no quad";
++  }
++
++  std::set<std::pair<std::size_t, std::size_t>> undirected;
++  std::set<std::pair<std::size_t, std::size_t>> unpaired;
++  for (const auto &[edge, count] : directed) {
++    (void)count;
++    undirected.insert(std::minmax(edge.first, edge.second));
++    if (directed.count({edge.second, edge.first}) == 0U) unpaired.insert(edge);
++  }
++  const std::set<std::size_t> onBoundary(disc.boundary.begin(), disc.boundary.end());
++  if (onBoundary.size() != total) return "boundary repeats a vertex";
++  std::set<std::pair<std::size_t, std::size_t>> cycle;
++  for (std::size_t index = 0U; index < total; ++index) {
++    cycle.insert({disc.boundary[index], disc.boundary[(index + 1U) % total]});
++  }
++  if (cycle != unpaired) return "boundary is not the one-quad edges";
++  if (static_cast<long long>(vertexCount) -
++          static_cast<long long>(undirected.size()) +
++          static_cast<long long>(disc.quads.size()) != 1LL) {
++    return "Euler characteristic";
++  }
++
++  // Manifold: the quads around each vertex form one fan, closed inside and
++  // open on the boundary.
++  std::vector<std::map<std::size_t, std::vector<std::size_t>>> link(vertexCount);
++  for (const auto &quad : disc.quads) {
++    for (std::size_t k = 0U; k < 4U; ++k) {
++      const std::size_t center = quad[k];
++      const std::size_t before = quad[(k + 3U) % 4U];
++      const std::size_t after = quad[(k + 1U) % 4U];
++      link[center][before].push_back(after);
++      link[center][after].push_back(before);
++    }
++  }
++  for (std::size_t center = 0U; center < vertexCount; ++center) {
++    std::size_t ends = 0U;
++    for (const auto &[node, adjacent] : link[center]) {
++      (void)node;
++      if (adjacent.size() > 2U) return "non-manifold fan";
++      if (adjacent.size() == 1U) ++ends;
++    }
++    if (ends != (onBoundary.count(center) != 0U ? 2U : 0U)) return "fan not closed";
++    std::set<std::size_t> reached{link[center].begin()->first};
++    std::deque<std::size_t> pending{link[center].begin()->first};
++    while (!pending.empty()) {
++      const std::size_t node = pending.front();
++      pending.pop_front();
++      for (const std::size_t other : link[center][node]) {
++        if (reached.insert(other).second) pending.push_back(other);
++      }
++    }
++    if (reached.size() != link[center].size()) return "fan split";
++  }
++
++  std::vector<bool> reached(vertexCount, false);
++  std::deque<std::size_t> pending{0U};
++  reached[0] = true;
++  std::size_t reachedCount = 1U;
++  while (!pending.empty()) {
++    const std::size_t vertex = pending.front();
++    pending.pop_front();
++    for (const std::size_t other : neighbours[vertex]) {
++      if (!reached[other]) {
++        reached[other] = true;
++        ++reachedCount;
++        pending.push_back(other);
++      }
++    }
++  }
++  if (reachedCount != vertexCount) return "disconnected";
++
++  std::set<std::size_t> corners;
++  for (const std::size_t start : disc.sideStarts) corners.insert(disc.boundary[start]);
++  std::vector<directional::geometry::FourSidedDiscIrregularVertex> irregular;
++  std::size_t valenceThree = 0U;
++  std::size_t valenceFive = 0U;
++  for (std::size_t vertex = 0U; vertex < vertexCount; ++vertex) {
++    const std::size_t valence = neighbours[vertex].size();
++    if (corners.count(vertex) != 0U) {
++      if (valence != 2U) return "corner valence";
++    } else if (onBoundary.count(vertex) != 0U) {
++      if (valence != 3U) return "boundary valence";
++    } else if (valence != 4U) {
++      if (valence != 3U && valence != 5U) return "interior valence";
++      (valence == 3U ? valenceThree : valenceFive) += 1U;
++      irregular.push_back({vertex, static_cast<int>(valence)});
++    }
++  }
++  if (irregular != disc.irregularVertices) return "reported irregular vertices";
++  if (valenceThree != valenceFive) return "valence-3 and valence-5 counts differ";
++  const bool equalOpposite = sides[0] == sides[2] && sides[1] == sides[3];
++  if (irregular.size() != (equalOpposite ? 0U : 2U)) return "irregular vertex count";
++  return std::nullopt;
++}
++
++std::optional<FourSidedDiscQuadrangulationFailure> failure_of(
++    const directional::geometry::FourSidedDiscQuadrangulationResult &result) {
++  const auto *failure = std::get_if<FourSidedDiscQuadrangulationFailure>(&result);
++  return failure != nullptr ? std::optional{*failure} : std::nullopt;
++}
++
++void expect_filled(const Sides &sides, const std::size_t irregularVertices) {
++  SCOPED_TRACE(sides_text(sides));
++  const auto result = quadrangulate_four_sided_disc(sides);
++  const auto *disc = std::get_if<FourSidedDiscQuadrangulation>(&result);
++  ASSERT_NE(nullptr, disc);
++  const auto defect = structural_defect(*disc, sides);
++  EXPECT_FALSE(defect.has_value()) << defect.value_or("");
++  EXPECT_EQ(irregularVertices, disc->irregularVertices.size());
++  EXPECT_TRUE(result == quadrangulate_four_sided_disc(sides));
++}
++
++} // namespace
++
++// Every input with sides 1..10 is filled with a valid disc, reported outside
++// the construction domain, or (odd total) reported odd, so the domain
++// predicate is exercised both ways over the whole box. 2300 of the 5000
++// even-total inputs are in the domain: 100 grids and 2200 pentagon-triangle
++// discs.
++TEST(FourSidedDiscQuadrangulation, ExhaustiveBoxFillsTheConstructionDomainAndRejectsTheRest) {
++  constexpr std::size_t kMaxSide = 10U;
++  std::size_t evenInputs = 0U;
++  std::size_t grids = 0U;
++  std::size_t filled = 0U;
++  std::size_t defects = 0U;
++  for (std::size_t a = 1U; a <= kMaxSide; ++a) {
++    for (std::size_t b = 1U; b <= kMaxSide; ++b) {
++      for (std::size_t c = 1U; c <= kMaxSide; ++c) {
++        for (std::size_t d = 1U; d <= kMaxSide; ++d) {
++          const Sides sides{a, b, c, d};
++          const auto result = quadrangulate_four_sided_disc(sides);
++          if ((a + b + c + d) % 2U != 0U) {
++            EXPECT_EQ(std::optional{FourSidedDiscQuadrangulationFailure::OddBoundary},
++                      failure_of(result))
++                << sides_text(sides);
++            continue;
++          }
++          ++evenInputs;
++          const auto *disc = std::get_if<FourSidedDiscQuadrangulation>(&result);
++          if (disc == nullptr) {
++            EXPECT_EQ(std::optional{
++                          FourSidedDiscQuadrangulationFailure::OutsideConstructionDomain},
++                      failure_of(result))
++                << sides_text(sides);
++            continue;
++          }
++          ++filled;
++          if (a == c && b == d) ++grids;
++          const auto defect = structural_defect(*disc, sides);
++          if (defect.has_value() && ++defects <= 10U) {
++            ADD_FAILURE() << sides_text(sides) << ": " << *defect;
++          }
++        }
++      }
++    }
++  }
++  EXPECT_EQ(0U, defects);
++  EXPECT_EQ(5000U, evenInputs);
++  EXPECT_EQ(100U, grids);
++  EXPECT_EQ(2300U, filled);
++}
++
++// The prescribed sphere's region schedules, in every rotation and reflection:
++// odd/odd opposite differences (30, 35, 35, 32), even/even (31, 35, 35, 31) and
++// the equal-sided strip (1, 32, 1, 32).
++TEST(FourSidedDiscQuadrangulation, SphereRegionSchedulesAreFilledInEverySymmetry) {
++  const std::array<std::pair<Sides, std::size_t>, 3> schedules{{
++      {{30U, 35U, 35U, 32U}, 2U},
++      {{31U, 35U, 35U, 31U}, 2U},
++      {{1U, 32U, 1U, 32U}, 0U}}};
++  for (const auto &[sides, irregularVertices] : schedules) {
++    const Sides mirrored{sides[3], sides[2], sides[1], sides[0]};
++    for (const Sides &base : {sides, mirrored}) {
++      for (std::size_t rotation = 0U; rotation < 4U; ++rotation) {
++        expect_filled({base[rotation], base[(rotation + 1U) % 4U],
++                       base[(rotation + 2U) % 4U], base[(rotation + 3U) % 4U]},
++                      irregularVertices);
++      }
++    }
++  }
++}
++
++// (3, 1, 1, 1) and (2, 2, 1, 1) have two adjacent one-edge sides, which force
++// all four sides to one edge; (4, 1, 2, 1) has b = d = 1, which forces a = c.
++// Neither is fillable with corners of valence 2 and every other boundary
++// vertex of valence 3, so the construction must reject them.
++TEST(FourSidedDiscQuadrangulation, RejectsUnfillableAndInvalidBoundaries) {
++  using Failure = FourSidedDiscQuadrangulationFailure;
++  for (const Sides &sides : {Sides{3U, 1U, 1U, 1U}, Sides{2U, 2U, 1U, 1U},
++                             Sides{4U, 1U, 2U, 1U}}) {
++    EXPECT_EQ(std::optional{Failure::OutsideConstructionDomain},
++              failure_of(quadrangulate_four_sided_disc(sides)))
++        << sides_text(sides);
++  }
++  EXPECT_EQ(std::optional{Failure::OddBoundary},
++            failure_of(quadrangulate_four_sided_disc({1U, 1U, 1U, 2U})));
++  EXPECT_EQ(std::optional{Failure::NonPositiveSide},
++            failure_of(quadrangulate_four_sided_disc({0U, 2U, 2U, 2U})));
++  constexpr std::size_t tooLong =
++      directional::geometry::kFourSidedDiscMaxSideCount + 1U;
++  EXPECT_EQ(std::optional{Failure::SideBeyondSizeBound},
++            failure_of(quadrangulate_four_sided_disc({tooLong, 1U, tooLong, 1U})));
++  EXPECT_STREQ("outside-construction-domain",
++               directional::geometry::four_sided_disc_quadrangulation_failure_name(
++                   Failure::OutsideConstructionDomain));
++}
++
++TEST(FourSidedDiscQuadrangulation, RepeatedCallsGiveIdenticalDiscs) {
++  for (const Sides &sides : {Sides{30U, 35U, 35U, 32U}, Sides{31U, 35U, 35U, 31U},
++                             Sides{1U, 32U, 1U, 32U}, Sides{2U, 3U, 6U, 5U}}) {
++    const auto first = quadrangulate_four_sided_disc(sides);
++    ASSERT_TRUE(std::holds_alternative<FourSidedDiscQuadrangulation>(first))
++        << sides_text(sides);
++    EXPECT_TRUE(first == quadrangulate_four_sided_disc(sides)) << sides_text(sides);
++  }
++}
