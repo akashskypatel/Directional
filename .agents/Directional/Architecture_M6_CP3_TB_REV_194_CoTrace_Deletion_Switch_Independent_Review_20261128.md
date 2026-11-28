@@ -38,7 +38,7 @@ Actual multisets: four copies of {30,32,35,35}, two of {1,1,30,30,35,35}, two of
 
 ## Recommendation — next turn only
 
-`M6-CP3-DEFN-P13-A4-DISC-CORNERS`: [bounded entry plan](Architecture_M6_CP3_DEFN_P13_A4_Disc_Corners_Review_Entry_20261128.md). It must resolve exact count-input evidence before count-dependent definitions, then define A4 disc-corner ownership and O52, subject to the stop rules in the entry plan. The review does not start that work. No code, tests, build, V5 or production acceptance.
+`M6-CP3-DEFN-P13-A4-DISC-CORNERS`: [bounded entry plan](M6_Consolidated_Record_Vol_D3_CP3_P13_from_20261109.md#tb195-folded-disc-corners-entry). It must resolve exact count-input evidence before count-dependent definitions, then define A4 disc-corner ownership and O52, subject to the stop rules in the entry plan. The review does not start that work. No code, tests, build, V5 or production acceptance.
 
 ## Review closeout
 

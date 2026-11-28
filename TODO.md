@@ -1,4 +1,4 @@
-**Current turn outcome (2026-11-28 UTC):** [TB-EXEC-195](https://github.com/akashskypatel/Directional/blob/06fdba6885cc4c0349c53ccf21991a12c8f7c8eb/.agents/Directional/Architecture_M6_CP3_TB195_Region_Corner_Sides_Execution_Report_20261128.md) execution PASS: 1015/1015, all 1012 inherited comparisons and exact row858 receipt match; 8 regions, 32 gap-1 corners/sides, genus permitted unsupported-arc-kind. DD5 six unequal-side discs measured. Corner derivation not wired. Next `M6-CP3-TB-REV-195` (independent review only). TB-REV-194 remains accepted 1013/1013 and pinned O51 witness. CP2 491/491, stable 67/17/50, debt1/deferred81; D7 numeric proof carried, O52 quality, O50 open, B1 held, B2 unmeasured. No production or CP3/497/D0/H4 promotion.
+**Current turn outcome (2026-11-28 UTC):** [TB-REV-195](.agents/Directional/Architecture_M6_CP3_TB_REV_195_Region_Corner_Sides_Independent_Review_20261128.md): 1015/1015 test gate independently accepted; 1012 unchanged inherited comparisons, exact ten-line row858 insertion, 1096 members, two nonvacuous guards. CR1–CR4 accepted for the pinned test witness only; 8 sphere discs, 32 gap-1 corners and sides, 6 unequal opposite-side discs (0,1,3,5,6,7), 2 equal-side slivers (2,4; O52 quality), genus permitted unsupported-arc-kind. Corner derivation not wired; no general or production claim. Next `M6-CP3-DEFN-P13-A4-UNEQUAL-SIDE-CONSTRUCTION`. CP2 491/491; stable 67/17/50, debt1/deferred81; O51 pinned witness accepted, D7 numeric oracle carried (not a precondition), O50 open, B1 held, B2 unmeasured. No V5 or CP3/497/D0/H4 promotion.
 - **TB-REV-194 adv. FF1:** both TB-EXEC-194 STOPs were reviewer prediction errors (merged-arc count 37, fragment diagnostics); the 983 count was arithmetic (984).
 - **TB-REV-194 adv. FF2:** the D7 re-derivation is not a precondition of the corners definition; it is an optional independent oracle item.
 - **TB-REV-194 adv. FF3:** O52 slivers 2/4 are ordinary four-corner discs with equal opposite sides; a quality item (DESIGN §4.11, Amendment 30), not a validity defect.
@@ -36,18 +36,17 @@
   5. `M6-CP3-DEFN-P13-A2A-COTRACE-DELETION-SWITCH` (COMPLETE; CB-219 frozen).
   6. `M6-CP3-CB-219-P13-COTRACE-DELETION-SWITCH` (COMPLETE, compile only) → `M6-CP3-TB-EXEC-194` (COMPLETE, prediction STOP) → `M6-CP3-TB-REV-194` (COMPLETE, test gate and pinned O51 accepted; D7 exact numeric evidence carried).
   7. `M6-CP3-DEFN-P13-A4-DISC-CORNERS` (COMPLETE; CB-220 frozen).
-  8. `M6-CP3-CB-220-P13-REGION-CORNER-SIDES` (COMPLETE, compile only) → 9. TB-EXEC-195 (COMPLETE, execution PASS) → 10. TB-REV-195 (NEXT).
-  11. `M6-CP3-DEFN-P13-A4-UNEQUAL-SIDE-CONSTRUCTION` (DD5) → CB/TB → Vase row → fill → 65B → 65D (O50, Amendment-19) → O41/switch.
+  8. `M6-CP3-CB-220-P13-REGION-CORNER-SIDES` (COMPLETE, compile only) → 9. TB-EXEC-195 (COMPLETE, execution PASS) → 10. TB-REV-195 (COMPLETE independent review; pinned gate only).
+  11. `M6-CP3-DEFN-P13-A4-UNEQUAL-SIDE-CONSTRUCTION` (DD5, NEXT) → CB/TB → Vase row → fill → 65B → 65D (O50, Amendment-19) → O41/switch.
 
 ```text
-NEXT_TURN: M6-CP3-TB-REV-195
-Owner: Independent review only, runtime-free. Re-open exact CB-220 candidate 15257943465 (source e55f01b9ac86e2dc0159771a45521cb6f35049be), TB195 result 15259492817 (ZIP f2fb104ac182cc24f1f8d6f68116eeb0fcb6d0e95f166c73d6a322aadd8f2a4b) and TB194 comparator 15255025606 (ZIP 5fedd54ddf3416bf1cdb475a8e53206ab6382fcd75e9ea8b4a3bfebb4f8d99b4). No rebuild, runtime, source repair or acceptance by execution alone.
-Authority: TB195 execution report; gates/Architecture_M6_CP3_CB220_TB195_Region_Corner_Sides_Exact_Manifest.md; corners DEFN CR1–CR4; TB-REV-194 adversarial FF1–FF4. Frozen manifest 34a4e86406f043739c56eec6bc104615bee05fc08960be2dc6ae4a303b43b821, deferred fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce.
-Independently verify all 1015 PASS, exact membership 1096, 1012 unchanged comparisons under N1–N3, row858 exact ten-line insertion and predictions, genus permitted failure and both guard rows 1014/1015. Adjudicate CR1–CR4 and DD5: six unequal-opposite-side discs and two equal-side slivers. Do not claim general or production validity from the pinned witness.
-Then: DEFN A4 unequal-side construction (DD5), only on review authorization. No production activation, A3 count changes, sliver deletion, fallback repair, dispatch/veto change or CP3/497/D0/H4 promotion.
+NEXT_TURN: M6-CP3-DEFN-P13-A4-UNEQUAL-SIDE-CONSTRUCTION
+Owner: runtime-free definition only, after TB-REV-195 formal closeout. Establish a constructive A4 disc quadrangulation contract for four-corner discs with unequal opposite A3 subdivision counts (DD5), without changing the validated schedule or corner ownership. Authority: TB-REV-195, corners DEFN CR1–CR4, A4D1–A4D5, DESIGN §§5,7 and D7; six unequal sphere discs and two equal-side quality slivers.
+Require a general construction argument and typed refusal for its unsupported input class; exact boundary occurrence/count preservation, reciprocal trace interval ownership, all-quad disk topology, orientation and index constraints. Freeze independently derived positive and negative falsifiers before any later CB. A rectangular grid alone cannot cover the six unequal cases. STOP if no construction proof, exact schedule/corner input is missing or inconsistent, required topology/index/ownership cannot be certified, or a normative choice needs owner authorization. No presumed geometry or test success; no code/build/runtime in DEFN.
+Keep D7 numeric re-derivation as a nonblocking separate oracle (FF2); do not alter A3 counts, remove O52 slivers, repair B1, activate dispatch/veto, add Vase row or run V5 in this turn. CP3/497/D0/H4 and production unpromoted.
 ```
 
-## CURRENT — per-disc A4 route: TB-EXEC-195 execution PASS; TB-REV-195 next (2026-11-28 UTC)
+## CURRENT — per-disc A4 route: TB-REV-195 gate accepted; DD5 definition next (2026-11-28 UTC)
 
 - [x] **COMPLETE** `M6-CP3-CB-206-P13-SLIDE-ENTRY-ACTIVATION` (compile only; [record](.agents/Directional/Architecture_M6_CP3_CB206_P13_Slide_Entry_Activation_Code_Build_Record_20261126.md)).
 - [x] **COMPLETE** `M6-CP3-TB-EXEC-186T` — [report](.agents/Directional/Architecture_M6_CP3_TB186T_P13_Activated_Sphere_Termination_Execution_Report_20261126.md), six finish, 5 PASS / row858 RED.
@@ -99,8 +98,8 @@ Then: DEFN A4 unequal-side construction (DD5), only on review authorization. No 
 - [x] **16 COMPLETE (compile only)** `M6-CP3-CB-216-P13-SINGULARITY-ARRIVAL-CLASSIFICATION`: [record](.agents/Directional/Architecture_M6_CP3_CB216_P13_Singularity_Arrival_Classification_Code_Build_Record_20261127.md); exact diff, source `c76e74b35ffa5ba6aa1f3f8662f592e077c63033`, eight GMP/GMPXX targets, candidate `15192246171`, 28/28 checks; row 1010 and row858 additions not executed.
 - [x] **17 COMPLETE (execution)** `M6-CP3-TB-EXEC-192`: [execution report](.agents/Directional/Architecture_M6_CP3_TB192_Singularity_Arrival_Execution_Report_20261127.md); 1010/1010 PASS, membership 1091, row858 predictions match, rows1009/1010 PASS.
 - [x] **17a REVIEWED** `M6-CP3-TB-REV-192`: [TB-REV-192](.agents/Directional/Architecture_M6_CP3_TB_REV_192_Singularity_Arrival_Independent_Review_20261127.md); 1010/1010 test gate accepted only, no runtime or build. Root STATUS governs formal closeout.
-- [ ] **18 NEXT** `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` — behaviour DEFN (AP4): how a partially co-traced port trace is removed. Option A, suppress and re-trace to a fixed point, is recommended. It needs new §7.2 step-7 text, so the DEFN STOPs for a user decision. Then CB → TB → TB-REV.
-- [ ] **19+** One DEFN → CB → TB each, in order:
+- [x] **18 COMPLETE (historical entry; AP4 adopted A0, not original option A)** `M6-CP3-DEFN-P13-A2A-PARTIAL-COTRACE-REMOVAL` — behaviour DEFN (AP4): how a partially co-traced port trace is removed. Option A, suppress and re-trace to a fixed point, is recommended. It needs new §7.2 step-7 text, so the DEFN STOPs for a user decision. Then CB → TB → TB-REV.
+- [ ] **19+ (historical proposed order; superseded by current sequence above)** One DEFN → CB → TB each, in order:
   1. corners (A4D2 part 2) on the corrected plan;
   2. a gated Vase witness row;
   3. A4 unequal-side construction (DD5; O40 class);
