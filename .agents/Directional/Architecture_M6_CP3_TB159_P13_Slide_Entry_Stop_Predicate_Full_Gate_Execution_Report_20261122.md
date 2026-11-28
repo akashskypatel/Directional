@@ -1,0 +1,75 @@
+# TB159 — slide-entry stop-predicate immutable gate (2026-11-22 UTC)
+
+## Situation
+
+**PASS.** Exact CB176 package is executed as immutable test binaries, without recompilation, source changes or selector/test mutation. This is the TB159 execution record, not the later independent review.
+
+## Background
+
+- Canonical turn: `M6-CP3-TB-EXEC-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE`.
+- Package source: `7c9517fd956bf72847688ee99146bd877137ceb7`; compiled run [44966553428](https://github.com/akashskypatel/Directional/actions/runs/44966553428), artifact `14732005980`, ZIP SHA-256 `24e453f9860b7f089e996b5867edea6b82366a3caf1211855257a283a865168f`; internal hashes 28/28 verified. GMP/GMPXX build, previous compile-only evidence `runtimeExecution=false`.
+- Fixed gate selector: 977 cases, SHA-256 `993c663f5e916b4ab5a8d812ebfd658384cbec0b8356cd11e84ea76b0107d63b`; 976-row prefix byte-equal to TB158. Fixed census: three production cases, SHA-256 `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`.
+- Frozen executor snapshot: `159feaafae6fec1190f1d5b59a5f0fb94a80eb2c`; harness SHA-256 `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`.
+- TB158 baseline gate artifact `14725784889` (ZIP SHA-256 `b50d32d0892cbc8e19db5f827512cdda2cd2d3698e86335bd77d2da1296554e5`) and census artifact `14727495926` (`5b3012ca2a3ca8e9f3e5d4d8bc84c27601fb455913d15b67393998e1f57eb8bc`), downloaded, verified and used without altering baseline.
+- New gate: [run 44968515856](https://github.com/akashskypatel/Directional/actions/runs/44968515856), artifact `14732983057`, ZIP SHA-256 `f0fa3c481daf5b9ec8e121d0177ff5bd709672236a3514d41c7e074cd15d0aee`; 1962/1962 internal hashes verified.
+- New census: [run 44968542188](https://github.com/akashskypatel/Directional/actions/runs/44968542188), artifact `14733451393`, ZIP SHA-256 `6ccc21f8803743d90ec0acba400a9a901f0edba6fe8438846af19844888d5152`; 9/9 internal hashes verified.
+
+## Assessment
+
+| Scope | Observed result | Prior-case comparison | Slide arrivals baseline → new | Issues |
+|---|---|---|---|---|
+| Gate | {'PASS': 977} | 976/976 | 564 → 564 | 0 |
+| Production census | {'PASS': 1, 'RED': 2} | 3/3 | 15 → 18 | 0 |
+
+The comparison checks all non-receipt lines under frozen N1–N3 (N4 only for the two parameterized RED census rows), whole `region_support_projection` record multisets, one-to-one baseline receipt preservation with appended fields, and the reversed-role `slideCoincidence` witness for every new arrival. No unexpected differences or failures may be discarded to obtain a green result. Full per-row, full distinct-line receipts are in [TB159 row table](evidence/Architecture_M6_CP3_TB159_Slide_Entry_Arrival_Receipt_By_Row.tsv), which includes every gate row and every census case.
+
+### Gate receipt rows
+
+| Row | Count | Exact role/classification counts |
+|---|---:|---|
+| 380 | 36 | `17:8->0:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 388 | 36 | `17:8->0:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 393 | 24 | `17:8->0:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 394 | 28 | `17:8->0:6`: 7x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 7x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 7x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 7x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 396 | 28 | `17:8->0:6`: 7x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 7x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 7x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 7x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 397 | 24 | `17:8->0:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 644 | 12 | `17:8->0:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 645 | 12 | `17:8->0:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 648 | 12 | `17:8->0:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 669 | 52 | `17:8->0:6`: 13x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 13x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 13x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 13x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 686 | 12 | `17:8->0:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 691 | 24 | `17:8->0:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 693 | 12 | `17:8->0:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 694 | 36 | `17:8->0:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 698 | 36 | `17:8->0:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 699 | 24 | `17:8->0:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 700 | 36 | `17:8->0:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 9x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 843 | 12 | `17:8->0:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 844 | 12 | `17:8->0:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 858 | 12 | `17:8->0:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 963 | 24 | `17:8->0:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 968 | 24 | `17:8->0:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 971 | 24 | `17:8->0:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 6x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+| 972 | 12 | `17:8->0:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `20:8->1:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `5:8->21:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `8:8->22:6`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+
+Rows not shown have zero slide arrivals; row 977 must still pass as the dedicated strict-interior/pending-stop acceptance test.
+
+### Production census receipt rows
+
+| Row | Count | Exact role/classification counts |
+|---|---:|---|
+| 2 | 18 | `126:4->148:0`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `142:2->87:0`: 3x `wallCommitted=0;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `151:8->101:0`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `152:2->148:0`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `26:1->99:0`: 3x `wallCommitted=0;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1`; `33:3->24:1`: 3x `wallCommitted=1;movingArrival=later;movingCommitted=0;interior=1;stop=1;stopRecord=1` |
+
+### Independent comparison exceptions
+
+- No independent comparison exception observed.
+
+### Regression and product state
+
+Only a receipt was added; the product stop switch was not enabled in this turn. The independent test report does not prove the global surface-cell product accepts the sphere, and it does not authorize CP3/497/D0/H4 promotion. The inherited stable accounts remain 66/17/49, witness debt 1 and deferred 81 unless the observed evidence independently proves a new category or recurrence. TB-REV-158 T2–T5, V3b and sphere chi +4 remain for the separate review.
+
+## Recommendation
+
+Advance to independent `M6-CP3-TB-REV-159-P13-SLIDE-ENTRY-STOP-PREDICATE-FULL-GATE` only after this execution turn is formally closed. Review the measured strict interior, stop-record and both-role receipts; this execution does not wire CB177.
+
+Recorded at 2026-11-22T01:13:23Z. The reported comparison is independent local artifact analysis, not extra runtime execution.

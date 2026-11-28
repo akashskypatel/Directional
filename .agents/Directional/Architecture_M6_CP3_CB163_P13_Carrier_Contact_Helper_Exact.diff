@@ -1,0 +1,175 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index 45e8226dd..730c1d9c8 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -1347,6 +1347,26 @@ field_aligned_arrival_at_slide_parameter(
+     FieldAlignedArrivalMeasure start,
+     const authority::FieldExactRational &parameter);
+ 
++// Where a moving segment first meets a wall segment on one mesh edge. Each
++// side occupies the edge at its entry crossing or along its slide; occupancies
++// are keyed by edge, so the two segments may lie in different faces. The
++// moving entry comes before its slide, and along the slide the first shared
++// parameter wins. A meeting that is a single point at an edge end is a vertex
++// meeting, owned by the vertex transit rules, and is not reported.
++struct FieldAlignedCarrierContact {
++  authority::SourceEdgeTopologyKey carrier;
++  authority::FieldExactRational parameter;
++  bool movingInSlide = false;
++  bool wallInSlide = false;
++
++  auto operator<=>(const FieldAlignedCarrierContact &) const = default;
++};
++
++[[nodiscard]] std::optional<FieldAlignedCarrierContact>
++first_field_aligned_carrier_contact(
++    const FieldAlignedCandidateTraceSegment &moving,
++    const FieldAlignedCandidateTraceSegment &wall);
++
+ } // namespace surface_cell_tracing_detail
+ 
+ struct SurfaceTraceSeed {
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 4c92d8e2f..dbbcfd980 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -5644,6 +5644,50 @@ field_aligned_arrival_at_slide_parameter(
+       start, field_aligned_filtered_add(*facePiece, *slidePiece));
+ }
+ 
++std::optional<FieldAlignedCarrierContact> first_field_aligned_carrier_contact(
++    const FieldAlignedCandidateTraceSegment &moving,
++    const FieldAlignedCandidateTraceSegment &wall) {
++  const auto wallEntry = field_aligned_segment_entry_occupancy(wall);
++  const auto wallSlide = field_aligned_segment_slide_occupancy(wall);
++  const auto zero = authority::FieldExactRational::from_integer(0);
++  const auto one = authority::FieldExactRational::from_integer(1);
++  const auto meet = [&](const FieldAlignedCarrierOccupancy &occupancy,
++                        const std::optional<FieldAlignedCarrierOccupancy> &other)
++      -> std::optional<authority::FieldExactRational> {
++    if (!other.has_value()) return std::nullopt;
++    const auto first = first_shared_carrier_parameter(occupancy, *other);
++    if (!first.has_value()) return std::nullopt;
++    const auto last = first_shared_carrier_parameter(
++        FieldAlignedCarrierOccupancy{occupancy.carrier, occupancy.to,
++                                     occupancy.from},
++        *other);
++    if (last == first && (*first == zero || *first == one)) return std::nullopt;
++    return first;
++  };
++  const auto contact = [&](const FieldAlignedCarrierOccupancy &occupancy,
++                           const bool movingInSlide)
++      -> std::optional<FieldAlignedCarrierContact> {
++    const auto atEntry = meet(occupancy, wallEntry);
++    const auto inSlide = meet(occupancy, wallSlide);
++    if (!atEntry.has_value() && !inSlide.has_value()) return std::nullopt;
++    const bool ascending = occupancy.from <= occupancy.to;
++    const bool slideFirst =
++        inSlide.has_value() &&
++        (!atEntry.has_value() ||
++         (ascending ? *inSlide < *atEntry : *atEntry < *inSlide));
++    return FieldAlignedCarrierContact{occupancy.carrier,
++                                      slideFirst ? *inSlide : *atEntry,
++                                      movingInSlide, slideFirst};
++  };
++  if (const auto entry = field_aligned_segment_entry_occupancy(moving)) {
++    if (auto found = contact(*entry, false)) return found;
++  }
++  if (const auto slide = field_aligned_segment_slide_occupancy(moving)) {
++    return contact(*slide, true);
++  }
++  return std::nullopt;
++}
++
+ std::optional<FieldAlignedArrivalMeasure>
+ field_aligned_filtered_arrival_measure(
+     const TriMesh &sourceMesh,
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 0a1be3774..daad1e4c2 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -19176,3 +19176,84 @@ TEST(FieldAlignedCarrierOccupancy,
+                    mesh, departure, start, exact_ratio(-1, 4))
+                    .has_value());
+ }
++
++TEST(FieldAlignedCarrierOccupancy,
++     FirstCarrierContactMeetsEntriesAndSlidesAcrossFaces) {
++  using directional::authority::FieldBranch;
++  using directional::geometry::FieldAlignedCandidateTraceSegment;
++  using directional::geometry::surface_cell_tracing_detail::
++      FieldAlignedCarrierContact;
++  using directional::geometry::surface_cell_tracing_detail::
++      first_field_aligned_carrier_contact;
++  // Edge (0,2) is shared by faces (0,1,2) and (0,2,3).
++  const auto carrier = topology_edge(0, 2, 4U);
++  const auto ab = topology_edge(0, 1, 4U);
++  const auto cd = topology_edge(2, 3, 4U);
++  const auto ad = topology_edge(0, 3, 4U);
++  const auto lower = topology_face(0, 1, 2, 4U);
++  const auto upper = topology_face(0, 2, 3, 4U);
++  const auto branch = FieldBranch::from_integer(0);
++  const auto crossingInto = [&](const auto &face, const auto &exitEdge,
++                                const int numerator, const int denominator) {
++    return FieldAlignedCandidateTraceSegment(
++        face, branch, boundary_point(carrier, numerator, denominator), carrier,
++        exitEdge, std::nullopt);
++  };
++  // Slides entered through (0,1) at distinct points, so their entry
++  // crossings never meet each other.
++  const auto slidingOn = [&](const int fromNumerator, const int toNumerator) {
++    FieldAlignedCandidateTraceSegment segment(
++        lower, branch, boundary_point(ab, fromNumerator, 20), ab, carrier,
++        std::nullopt);
++    segment.edgeTransitEntry = boundary_point(carrier, fromNumerator, 10);
++    segment.edgeTransitExit = boundary_point(carrier, toNumerator, 10);
++    return segment;
++  };
++  const auto expected = [&](const int numerator, const int denominator,
++                            const bool movingInSlide, const bool wallInSlide) {
++    return FieldAlignedCarrierContact{carrier,
++                                      exact_ratio(numerator, denominator),
++                                      movingInSlide, wallInSlide};
++  };
++
++  // Two co-directional slides: the later one meets the earlier one where the
++  // inner slide starts, in either role.
++  EXPECT_EQ(first_field_aligned_carrier_contact(slidingOn(9, 0), slidingOn(3, 0)),
++            expected(3, 10, true, true));
++  EXPECT_EQ(first_field_aligned_carrier_contact(slidingOn(3, 0), slidingOn(9, 0)),
++            expected(3, 10, true, true));
++  // Two traces crossing the shared edge at one exact point from opposite
++  // faces, and a crossing that misses by one hundredth.
++  EXPECT_EQ(first_field_aligned_carrier_contact(crossingInto(lower, ab, 1, 3),
++                                                crossingInto(upper, cd, 1, 3)),
++            expected(1, 3, false, false));
++  EXPECT_FALSE(first_field_aligned_carrier_contact(
++                   crossingInto(lower, ab, 34, 100),
++                   crossingInto(upper, cd, 1, 3))
++                   .has_value());
++  // A crossing into a wall's slide, and a slide over a wall's crossing.
++  EXPECT_EQ(first_field_aligned_carrier_contact(crossingInto(upper, ad, 1, 2),
++                                                slidingOn(3, 10)),
++            expected(1, 2, false, true));
++  EXPECT_EQ(first_field_aligned_carrier_contact(slidingOn(9, 0),
++                                                crossingInto(upper, cd, 1, 2)),
++            expected(1, 2, true, false));
++  // Ascending slide: the first wall point along the moving direction wins.
++  EXPECT_EQ(first_field_aligned_carrier_contact(slidingOn(1, 10), slidingOn(7, 10)),
++            expected(7, 10, true, true));
++  // Opposite parts of the edge, and a meeting only at the edge end v0.
++  EXPECT_FALSE(first_field_aligned_carrier_contact(slidingOn(3, 0),
++                                                   slidingOn(5, 10))
++                   .has_value());
++  EXPECT_FALSE(first_field_aligned_carrier_contact(slidingOn(3, 0),
++                                                   crossingInto(upper, cd, 0, 1))
++                   .has_value());
++  // A slide on another edge never meets a crossing of this one.
++  FieldAlignedCandidateTraceSegment elsewhere(
++      lower, branch, boundary_point(carrier, 1, 2), carrier, ab, std::nullopt);
++  elsewhere.edgeTransitEntry = boundary_point(ab, 1, 2);
++  elsewhere.edgeTransitExit = boundary_point(ab, 1, 1);
++  EXPECT_FALSE(first_field_aligned_carrier_contact(elsewhere,
++                                                   crossingInto(upper, cd, 1, 3))
++                   .has_value());
++}

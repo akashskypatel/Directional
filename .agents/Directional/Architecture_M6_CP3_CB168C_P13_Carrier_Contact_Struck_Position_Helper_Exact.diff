@@ -1,0 +1,181 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index 730c1d9c8..dd984c0c1 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -437,6 +437,10 @@ struct FieldAlignedTerminalContact {
+   std::array<authority::FieldExactRational, 3> barycentric{};
+   authority::TraceId struckTrace;
+   std::size_t struckSegmentIndex = 0U;
++  // The contact's point on a shared source edge, set only when the
++  // carrier-contact rule produced it; `sourceFace`/`barycentric` hold the
++  // same point in the ending segment's face. Not yet produced.
++  std::optional<authority::FieldBoundaryPoint> carrierLocus{};
+ 
+   auto operator<=>(const FieldAlignedTerminalContact &) const = default;
+ };
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index a79bd740f..db32558ef 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -712,6 +712,27 @@ std::optional<FaceChartPoint> trace_segment_canonical_exit(
+   return std::nullopt;
+ }
+ 
++std::optional<TraceCutPosition> carrier_contact_struck_position(
++    const FieldAlignedCandidateTrace &struck,
++    const FieldAlignedTerminalContact &record) {
++  if (struck.id != record.struckTrace || !record.carrierLocus.has_value() ||
++      record.struckSegmentIndex >= struck.segments.size()) {
++    return std::nullopt;
++  }
++  const auto entry =
++      surface_cell_tracing_detail::field_aligned_segment_entry_occupancy(
++          struck.segments[record.struckSegmentIndex]);
++  const authority::FieldExactRational &parameter =
++      record.carrierLocus->parameter.value;
++  if (!entry.has_value() || entry->carrier != record.carrierLocus->edge ||
++      entry->from != parameter ||
++      !(authority::FieldExactRational::from_integer(0) < parameter &&
++        parameter < authority::FieldExactRational::from_integer(1))) {
++    return std::nullopt;
++  }
++  return TraceCutPosition{record.struckSegmentIndex, std::nullopt};
++}
++
+ std::optional<authority::FieldExactRational> trace_segment_contact_parameter(
+     const FieldAlignedCandidateTrace &trace, const std::size_t segment,
+     const FaceChartPoint &point) {
+diff --git a/src/geometry/EmbeddedGraphTopology.h b/src/geometry/EmbeddedGraphTopology.h
+index 326e407c8..ed1ba3aa2 100644
+--- a/src/geometry/EmbeddedGraphTopology.h
++++ b/src/geometry/EmbeddedGraphTopology.h
+@@ -260,6 +260,18 @@ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
+                                 std::size_t segment,
+                                 const FaceChartPoint &point);
+ 
++/**
++ * Where a terminal carrier contact cuts the struck trace when the contact is
++ * that trace's entry crossing: the boundary before the struck segment. Empty
++ * when `struck` is not the record's struck trace, the record has no carrier
++ * locus, the struck segment does not exist, or the locus is not that
++ * segment's entry crossing at an interior edge parameter (a contact inside a
++ * slide, or at a vertex, is not handled here).
++ */
++[[nodiscard]] std::optional<TraceCutPosition> carrier_contact_struck_position(
++    const FieldAlignedCandidateTrace &struck,
++    const FieldAlignedTerminalContact &record);
++
+ /**
+  * The exact source path segment `segment` of `trace` traverses. A segment
+  * without an edge transit is one face piece to its end. A segment with an edge
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index feb65a47e..305b9dad0 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -5424,6 +5424,13 @@ std::uint64_t field_aligned_candidate_digest(
+       }
+       field_aligned_hash_id(hash, contact.struckTrace);
+       field_aligned_hash_consume(hash, contact.struckSegmentIndex);
++      // Absent loci add no bytes, so every existing digest is unchanged.
++      if (contact.carrierLocus.has_value()) {
++        constexpr std::uint64_t kCarrierLocusHashDomain =
++            0x434152524c4f4353ULL; // "CARRLOCS"
++        field_aligned_hash_consume(hash, kCarrierLocusHashDomain);
++        field_aligned_hash_boundary_point(hash, *contact.carrierLocus);
++      }
+     }
+     if (trace.terminalLimitCycle.has_value()) {
+       // Preserve every pre-S3 semantic digest byte-for-byte when the new
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index f24ffd7d1..3f117c59d 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -19174,6 +19174,88 @@ TEST(FieldAlignedCarrierOccupancy,
+                 ordinary, cut, Position{1U, threeQuarters}));
+ }
+ 
++TEST(FieldAlignedCarrierOccupancy,
++     CarrierContactCutsTheStruckTraceAtItsEntryCrossingOnly) {
++  using directional::authority::FieldBranch;
++  using directional::authority::TopologyRegionId;
++  using directional::authority::TraceId;
++  using directional::geometry::FieldAlignedCandidateTrace;
++  using directional::geometry::FieldAlignedTerminalContact;
++  using Position = embedded::TraceCutPosition;
++  // Edge (0,2) is shared by faces (0,1,2) and (0,2,3).
++  const auto carrier = topology_edge(0, 2, 4U);
++  const auto ab = topology_edge(0, 1, 4U);
++  const auto cd = topology_edge(2, 3, 4U);
++  const auto lower = topology_face(0, 1, 2, 4U);
++  const auto upper = topology_face(0, 2, 3, 4U);
++  const auto branch = FieldBranch::from_integer(0);
++  const auto makeTrace = [](const std::size_t index) {
++    return FieldAlignedCandidateTrace(
++        TraceId::from_index(index, 2U).value(),
++        SingularityPortId::from_index(0, 1).value(),
++        FieldSingularityId::from_index(0, 1).value(),
++        SourceVertexId::from_index(1, 4).value(),
++        SourceComponentId::from_index(0, 1).value(),
++        TopologyRegionId::from_index(0, 1).value());
++  };
++  // The struck trace crosses (0,1) into the lower face, then crosses the
++  // carrier at 1/3 into the upper face.
++  FieldAlignedCandidateTrace struck = makeTrace(1U);
++  struck.segments.emplace_back(lower, branch, boundary_point(ab, 1, 2), ab,
++                               carrier, std::nullopt);
++  struck.segments.emplace_back(upper, branch, boundary_point(carrier, 1, 3),
++                               carrier, cd, std::nullopt);
++  const FieldAlignedTerminalContact atEntry{
++      lower, {exact_ratio(2, 3), exact_ratio(0, 1), exact_ratio(1, 3)},
++      struck.id, 1U, boundary_point(carrier, 1, 3)};
++  EXPECT_EQ(embedded::carrier_contact_struck_position(struck, atEntry),
++            (Position{1U, std::nullopt}));
++
++  // A face contact without a locus, another parameter, another edge, a
++  // segment past the end and another trace are not this cut.
++  auto withoutLocus = atEntry;
++  withoutLocus.carrierLocus.reset();
++  EXPECT_FALSE(embedded::carrier_contact_struck_position(struck, withoutLocus));
++  auto otherParameter = atEntry;
++  otherParameter.carrierLocus = boundary_point(carrier, 1, 2);
++  EXPECT_FALSE(
++      embedded::carrier_contact_struck_position(struck, otherParameter));
++  auto otherEdge = atEntry;
++  otherEdge.carrierLocus = boundary_point(ab, 1, 3);
++  EXPECT_FALSE(embedded::carrier_contact_struck_position(struck, otherEdge));
++  auto pastEnd = atEntry;
++  pastEnd.struckSegmentIndex = 2U;
++  EXPECT_FALSE(embedded::carrier_contact_struck_position(struck, pastEnd));
++  EXPECT_FALSE(
++      embedded::carrier_contact_struck_position(makeTrace(0U), atEntry));
++  // The first segment's own entry crossing is a cut at its boundary too.
++  auto firstEntry = atEntry;
++  firstEntry.struckSegmentIndex = 0U;
++  firstEntry.carrierLocus = boundary_point(ab, 1, 2);
++  EXPECT_EQ(embedded::carrier_contact_struck_position(struck, firstEntry),
++            (Position{0U, std::nullopt}));
++
++  // An entry at the carrier's end vertex is excluded.
++  FieldAlignedCandidateTrace atVertex = makeTrace(1U);
++  atVertex.segments.emplace_back(upper, branch, boundary_point(carrier, 0, 1),
++                                 carrier, cd, std::nullopt);
++  auto vertexContact = atEntry;
++  vertexContact.struckSegmentIndex = 0U;
++  vertexContact.carrierLocus = boundary_point(carrier, 0, 1);
++  EXPECT_FALSE(
++      embedded::carrier_contact_struck_position(atVertex, vertexContact));
++
++  // A locus inside the struck segment's slide is not its entry crossing.
++  FieldAlignedCandidateTrace sliding = makeTrace(1U);
++  sliding.segments.emplace_back(lower, branch, boundary_point(ab, 1, 2), ab,
++                                carrier, std::nullopt);
++  sliding.segments[0].edgeTransitEntry = boundary_point(carrier, 1, 10);
++  sliding.segments[0].edgeTransitExit = boundary_point(carrier, 1, 2);
++  auto inSlide = atEntry;
++  inSlide.struckSegmentIndex = 0U;
++  EXPECT_FALSE(embedded::carrier_contact_struck_position(sliding, inSlide));
++}
++
+ TEST(FieldAlignedCarrierOccupancy,
+      FirstSharedParameterFollowsTheMovingTraceAlongOneCarrier) {
+   using directional::authority::FieldBranch;

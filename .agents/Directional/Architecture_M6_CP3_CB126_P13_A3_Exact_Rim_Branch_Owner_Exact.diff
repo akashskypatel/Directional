@@ -1,0 +1,174 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index 1b06e0c6a..fcabfe8b5 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -2666,12 +2666,8 @@ SurfaceTraceState make_trace_state(const SurfaceTracePoint &point,
+ int normalized_branch(const int branch);
+ 
+ // The field branch of `face` (0 +X, 1 +Y, 2 -X, 3 -Y) that follows the
+-// directed source edge a -> b; nothing when undecided. The binary64 rule is
+-// the bounded-disk producer's; the exact rule replaces it (O39).
+-[[nodiscard]] std::optional<int> boundary_edge_field_branch(
+-    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+-    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+-    int face, int a, int b);
++// directed source edge a -> b, decided exactly on the stored doubles (O39);
++// nothing when undecided.
+ [[nodiscard]] std::optional<int> exact_boundary_edge_field_branch(
+     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index c1d9498d1..29b7f516c 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -15543,54 +15543,14 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+ }
+ 
+ 
+-// The field branch of `face` that follows the directed source edge a -> b;
+-// nothing when no branch follows it unambiguously. The bounded-disk producer's
+-// side starts and the boundary field corners both read this one rule.
+-std::optional<int> boundary_edge_field_branch(
+-    const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+-    const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+-    const int face, const int a, const int b) {
+-  using namespace surface_cell_tracing_detail;
+-  constexpr double kBoundaryAlignment = 0.7;
+-  const Eigen::RowVector3d normal = face_normal(vertices, faces, face);
+-  const Eigen::RowVector3d edgeDirection =
+-      project_tangent(row3(vertices, b) - row3(vertices, a), normal);
+-  if (edgeDirection.squaredNorm() == 0.0) return std::nullopt;
+-  double bestAlignment = -std::numeric_limits<double>::infinity();
+-  double secondAlignment = -std::numeric_limits<double>::infinity();
+-  int bestBranch = -1;
+-  for (int branch = 0; branch < 4; ++branch) {
+-    int family = 0;
+-    int sign = 1;
+-    family_sign_from_branch(branch, family, sign);
+-    const Eigen::RowVector3d fieldDirection = project_tangent(
+-        axis_for_family(faceAxisX, faceAxisY, face, family, sign), normal);
+-    if (fieldDirection.squaredNorm() == 0.0) continue;
+-    const double alignment = fieldDirection.dot(edgeDirection);
+-    if (alignment > bestAlignment) {
+-      secondAlignment = bestAlignment;
+-      bestAlignment = alignment;
+-      bestBranch = branch;
+-    } else if (alignment > secondAlignment) {
+-      secondAlignment = alignment;
+-    }
+-  }
+-  const double ambiguityTolerance = 256.0 *
+-                                    std::numeric_limits<double>::epsilon() *
+-                                    std::max(1.0, std::abs(bestAlignment));
+-  if (bestBranch < 0 || bestAlignment < kBoundaryAlignment ||
+-      std::abs(bestAlignment - secondAlignment) <= ambiguityTolerance) {
+-    return std::nullopt;
+-  }
+-  return bestBranch;
+-}
+-
+-// The same rule decided exactly on the stored doubles (O39). A branch follows
+-// the edge when the in-plane parts of its axis and of the edge make the
+-// largest of the four cosines and that cosine is at least 7/10. When both
+-// families reach the largest cosine they tie and nothing is returned. Nothing
+-// is normalized, so the answer does not depend on the scale of the
+-// coordinates or of the axes.
++// The field branch of `face` that follows the directed source edge a -> b,
++// decided exactly on the stored doubles (O39); nothing when no branch does.
++// The bounded-disk producer's side starts and the boundary field corners both
++// read this one rule. A branch follows the edge when the in-plane parts of its
++// axis and of the edge make the largest of the four cosines and that cosine is
++// at least 7/10. When both families reach the largest cosine they tie and
++// nothing is returned. Nothing is normalized, so the answer does not depend on
++// the scale of the coordinates or of the axes.
+ std::optional<int> exact_boundary_edge_field_branch(
+     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+@@ -16824,7 +16784,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+       return result;
+     }
+     const int face = *faceRow;
+-    const std::optional<int> localBranch = boundary_edge_field_branch(
++    const std::optional<int> localBranch = exact_boundary_edge_field_branch(
+         vertices, faces, faceAxisX, faceAxisY, face, a, b);
+     if (!localBranch.has_value()) {
+       result.disposition = SurfaceCellProducerDisposition::Rejected;
+@@ -21640,7 +21600,7 @@ std::vector<authority::SourceVertexId> derive_boundary_field_corner_vertices(
+     }
+     const int vertex = faces(face, (corner + 1) % 3);
+     int next = faces(face, (corner + 2) % 3);
+-    std::optional<int> branch = boundary_edge_field_branch(
++    std::optional<int> branch = exact_boundary_edge_field_branch(
+         vertices, faces, faceAxisX, faceAxisY, face, faces(face, corner),
+         vertex);
+     bool turns = !branch.has_value();
+@@ -21650,9 +21610,9 @@ std::vector<authority::SourceVertexId> derive_boundary_field_corner_vertices(
+       const auto fanEdge = edge_key(vertex, next, vertexExtent);
+       const auto &fanFaces = edgeFaces.at(fanEdge);
+       if (fanFaces[1] < 0) {
+-        turns = boundary_edge_field_branch(vertices, faces, faceAxisX,
+-                                           faceAxisY, face, vertex, next) !=
+-                branch;
++        turns = exact_boundary_edge_field_branch(vertices, faces, faceAxisX,
++                                                 faceAxisY, face, vertex,
++                                                 next) != branch;
+         break;
+       }
+       const int target = fanFaces[0] == face ? fanFaces[1] : fanFaces[0];
+diff --git a/tests/SurfaceCellDesignAcceptanceTests.cpp b/tests/SurfaceCellDesignAcceptanceTests.cpp
+index 6694127ec..cee59dad3 100644
+--- a/tests/SurfaceCellDesignAcceptanceTests.cpp
++++ b/tests/SurfaceCellDesignAcceptanceTests.cpp
+@@ -512,7 +512,7 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
+             << stoppedInput->spans.size() << std::endl;
+ 
+   // O39: the exact rim branch rule on every source-boundary edge, taken in
+-  // its face's direction, and against the binary64 rule it replaces.
++  // its face's direction.
+   std::map<std::pair<int, int>, int> edgeFaceCount;
+   for (int face = 0; face < mesh.faces.rows(); ++face) {
+     for (int corner = 0; corner < 3; ++corner) {
+@@ -523,10 +523,6 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
+   }
+   std::size_t sourceRimEdges = 0U;
+   std::size_t decided = 0U;
+-  std::size_t same = 0U;
+-  std::size_t exactOnly = 0U;
+-  std::size_t binary64Only = 0U;
+-  std::size_t differ = 0U;
+   for (int face = 0; face < mesh.faces.rows(); ++face) {
+     for (int corner = 0; corner < 3; ++corner) {
+       const int a = mesh.faces(face, corner);
+@@ -535,32 +531,14 @@ TEST_P(SurfaceCellDesignD4RimCensus, ReportsRimCountsAgainstTheA3Schedules) {
+       const auto exact = directional::geometry::surface_cell_tracing_detail::
+           exact_boundary_edge_field_branch(mesh.vertices, mesh.faces, faceAxisX,
+                                            faceAxisY, face, a, b);
+-      const auto binary64 = directional::geometry::surface_cell_tracing_detail::
+-          boundary_edge_field_branch(mesh.vertices, mesh.faces, faceAxisX,
+-                                     faceAxisY, face, a, b);
+       ++sourceRimEdges;
+       if (exact.has_value()) ++decided;
+-      if (exact == binary64) {
+-        ++same;
+-      } else if (!binary64.has_value()) {
+-        ++exactOnly;
+-      } else if (!exact.has_value()) {
+-        ++binary64Only;
+-      } else {
+-        ++differ;
+-      }
+     }
+   }
+   EXPECT_GT(sourceRimEdges, 0U);
+-  // Where both rules decide, they name the same branch.
+-  EXPECT_EQ(0U, differ);
+   std::cout << "rim-branch case=" << GetParam().testName
+             << " rimEdges=" << sourceRimEdges << " decided=" << decided
+             << " undecided=" << sourceRimEdges - decided << std::endl;
+-  std::cout << "rim-branch-agreement case=" << GetParam().testName
+-            << " same=" << same << " exactOnly=" << exactOnly
+-            << " binary64Only=" << binary64Only << " differ=" << differ
+-            << std::endl;
+ }
+ 
+ INSTANTIATE_TEST_SUITE_P(

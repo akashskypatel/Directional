@@ -1,0 +1,139 @@
+diff --git a/src/pipeline/RemeshPipeline.cpp b/src/pipeline/RemeshPipeline.cpp
+index 39b840a68..4fc34f03a 100644
+--- a/src/pipeline/RemeshPipeline.cpp
++++ b/src/pipeline/RemeshPipeline.cpp
+@@ -5615,25 +5615,42 @@ struct QuotientForestTraversalEdge {
+   authority::Orientation orientation;
+ };
+ 
+-std::optional<std::vector<QuotientForestTraversalEdge>> quotient_forest_path(
+-    const authority::OccurrenceId start, const authority::OccurrenceId target,
+-    const std::vector<QuotientForestEdge> &forest) {
+-  std::map<authority::OccurrenceId, std::vector<QuotientForestTraversalEdge>>
+-      adjacency;
++// Sorted traversal records of a selected forest, keyed by occurrence. Each
++// forest edge contributes one forward and one reverse record. Every field takes
++// part in the order, so equivalent records are identical and incremental
++// insertion yields the same lists as appending all records and sorting.
++using QuotientForestAdjacency =
++    std::map<authority::OccurrenceId, std::vector<QuotientForestTraversalEdge>>;
++
++void add_quotient_forest_edge(QuotientForestAdjacency &adjacency,
++                              const QuotientForestEdge &edge) {
++  const auto insert = [&adjacency](const authority::OccurrenceId from,
++                                   QuotientForestTraversalEdge traversal) {
++    auto &edges = adjacency[from];
++    const auto position = std::upper_bound(
++        edges.begin(), edges.end(), traversal,
++        [](const auto &a, const auto &b) {
++          return std::tie(a.next, a.relation, a.orientation) <
++                 std::tie(b.next, b.relation, b.orientation);
++        });
++    edges.insert(position, std::move(traversal));
++  };
++  insert(edge.first, {edge.second, edge.relation, authority::Orientation::Forward});
++  insert(edge.second, {edge.first, edge.relation, authority::Orientation::Reverse});
++}
++
++QuotientForestAdjacency
++quotient_forest_adjacency(const std::vector<QuotientForestEdge> &forest) {
++  QuotientForestAdjacency adjacency;
+   for (const QuotientForestEdge &edge : forest) {
+-    adjacency[edge.first].push_back(
+-        {edge.second, edge.relation, authority::Orientation::Forward});
+-    adjacency[edge.second].push_back(
+-        {edge.first, edge.relation, authority::Orientation::Reverse});
+-  }
+-  for (auto &[occurrence, edges] : adjacency) {
+-    (void)occurrence;
+-    std::sort(edges.begin(), edges.end(), [](const auto &a, const auto &b) {
+-      return std::tie(a.next, a.relation, a.orientation) <
+-             std::tie(b.next, b.relation, b.orientation);
+-    });
++    add_quotient_forest_edge(adjacency, edge);
+   }
++  return adjacency;
++}
+ 
++std::optional<std::vector<QuotientForestTraversalEdge>> quotient_forest_path(
++    const authority::OccurrenceId start, const authority::OccurrenceId target,
++    const QuotientForestAdjacency &adjacency) {
+   struct Parent {
+     authority::OccurrenceId previous;
+     SurfaceOccurrenceRelationId relation;
+@@ -5742,6 +5759,7 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
+ 
+   std::map<SurfaceOccurrenceRelationId, QuotientRelationCertificate>
+       certificateByRelation;
++  QuotientForestAdjacency selectedForestAdjacency;
+   for (const SurfaceOccurrenceRelation *relation : orderedRelations) {
+     const auto firstOccurrence = occurrenceById.find(relation->id.first);
+     const auto secondOccurrence = occurrenceById.find(relation->id.second);
+@@ -6004,10 +6022,12 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
+           certificate.relationTransport;
+       records.selectedForest.emplace_back(relation->id, relation->id.first,
+                                           relation->id.second);
++      add_quotient_forest_edge(selectedForestAdjacency,
++                               records.selectedForest.back());
+     } else {
+       const auto path = quotient_forest_path(relation->id.first,
+                                              relation->id.second,
+-                                             records.selectedForest);
++                                             selectedForestAdjacency);
+       if (!path.has_value()) {
+         SurfaceQuotientProductError error;
+         error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+@@ -6100,7 +6120,7 @@ SurfaceQuotientProducer::ConstructionResult SurfaceQuotientProducer::produce(
+     for (const authority::OccurrenceId target : quotient.id.members) {
+       if (target == root) continue;
+       const auto path =
+-          quotient_forest_path(root, target, records.selectedForest);
++          quotient_forest_path(root, target, selectedForestAdjacency);
+       if (!path.has_value()) {
+         SurfaceQuotientProductError error;
+         error.code = SurfaceQuotientProductErrorCode::InvalidClassPartition;
+@@ -6334,6 +6354,8 @@ SurfaceQuotientProducer::publish_records_for_validation(
+       return error;
+     }
+   }
++  const QuotientForestAdjacency forestAdjacency =
++      quotient_forest_adjacency(records.selectedForest);
+   for (const auto &[relation, consumption] : consumptionById) {
+     const bool inForest = forestRelations.count(relation) != 0U;
+     if ((consumption->disposition == QuotientRelationDisposition::Joining) !=
+@@ -6345,7 +6367,7 @@ SurfaceQuotientProducer::publish_records_for_validation(
+     if (consumption->disposition == QuotientRelationDisposition::CycleClosing) {
+       const auto path = quotient_forest_path(
+           certificateById.at(relation)->first,
+-          certificateById.at(relation)->second, records.selectedForest);
++          certificateById.at(relation)->second, forestAdjacency);
+       if (!path.has_value()) {
+         error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+         error.relation = relation;
+@@ -6523,7 +6545,7 @@ SurfaceQuotientProducer::publish_records_for_validation(
+       return error;
+     }
+     const auto expectedPath = quotient_forest_path(
+-        published.root, published.target, records.selectedForest);
++        published.root, published.target, forestAdjacency);
+     if (!expectedPath.has_value() ||
+         expectedPath->size() != published.orderedRelations.size()) {
+       error.code = SurfaceQuotientProductErrorCode::RelationConsumptionConflict;
+@@ -8540,6 +8562,8 @@ VerificationReport SurfaceProductVerifier::verify_records(
+   std::set<std::tuple<SurfaceQuotientClassId, authority::OccurrenceId,
+                       authority::OccurrenceId>>
+       publishedPathTargets;
++  const QuotientForestAdjacency forestAdjacency =
++      quotient_forest_adjacency(quotient.records.selectedForest);
+   for (const auto &path : quotient.records.selectedPaths) {
+     const auto classFound = classById.find(path.quotientClass);
+     if (classFound == classById.end() || classFound->second->members.empty() ||
+@@ -8553,7 +8577,7 @@ VerificationReport SurfaceProductVerifier::verify_records(
+       continue;
+     }
+     const auto expectedPath = quotient_forest_path(
+-        path.root, path.target, quotient.records.selectedForest);
++        path.root, path.target, forestAdjacency);
+     if (!expectedPath.has_value() ||
+         expectedPath->size() != path.orderedRelations.size() ||
+         path.orderedRelations.size() != path.traversalOrientations.size()) {

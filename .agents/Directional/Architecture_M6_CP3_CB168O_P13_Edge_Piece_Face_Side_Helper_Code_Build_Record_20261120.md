@@ -1,0 +1,12 @@
+# CB168O — Edge-piece face-side helper Code + Build record (2026-11-20 UTC)
+
+- Canonical turn: `M6-CP3-CB168O-P13-EDGE-PIECE-FACE-SIDE-HELPER`. Scope: Code + Build, compile only.
+- Exact frozen patch: `Architecture_M6_CP3_CB168O_P13_Edge_Piece_Face_Side_Helper_Exact.diff`; SHA-256 `b8daffc93c26260e9ad7af464560fe24de38054db66b57fa866ab1deacfa0d34`.
+- Existing source paths changed, and no others: `src/geometry/EmbeddedGraphTopology.cpp` (+34), `src/geometry/EmbeddedGraphTopology.h` (+13), `tests/FieldAlignedCurveNetworkTests.cpp` (+115).
+- Frozen source prior to patch: `04a6e7945445b295eba577eecccc64a0322025e9`; source changes from accepted CB168N base `2d587a2e7ec00b7dc8d0a24df9f6902f03fec931` were absent. Exact `git apply --check`, post-apply reverse check, `git diff --check`, diff-body hash, and paths verified.
+- Applied semantic source commit: `1df6a09ad386791a9befddd9658ddc4d5bb795f2` ([patch apply](https://github.com/akashskypatel/Directional/actions/runs/44736469627), result artifact `14627709503`).
+- [Compile run 44736786708](https://github.com/akashskypatel/Directional/actions/runs/44736786708) succeeded for all eight RA-245 targets: `directional_core`, `directional_pipeline`, `directional_surface_cell_authority_kernel_tests`, `directional_surface_cell_producer_tests`, `directional_surface_cell_completion_tests`, `directional_surface_cell_validation_tests`, `directional_compiled_api_tests`, `directional_benchmarks`.
+- Compile result artifact `14628449217`, ZIP SHA-256 `20c8aed1d38e42cd00fc6cd5f790fd8d23075fe3cb8bc25522304c54886b3709`; source commit verified in packaged metadata. Both preflight and build exit codes 0; clean source status. GMP and GMPXX present in the authoritative link command; `exactArithmeticBackend=GMP`, `runtimeExecution=false`, `turnBoundary=Code+Build-only`. No tests or benchmarks ran.
+- The new `edge_piece_face_side` remains unwired; row 967 compiled but not executed. No digest, production graph, source piece counts, cutover, selector or acceptance change.
+- Baseline TB151 remains 966/966 PASS, 964/964 N1-N3 MATCH and 3/3 N1-N4 census MATCH, CP2 491/491 accepted. Stable 66/17/49, debt one, 81 deferred.
+- Next authorized turn only: `M6-CP3-TB152-P13-EDGE-PIECE-FACE-SIDE-FULL-GATE-EXEC`. Its exact manifest SHA-256 `cab375d014112b6ab48fe468003b9a57b2918a717e6f56e7478f0417362c0204`, 967+81. Require row 967 PASS, rows 1–966 MATCH TB151 N1–N3 with raw receipts, accepted 491/491 and no census. Then independent TB152 Review.

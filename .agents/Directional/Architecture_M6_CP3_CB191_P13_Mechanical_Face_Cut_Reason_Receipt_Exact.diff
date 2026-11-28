@@ -1,0 +1,35 @@
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 6d3711ec463436fea2d550775175e5320b2bb505..270be3a5767df4982b6aaff6b6bc3f71eb7df77c 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -8102,6 +8102,30 @@ Cp4cProductionFixture build_cp4c_production_fixture(
+       failure << ';';
+       append_atlas_error(failure, *fixture.atlasError);
+     }
++    // Read-only replay of the already failed plan. Retain the original throw;
++    // the receipt must never convert an invalid mechanical plan into success.
++    if (fixture.sourceAuthority.has_value() && fixture.network.has_value() &&
++        fixture.cutGraph.has_value()) {
++      const auto replay = directional::geometry::GlobalTopologyPlan::make(
++          fixture.mesh.F, static_cast<std::size_t>(fixture.mesh.V.rows()),
++          *fixture.sourceAuthority, *fixture.network, *fixture.cutGraph);
++      if (!replay && replay.error().code ==
++                         directional::geometry::GlobalTopologyPlanErrorCode::
++                             SourceFaceCutPartitionFailed) {
++        failure << ";faceCutPartitionReason=";
++        if (replay.error().faceCutPartitionReason.has_value()) {
++          failure << static_cast<int>(*replay.error().faceCutPartitionReason);
++        } else {
++          failure << "absent";
++        }
++        failure << ";faceCutPartitionReplayLocus=";
++        if (replay.error().sourceFace.has_value()) {
++          failure << source_face_locus(*replay.error().sourceFace);
++        } else {
++          failure << "absent";
++        }
++      }
++    }
+     throw std::runtime_error(
+         failure.str());
+   }

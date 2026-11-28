@@ -1,0 +1,443 @@
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index 8547f5369..3efe64624 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -293,35 +293,6 @@ std::optional<authority::ExactSourcePath> exact_edge_interval_path(
+              : std::nullopt;
+ }
+ 
+-std::optional<authority::ExactSourcePoint> exact_trace_segment_end(
+-    const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
+-  if (segmentIndex >= trace.segments.size()) return std::nullopt;
+-  const auto &segment = trace.segments[segmentIndex];
+-  if (segmentIndex + 1U == trace.segments.size()) {
+-    if (trace.terminalContact.has_value()) {
+-      if (trace.terminalContact->sourceFace != segment.sourceFace) {
+-        return std::nullopt;
+-      }
+-      return authority::canonical_exact_source_face_point(
+-          trace.terminalContact->sourceFace,
+-          trace.terminalContact->barycentric);
+-    }
+-    if (trace.terminalPoint.has_value()) {
+-      return authority::canonical_exact_source_boundary_point(
+-          *trace.terminalPoint);
+-    }
+-  }
+-  if (segment.edgeTransitExit.has_value()) {
+-    return authority::canonical_exact_source_boundary_point(
+-        *segment.edgeTransitExit);
+-  }
+-  if (segmentIndex + 1U < trace.segments.size()) {
+-    return authority::canonical_exact_source_boundary_point(
+-        trace.segments[segmentIndex + 1U].entryPoint);
+-  }
+-  return std::nullopt;
+-}
+-
+ std::optional<authority::ExactSourcePath> exact_trace_path(
+     const FieldAlignedCandidateTrace &trace, const std::size_t firstSegment,
+     const std::size_t onePastLastSegment) {
+@@ -666,32 +637,6 @@ int face_chart_orientation(const FaceChartPoint &a, const FaceChartPoint &b,
+   return 0;
+ }
+ 
+-std::optional<authority::FieldExactRational> face_chart_segment_parameter(
+-    const FaceChartPoint &entry, const FaceChartPoint &exit,
+-    const FaceChartPoint &point) {
+-  std::optional<std::size_t> axis;
+-  for (std::size_t index = 0U; index < 3U; ++index) {
+-    if (exit[index] != entry[index]) {
+-      axis = index;
+-      break;
+-    }
+-  }
+-  if (!axis.has_value()) return std::nullopt;
+-  const authority::FieldExactRational parameter =
+-      (point[*axis] - entry[*axis]) / (exit[*axis] - entry[*axis]);
+-  for (std::size_t index = 0U; index < 3U; ++index) {
+-    if (entry[index] + parameter * (exit[index] - entry[index]) !=
+-        point[index]) {
+-      return std::nullopt;
+-    }
+-  }
+-  if (!(parameter > authority::FieldExactRational::from_integer(0)) ||
+-      !(parameter < authority::FieldExactRational::from_integer(1))) {
+-    return std::nullopt;
+-  }
+-  return parameter;
+-}
+-
+ std::optional<std::vector<std::size_t>> face_chart_counter_clockwise_ray_order(
+     const FaceChartPoint &origin, const std::vector<FaceChartPoint> &targets) {
+   for (const FaceChartPoint &target : targets) {
+@@ -749,26 +694,6 @@ std::optional<std::vector<std::size_t>> face_chart_counter_clockwise_ray_order(
+ 
+ namespace {
+ 
+-std::optional<FaceChartPoint> canonical_boundary_barycentric(
+-    const authority::SourceFaceTopologyKey &face,
+-    const authority::FieldBoundaryPoint &point) {
+-  const auto &vertices = face.vertices();
+-  FaceChartPoint barycentric{authority::FieldExactRational::from_integer(0),
+-                             authority::FieldExactRational::from_integer(0),
+-                             authority::FieldExactRational::from_integer(0)};
+-  std::optional<std::size_t> firstIndex;
+-  std::optional<std::size_t> secondIndex;
+-  for (std::size_t index = 0U; index < vertices.size(); ++index) {
+-    if (vertices[index] == point.edge.first()) firstIndex = index;
+-    if (vertices[index] == point.edge.second()) secondIndex = index;
+-  }
+-  if (!firstIndex.has_value() || !secondIndex.has_value()) return std::nullopt;
+-  barycentric[*firstIndex] =
+-      authority::FieldExactRational::from_integer(1) - point.parameter.value;
+-  barycentric[*secondIndex] = point.parameter.value;
+-  return barycentric;
+-}
+-
+ std::set<authority::NetworkNodeId> port_nodes(
+     const FieldAlignedCurveNetwork &network) {
+   std::set<authority::NetworkNodeId> result;
+@@ -952,77 +877,6 @@ std::optional<authority::FieldExactRational> trace_segment_contact_parameter(
+   return face_chart_segment_parameter(*entry, *exit, point);
+ }
+ 
+-std::optional<authority::ExactSourcePath> exact_trace_segment_pieces(
+-    const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
+-  if (segmentIndex >= trace.segments.size()) return std::nullopt;
+-  const FieldAlignedCandidateTraceSegment &segment = trace.segments[segmentIndex];
+-  const auto face_piece_to_end = [&]() -> std::optional<authority::ExactSourcePath> {
+-    const auto first = authority::canonical_exact_source_boundary_point(
+-        segment.entryPoint);
+-    const auto second = exact_trace_segment_end(trace, segmentIndex);
+-    if (!first.has_value() || !second.has_value()) return std::nullopt;
+-    authority::ExactSourcePath path{authority::ExactSourceSupportPiece{
+-        authority::SourceFaceInteriorSupport{segment.sourceFace}, *first,
+-        *second}};
+-    return authority::exact_source_path_is_canonical(path)
+-               ? std::optional<authority::ExactSourcePath>{std::move(path)}
+-               : std::nullopt;
+-  };
+-  if (!segment.edgeTransitEntry.has_value() &&
+-      !segment.edgeTransitExit.has_value()) {
+-    return face_piece_to_end();
+-  }
+-  if (!segment.edgeTransitEntry.has_value() ||
+-      !segment.edgeTransitExit.has_value() ||
+-      segment.edgeTransitEntry->edge != segment.outgoingCarrier ||
+-      segment.edgeTransitExit->edge != segment.outgoingCarrier) {
+-    return std::nullopt;
+-  }
+-  const bool last = segmentIndex + 1U == trace.segments.size();
+-  if (last && trace.terminalContact.has_value()) {
+-    // A contact is published after its whole proposal is committed, so the
+-    // record keeps the slide although the trace stops on the face piece.
+-    const auto entry =
+-        canonical_boundary_barycentric(segment.sourceFace, segment.entryPoint);
+-    const auto slideStart = canonical_boundary_barycentric(
+-        segment.sourceFace, *segment.edgeTransitEntry);
+-    if (!entry.has_value() || !slideStart.has_value() ||
+-        trace.terminalContact->sourceFace != segment.sourceFace ||
+-        !face_chart_segment_parameter(*entry, *slideStart,
+-                                      trace.terminalContact->barycentric)
+-             .has_value()) {
+-      return std::nullopt;
+-    }
+-    return face_piece_to_end();
+-  }
+-  const auto entry =
+-      authority::canonical_exact_source_boundary_point(segment.entryPoint);
+-  const auto slideStart =
+-      authority::canonical_exact_source_boundary_point(*segment.edgeTransitEntry);
+-  const auto slideEnd =
+-      authority::canonical_exact_source_boundary_point(*segment.edgeTransitExit);
+-  if (!entry.has_value() || !slideStart.has_value() || !slideEnd.has_value()) {
+-    return std::nullopt;
+-  }
+-  if (last && trace.terminalPoint.has_value() &&
+-      authority::canonical_exact_source_boundary_point(*trace.terminalPoint) !=
+-          slideEnd) {
+-    return std::nullopt;
+-  }
+-  authority::ExactSourcePath path;
+-  if (*entry != *slideStart) {
+-    path.push_back(authority::ExactSourceSupportPiece{
+-        authority::SourceFaceInteriorSupport{segment.sourceFace}, *entry,
+-        *slideStart});
+-  }
+-  path.push_back(authority::ExactSourceSupportPiece{
+-      authority::SourceEdgeSupport{segment.outgoingCarrier}, *slideStart,
+-      *slideEnd});
+-  return authority::exact_source_path_is_canonical(path)
+-             ? std::optional<authority::ExactSourcePath>{std::move(path)}
+-             : std::nullopt;
+-}
+-
+ std::pair<std::size_t, std::size_t> trace_cut_segment_range(
+     const TraceCutPosition &first, const TraceCutPosition &second) {
+   return {first.segment, second.parameter.has_value() ? second.segment + 1U
+diff --git a/src/geometry/EmbeddedGraphTopology.h b/src/geometry/EmbeddedGraphTopology.h
+index d46f39d01..338cf4bc0 100644
+--- a/src/geometry/EmbeddedGraphTopology.h
++++ b/src/geometry/EmbeddedGraphTopology.h
+@@ -20,6 +20,8 @@
+ 
+ #include <directional/geometry/GlobalTopologyPlan.h>
+ 
++#include "ExactTraceSegmentPieces.h"
++
+ namespace directional::geometry::embedded_graph_topology_detail {
+ 
+ /** Exact source-triangle record used by the shared embedded-graph authority. */
+@@ -221,13 +223,6 @@ using MandatoryEdgeSplit =
+     authority::NetworkNodeId firstNode, authority::NetworkNodeId secondNode,
+     std::vector<MandatoryEdgeTerminalCut> cuts);
+ 
+-/**
+- * Exact barycentric coordinates of a point of one source face, listed in that
+- * face's oriented corner order. Every predicate below is affine-invariant, so
+- * no metric geometry is read.
+- */
+-using FaceChartPoint = std::array<authority::FieldExactRational, 3>;
+-
+ /**
+  * Orientation of `a`, `b`, `c` in one face chart: +1 when they run
+  * counter-clockwise in the corner order of their coordinates, -1 when
+@@ -237,16 +232,6 @@ using FaceChartPoint = std::array<authority::FieldExactRational, 3>;
+                                          const FaceChartPoint &b,
+                                          const FaceChartPoint &c);
+ 
+-/**
+- * The exact t with point = entry + t * (exit - entry), when the point lies
+- * strictly inside the straight segment from `entry` to `exit`. Empty when the
+- * segment is degenerate, the point is off its line, or t is not in (0, 1).
+- */
+-[[nodiscard]] std::optional<authority::FieldExactRational>
+-face_chart_segment_parameter(const FaceChartPoint &entry,
+-                             const FaceChartPoint &exit,
+-                             const FaceChartPoint &point);
+-
+ /**
+  * Counter-clockwise order of the rays leaving `origin` through each target,
+  * as indices into `targets`, starting at index 0. Empty when a target equals
+@@ -339,19 +324,6 @@ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
+     const FieldAlignedCandidateTrace &ending,
+     const FieldAlignedCandidateTrace &struck);
+ 
+-/**
+- * The exact source path segment `segment` of `trace` traverses. A segment
+- * without an edge transit is one face piece to its end. A segment with an edge
+- * transit is a face piece from its entry to the slide start, omitted when the
+- * two are the same point, then an edge piece along its outgoing carrier to the
+- * slide end. A terminal face contact on the last segment ends it on its face
+- * piece, so the slide is not traversed. Empty when the record is incomplete or
+- * inconsistent.
+- */
+-[[nodiscard]] std::optional<authority::ExactSourcePath>
+-exact_trace_segment_pieces(const FieldAlignedCandidateTrace &trace,
+-                           std::size_t segment);
+-
+ /** Segment range [first, onePastLast) of the arc between two positions. */
+ [[nodiscard]] std::pair<std::size_t, std::size_t>
+ trace_cut_segment_range(const TraceCutPosition &first,
+diff --git a/src/geometry/ExactTraceSegmentPieces.h b/src/geometry/ExactTraceSegmentPieces.h
+new file mode 100644
+index 000000000..2c544238e
+--- /dev/null
++++ b/src/geometry/ExactTraceSegmentPieces.h
+@@ -0,0 +1,195 @@
++// This file is part of Directional, a library for directional field processing.
++//
++// This Source Code Form is subject to the terms of the Mozilla Public License
++// v. 2.0. If a copy of the MPL was not distributed with this file, You can
++// obtain one at http://mozilla.org/MPL/2.0/.
++
++#pragma once
++
++#include <array>
++#include <cstddef>
++#include <optional>
++#include <utility>
++
++#include <directional/authority/ExactSourcePath.h>
++#include <directional/geometry/SurfaceCellTracing.h>
++
++// The exact source pieces of a traced segment, read from the candidate trace
++// record alone. Both the curve-network stage and the embedded-graph stage
++// read traces this way, so it sits below both.
++namespace directional::geometry::embedded_graph_topology_detail {
++
++/**
++ * Exact barycentric coordinates of a point of one source face, listed in that
++ * face's oriented corner order. Every predicate below is affine-invariant, so
++ * no metric geometry is read.
++ */
++using FaceChartPoint = std::array<authority::FieldExactRational, 3>;
++
++/**
++ * The exact t with point = entry + t * (exit - entry), when the point lies
++ * strictly inside the straight segment from `entry` to `exit`. Empty when the
++ * segment is degenerate, the point is off its line, or t is not in (0, 1).
++ */
++[[nodiscard]] inline std::optional<authority::FieldExactRational> face_chart_segment_parameter(
++    const FaceChartPoint &entry, const FaceChartPoint &exit,
++    const FaceChartPoint &point) {
++  std::optional<std::size_t> axis;
++  for (std::size_t index = 0U; index < 3U; ++index) {
++    if (exit[index] != entry[index]) {
++      axis = index;
++      break;
++    }
++  }
++  if (!axis.has_value()) return std::nullopt;
++  const authority::FieldExactRational parameter =
++      (point[*axis] - entry[*axis]) / (exit[*axis] - entry[*axis]);
++  for (std::size_t index = 0U; index < 3U; ++index) {
++    if (entry[index] + parameter * (exit[index] - entry[index]) !=
++        point[index]) {
++      return std::nullopt;
++    }
++  }
++  if (!(parameter > authority::FieldExactRational::from_integer(0)) ||
++      !(parameter < authority::FieldExactRational::from_integer(1))) {
++    return std::nullopt;
++  }
++  return parameter;
++}
++
++/** The exact end point of trace segment `segmentIndex`. The last segment ends
++ * at the trace's terminal face contact or terminal point; any other segment,
++ * or a last one with neither, ends at its slide exit when it slides, else at
++ * the next segment's entry. Empty when the record holds none. */
++[[nodiscard]] inline std::optional<authority::ExactSourcePoint> exact_trace_segment_end(
++    const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
++  if (segmentIndex >= trace.segments.size()) return std::nullopt;
++  const auto &segment = trace.segments[segmentIndex];
++  if (segmentIndex + 1U == trace.segments.size()) {
++    if (trace.terminalContact.has_value()) {
++      if (trace.terminalContact->sourceFace != segment.sourceFace) {
++        return std::nullopt;
++      }
++      return authority::canonical_exact_source_face_point(
++          trace.terminalContact->sourceFace,
++          trace.terminalContact->barycentric);
++    }
++    if (trace.terminalPoint.has_value()) {
++      return authority::canonical_exact_source_boundary_point(
++          *trace.terminalPoint);
++    }
++  }
++  if (segment.edgeTransitExit.has_value()) {
++    return authority::canonical_exact_source_boundary_point(
++        *segment.edgeTransitExit);
++  }
++  if (segmentIndex + 1U < trace.segments.size()) {
++    return authority::canonical_exact_source_boundary_point(
++        trace.segments[segmentIndex + 1U].entryPoint);
++  }
++  return std::nullopt;
++}
++
++/** Exact barycentric coordinates, in `face`'s corner order, of a point on one
++ * of its edges. Empty when the edge is not an edge of `face`. */
++[[nodiscard]] inline std::optional<FaceChartPoint> canonical_boundary_barycentric(
++    const authority::SourceFaceTopologyKey &face,
++    const authority::FieldBoundaryPoint &point) {
++  const auto &vertices = face.vertices();
++  FaceChartPoint barycentric{authority::FieldExactRational::from_integer(0),
++                             authority::FieldExactRational::from_integer(0),
++                             authority::FieldExactRational::from_integer(0)};
++  std::optional<std::size_t> firstIndex;
++  std::optional<std::size_t> secondIndex;
++  for (std::size_t index = 0U; index < vertices.size(); ++index) {
++    if (vertices[index] == point.edge.first()) firstIndex = index;
++    if (vertices[index] == point.edge.second()) secondIndex = index;
++  }
++  if (!firstIndex.has_value() || !secondIndex.has_value()) return std::nullopt;
++  barycentric[*firstIndex] =
++      authority::FieldExactRational::from_integer(1) - point.parameter.value;
++  barycentric[*secondIndex] = point.parameter.value;
++  return barycentric;
++}
++
++/**
++ * The exact source path segment `segment` of `trace` traverses. A segment
++ * without an edge transit is one face piece to its end. A segment with an edge
++ * transit is a face piece from its entry to the slide start, omitted when the
++ * two are the same point, then an edge piece along its outgoing carrier to the
++ * slide end. A terminal face contact on the last segment ends it on its face
++ * piece, so the slide is not traversed. Empty when the record is incomplete or
++ * inconsistent.
++ */
++[[nodiscard]] inline std::optional<authority::ExactSourcePath> exact_trace_segment_pieces(
++    const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
++  if (segmentIndex >= trace.segments.size()) return std::nullopt;
++  const FieldAlignedCandidateTraceSegment &segment = trace.segments[segmentIndex];
++  const auto face_piece_to_end = [&]() -> std::optional<authority::ExactSourcePath> {
++    const auto first = authority::canonical_exact_source_boundary_point(
++        segment.entryPoint);
++    const auto second = exact_trace_segment_end(trace, segmentIndex);
++    if (!first.has_value() || !second.has_value()) return std::nullopt;
++    authority::ExactSourcePath path{authority::ExactSourceSupportPiece{
++        authority::SourceFaceInteriorSupport{segment.sourceFace}, *first,
++        *second}};
++    return authority::exact_source_path_is_canonical(path)
++               ? std::optional<authority::ExactSourcePath>{std::move(path)}
++               : std::nullopt;
++  };
++  if (!segment.edgeTransitEntry.has_value() &&
++      !segment.edgeTransitExit.has_value()) {
++    return face_piece_to_end();
++  }
++  if (!segment.edgeTransitEntry.has_value() ||
++      !segment.edgeTransitExit.has_value() ||
++      segment.edgeTransitEntry->edge != segment.outgoingCarrier ||
++      segment.edgeTransitExit->edge != segment.outgoingCarrier) {
++    return std::nullopt;
++  }
++  const bool last = segmentIndex + 1U == trace.segments.size();
++  if (last && trace.terminalContact.has_value()) {
++    // A contact is published after its whole proposal is committed, so the
++    // record keeps the slide although the trace stops on the face piece.
++    const auto entry =
++        canonical_boundary_barycentric(segment.sourceFace, segment.entryPoint);
++    const auto slideStart = canonical_boundary_barycentric(
++        segment.sourceFace, *segment.edgeTransitEntry);
++    if (!entry.has_value() || !slideStart.has_value() ||
++        trace.terminalContact->sourceFace != segment.sourceFace ||
++        !face_chart_segment_parameter(*entry, *slideStart,
++                                      trace.terminalContact->barycentric)
++             .has_value()) {
++      return std::nullopt;
++    }
++    return face_piece_to_end();
++  }
++  const auto entry =
++      authority::canonical_exact_source_boundary_point(segment.entryPoint);
++  const auto slideStart =
++      authority::canonical_exact_source_boundary_point(*segment.edgeTransitEntry);
++  const auto slideEnd =
++      authority::canonical_exact_source_boundary_point(*segment.edgeTransitExit);
++  if (!entry.has_value() || !slideStart.has_value() || !slideEnd.has_value()) {
++    return std::nullopt;
++  }
++  if (last && trace.terminalPoint.has_value() &&
++      authority::canonical_exact_source_boundary_point(*trace.terminalPoint) !=
++          slideEnd) {
++    return std::nullopt;
++  }
++  authority::ExactSourcePath path;
++  if (*entry != *slideStart) {
++    path.push_back(authority::ExactSourceSupportPiece{
++        authority::SourceFaceInteriorSupport{segment.sourceFace}, *entry,
++        *slideStart});
++  }
++  path.push_back(authority::ExactSourceSupportPiece{
++      authority::SourceEdgeSupport{segment.outgoingCarrier}, *slideStart,
++      *slideEnd});
++  return authority::exact_source_path_is_canonical(path)
++             ? std::optional<authority::ExactSourcePath>{std::move(path)}
++             : std::nullopt;
++}
++
++} // namespace directional::geometry::embedded_graph_topology_detail

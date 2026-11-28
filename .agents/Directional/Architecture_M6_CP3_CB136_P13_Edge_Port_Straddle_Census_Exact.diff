@@ -1,0 +1,70 @@
+diff --git a/src/authority/FieldTransportAtlas.cpp b/src/authority/FieldTransportAtlas.cpp
+index df0b3117c..b9804a2ae 100644
+--- a/src/authority/FieldTransportAtlas.cpp
++++ b/src/authority/FieldTransportAtlas.cpp
+@@ -802,6 +802,65 @@ build_singularity_attachments(
+                 << sourceEdge.second().index() << ')'
+                 << " signedLift=" << signedLift << '\n';
+     }
++    // P13-e (RA-236), report only: a separatrix lost between two wedges. At
++    // the radial ray shared by fan faces i and i+1, a branch whose direction
++    // in face i points past the ray (into face i+1) while its transported
++    // branch in face i+1 points short of it (back into face i) straddles the
++    // ray: the separatrix slides along that radial edge and no wedge holds
++    // it. Classes plus straddles must equal 4 - index for any valid fan.
++    {
++      const FieldExactRational zero = FieldExactRational::from_integer(0);
++      const auto weight = [](const IncidentFanFace &face,
++                             const FieldBranchDirection &direction,
++                             const SourceVertexId vertex)
++          -> std::optional<FieldExactRational> {
++        if (!direction.is_barycentric()) return std::nullopt;
++        const auto &vertices = face.topology.vertices();
++        for (std::size_t index = 0U; index < vertices.size(); ++index) {
++          if (vertices[index] == vertex) return direction[index];
++        }
++        return std::nullopt;
++      };
++      std::size_t straddles = 0U;
++      std::ostringstream listed;
++      for (const auto &[fanIndex, nextFanIndex, sourceEdge, signedLift] :
++           partitionAdjacencies) {
++        const IncidentFanFace &face = (*fan)[fanIndex];
++        const IncidentFanFace &nextFace = (*fan)[nextFanIndex];
++        const SourceVertexId shared = face.nextVertex;
++        const auto &frame = builtFramesByRow[face.row.index()].published;
++        const auto &nextFrame =
++            builtFramesByRow[nextFace.row.index()].published;
++        for (const FieldBranchBoundaryPairing &pairing : frame.branches) {
++          const FieldBranchBoundaryPairing *target =
++              find_pairing(nextFrame, pairing.branch.rotated(signedLift));
++          if (target == nullptr) continue;
++          const auto past = weight(face, pairing.direction, shared);
++          const auto behind = weight(face, pairing.direction, face.previousVertex);
++          const auto short_of = weight(nextFace, target->direction, shared);
++          const auto ahead =
++              weight(nextFace, target->direction, nextFace.nextVertex);
++          if (past && behind && short_of && ahead && *past > zero &&
++              *behind < zero && *short_of > zero && *ahead < zero) {
++            ++straddles;
++            listed << " (" << fanIndex << ','
++                   << static_cast<int>(pairing.branch.value()) << ','
++                   << sourceEdge.first().index() << '-'
++                   << sourceEdge.second().index() << ')';
++          }
++        }
++      }
++      std::clog << "FieldTransportAtlas.partition edgePorts singularity="
++                << singularity.id.index()
++                << " sourceVertex=" << singularity.sourceVertex.index()
++                << " classes=" << classes.size() << " edgePorts=" << straddles
++                << " expectedClasses=" << expected << " identity="
++                << (static_cast<int>(classes.size() + straddles) == expected
++                        ? 1
++                        : 0)
++                << " straddles=" << (straddles == 0U ? " -" : listed.str())
++                << '\n';
++    }
+ 
+     if (static_cast<int>(classes.size()) != expected) {
+       error = FieldAtlasBuildError{

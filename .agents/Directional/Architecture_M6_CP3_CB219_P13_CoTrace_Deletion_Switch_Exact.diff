@@ -1,0 +1,487 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index 849f2155c..f0570c042 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -615,16 +615,17 @@ public:
+       const authority::FieldTransportAtlas &fieldTransportAtlas,
+       const std::vector<SurfaceCellRail> &authoritativeRails);
+ 
+-  // `deleteClaimedCoTraces` validates against, and publishes, the canonical
+-  // derivation with the staged claimed co-trace deletion (see
+-  // `diagnose_with_arrival_priority`). Production `make` never passes it.
++  // `deleteClaimedCoTraces` selects the canonical derivation the candidate is
++  // validated against and published from (see
++  // `diagnose_with_arrival_priority`). Production keeps the default; false
++  // only observes the traced network in tests and diagnostics.
+   [[nodiscard]] static FieldAlignedCurveNetworkBuildResult make_from_candidate(
+       const TriMesh &sourceMesh,
+       const SourceTopologyRegions &sourceAuthority,
+       const authority::FieldTransportAtlas &fieldTransportAtlas,
+       const std::vector<SurfaceCellRail> &authoritativeRails,
+       FieldAlignedCurveNetworkCandidate candidate,
+-      bool deleteClaimedCoTraces = false);
++      bool deleteClaimedCoTraces = true);
+ 
+   // Diagnostic/offline comparison surface only. Production `make` has no
+   // priority parameter and always selects ArcLengthFiltered.
+@@ -633,9 +634,10 @@ public:
+   // than that trace reaches it, stops at the crossing before entering
+   // (`field_aligned_slide_entry_stops_moving_trace`). Production `make` never
+   // stops there.
+-  // `deleteClaimedCoTraces` stages DESIGN 7.2 Amendment 35 after the exact
++  // `deleteClaimedCoTraces` applies DESIGN 7.2 Amendment 35 after the exact
+   // retrace selection (`surface_cell_tracing_detail::
+-  // field_aligned_delete_claimed_co_traces`). Production `make` never deletes.
++  // field_aligned_delete_claimed_co_traces`). Production default true; false
++  // only observes the traced network in tests and diagnostics.
+   [[nodiscard]] static FieldAlignedCurveNetworkBuildResult
+   diagnose_with_arrival_priority(
+       const TriMesh &sourceMesh,
+@@ -643,7 +645,7 @@ public:
+       const authority::FieldTransportAtlas &fieldTransportAtlas,
+       const std::vector<SurfaceCellRail> &authoritativeRails,
+       FieldTraceArrivalPriority priority, bool stopAtLaterSlideEntry = false,
+-      bool deleteClaimedCoTraces = false);
++      bool deleteClaimedCoTraces = true);
+ 
+   [[nodiscard]] const std::vector<FieldAlignedCurveNetworkNode> &nodes() const
+       noexcept {
+@@ -1062,6 +1064,8 @@ using FieldAlignedTraceScaleCensusResult =
+ measure_field_aligned_trace_parameter_scale(
+     const authority::FieldExactRational &parameter);
+ 
++// Observes, validates and digests the traced network: the canonical derivation
++// without claimed co-trace deletion.
+ [[nodiscard]] FieldAlignedTraceScaleCensusResult
+ diagnose_field_aligned_trace_scale_census(
+     const TriMesh &sourceMesh,
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 9b68af92a..9181a4e52 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -5507,7 +5507,7 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
+         FieldTraceArrivalPriority::ArcLengthFiltered,
+     FieldAlignedTraceScaleCensus *scaleCensus = nullptr,
+     const bool stopAtLaterSlideEntry = true,
+-    const bool deleteClaimedCoTraces = false) {
++    const bool deleteClaimedCoTraces = true) {
+   if (scaleCensus != nullptr) *scaleCensus = FieldAlignedTraceScaleCensus{};
+   const Eigen::MatrixXi &sourceFaces = sourceMesh.F;
+   const std::size_t sourceVertexCount =
+@@ -6000,7 +6000,7 @@ std::optional<FieldAlignedCurveNetworkError> validate_field_aligned_candidate(
+     const authority::FieldTransportAtlas &fieldTransportAtlas,
+     const std::vector<SurfaceCellRail> &authoritativeRails,
+     FieldAlignedCurveNetworkCandidate candidate,
+-    const bool deleteClaimedCoTraces = false) {
++    const bool deleteClaimedCoTraces = true) {
+   const FieldAlignedCandidateResult canonical = canonical_field_aligned_candidate(
+       sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails,
+       nullptr, FieldTraceArrivalPriority::ArcLengthFiltered, nullptr, true,
+@@ -6437,7 +6437,8 @@ FieldAlignedTraceScaleCensusResult diagnose_field_aligned_trace_scale_census(
+   try {
+     const FieldAlignedCandidateResult canonical = canonical_field_aligned_candidate(
+         sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails,
+-        nullptr, FieldTraceArrivalPriority::ArcLengthFiltered, &census);
++        nullptr, FieldTraceArrivalPriority::ArcLengthFiltered, &census, true,
++        false);
+     finalize();
+     if (const auto *error =
+             std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
+@@ -6447,7 +6448,7 @@ FieldAlignedTraceScaleCensusResult diagnose_field_aligned_trace_scale_census(
+         std::get<FieldAlignedCurveNetworkCandidate>(canonical);
+     if (const auto error = validate_field_aligned_candidate(
+             sourceMesh, sourceAuthority, fieldTransportAtlas,
+-            authoritativeRails, candidate);
++            authoritativeRails, candidate, false);
+         error.has_value()) {
+       return FieldAlignedTraceScaleCensusFailure{std::move(census), *error};
+     }
+@@ -6478,7 +6479,8 @@ FieldAlignedContactCensusResult diagnose_field_aligned_contact_census(
+     FieldAlignedContactCensus census;
+     const FieldAlignedCandidateResult canonical = canonical_field_aligned_candidate(
+         sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails,
+-        &census);
++        &census, FieldTraceArrivalPriority::ArcLengthFiltered, nullptr, true,
++        false);
+     if (const auto *error =
+             std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
+       return *error;
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 95f73d9bf..e64c38b70 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -14394,9 +14394,9 @@ TEST(GlobalTopologyPlan,
+   const auto &sphereCertificate = sphere.cutGraph->certificate();
+   EXPECT_TRUE(sphereCertificate.proves_embedded_cellularity());
+   EXPECT_TRUE(sphereCertificate.proves_cellularity());
+-  EXPECT_EQ(18U, sphereCertificate.vertexCount);
+-  EXPECT_EQ(30U, sphereCertificate.edgeCount);
+-  EXPECT_EQ(14U, sphereCertificate.totalOrbitCount);
++  EXPECT_EQ(12U, sphereCertificate.vertexCount);
++  EXPECT_EQ(18U, sphereCertificate.edgeCount);
++  EXPECT_EQ(8U, sphereCertificate.totalOrbitCount);
+   EXPECT_EQ(1U, sphereCertificate.graphComponentCount);
+   EXPECT_EQ(2, sphereCertificate.sourceEulerCharacteristic);
+   EXPECT_EQ(sphere.cutGraph->semantic_digest(), sphere.plan->cut_graph_digest());
+@@ -16937,8 +16937,10 @@ TEST(M4CPScaleS1,
+   ASSERT_TRUE(atlasBuild);
+   const auto rails = rails_from_atlas(mesh, atlasBuild.value());
+ 
+-  const auto withoutCensus = FieldAlignedCurveNetwork::make(
+-      mesh, *sourceAuthority, atlasBuild.value(), rails);
++  // The census observes the traced network, before claimed co-trace deletion.
++  const auto withoutCensus = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
++      mesh, *sourceAuthority, atlasBuild.value(), rails,
++      field_aligned_production_arrival_priority(), true, false);
+   ASSERT_TRUE(withoutCensus);
+ 
+   const auto first = diagnose_field_aligned_trace_scale_census(
+@@ -17044,9 +17046,10 @@ TEST(M4CPScaleS1,
+     ASSERT_TRUE(observation.sourceAuthority.has_value()) << observation.report;
+     ASSERT_TRUE(observation.atlas.has_value()) << observation.report;
+ 
+-    const auto baseline = FieldAlignedCurveNetwork::make(
++    const auto baseline = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+         observation.mesh, *observation.sourceAuthority, *observation.atlas,
+-        observation.rails);
++        observation.rails, field_aligned_production_arrival_priority(), true,
++        false);
+     const auto firstWitness = diagnose_field_aligned_trace_scale_census(
+         observation.mesh, *observation.sourceAuthority, *observation.atlas,
+         observation.rails);
+@@ -17630,12 +17633,22 @@ TEST(TraceTerminationCorrection,
+ TEST(TraceTerminationCorrection,
+      PrescribedSpherePublishesTwentyFourTracesAndCorrectedContactEvents) {
+   using Kind = directional::geometry::FieldAlignedNetworkEventKind;
++  using directional::geometry::surface_cell_tracing_detail::
++      field_aligned_production_arrival_priority;
+   const Cp4cReachabilityObservation sphere =
+       observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+   ASSERT_TRUE(sphere.sourceAuthority.has_value()) << sphere.report;
+   ASSERT_TRUE(sphere.atlas.has_value()) << sphere.report;
+   ASSERT_TRUE(sphere.network.has_value()) << sphere.report;
+-  const FieldAlignedCurveNetwork &network = *sphere.network;
++  // The tracing loop's head-on mutual termination, witnessed on the traced
++  // network before step-7 selection deletes the claimed co-traces.
++  const auto traced = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
++      sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
++      field_aligned_production_arrival_priority(), true, false);
++  ASSERT_TRUE(traced) << directional::geometry::
++                             field_aligned_curve_network_error_code_name(
++                                 traced.error().code);
++  const FieldAlignedCurveNetwork &network = traced.value();
+   ASSERT_EQ(24U, network.candidate_traces().size()) << sphere.report;
+ 
+   using Role = directional::geometry::FieldAlignedTraceEventRole;
+@@ -17774,7 +17787,11 @@ TEST(TraceTerminationCorrection,
+   ASSERT_TRUE(sphere.network.has_value()) << sphere.report;
+   const FieldAlignedCurveNetwork &network = *sphere.network;
+   const auto &traces = network.candidate_traces();
+-  ASSERT_EQ(24U, traces.size()) << sphere.report;
++  ASSERT_EQ(14U, traces.size()) << sphere.report;
++  const auto trace_with_id = [&](const std::size_t id) {
++    return std::find_if(traces.begin(), traces.end(),
++                        [&](const auto &trace) { return trace.id.index() == id; });
++  };
+ 
+   struct SlideEntry {
+     std::size_t moving, movingSegment, wall, wallSegment, first, second;
+@@ -17794,12 +17811,12 @@ TEST(TraceTerminationCorrection,
+     return value.numerator_string() + '/' + value.denominator_string();
+   };
+   for (const SlideEntry &entry : entries) {
+-    ASSERT_LT(entry.moving, traces.size());
+-    ASSERT_LT(entry.wall, traces.size());
+-    const auto &moving = traces[entry.moving];
+-    const auto &wall = traces[entry.wall];
+-    EXPECT_EQ(entry.moving, moving.id.index());
+-    EXPECT_EQ(entry.wall, wall.id.index());
++    const auto movingTrace = trace_with_id(entry.moving);
++    const auto wallTrace = trace_with_id(entry.wall);
++    ASSERT_NE(traces.end(), movingTrace) << entry.moving;
++    ASSERT_NE(traces.end(), wallTrace) << entry.wall;
++    const auto &moving = *movingTrace;
++    const auto &wall = *wallTrace;
+     const auto parameter = exact_ratio(entry.numerator, entry.denominator);
+     std::ostringstream receipt;
+     receipt << "SphereEntryOnSlidingWall moving=" << entry.moving << ':'
+@@ -17893,7 +17910,7 @@ TEST(TraceTerminationCorrection,
+ 
+   const auto unstaged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+       sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
+-      field_aligned_production_arrival_priority(), false);
++      field_aligned_production_arrival_priority(), false, false);
+   ASSERT_TRUE(unstaged);
+ 
+   const auto staged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+@@ -17907,8 +17924,12 @@ TEST(TraceTerminationCorrection,
+   const FieldAlignedCurveNetwork &network = staged.value();
+   const auto &traces = network.candidate_traces();
+   const auto &unstagedTraces = unstaged.value().candidate_traces();
+-  ASSERT_EQ(24U, traces.size());
++  ASSERT_EQ(14U, traces.size());
+   ASSERT_EQ(24U, unstagedTraces.size());
++  const auto trace_with_id = [](const auto &values, const std::size_t id) {
++    return std::find_if(values.begin(), values.end(),
++                        [&](const auto &trace) { return trace.id.index() == id; });
++  };
+ 
+   struct SlideEntry {
+     std::size_t moving, movingSegment, wall, wallSegment, first, second;
+@@ -17920,13 +17941,16 @@ TEST(TraceTerminationCorrection,
+       {5U, 8U, 21U, 6U, 33U, 34U, 1009722507334937LL, 1125899906842624LL},
+       {8U, 8U, 22U, 6U, 45U, 46U, 464709598030749LL, 4503599627370496LL}}};
+   for (const SlideEntry &entry : entries) {
+-    const auto &moving = traces[entry.moving];
+-    const auto &wall = traces[entry.wall];
+-    ASSERT_EQ(entry.moving, moving.id.index());
+-    ASSERT_EQ(entry.wall, wall.id.index());
++    const auto movingTrace = trace_with_id(traces, entry.moving);
++    const auto wallTrace = trace_with_id(traces, entry.wall);
++    const auto unstagedMoving = trace_with_id(unstagedTraces, entry.moving);
++    ASSERT_NE(traces.end(), movingTrace) << entry.moving;
++    ASSERT_NE(traces.end(), wallTrace) << entry.wall;
++    ASSERT_NE(unstagedTraces.end(), unstagedMoving) << entry.moving;
++    const auto &moving = *movingTrace;
++    const auto &wall = *wallTrace;
+     // Unstaged, the moving trace enters the segment and goes on.
+-    EXPECT_LT(entry.movingSegment,
+-              unstagedTraces[entry.moving].segments.size());
++    EXPECT_LT(entry.movingSegment, unstagedMoving->segments.size());
+     EXPECT_EQ(entry.movingSegment, moving.segments.size());
+     ASSERT_TRUE(moving.terminalContact.has_value()) << entry.moving;
+     EXPECT_FALSE(moving.terminalPoint.has_value());
+@@ -17980,12 +18004,12 @@ TEST(TraceTerminationCorrection,
+       continue;
+     }
+     carrierEnds << (carrierEnds.tellp() > 0 ? "," : "") << trace.id.index();
+-    const std::size_t struck = trace.terminalContact->struckTrace.index();
++    const auto struck =
++        trace_with_id(traces, trace.terminalContact->struckTrace.index());
+     const std::size_t segment = trace.terminalContact->struckSegmentIndex;
+-    slideStops += struck < traces.size() &&
+-                          segment < traces[struck].segments.size() &&
+-                          traces[struck].segments[segment].edgeTransitExit
+-                              .has_value()
++    slideStops += struck != traces.end() &&
++                          segment < struck->segments.size() &&
++                          struck->segments[segment].edgeTransitExit.has_value()
+                       ? 1U
+                       : 0U;
+   }
+@@ -18049,7 +18073,7 @@ TEST(TraceTerminationCorrection,
+   // Keep the negative control independent of the production default.
+   const auto unstaged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+       sphere.mesh, *sphere.sourceAuthority, *sphere.atlas, sphere.rails,
+-      field_aligned_production_arrival_priority(), false);
++      field_aligned_production_arrival_priority(), false, false);
+   ASSERT_TRUE(unstaged);
+ 
+   // Without the stop the canonical cut search is exhausted before cellularity.
+@@ -18071,7 +18095,7 @@ TEST(TraceTerminationCorrection,
+             staged.value().semantic_digest());
+   const FieldAlignedCurveNetwork &network = staged.value();
+   const auto &traces = network.candidate_traces();
+-  ASSERT_EQ(24U, traces.size());
++  ASSERT_EQ(14U, traces.size());
+ 
+   // With the stop the canonical cut graph is certified cellular.
+   const auto cutGraph = directional::geometry::SurfaceCutGraph::make(
+@@ -18638,7 +18662,7 @@ TEST(TraceTerminationCorrection,
+       observe_cp4c_witness("sphere_prescribed", "prescribed sphere");
+   ASSERT_TRUE(sphere.network.has_value()) << sphere.report;
+   const auto &traces = sphere.network->candidate_traces();
+-  ASSERT_EQ(24U, traces.size()) << sphere.report;
++  ASSERT_EQ(14U, traces.size()) << sphere.report;
+ 
+   std::size_t segments = 0U;
+   std::size_t slideSegments = 0U;
+@@ -18673,7 +18697,7 @@ TEST(TraceTerminationCorrection,
+         kind = "face";
+       }
+       if (slides || !pieces.has_value()) {
+-        details << "SphereRealPieceSegment trace=" << index << ':' << segment
++        details << "SphereRealPieceSegment trace=" << trace.id.index() << ':' << segment
+                 << " segments=" << trace.segments.size() << " kind=" << kind
+                 << " slides=" << slides
+                 << " terminalBarrier=" << trace.terminalBarrier.has_value()
+@@ -18688,14 +18712,14 @@ TEST(TraceTerminationCorrection,
+         Position{trace.segments.size(), std::nullopt}, &counts);
+     if (!path.has_value()) {
+       ++pathFailures;
+-      details << "SphereRealPiecePathFailure trace=" << index << '\n';
++      details << "SphereRealPiecePathFailure trace=" << trace.id.index() << '\n';
+       continue;
+     }
+     Faces faces;
+     for (const auto &record : trace.segments) faces.push_back(record.sourceFace);
+     if (embedded::source_piece_binding_failure(faces, counts, *path)) {
+       ++bindingFailures;
+-      details << "SphereRealPieceBindingFailure trace=" << index << '\n';
++      details << "SphereRealPieceBindingFailure trace=" << trace.id.index() << '\n';
+     }
+   }
+   // Row 963's four walls (traces 0, 1, 21 and 22) slide on segment 6.
+@@ -18751,10 +18775,10 @@ TEST(TraceTerminationCorrection,
+     std::int64_t numerator, denominator;
+   };
+   const std::array<ExpectedContact, 4> expectedContacts{{
+-      {17U, 0U, 12U, 6U, 8U, 4038890029339747LL, 4503599627370496LL},
+-      {20U, 1U, 13U, 16U, 21U, 4038890029339747LL, 4503599627370496LL},
+-      {5U, 21U, 14U, 33U, 34U, 1009722507334937LL, 1125899906842624LL},
+-      {8U, 22U, 15U, 45U, 46U, 464709598030749LL, 4503599627370496LL}}};
++      {17U, 0U, 8U, 6U, 8U, 4038890029339747LL, 4503599627370496LL},
++      {20U, 1U, 9U, 16U, 21U, 4038890029339747LL, 4503599627370496LL},
++      {5U, 21U, 10U, 33U, 34U, 1009722507334937LL, 1125899906842624LL},
++      {8U, 22U, 11U, 45U, 46U, 464709598030749LL, 4503599627370496LL}}};
+   using SlideKey = std::pair<std::size_t, std::size_t>;
+   struct ExpectedSplit {
+     std::size_t node;
+@@ -18764,7 +18788,7 @@ TEST(TraceTerminationCorrection,
+   std::map<SlideKey, ExpectedSplit> expectedSplits;
+   std::set<SlideKey> sourceSlides;
+   const auto &traces = network.candidate_traces();
+-  ASSERT_EQ(24U, traces.size());
++  ASSERT_EQ(14U, traces.size());
+   for (const auto &trace : traces) {
+     for (std::size_t i = 0; i < trace.segments.size(); ++i) {
+       const auto &segment = trace.segments[i];
+@@ -18776,10 +18800,16 @@ TEST(TraceTerminationCorrection,
+   }
+   ASSERT_EQ(10U, sourceSlides.size());
+   for (const auto &contact : expectedContacts) {
+-    const auto &moving = traces[contact.moving];
+-    const auto &wall = traces[contact.wall];
+-    ASSERT_EQ(contact.moving, moving.id.index());
+-    ASSERT_EQ(contact.wall, wall.id.index());
++    const auto with_id = [&](const std::size_t id) {
++      return std::find_if(traces.begin(), traces.end(),
++                          [&](const auto &trace) { return trace.id.index() == id; });
++    };
++    const auto movingTrace = with_id(contact.moving);
++    const auto wallTrace = with_id(contact.wall);
++    ASSERT_NE(traces.end(), movingTrace) << contact.moving;
++    ASSERT_NE(traces.end(), wallTrace) << contact.wall;
++    const auto &moving = *movingTrace;
++    const auto &wall = *wallTrace;
+     ASSERT_EQ(8U, moving.segments.size());
+     ASSERT_EQ(7U, wall.segments.size());
+     ASSERT_TRUE(moving.terminalContact.has_value());
+@@ -24048,10 +24078,12 @@ TEST(TraceTerminationCorrection, SlideEntryActivationReachByReaderRecipe) {
+         continue;
+       }
+       const auto &contact = *trace.terminalContact;
+-      const auto struck = contact.struckTrace.index();
++      const auto struck = std::find_if(
++          traces.begin(), traces.end(),
++          [&](const auto &candidate) { return candidate.id == contact.struckTrace; });
+       const auto segment = contact.struckSegmentIndex;
+-      if (struck < traces.size() && segment < traces[struck].segments.size() &&
+-          traces[struck].segments[segment].edgeTransitExit.has_value()) {
++      if (struck != traces.end() && segment < struck->segments.size() &&
++          struck->segments[segment].edgeTransitExit.has_value()) {
+         ++count;
+       }
+     }
+@@ -24137,7 +24169,7 @@ TEST(TraceTerminationCorrection, SlideEntryActivationReachByReaderRecipe) {
+       const auto explicitUnstaged =
+           FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+               mesh, *source, *atlas, rails,
+-              field_aligned_production_arrival_priority(), false);
++              field_aligned_production_arrival_priority(), false, false);
+       append("explicitUnstaged", explicitUnstaged);
+       EXPECT_TRUE(explicitUnstaged && staged) << key;
+       if (explicitUnstaged && staged) {
+@@ -24409,22 +24441,27 @@ TEST(FieldAlignedCurveNetwork, PrescribedSphereClaimedCoTraceDeletionKeepsOneTra
+   const auto &source = *fixture.sourceAuthority;
+   const auto &atlas = *fixture.atlas;
+ 
+-  // The option defaults off and leaves the production network unchanged.
+-  const auto unstaged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
++  // The diagnostic producer with the production options publishes the
++  // pipeline's network, so both carry the deletion.
++  const auto diagnostic = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+       mesh, source, atlas, fixture.rails, field_aligned_production_arrival_priority(),
+       true);
+-  ASSERT_TRUE(unstaged) << network_error_locus(unstaged.error());
+-  EXPECT_EQ(fixture.network->semantic_digest(), unstaged.value().semantic_digest());
+-  EXPECT_EQ(24U, fixture.network->candidate_traces().size());
+-  EXPECT_TRUE(std::none_of(fixture.network->candidate_traces().begin(),
+-                           fixture.network->candidate_traces().end(),
+-                           [](const auto &trace) { return trace.arrivalPort.has_value(); }));
++  ASSERT_TRUE(diagnostic) << network_error_locus(diagnostic.error());
++  EXPECT_EQ(fixture.network->semantic_digest(), diagnostic.value().semantic_digest());
+ 
+-  const auto staged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
++  // Without the deletion the traced network keeps all 24 port traces and no
++  // claimant, so the production network differs from it.
++  const auto traced = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+       mesh, source, atlas, fixture.rails, field_aligned_production_arrival_priority(),
+-      true, true);
+-  ASSERT_TRUE(staged) << network_error_locus(staged.error());
+-  const auto &network = staged.value();
++      true, false);
++  ASSERT_TRUE(traced) << network_error_locus(traced.error());
++  EXPECT_EQ(24U, traced.value().candidate_traces().size());
++  EXPECT_TRUE(std::none_of(traced.value().candidate_traces().begin(),
++                           traced.value().candidate_traces().end(),
++                           [](const auto &trace) { return trace.arrivalPort.has_value(); }));
++  EXPECT_NE(traced.value().semantic_digest(), fixture.network->semantic_digest());
++
++  const auto &network = *fixture.network;
+   const auto &traces = network.candidate_traces();
+   EXPECT_EQ(24U, network.singularity_ports().size());
+   std::vector<std::size_t> traceIds;
+@@ -24475,13 +24512,23 @@ TEST(FieldAlignedCurveNetwork, PrescribedSphereClaimedCoTraceDeletionKeepsOneTra
+     }
+   }
+ 
+-  // The validator rebuilds the canonical candidate with the same option.
++  // The validator rebuilds the same canonical candidate, deletion included:
++  // a claimant that no longer owns its claimed port is rejected.
+   const auto validated = FieldAlignedCurveNetwork::make_from_candidate(
+-      mesh, source, atlas, fixture.rails, network.validation_candidate(), true);
++      mesh, source, atlas, fixture.rails, network.validation_candidate());
+   ASSERT_TRUE(validated) << network_error_locus(validated.error());
+   EXPECT_EQ(network.semantic_digest(), validated.value().semantic_digest());
+-  EXPECT_FALSE(FieldAlignedCurveNetwork::make_from_candidate(
+-      mesh, source, atlas, fixture.rails, network.validation_candidate()));
++  auto unclaimed = network.validation_candidate();
++  const auto claimant = std::find_if(
++      unclaimed.candidateTraces.begin(), unclaimed.candidateTraces.end(),
++      [](const auto &trace) { return trace.arrivalPort.has_value(); });
++  ASSERT_NE(unclaimed.candidateTraces.end(), claimant);
++  claimant->arrivalPort.reset();
++  const auto rejected = FieldAlignedCurveNetwork::make_from_candidate(
++      mesh, source, atlas, fixture.rails, std::move(unclaimed));
++  ASSERT_FALSE(rejected);
++  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
++            rejected.error().code);
+ }
+ 
+ TEST(FieldAlignedCurveNetwork, PrescribedSphereClaimedCoTraceDeletionRejectsInadmissibleClaims) {
+@@ -24489,15 +24536,23 @@ TEST(FieldAlignedCurveNetwork, PrescribedSphereClaimedCoTraceDeletionRejectsInad
+   using directional::geometry::classify_field_aligned_candidate_arrivals;
+   using directional::geometry::surface_cell_tracing_detail::
+       field_aligned_delete_claimed_co_traces;
++  using directional::geometry::surface_cell_tracing_detail::
++      field_aligned_production_arrival_priority;
+   const auto fixture =
+       build_cp4c_pipeline_products_fixture("sphere_prescribed", "prescribed sphere");
+   ASSERT_TRUE(fixture.loadError.empty()) << fixture.loadError;
++  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+   ASSERT_TRUE(fixture.atlas.has_value());
+   ASSERT_TRUE(fixture.network.has_value()) << fixture.terminalFailureStage;
+   const auto &rays = fixture.atlas->branch_topology().singularity_rays();
+   const auto &attachments =
+       fixture.atlas->branch_topology().singularity_port_attachments();
+-  const FieldAlignedCurveNetworkCandidate traced = fixture.network->validation_candidate();
++  // The deletion's input: the traced network before step-7 selection.
++  const auto tracedNetwork = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
++      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, fixture.rails,
++      field_aligned_production_arrival_priority(), true, false);
++  ASSERT_TRUE(tracedNetwork) << network_error_locus(tracedNetwork.error());
++  const FieldAlignedCurveNetworkCandidate traced = tracedNetwork.value().validation_candidate();
+   const auto arrivals = classify_field_aligned_candidate_arrivals(traced, rays, attachments);
+   ASSERT_TRUE(arrivals.has_value());
+   ASSERT_EQ(10U, arrivals->size());

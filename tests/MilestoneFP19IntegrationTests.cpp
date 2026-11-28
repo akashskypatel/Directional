@@ -3,10 +3,10 @@
 #include <algorithm>
 
 #include <gtest/gtest.h>
+#include "TestAuthorityIds.h"
 
 TEST(MilestoneFP19Integration, RailsBecomeOrderedExplicitOptimizerIntervals) {
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 5;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(5));
   rail.curveId = 8;
   rail.component = 0;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
@@ -63,8 +63,7 @@ TEST(MilestoneFP19Integration, RailsBecomeOrderedExplicitOptimizerIntervals) {
 
 TEST(MilestoneFP19Integration,
      CollinearRailIntervalJoinRemainsFreeToSlide) {
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 2;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(2));
   rail.curveId = 3;
   rail.component = 0;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
@@ -106,8 +105,7 @@ TEST(MilestoneFP19Integration,
 
 TEST(MilestoneFP19Integration,
      DescendingRailParametersPreserveTraversalOrder) {
-  directional::geometry::SurfaceCellRail rail;
-  rail.id = 6;
+  directional::geometry::SurfaceCellRail rail(directional::tests::test_hard_rail_id(6));
   rail.curveId = 9;
   rail.component = 0;
   rail.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
@@ -154,8 +152,7 @@ TEST(MilestoneFP19Integration,
 
 TEST(MilestoneFP19Integration,
      SplitRailsRetainIndependentSequenceIdentity) {
-  directional::geometry::SurfaceCellRail first;
-  first.id = 10;
+  directional::geometry::SurfaceCellRail first(directional::tests::test_hard_rail_id(10));
   first.curveId = 12;
   first.component = 0;
   first.kind = directional::geometry::SurfaceCellRailKind::HardFeature;
@@ -169,7 +166,7 @@ TEST(MilestoneFP19Integration,
   first.samples = {a, b};
 
   directional::geometry::SurfaceCellRail second = first;
-  second.id = 11;
+  second.id = directional::tests::test_hard_rail_id(11);
   directional::geometry::SurfaceCellRailSample c = a;
   c.position << 2.0, 0.0, 0.0;
   directional::geometry::SurfaceCellRailSample d = b;
@@ -194,8 +191,8 @@ TEST(MilestoneFP19Integration,
 
   EXPECT_EQ(constraints.featureCurveIds(0), 12);
   EXPECT_EQ(constraints.featureCurveIds(1), 12);
-  EXPECT_EQ(constraints.featureRailIds(0), 10);
-  EXPECT_EQ(constraints.featureRailIds(1), 11);
+  EXPECT_EQ(constraints.featureRailIds[0], directional::tests::test_hard_rail_id(10));
+  EXPECT_EQ(constraints.featureRailIds[1], directional::tests::test_hard_rail_id(11));
   EXPECT_EQ(constraints.orderedFeatureVertices,
             (std::vector<int>{0, 1}));
 

@@ -1,0 +1,179 @@
+# TB134 independent review — trace-path receipts (2026-11-18 UTC)
+
+## Situation
+
+`M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-REV`: **MATCH upheld** under RA-255 S5. No geometry acceptance or promotion. BunnyRandom first equal face entry is vertex 94; both traces arrive by a same-direction edge slide on (94,210), so the shared carrier interval starts before that vertex. Trace 43 arrives before trace 15 by filtered arc length (bounded reconstruction, not trace ID or segment count).
+
+## Background — immutable authority
+
+- [TB134 execution](Architecture_M6_CP3_TB134_P13_Trace_Path_Receipt_Full_Gate_Execution_Report_20261118.md): CB157 source `a8d1cc9603f9a556564f0b741692217ec6a791ef`, package `14389450751`; CB156 comparator source `779fe661e260f506592c64791fbe655734029478`, package `14369087138`. Package SHA-256 evidence is inherited from the compile records; packages were not executed or downloaded in Review. Candidate mailbox run 44220116762 (gate failure, permitted row 858), 44220173755 (census success); both exact result digests match mailbox. Snapshot run 44225216915, artifact 14393220101, source `d2b8ec36eeceddf92ad51bb490e93c90cdffc1ff`, ZIP `01c4256dfc3add4bfbf0f2fe78f19bcf452605cea4099334131d2af696403ba2`, 5,544/5,544 internal file checks. Connector comparison proves CB157 is ancestor of snapshot, with no code/fixture/build drift; CB156 to CB157 only semantic delta +50/-0 `EmbeddedGraphTopology.cpp`; frozen diff SHA `56ef75c91cf72be85752af61cb276c73aeaf1ca692f92aa5061326fac9eb5f18`, snapshot blob `045498473ab258fafce17df98fcc1498a2f20cc5`.
+
+| Archive | Artifact | Recomputed ZIP SHA-256 |
+|---|---:|---|
+| TB133 gate | 14381507340 | `d0647213767e3dc7152ebc1e5c31ac0221ad6ea66d4389fe4a8cab68630863f2` |
+| TB133 census | 14383400603 | `0d0accf8103db8b5b5b584646935e7c7d4fdd0f0dc08583f32b2947a7af214a5` |
+| TB134 gate | 14390702505 | `532ae16d7872c5699a85c0bc11d819856660fb22b1fcaae99f454db714bf0640` |
+| TB134 census | 14391390784 | `dcf867473ebc5bd0310ff5249644d4c4cd4a8cf6214cdca9942f2b0ec52fe149` |
+
+## Assessment — independent evidence
+
+Independent read-only parser compared all 956 substantive ledgers, 1,912 raw log SHA-256 bindings, one actual RUN per row, manifest row identity and exact raw-log inventory. Four archives: 3,846 internal checks. 953 gate + 81 deferred membership identical; census 3 rows. N1–N4 + N5″: only GoogleTest elapsed-time suffixes, newline framing, complete `M3_CP4AB_FRAGMENT_DIAG` record multiset (1,738 records, per-row, with prefix count equal to parsed count and ordered non-record lines unchanged), census `GetParam()` 16-byte object presentation, and the two candidate path fields removed before retained receipt comparison. All 956 match; 66 sphere receipts on 19 rows (380,388,393,394,396,397,644,645,648,669,686,691,694,698,699,700,843,844,858), 2 identical BunnyRandom receipts on census row 2; each exactly two path fields. Twelve negative offline controls reject removed/duplicate/altered M3, changed non-record byte, changed ledger, altered retained receipt prefix/suffix, and missing/additional path (both scopes). No project runtime. Both boundary records postflight=true, compile/relink/configure/benchmark=false. Gate 952 PASS, one RED row858 :155 (exit90/control_bad1); census Cylinder PASS/288, BunnyRandom/Vase RED (exit0). Row648 sphere assertions unreached. No unexplained differences.
+
+Four independently rehashed unchanged inputs: gate `941287fa96f3432eb1d67a9ae1e5dc7bc0ca2f3a1775cd5f9fb35482a4fa7962`; census `3af1dc0dfac386f95da1bd9375e1033eadbcca0c7b30c3d0b3b9848ac827e793`; deferred `fd433f54709e9fcb7637977728af00e53810ce86857011f91af8b3ca4fdd64ce`; harness `78b8002c2973db7cbe05e880b020945cec9e7aee2814d8d4ff48a2e053f13e94`. Reconstructed ordered 491 accepted rows, all PASS: focused30 `1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6`, focused12 `2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed`, M5 449 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`; concat `452360f771daacb96f87697286ec7708832f63c876b9df9b1857e93433e5300b`. Accepted CP2 package 11391685901 unchanged.
+
+### First common carrier and first equal entry (O48)
+
+| Trace/segment | Face, branch | Entry / continuation |
+|---|---|---|
+| 43/13 | (94,124,210), 2 | (124,210):0.61720848767415282; transit (94,210):0=v94 |
+| 15/19 | (94,124,210), 2 | (124,210):0.96607399795485316; transit (94,210):0=v94 |
+| 43/14 and 15/20 | (72,94,243), 1 | exact entry (72,94):1=v94, incoming carrier none, to (72,243); exact eq=ee+xx |
+| 43/15 and 15/21 | (72,243,273), 1 | same exact entry/exit, eq=ee+xx |
+| 43/16 and 15/22 | (21,72,273), 2 | same exact entry/exit, eq=ee+xx, both end against trace82 segment0 |
+
+The nine earlier same-face pairs have distinct parallel lines (nonzero opposing signs); the 13/19 pair is unevaluated. `SurfaceCellTracing.cpp:678–706` classifies exact vertex hits separately and clamps ordinary edge exits to a strictly interior dyadic parameter. Both measured inputs are interior, not vertex departures; `:3729–3836` records `edgeTransitExit` only on the grazing/edge-slide branch, adds the slide length, then resolves regular vertex outflow. `:2121–2168` chooses the carrier endpoint from consistent signed rates. Thus both slide from interior points of (94,210) toward its first endpoint 94. The common positive-length interval is from the nearer of their two carrier-entry points to 94. The receipt does **not** print those carrier-entry parameters: exact overlap onset and which entry is nearer are not certified. RA-255's vertex is the first identical **face entry**, not the earliest geometric overlap. This corrects the next definition's scope; do not postpone to the sphere fix. Downstream nodes 220 and 222 claim the same trace82 cut (display 0:0.2305473011248014); node welding would not remove either overlapping carrier or the identical suffix.
+
+### Arrival order by independent bounded reconstruction
+
+Source `BenchmarkCases.cpp:340–382,590–630` loads vertices in OBJ order; `InputConditioner.cpp:471,499–516`, `InputConditioner.h:19–29` use bit-preserving identity, `TriMesh.h:331–348` copies V/F; `RemeshPipeline.cpp:19711–19759,12917–12935` supplies the source mesh (parallel components false by default). Fixture `benchmarks/fixtures/milestone-g/bunny_1k_random.obj`, SHA `865d864f7afbd90283526d914e0d4d9718d83e9679943029060bde439b10ab05`, 502 vertices/1000 faces. All reconstructed path face keys and entry/exit supports match the fixture. Production default is ArcLengthFiltered (`SurfaceCellTracing.cpp:4854–4855`), with disjoint arrival bounds (`:2365–2374`); length accumulation `:3160–3219,3599–3608,3763–3786,3836`, and priority queue `:4296–4484` reject ordering by ordinal or insertion. For each non-slide segment sum the distance from its entry to the next entry. For unknown slide entry X on carrier AB, with start P and vertex V, triangle inequality gives lower |P−V|; convexity gives upper max(|P−A|+|A−V|, |P−B|+|B−V|). Sum all pieces before v94 (43: 14 segments, with slides 11 and 13; 15: 20 segments, slide 19). Decimal 60-digit reconstruction gives:
+
+| Trace | Lower | Upper | Conservatively widened interval |
+|---|---:|---:|---|
+| 43 | 0.12952949962971406 | 0.13316803071398237 | [0.1294294996, 0.1332680308] |
+| 15 | 0.13560762567243229 | 0.13592247012051176 | [0.1355076256, 0.1360224702] |
+
+Widening by 1e-4 is conservative for printed rational truncation (18 decimal places, then double; producer uses 17), OBJ conversion and filtered double operations: coordinate magnitudes <1, barycentric weights in [0,1]; per-coordinate error/bound <1e-14, squared length error <1e-12, square-root error <1e-6, fewer than 25 legs per path, accumulation error negligible at this margin. The intervals are disjoint by >0.00223. Therefore 43 is conclusively earlier at v94 and at every common point of the co-directional slide suffix (subtract the same remaining carrier distance). This is a bounded reconstruction, not a recorded queue timestamp or exact slide-entry coordinate. Do not invent an exact overlap-start parameter or contact role from the decimal display.
+
+## Recommendation — freeze the next definition obligation only
+
+Exactly `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` (Review/definition, not implemented in this turn). Scope: co-directional overlap at a shared carrier interval and vertex locus O48, not opposing-only despite historical ID. Define the earliest occupied source locus and exact directed slide-piece interval, including the interior carrier entry before the vertex. Distinguish co-directional overlap, opposing overlap, transverse crossing, contact at a single endpoint, and disjoint paths. Prove whether a pending later trace terminates on the earlier wall at first shared locus under existing filtered-arrival authority; define inconclusive and already-retired-wall outcomes, including pending and committed segments and same-trace prior pieces. Use exact source component/region, carrier, direction, interval and vertex incidence, not rounded position, trace ID, segment order or consumer duplicate-ID welding. Preserve D11/D12 transport: do not change the outflow election to hide overlap. The shared vertex entry is a positive witness but not sufficient to resolve the earlier interval. Require exact per-piece slide start/end and arrival evidence where not already authoritative. Reuse the representation defined by the parallel sphere O47 DEFN where applicable; do not start or supersede that parallel turn.
+
+Freeze independent falsifiers: distinct or disjoint exact intervals, opposite direction, different compatible source occurrence/region, single endpoint without overlap, earlier/later reversed by actual arrival, inconclusive filtered bounds, and no shared prior wall. A valid correction must remove the measured overlap at its causal producer and preserve exact incidence/cut ownership and all guards, not merely erase the receipt or move failure earlier. Require positive reduced carrier/vertex cases and near-miss/disjoint controls, order/face-row permutation invariance, stable unchanged 491 prefix, full gate and census comparison in separate CB/TB/REV turns. Do not freeze product implementation in this Review; definition must determine exact ownership/cut representation and test boundaries before a CB is authorized. Sphere through-crossing C5/O47 parallel unchanged. FC-6, terminal-cut and row858 fix held; C5/O42/O43/O46/O47/O48, H2, FC-1/FC-4 and middle-piece witness remain open. O45 consumer proxy only, C3/O44/C1 narrow closures retained. D11=A, D12=A, D10 deferred, D6 pending; chainRimSchedules=false. Stable 66 events/17 categories/49 recurrences, debt1, deferred81. No selector497/CP3/D0 promotion; PR #8 stays draft/unmerged.
+
+## Assessment — closeout continuation (2026-11-18 UTC)
+
+The source snapshot has no historical Git objects. The first local run of `review_check.py boundary` failed because the temporary index did not track the code directories and the historical rewrite commit was absent. These failures did not demonstrate a product change. On resume, the agent extracted the same verified source archive into a separate audit directory, checked all 5,544 files, and built a complete local index for the superproject files. The agent applied the prior preserved patch to that exact preimage. The unmodified boundary script then passed the product and selector mutation checks, the 39 numbered selector hash checks, and all three file-presence checks. It still returned 1 because the snapshot lacks the historical commit and its three document blobs. Do not report the script itself as PASS.
+
+The independent GitHub checks satisfy the actual historical predicates: the rewrite commit `8b7299b43764a6ba3444e5bc774a2f1b65e99731` is the merge base of itself and the resumed HEAD `4eb502de7315aa7def143ea50d34ffee0092c2b9` (ahead 6,171, behind 0). All three baseline documents exist. The exact protected heading sets in the historical and current blobs agree: handoff 4/4, orientation 1/1, regression tracker 0/0 (no heading matches the script's protected-heading pattern). Historical/current blob pairs: handoff `ad73c549ab9764e9391025bca4cab0cdcd5010fc` / `42d72934362965354c367f7e29694a10ababee37`; orientation `36c0683642ec035da3b4f1f2543fcea083b01b5a` / `25140e10773d931ce2c7a8f8c8421c341b511cbb`; tracker `afa8d7dc1b47f92b3a0340bfab5e46fcf1285b85` / `7de3b0b282261428e71564bc3a96b8c723db781d`. No protected heading is missing after the closeout edits.
+
+The remote comparison from snapshot source `d2b8ec36eeceddf92ad51bb490e93c90cdffc1ff` to the resumed HEAD lists 13 documentation paths and three control paths only (request slot, removed snapshot marker, STATUS). The local reconstruction matches all 12 surviving documentation blob IDs and the one file deletion, plus the current STATUS and dispatcher-request blob IDs. The agent re-hashed all 54 selector files directly against the verified snapshot manifest. All match. The original 62-line TB133 execution report is present verbatim in the retained consolidated D3 record (SHA-256 `f85acfecd2bd141277b68d2c21b74285390f0ae78487682a482a9c40c6821834`), with its exact filename in the folded index. The prior documentation patch was applied successfully in dispatcher run 44226979268 (result artifact 14393611368). The prior transfer file was retired and the snapshot marker and cleanup manifest were removed in cleanup run 44227171933. No prior runtime evidence was re-executed.
+
+The initial attempt read some required startup policies after its first source reads and did not run the request-template hash substitution helper before the first dispatcher write. The remote dispatcher schema and apply checks succeeded. The resume uses the existing verified snapshot and explicit remote blob comparisons rather than another snapshot download. The agent reads the turn-based skill and relevant policies before the closeout edits. This does not retroactively correct the initial ordering misses. The closeout request uses the repository's hash substitution helper. No policy, workflow, product, test or frozen selector changes are authorized by this review.
+
+## Review closeout
+
+| Duty | Answer |
+|---|---|
+| Accepted selector prefix re-hashed | 491/491 PASS. Focused30 `1e815443a03c7ef4a1b095e6ea973efa9c74bb0eae4e2f872510c97d057ea1d6`; focused12 `2aa57aac48ac8c41ea86ed459cdd1acd27eb17c8d3dbe1b4ac7b9c54c67374ed`; 449 `d4a0d1b731cfd99e832f3c983e5741ab18cb27a314f380184c5ff84bd88d6414`; ordered 491 `452360f771daacb96f87697286ec7708832f63c876b9df9b1857e93433e5300b`. All 54 frozen selector files match the snapshot manifest. |
+| Decisive claims independently re-derived | Four archive digests and 3,846 file checks; 956 ledger/log comparisons and 1,912 binding checks; 953 gate rows, 81 deferred, 3 census rows; path receipt counts 66+2. Common carrier overlap precedes the first equal face entry. Disjoint conservative arrival bounds put trace 43 first. Exact onset remains open. |
+| Non-vacuity checked | Twelve mutation controls reject changed ledgers, missing/extra paths, changed retained receipt bytes, missing/duplicate/altered M3 records and changed non-record bytes. The gate retains row858 RED and row648's unreached assertions; the review does not claim they pass. |
+| Prior obligations discharged/carried | RA-255 S3/S5 measurement and comparison discharged by the exact transit receipts and 956/956 MATCH (first equal entry and arrival order). S4 compile-only evidence retained. S2 edge-point definition remains parallel (C5/O47). O48 carrier/vertex onset and ownership: open, owner overlap DEFN. O42/O43/O46, H2, FC-1/FC-4 and middle-piece direction witness remain open under their existing owners; FC-6, terminal-cut and row858 face-witness fix remain held. C3/O44/C1 and O45 consumer proxy retain narrow closures. D11=A, D12=A, D10 deferred, D6 pending, CB145 parked, chainRimSchedules=false. |
+| Stable accounting | 66 events / 17 categories / 49 recurrences; one produced-witness debt; 81 deferred. Accepted CP2 package 11391685901 with 491 identities; 497 CP3 identities frozen, not accepted. No new stable event. |
+| New candidates/obligations recorded | O48 expanded to include the earlier carrier interval and unresolved exact onset, not a new stable regression. Tracker, TODO, handoff and RA-255 scope correction agree. |
+| ORIENTATION currency line | 2026-11-18, `M6-CP3-TB134-P13-TRACE-PATH-RECEIPT-FULL-GATE-REV`; links to current review. |
+| ORIENTATION §3 / §4 / §7 / §8 | §3 includes gate, prefix, stable accounting and O47/O48; §4 records carrier/vertex witness and unchanged other outcomes; §7 gives the one exact next DEFN and parallel sphere obligation; §8 records first equal entry versus earliest overlap. Superseded onset wording corrected in live RA-255 authority and handoff. |
+| CHANGELOG | Current TB134 independent Review entry amended; no duplicate entry. |
+| ROADMAP | Current M6/CP3 evidence updated in initial review patch; no checkpoint promotion. |
+| Selector manifest | n/a — no selector added, changed or promoted. |
+| LESSONS | Existing TB134 lesson, “First equal face entry is not necessarily first geometric overlap,” retained. |
+| Consolidation under CLEAN_UP_POLICY | Initial review patch folded TB133 execution report verbatim into D3 (62 lines, verified exact original bytes and index), repaired live citations, retained still-load-bearing RA-255 and compile records. No further current-authority record qualifies for folding at this closeout. |
+| Successor frozen | Exactly `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP`; falsifiers and stop conditions are in Recommendation above. No successor execution; separate O47 definition remains parallel. |
+| Turn boundary held | Runtime-free offline analysis. No product, test, benchmark, fixture, build or selector change; exact remote path comparison and byte checks. |
+| review_check.py boundary | Unmodified script exit 1, historical Git objects unavailable locally. Product/selector mutation, 39 numbered selector hashes and 3 file-presence checks PASS. Independent GitHub rewrite-ancestor and exact historical heading checks meet all missing predicates (5/5 headings; all 3 historical documents). Drift audit: 0 errors; initial patch 3 protected-navigation warnings, continuation 2. REVIEW_TURN_POLICY §§3.1–3.2 and the owner-authorized continuation require these in-place updates. No protected-policy or selector edit. No false local PASS. |
+| `STATUS` lifecycle maintained | Current TB134-REV entry 2026-11-18T02:41:35Z, resumed 2026-11-18T03:05:47Z, successor as above. Final beacon must follow the verified documentation push and cleanup; the final UTC end time is set only by that beacon. |
+| Pushed to origin, branch in sync | Prior documentation push independently verified against actual branch and PR #8 HEAD. For the closeout patch require successful remote apply, exact changed-path comparison, matching final remote blobs and branch HEAD before publishing COMPLETE. Local Git is snapshot-only, so an origin-checkout `git status -sb` result is not available; use the GitHub remote authority check, not the synthetic index, as synchronization evidence. |
+
+## RA-256 — adversarial re-review of this Review (2026-11-18 UTC)
+
+### S0 — verdict
+
+MATCH 956/956 is upheld. The correction that the first equal face entry (v94) is not the earliest overlap is upheld. It also corrects RA-255 S3, which wrongly placed the overlap onset at the vertex-94 transit. The arrival order (43 first, by disjoint bounds with a 0.0022 gap against a 1e-4 widening) is upheld. Three defects follow: an onset left open that the receipt already settles, a missing representation, and a successor that the implementation agent cannot execute.
+
+### S1 — the onset is certified by the receipt
+
+Same-branch traces in one face are parallel, as the nine signed pairs and the duplicate pairs show. Parallel lines that cross two edges sharing a vertex V map one edge onto the other by a scaling about V.
+
+- **Face (124,210,290), branch 1.** Trace 43 segment 12 enters at v290. Trace 15 segment 18 enters at (210,290):0.088627884769471255. Both leave on (124,210).
+- **Face (94,124,210), branch 2.** Trace 43 enters (124,210) at 0.61720848767415282 and trace 15 at 0.96607399795485316. Both leave on (94,210).
+- **Scaling about v210.** The receipt's parameters run from `edge.first()` to `edge.second()`. With that convention, (1−0.96607399795485316)/(1−0.61720848767415282) = 0.0886278847694713. This equals trace 15's entry parameter on (210,290), an independent receipt value. So trace 15 is the image of trace 43 under a scaling about v210 by k = 0.0886278847694713, with t15 = 1 − k(1 − t43) on (94,210).
+- **Consequences:**
+  - X43 (trace 43's slide start on (94,210)) is nearer v94 than X15.
+  - The common carrier interval is [X43, v94], which is trace 43's whole slide.
+  - The first shared locus is X43 in either arrival order. Arrival order only decides which trace ends there.
+  - Since 43 arrives first, the expected repair is that trace 15 terminates at X43 against trace 43 segment 13, at the junction of that segment's face piece and its slide piece.
+
+### S2 — missing representation (architecture)
+
+- **Producer.** `FieldAlignedCandidateTraceSegment` drops the slide start. In `SurfaceCellTracing.cpp`:
+  - `decision.exitPoint` (:3586–3605) is used for the face piece length and the slide length (:3774–3783).
+  - Only `edgeTransitExit` (the vertex) is stored (:3763, :2784). No proposal, trace or receipt keeps the slide start.
+- **Producer classifier.** It sees only the face chord. `field_aligned_segment_exit_point` (:3086–3102) recomputes the exit, the classifier (:3112) compares only segments in the same face, and the slide piece is never classified, in either face.
+  - **H3 (unverified):** the recomputation calls `resolve_field_branch_continuation` from `entryPoint`. The tracer instead calls `resolve_field_edge_port_departure` when `vertexSlide` or an edge-port departure is set (:3569–3580). For those segments, the classified chord may differ from the traced one.
+- **Consumer.** In `EmbeddedGraphTopology.cpp`:
+  - `trace_segment_canonical_exit` returns nullopt for a slide segment (:697).
+  - `exact_trace_segment_end` uses the vertex (:276).
+  - `FieldAlignedNetworkPolylines.cpp:94` draws a chord to the vertex.
+- **Effect.** X43 cannot be represented anywhere downstream. The Review's DEFN asks for an "exact directed slide-piece interval" without noting that the record lacks its start, so the DEFN would stall. Recording the slide start is a precondition for O48 under any outcome, and it does not depend on the open decision.
+
+### S3 — DEFN scope corrections
+
+- **O47 and O48 are both edge-locus contacts.**
+  - Sphere: P on (0,2), at a segment boundary of both traces.
+  - BunnyRandom: X43 on (94,210), the slide start of trace 43 and an interior point of trace 15's slide.
+- **`M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT` defines the shared edge-locus cut representation.** It must order positions along a slide segment: the face piece first (face parameter), then the slide piece (carrier parameter from `edgeTransitEntry` to `edgeTransitExit`). It must also define EndpointTouch handling.
+- **`M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP` extends this to slide pieces.** The ID is kept, but the scope is co-directional overlap.
+  - Classify slide pieces as segments on the carrier: EndpointTouch for X43 against trace 15's slide, and CollinearOverlap.
+  - The later trace terminates at the first wall point along its own path.
+  - Reuse the arrival seniority rule and its inconclusive outcome.
+  - Check H3.
+  - Freeze an unwired helpers CB (exact ordering and classification, unit tests), then a wiring CB.
+
+### S4 — CB158 (frozen)
+
+- **Patch.** `.agents/Directional/Architecture_M6_CP3_CB158_P13_Edge_Transit_Entry_Record_Exact.diff`, SHA-256 `17dd9ac558f9d2e24bd4d5010262b9d3092c9414c8d9d9bfbbbfa3b4ef12822f`, 51 lines. Numstat: `5 0` header, `4 0` `EmbeddedGraphTopology.cpp`, `2 0` `SurfaceCellTracing.cpp`.
+- **What it does.**
+  - Adds `edgeTransitEntry` to the segment.
+  - Sets it to `decision.exitPoint` beside both `edgeTransitExit` writers.
+  - Prints ` slide=<bp>` before ` transit=` in the CB157 path receipt.
+- **Kept out of the digest** on purpose. The digest feeds logged network and certificate digests; including the field belongs to the wiring CB, once it has behaviour.
+- **Checks.**
+  - Precheck: `git diff --quiet a8d1cc9603f9a556564f0b741692217ec6a791ef HEAD -- src include tests`.
+  - `git apply --check` passes.
+  - A `-fsyntax-only` compile of both translation units (with `-DUSE_GMP_ENABLED`) returns 0 with the same 3 warnings before and after the patch.
+  - Unrelated: on macOS, `SourceChartTransitions.h:529` needs `<iterator>`.
+  - A Haiku read-only audit raised two questions, both settled against the code:
+    - Edge-port departure: `resolve_field_edge_port_departure` (:2168–2189) returns as `exitPoint` the departure vertex on the carrier, which is where the slide starts.
+    - The new field joins the defaulted `operator<=>`. Its only whole-segment comparison, `validate_field_aligned_candidate` (:5457), compares two runs of the same production producer. The legacy writer (:2784) feeds only the frozen contact census (:5099–5105).
+    - No sizeof hashing, no field-by-field copy, and every optional is checked before use.
+- **No new test.** The field has no behavioural reader yet. Its first behavioural reader, the helpers CB, carries the unit tests. The TB135 predictions below are the falsifier.
+
+### S5 — TB135 criteria (frozen)
+
+- **Inputs.** Gate `941287fa…`, census `3af1dc0d…`, deferred `fd433f54…`, harness `78b8002c…`. Comparator: TB134 gate `14390702505`, census `14391390784`.
+- **Normalizations.** N1–N4 as in RA-253 S7. **N6:** delete every ` slide=` token, up to the next space or the line end. The remainder must equal TB134 byte-for-byte, including `path=` fields, with the same counts (66 lines on 19 rows, plus 2).
+- **MATCH** requires all of the following:
+  1. Every ledger is equal.
+  2. The logs are equal under N1–N4 plus N6.
+  3. Each ` slide=` immediately precedes a ` transit=` in the same segment, and the two counts are equal per line.
+  4. The sphere lines have no ` slide=`.
+  5. BunnyRandom carries ` slide=` on exactly trace 43 segments 11 and 13 and trace 15 segment 19, each on that segment's `to=` carrier. The parameters for segments 13 and 19 are strictly inside (0,1).
+  6. On (94,210), t43 < t15 and (1−t15)/(1−t43) = 0.0886278847694713 within a relative 1e-12.
+- **Failing criterion 6 means the S1 model is wrong.** Stop and route to Review.
+- **Routes.** Mismatch: `M6-CP3-PLAN-P13-EDGE-TRANSIT-ENTRY-RECEIPT-STOP`. Infrastructure: `M6-CP3-CB158A-P13-EDGE-TRANSIT-ENTRY-RECEIPT-ORCH`.
+
+### S6 — turn sequence
+
+- **Implementation track:**
+  1. `M6-CP3-CB158-P13-EDGE-TRANSIT-ENTRY-RECORD` (compile only).
+  2. `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-EXEC`.
+  3. The helpers CB, then the wiring CB, each with its TB, as the DEFNs freeze them.
+- **Review track** (parallel with steps 1–2):
+  1. `M6-CP3-DEFN-P13-EDGE-ENDPOINT-CONTACT`, with the shared edge-locus representation.
+  2. `M6-CP3-TB135-P13-EDGE-TRANSIT-ENTRY-FULL-GATE-REV`.
+  3. `M6-CP3-DEFN-P13-OPPOSING-TRACE-OVERLAP`, using the TB135 values.
+- **Held:** FC-6, the terminal-cut outcome and row 858. **Parked:** CB145. D11=A and D12=A are unchanged.
+
+### S7 — lessons
+
+- Before defining ownership at a locus, check that the record stores it. A dropped intermediate makes a locus impossible to represent.
+- Parallel same-branch traces are related by a scaling about a shared vertex. Their order along an exit edge follows from their entry order, so check the ratio against a second face.

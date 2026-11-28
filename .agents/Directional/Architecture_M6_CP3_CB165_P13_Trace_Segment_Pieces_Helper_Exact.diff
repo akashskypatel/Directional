@@ -1,0 +1,217 @@
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index 2ccad3f4a..e793de5b6 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -721,6 +721,65 @@ std::optional<authority::FieldExactRational> trace_segment_contact_parameter(
+   return face_chart_segment_parameter(*entry, *exit, point);
+ }
+ 
++std::optional<authority::ExactSourcePath> exact_trace_segment_pieces(
++    const FieldAlignedCandidateTrace &trace, const std::size_t segmentIndex) {
++  if (segmentIndex >= trace.segments.size()) return std::nullopt;
++  const FieldAlignedCandidateTraceSegment &segment = trace.segments[segmentIndex];
++  if (!segment.edgeTransitEntry.has_value() &&
++      !segment.edgeTransitExit.has_value()) {
++    return exact_trace_path(trace, segmentIndex, segmentIndex + 1U);
++  }
++  if (!segment.edgeTransitEntry.has_value() ||
++      !segment.edgeTransitExit.has_value() ||
++      segment.edgeTransitEntry->edge != segment.outgoingCarrier ||
++      segment.edgeTransitExit->edge != segment.outgoingCarrier) {
++    return std::nullopt;
++  }
++  const bool last = segmentIndex + 1U == trace.segments.size();
++  if (last && trace.terminalContact.has_value()) {
++    // A contact is published after its whole proposal is committed, so the
++    // record keeps the slide although the trace stops on the face piece.
++    const auto entry =
++        canonical_boundary_barycentric(segment.sourceFace, segment.entryPoint);
++    const auto slideStart = canonical_boundary_barycentric(
++        segment.sourceFace, *segment.edgeTransitEntry);
++    if (!entry.has_value() || !slideStart.has_value() ||
++        trace.terminalContact->sourceFace != segment.sourceFace ||
++        !face_chart_segment_parameter(*entry, *slideStart,
++                                      trace.terminalContact->barycentric)
++             .has_value()) {
++      return std::nullopt;
++    }
++    return exact_trace_path(trace, segmentIndex, segmentIndex + 1U);
++  }
++  const auto entry =
++      authority::canonical_exact_source_boundary_point(segment.entryPoint);
++  const auto slideStart =
++      authority::canonical_exact_source_boundary_point(*segment.edgeTransitEntry);
++  const auto slideEnd =
++      authority::canonical_exact_source_boundary_point(*segment.edgeTransitExit);
++  if (!entry.has_value() || !slideStart.has_value() || !slideEnd.has_value()) {
++    return std::nullopt;
++  }
++  if (last && trace.terminalPoint.has_value() &&
++      authority::canonical_exact_source_boundary_point(*trace.terminalPoint) !=
++          slideEnd) {
++    return std::nullopt;
++  }
++  authority::ExactSourcePath path;
++  if (*entry != *slideStart) {
++    path.push_back(authority::ExactSourceSupportPiece{
++        authority::SourceFaceInteriorSupport{segment.sourceFace}, *entry,
++        *slideStart});
++  }
++  path.push_back(authority::ExactSourceSupportPiece{
++      authority::SourceEdgeSupport{segment.outgoingCarrier}, *slideStart,
++      *slideEnd});
++  return authority::exact_source_path_is_canonical(path)
++             ? std::optional<authority::ExactSourcePath>{std::move(path)}
++             : std::nullopt;
++}
++
+ std::pair<std::size_t, std::size_t> trace_cut_segment_range(
+     const TraceCutPosition &first, const TraceCutPosition &second) {
+   return {first.segment, second.parameter.has_value() ? second.segment + 1U
+diff --git a/src/geometry/EmbeddedGraphTopology.h b/src/geometry/EmbeddedGraphTopology.h
+index 8ebb19ccb..431e3b053 100644
+--- a/src/geometry/EmbeddedGraphTopology.h
++++ b/src/geometry/EmbeddedGraphTopology.h
+@@ -260,6 +260,19 @@ trace_segment_contact_parameter(const FieldAlignedCandidateTrace &trace,
+                                 std::size_t segment,
+                                 const FaceChartPoint &point);
+ 
++/**
++ * The exact source path segment `segment` of `trace` traverses. A segment
++ * without an edge transit is one face piece to its end. A segment with an edge
++ * transit is a face piece from its entry to the slide start, omitted when the
++ * two are the same point, then an edge piece along its outgoing carrier to the
++ * slide end. A terminal face contact on the last segment ends it on its face
++ * piece, so the slide is not traversed. Empty when the record is incomplete or
++ * inconsistent.
++ */
++[[nodiscard]] std::optional<authority::ExactSourcePath>
++exact_trace_segment_pieces(const FieldAlignedCandidateTrace &trace,
++                           std::size_t segment);
++
+ /** Segment range [first, onePastLast) of the arc between two positions. */
+ [[nodiscard]] std::pair<std::size_t, std::size_t>
+ trace_cut_segment_range(const TraceCutPosition &first,
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index daad1e4c2..99c497ce3 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -18918,6 +18918,118 @@ TEST(FaceContactNode, SplitsAStruckSegmentAtAnExactInteriorContactPoint) {
+                    RotationSystemInconsistencyReason::FaceContactRayUnsupported));
+ }
+ 
++TEST(FieldAlignedCarrierOccupancy,
++     TraceSegmentPiecesFollowTheFacePieceThenTheCarrier) {
++  namespace authority = directional::authority;
++  using directional::authority::FieldBoundaryPoint;
++  using directional::authority::FieldBranch;
++  using directional::authority::TopologyRegionId;
++  using directional::authority::TraceId;
++  using directional::geometry::FieldAlignedCandidateTrace;
++  using directional::geometry::FieldAlignedTerminalContact;
++  using Path = authority::ExactSourcePath;
++  using Piece = authority::ExactSourceSupportPiece;
++  const SourceFaceTopologyKey face = topology_face(0, 1, 2);
++  const SourceEdgeTopologyKey ab = topology_edge(0, 1);
++  const SourceEdgeTopologyKey ac = topology_edge(0, 2);
++  const SourceEdgeTopologyKey bc = topology_edge(1, 2);
++  const authority::SourceFaceInteriorSupport inFace{face};
++  const authority::SourceEdgeSupport alongAc{ac};
++  const auto point = [](const FieldBoundaryPoint &boundary) {
++    return *authority::canonical_exact_source_boundary_point(boundary);
++  };
++  const auto one_segment = [&](const FieldBoundaryPoint &entry,
++                               const SourceEdgeTopologyKey &incoming) {
++    FieldAlignedCandidateTrace trace(
++        TraceId::from_index(0U, 1U).value(),
++        SingularityPortId::from_index(0, 1).value(),
++        FieldSingularityId::from_index(0, 1).value(),
++        SourceVertexId::from_index(0, 3).value(),
++        SourceComponentId::from_index(0, 1).value(),
++        TopologyRegionId::from_index(0, 1).value());
++    trace.segments.emplace_back(face, FieldBranch::from_integer(0), entry,
++                                incoming, ac, std::nullopt);
++    return trace;
++  };
++
++  // Grazing: enter on (0,1) at (1/4,3/4,0), reach (0,2) at (5/8,0,3/8), slide
++  // to v2. The traced path bends at the slide start; it is not the chord from
++  // the entry to v2.
++  const FieldBoundaryPoint entry = boundary_point(ab, 3, 4);
++  const FieldBoundaryPoint slideStart = boundary_point(ac, 3, 8);
++  const FieldBoundaryPoint v2 = boundary_point(ac, 1, 1);
++  const FieldBoundaryPoint v0 = boundary_point(ac, 0, 1);
++  FieldAlignedCandidateTrace grazing = one_segment(entry, ab);
++  grazing.segments[0].edgeTransitEntry = slideStart;
++  grazing.segments[0].edgeTransitExit = v2;
++  grazing.terminalPoint = v2;
++  EXPECT_EQ((Path{Piece{inFace, point(entry), point(slideStart)},
++                  Piece{alongAc, point(slideStart), point(v2)}}),
++            embedded::exact_trace_segment_pieces(grazing, 0U));
++  EXPECT_FALSE(embedded::exact_trace_segment_pieces(grazing, 1U));
++
++  // The slide runs in its own direction, here toward the carrier's first end.
++  FieldAlignedCandidateTrace descending = grazing;
++  descending.segments[0].edgeTransitExit = v0;
++  descending.terminalPoint = v0;
++  EXPECT_EQ((Path{Piece{inFace, point(entry), point(slideStart)},
++                  Piece{alongAc, point(slideStart), point(v0)}}),
++            embedded::exact_trace_segment_pieces(descending, 0U));
++
++  // A departure enters at v2 under edge (1,2) and starts its slide at v2
++  // under edge (0,2): one point, so there is no face piece.
++  FieldAlignedCandidateTrace departure = one_segment(boundary_point(bc, 1, 1), bc);
++  departure.segments[0].edgeTransitEntry = v2;
++  departure.segments[0].edgeTransitExit = v0;
++  departure.terminalPoint = v0;
++  EXPECT_EQ((Path{Piece{alongAc, point(v2), point(v0)}}),
++            embedded::exact_trace_segment_pieces(departure, 0U));
++
++  // Without a slide the segment is its one face piece to its end.
++  FieldAlignedCandidateTrace ordinary = one_segment(entry, ab);
++  ordinary.terminalPoint = boundary_point(bc, 1, 2);
++  EXPECT_EQ((Path{Piece{inFace, point(entry), point(boundary_point(bc, 1, 2))}}),
++            embedded::exact_trace_segment_pieces(ordinary, 0U));
++
++  // A face contact committed with the whole proposal stops the trace on its
++  // face piece; the recorded slide is not traversed.
++  const std::array<authority::FieldExactRational, 3> midFacePiece{
++      exact_ratio(7, 16), exact_ratio(3, 8), exact_ratio(3, 16)};
++  FieldAlignedCandidateTrace contact = grazing;
++  contact.terminalPoint.reset();
++  contact.terminalContact = FieldAlignedTerminalContact{
++      face, midFacePiece, TraceId::from_index(1U, 2U).value(), 0U};
++  EXPECT_EQ((Path{Piece{inFace, point(entry),
++                        *authority::canonical_exact_source_face_point(
++                            face, midFacePiece)}}),
++            embedded::exact_trace_segment_pieces(contact, 0U));
++  FieldAlignedCandidateTrace offPiece = contact;
++  offPiece.terminalContact->barycentric = {exact_ratio(1, 3), exact_ratio(1, 3),
++                                           exact_ratio(1, 3)};
++  EXPECT_FALSE(embedded::exact_trace_segment_pieces(offPiece, 0U))
++      << "a contact off the face piece is not on the traced path";
++  FieldAlignedCandidateTrace atSlideStart = contact;
++  atSlideStart.terminalContact->barycentric = {exact_ratio(5, 8), exact_ratio(0, 1),
++                                               exact_ratio(3, 8)};
++  EXPECT_FALSE(embedded::exact_trace_segment_pieces(atSlideStart, 0U))
++      << "a face contact lies strictly inside the face piece";
++
++  // Incomplete or inconsistent slide records give no path.
++  FieldAlignedCandidateTrace missingEnd = grazing;
++  missingEnd.segments[0].edgeTransitExit.reset();
++  EXPECT_FALSE(embedded::exact_trace_segment_pieces(missingEnd, 0U));
++  FieldAlignedCandidateTrace otherEdge = grazing;
++  otherEdge.segments[0].edgeTransitEntry = boundary_point(bc, 1, 2);
++  EXPECT_FALSE(embedded::exact_trace_segment_pieces(otherEdge, 0U));
++  FieldAlignedCandidateTrace endElsewhere = grazing;
++  endElsewhere.terminalPoint = boundary_point(ac, 1, 2);
++  EXPECT_FALSE(embedded::exact_trace_segment_pieces(endElsewhere, 0U));
++  FieldAlignedCandidateTrace emptySlide = grazing;
++  emptySlide.segments[0].edgeTransitExit = slideStart;
++  emptySlide.terminalPoint = slideStart;
++  EXPECT_FALSE(embedded::exact_trace_segment_pieces(emptySlide, 0U));
++}
++
+ TEST(FieldAlignedCarrierOccupancy,
+      FirstSharedParameterFollowsTheMovingTraceAlongOneCarrier) {
+   using directional::authority::FieldBranch;

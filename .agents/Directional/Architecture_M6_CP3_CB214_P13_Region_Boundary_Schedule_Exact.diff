@@ -1,0 +1,379 @@
+diff --git a/include/directional/geometry/GlobalConformityBaseline.h b/include/directional/geometry/GlobalConformityBaseline.h
+index 69d17f106..35941c2e3 100644
+--- a/include/directional/geometry/GlobalConformityBaseline.h
++++ b/include/directional/geometry/GlobalConformityBaseline.h
+@@ -338,6 +338,66 @@ validate_global_conformity_baseline(const GlobalTopologyPlan &topology,
+                                     const GlobalConformityBaselineInput &input,
+                                     const GlobalConformityBaselinePlan &plan);
+ 
++/** Why a region's boundary walk could not be bound to the A3 plan. */
++enum class RegionBoundaryScheduleFailureReason : std::uint8_t {
++  /** The A3 plan was built for a different A2b plan. */
++  TopologyPlanMismatch = 0,
++  /** No A3 span has the arc's path as the support slice its binding names. */
++  ArcNotScheduled = 1,
++  /** No A3 incidence carries this walk occurrence with the arc's span and
++   *  orientation. */
++  IncidenceNotFound = 2,
++};
++
++[[nodiscard]] const char *region_boundary_schedule_failure_reason_name(
++    RegionBoundaryScheduleFailureReason reason) noexcept;
++
++/** One occurrence of an A2b arc in a region's boundary walk, bound to the A3
++ *  span that schedules it. */
++struct RegionBoundaryScheduleSide {
++  GlobalTopologyOrientedArc arc;
++  /** The walk enters the arc at startNode and leaves it at endNode. */
++  authority::NetworkNodeId startNode;
++  authority::NetworkNodeId endNode;
++  ConformitySpanId span;
++  ConformityBoundaryIncidenceId incidence;
++  /** Position of the arc in its span's chain; 0 for a single-arc span. */
++  std::size_t chainOrdinal = 0U;
++  /** True when the walk runs in the span's chain direction. */
++  bool alongSpan = true;
++  EInt spanCount;
++};
++
++/** The A3 boundary schedule of one A2b region, in the region's walk order.
++ *  boundaryCount adds each incidence's span count once. */
++struct RegionBoundarySchedule {
++  authority::NetworkRegionId region;
++  std::vector<RegionBoundaryScheduleSide> sides;
++  EInt boundaryCount;
++};
++
++struct RegionBoundaryScheduleFailure {
++  RegionBoundaryScheduleFailureReason reason =
++      RegionBoundaryScheduleFailureReason::TopologyPlanMismatch;
++  std::optional<authority::NetworkRegionId> region;
++  std::optional<std::size_t> boundaryOrdinal;
++};
++
++using RegionBoundaryScheduleResult =
++    std::variant<std::vector<RegionBoundarySchedule>,
++                 RegionBoundaryScheduleFailure>;
++
++/**
++ * The input A4 consumes per region: every region of the A2b plan, in plan
++ * order, with each walk occurrence bound to its A3 span, incidence and count,
++ * or the first occurrence that cannot be bound. Read-only over both plans.
++ * An arc shared by two regions binds to the same span from both walks
++ * (DESIGN §7.4).
++ */
++[[nodiscard]] RegionBoundaryScheduleResult
++build_region_boundary_schedules(const GlobalTopologyPlan &topology,
++                                const GlobalConformityBaselinePlan &baseline);
++
+ } // namespace directional::geometry
+ 
+ #endif
+diff --git a/src/geometry/GlobalConformityBaseline.cpp b/src/geometry/GlobalConformityBaseline.cpp
+index e06d40618..fb677d528 100644
+--- a/src/geometry/GlobalConformityBaseline.cpp
++++ b/src/geometry/GlobalConformityBaseline.cpp
+@@ -845,4 +845,97 @@ GlobalConformityBaselinePlan::validation_candidate() const {
+   return {schedule_, incidences_, certificate_, semanticDigest_};
+ }
+ 
++const char *region_boundary_schedule_failure_reason_name(
++    RegionBoundaryScheduleFailureReason reason) noexcept {
++  switch (reason) {
++  case RegionBoundaryScheduleFailureReason::TopologyPlanMismatch:
++    return "topology-plan-mismatch";
++  case RegionBoundaryScheduleFailureReason::ArcNotScheduled:
++    return "arc-not-scheduled";
++  case RegionBoundaryScheduleFailureReason::IncidenceNotFound:
++    return "incidence-not-found";
++  }
++  return "unknown";
++}
++
++RegionBoundaryScheduleResult
++build_region_boundary_schedules(const GlobalTopologyPlan &topology,
++                                const GlobalConformityBaselinePlan &baseline) {
++  using Reason = RegionBoundaryScheduleFailureReason;
++  if (baseline.topology_plan_digest() != topology.semantic_digest()) {
++    return RegionBoundaryScheduleFailure{Reason::TopologyPlanMismatch,
++                                         std::nullopt, std::nullopt};
++  }
++  std::map<ConformityBoundaryIncidenceId, const BaselineConformityIncidence *>
++      incidences;
++  for (const BaselineConformityIncidence &incidence : baseline.incidences()) {
++    incidences.emplace(incidence.id, &incidence);
++  }
++  std::vector<RegionBoundarySchedule> schedules;
++  schedules.reserve(topology.regions().size());
++  for (const GlobalTopologyRegion &region : topology.regions()) {
++    RegionBoundarySchedule schedule{region.id, {}, EInt(0)};
++    std::set<std::size_t> countedIncidences;
++    const std::size_t walkSize = region.boundary.size();
++    for (std::size_t ordinal = 0U; ordinal < walkSize; ++ordinal) {
++      const GlobalTopologyOrientedArc &oriented = region.boundary[ordinal];
++      const GlobalTopologyArc *arc = topology.find_arc(oriented.arc);
++      const BaselineConformityArcBinding *binding =
++          arc != nullptr ? baseline.find_arc_binding(arc->id) : nullptr;
++      const ConformityScheduleEntry *entry =
++          binding != nullptr ? baseline.find_schedule(binding->span) : nullptr;
++      if (entry == nullptr) {
++        return RegionBoundaryScheduleFailure{Reason::ArcNotScheduled, region.id,
++                                             ordinal};
++      }
++      // D5 (RA-219): the arc's path, in its chain orientation, is the slice of
++      // the span's support that starts at the binding's first support piece.
++      const authority::ExactSourcePath path =
++          authority::exact_source_path_for_orientation(arc->sourcePath,
++                                                       binding->orientation);
++      const auto &support = entry->supportPieces;
++      if (binding->firstSupportPiece > support.size() ||
++          path.size() > support.size() - binding->firstSupportPiece ||
++          !std::equal(path.begin(), path.end(),
++                      support.begin() + static_cast<std::ptrdiff_t>(
++                                            binding->firstSupportPiece))) {
++        return RegionBoundaryScheduleFailure{Reason::ArcNotScheduled, region.id,
++                                             ordinal};
++      }
++      // D5 (RA-220): a span's incidence is read at its identifying arc, which
++      // the walk meets chainOrdinal arcs before this one when it follows the
++      // chain and as many after it otherwise.
++      if (binding->chainOrdinal >= walkSize) {
++        return RegionBoundaryScheduleFailure{Reason::IncidenceNotFound,
++                                             region.id, ordinal};
++      }
++      const bool alongSpan = oriented.orientation == binding->orientation;
++      const ConformityBoundaryIncidenceId incidenceId{
++          region.id, (alongSpan ? ordinal + walkSize - binding->chainOrdinal
++                                : ordinal + binding->chainOrdinal) %
++                         walkSize};
++      const auto found = incidences.find(incidenceId);
++      if (found == incidences.end() || found->second->span != binding->span ||
++          found->second->orientation != (alongSpan
++                                             ? authority::Orientation::Forward
++                                             : authority::Orientation::Reverse)) {
++        return RegionBoundaryScheduleFailure{Reason::IncidenceNotFound,
++                                             region.id, ordinal};
++      }
++      if (countedIncidences
++              .insert(incidenceId.canonicalBoundaryOccurrenceOrdinal)
++              .second) {
++        schedule.boundaryCount += entry->count;
++      }
++      const bool forward = oriented.orientation == authority::Orientation::Forward;
++      schedule.sides.push_back(RegionBoundaryScheduleSide{
++          oriented, forward ? arc->firstNode : arc->secondNode,
++          forward ? arc->secondNode : arc->firstNode, binding->span,
++          incidenceId, binding->chainOrdinal, alongSpan, entry->count});
++    }
++    schedules.push_back(std::move(schedule));
++  }
++  return schedules;
++}
++
+ } // namespace directional::geometry
+diff --git a/tests/GlobalConformityBaselineTests.cpp b/tests/GlobalConformityBaselineTests.cpp
+index 11058b27e..34448f5e3 100644
+--- a/tests/GlobalConformityBaselineTests.cpp
++++ b/tests/GlobalConformityBaselineTests.cpp
+@@ -12,6 +12,7 @@
+ #include <string>
+ #include <type_traits>
+ #include <utility>
++#include <variant>
+ #include <vector>
+ 
+ #include <Eigen/Core>
+@@ -243,6 +244,20 @@ GlobalConformityBaselineInput make_baseline_input(
+   return input;
+ }
+ 
++// The pipeline's per-arc A3 input: one span per A2b arc, supported by the
++// arc's own path.
++GlobalConformityBaselineInput make_per_arc_baseline_input(
++    const TopologyFixture &fixture, double targetSize) {
++  GlobalConformityBaselineInput input;
++  input.sourceVertices = fixture.mesh.V;
++  input.targetSize = Eigen::VectorXd::Constant(fixture.mesh.V.rows(), targetSize);
++  for (const auto &arc : fixture.topology.arcs()) {
++    input.spans.push_back(
++        {ConformitySpanId::from_network_arc(arc.id), arc.sourcePath});
++  }
++  return input;
++}
++
+ std::vector<int> exact_counts(const GlobalConformityBaselinePlan &plan) {
+   std::vector<int> out;
+   for (const auto &entry : plan.schedule()) {
+@@ -370,6 +385,79 @@ TEST(GlobalConformityBaseline,
+   EXPECT_EQ(built.value().incidences().size(), fixture.topology.regions().front().boundary.size());
+ }
+ 
++TEST(GlobalConformityBaseline,
++     RegionBoundarySchedulesBindEveryWalkOccurrenceToItsSpan) {
++  const auto fixture = make_topology_fixture(make_square_mesh());
++  const auto baseline = directional::geometry::build_global_conformity_baseline(
++      fixture.topology, make_per_arc_baseline_input(fixture, 0.5));
++  ASSERT_TRUE(baseline);
++  const auto built = directional::geometry::build_region_boundary_schedules(
++      fixture.topology, baseline.value());
++  const auto *schedules =
++      std::get_if<std::vector<directional::geometry::RegionBoundarySchedule>>(
++          &built);
++  ASSERT_NE(nullptr, schedules);
++  ASSERT_EQ(fixture.topology.regions().size(), schedules->size());
++  for (std::size_t index = 0U; index < schedules->size(); ++index) {
++    const auto &region = fixture.topology.regions()[index];
++    const auto &schedule = (*schedules)[index];
++    EXPECT_EQ(region.id, schedule.region);
++    ASSERT_EQ(region.boundary.size(), schedule.sides.size());
++    EInt sum(0);
++    for (std::size_t ordinal = 0U; ordinal < schedule.sides.size(); ++ordinal) {
++      const auto &side = schedule.sides[ordinal];
++      EXPECT_EQ(region.boundary[ordinal], side.arc);
++      EXPECT_EQ(ConformitySpanId::from_network_arc(side.arc.arc), side.span);
++      EXPECT_EQ(0U, side.chainOrdinal);
++      EXPECT_EQ(ordinal, side.incidence.canonicalBoundaryOccurrenceOrdinal);
++      EXPECT_EQ(side.endNode,
++                schedule.sides[(ordinal + 1U) % schedule.sides.size()].startNode);
++      const auto *entry = baseline.value().find_schedule(side.span);
++      ASSERT_NE(nullptr, entry);
++      EXPECT_TRUE(side.spanCount == entry->count);
++      EXPECT_TRUE(EInt(0) < side.spanCount);
++      sum += side.spanCount;
++    }
++    EXPECT_TRUE(sum == schedule.boundaryCount);
++    EXPECT_TRUE(schedule.boundaryCount % EInt(2) == EInt(0));
++  }
++}
++
++TEST(GlobalConformityBaseline,
++     RegionBoundarySchedulesRejectAnotherPlanOrAForeignSupport) {
++  using directional::geometry::RegionBoundaryScheduleFailure;
++  using directional::geometry::RegionBoundaryScheduleFailureReason;
++  const auto square = make_topology_fixture(make_square_mesh());
++  const auto triangle = make_topology_fixture(make_triangle_mesh());
++  const auto squareBaseline =
++      directional::geometry::build_global_conformity_baseline(
++          square.topology, make_per_arc_baseline_input(square, 0.5));
++  ASSERT_TRUE(squareBaseline);
++  const auto otherPlan = directional::geometry::build_region_boundary_schedules(
++      triangle.topology, squareBaseline.value());
++  const auto *mismatch = std::get_if<RegionBoundaryScheduleFailure>(&otherPlan);
++  ASSERT_NE(nullptr, mismatch);
++  EXPECT_EQ(RegionBoundaryScheduleFailureReason::TopologyPlanMismatch,
++            mismatch->reason);
++  EXPECT_FALSE(mismatch->region.has_value());
++
++  // make_baseline_input supports every span by one fixed edge, so at least
++  // one boundary arc's path is not its span's support.
++  const auto foreignBaseline =
++      directional::geometry::build_global_conformity_baseline(
++          square.topology, make_baseline_input(square, 1.0));
++  ASSERT_TRUE(foreignBaseline);
++  const auto foreign = directional::geometry::build_region_boundary_schedules(
++      square.topology, foreignBaseline.value());
++  const auto *unbound = std::get_if<RegionBoundaryScheduleFailure>(&foreign);
++  ASSERT_NE(nullptr, unbound);
++  EXPECT_EQ(RegionBoundaryScheduleFailureReason::ArcNotScheduled,
++            unbound->reason);
++  ASSERT_TRUE(unbound->region.has_value());
++  EXPECT_EQ(square.topology.regions().front().id, *unbound->region);
++  EXPECT_TRUE(unbound->boundaryOrdinal.has_value());
++}
++
+ TEST(GlobalConformityBaseline,
+      SameRegionDoubleIncidenceIsZeroEffectSelfLoop) {
+   ParityGraphProblem problem;
+diff --git a/tests/SurfaceCellTracingDisplayTests.cpp b/tests/SurfaceCellTracingDisplayTests.cpp
+index bab206adf..9e62bec21 100644
+--- a/tests/SurfaceCellTracingDisplayTests.cpp
++++ b/tests/SurfaceCellTracingDisplayTests.cpp
+@@ -18,6 +18,9 @@
+ #include <set>
+ #include <stdexcept>
+ #include <string>
++#include <utility>
++#include <variant>
++#include <vector>
+ 
+ namespace {
+ 
+@@ -417,6 +420,78 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
+       std::cout << "SphereAuditedInputCell unavailable\n";
+     }
+   }
++  {
++    // The A4 input of each certified plan region: its walk bound to A3.
++    const auto print_schedules = [](const char *label, const FixtureRun &run,
++                                    bool perRegion) {
++      const auto &snapshots = run.result.surfaceCellContext.productSnapshots;
++      if (!snapshots.globalTopologyPlan || !snapshots.globalConformityBaseline) {
++        std::cout << label << "RegionBoundarySchedules unavailable\n";
++        return;
++      }
++      const auto built = directional::geometry::build_region_boundary_schedules(
++          *snapshots.globalTopologyPlan, *snapshots.globalConformityBaseline);
++      if (const auto *failure =
++              std::get_if<directional::geometry::RegionBoundaryScheduleFailure>(
++                  &built)) {
++        std::cout << label << "RegionBoundarySchedules built=0 failure="
++                  << directional::geometry::region_boundary_schedule_failure_reason_name(
++                         failure->reason)
++                  << " region="
++                  << (failure->region ? std::to_string(failure->region->index()) : "-")
++                  << " ordinal="
++                  << (failure->boundaryOrdinal
++                          ? std::to_string(*failure->boundaryOrdinal)
++                          : "-")
++                  << '\n';
++        return;
++      }
++      const auto &schedules =
++          std::get<std::vector<directional::geometry::RegionBoundarySchedule>>(built);
++      std::map<std::size_t, std::vector<std::pair<bool, std::string>>> uses;
++      std::size_t sides = 0U;
++      for (const auto &schedule : schedules) {
++        sides += schedule.sides.size();
++        for (const auto &side : schedule.sides) {
++          uses[side.arc.arc.index()].push_back(
++              {side.arc.orientation == directional::authority::Orientation::Forward,
++               side.spanCount.to_string()});
++        }
++      }
++      std::size_t paired = 0U;
++      for (const auto &[arc, occurrences] : uses) {
++        (void)arc;
++        if (occurrences.size() == 2U &&
++            occurrences[0].first != occurrences[1].first &&
++            occurrences[0].second == occurrences[1].second) {
++          ++paired;
++        }
++      }
++      std::cout << label << "RegionBoundarySchedules built=1 regions="
++                << schedules.size() << " sides=" << sides
++                << " arcs=" << uses.size() << " pairedArcs=" << paired
++                << " otherArcs=" << uses.size() - paired << '\n';
++      if (!perRegion) return;
++      for (const auto &schedule : schedules) {
++        std::cout << label << "RegionBoundarySchedule region="
++                  << schedule.region.index() << " sides=" << schedule.sides.size()
++                  << " boundaryCount=" << schedule.boundaryCount.to_string()
++                  << " even="
++                  << (schedule.boundaryCount % EInt(2) == EInt(0) ? 1 : 0)
++                  << " counts=";
++        for (const auto &side : schedule.sides) {
++          std::cout << side.spanCount.to_string() << ',';
++        }
++        std::cout << " nodes=";
++        for (const auto &side : schedule.sides) {
++          std::cout << side.startNode.index() << ',';
++        }
++        std::cout << '\n';
++      }
++    };
++    print_schedules("Sphere", sphere, true);
++    print_schedules("Genus", genus, false);
++  }
+   const auto sphereDisplay = display_of(sphere);
+   for (const auto *face : {&sphereLocus.sourceFace, &sphereLocus.relatedSourceFace,
+                           &sphereLocus.edgeTraceFaceCorners}) {

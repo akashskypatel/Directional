@@ -1,0 +1,303 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index dd984c0c1..5c3676418 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -1371,6 +1371,47 @@ first_field_aligned_carrier_contact(
+     const FieldAlignedCandidateTraceSegment &moving,
+     const FieldAlignedCandidateTraceSegment &wall);
+ 
++// Where carrier parameter `parameter` falls along `slide`, as the fraction of
++// the way from `slide.from` to `slide.to`. Empty unless the slide has positive
++// length and the parameter lies strictly inside it: a slide end is not an
++// interior point. The producer's slide-entry stop and the cut-graph consumer
++// both use this rule, so a stop the producer publishes is a point the consumer
++// can cut.
++[[nodiscard]] std::optional<authority::FieldExactRational>
++field_aligned_slide_interior_fraction(
++    const FieldAlignedCarrierOccupancy &slide,
++    const authority::FieldExactRational &parameter);
++
++// A moving segment entering across a wall segment's slide: the entry point on
++// the carrier, whether it lies strictly inside the wall's slide, and the
++// moving end's arrival there ordered against the wall's arrival along its
++// slide by the active priority (empty when the wall's arrival is unavailable).
++struct FieldAlignedSlideEntryContact {
++  authority::FieldBoundaryPoint locus;
++  bool slideInterior = false;
++  std::optional<FieldAlignedArrivalOrdering> movingArrival;
++
++  auto operator<=>(const FieldAlignedSlideEntryContact &) const = default;
++};
++
++// The slide-entry contact of `moving` on `wall`. Empty unless the first
++// carrier contact of `moving` with `wall` is `moving`'s entry crossing meeting
++// the wall's slide. The roles are not symmetric: a slide of `moving` over the
++// entry of `wall` is the contact with the roles swapped.
++[[nodiscard]] std::optional<FieldAlignedSlideEntryContact>
++field_aligned_slide_entry_contact(
++    const TriMesh &sourceMesh, FieldTraceArrivalPriority priority,
++    const FieldAlignedCandidateTraceSegment &moving,
++    FieldAlignedArrivalMeasure movingArrival, std::size_t movingTraceIndex,
++    const FieldAlignedCandidateTraceSegment &wall,
++    FieldAlignedArrivalMeasure wallStart, std::size_t wallTraceIndex);
++
++// True when the moving trace stops before entering, at the contact's locus:
++// the locus is strictly inside the wall's slide and the moving end arrives
++// conclusively later. An earlier or inconclusive arrival never stops it here.
++[[nodiscard]] bool field_aligned_slide_entry_stops_moving_trace(
++    const FieldAlignedSlideEntryContact &contact) noexcept;
++
+ } // namespace surface_cell_tracing_detail
+ 
+ struct SurfaceTraceSeed {
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index 5421b7a09..8547f5369 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -898,18 +898,14 @@ std::optional<TraceCutPosition> carrier_contact_slide_position(
+   const auto slide =
+       surface_cell_tracing_detail::field_aligned_segment_slide_occupancy(
+           struck.segments[record.struckSegmentIndex]);
+-  if (!slide.has_value() || slide->carrier != record.carrierLocus->edge ||
+-      slide->from == slide->to) {
++  if (!slide.has_value() || slide->carrier != record.carrierLocus->edge) {
+     return std::nullopt;
+   }
+-  const authority::FieldExactRational fraction =
+-      (record.carrierLocus->parameter.value - slide->from) /
+-      (slide->to - slide->from);
+-  if (!(authority::FieldExactRational::from_integer(0) < fraction &&
+-        fraction < authority::FieldExactRational::from_integer(1))) {
+-    return std::nullopt;
+-  }
+-  return TraceCutPosition{record.struckSegmentIndex, fraction};
++  const auto fraction =
++      surface_cell_tracing_detail::field_aligned_slide_interior_fraction(
++          *slide, record.carrierLocus->parameter.value);
++  if (!fraction.has_value()) return std::nullopt;
++  return TraceCutPosition{record.struckSegmentIndex, *fraction};
+ }
+ 
+ std::optional<TraceCutPosition> carrier_contact_cut_position(
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 400805c7c..bda8c2062 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -5949,6 +5949,55 @@ std::optional<FieldAlignedCarrierContact> first_field_aligned_carrier_contact(
+   return std::nullopt;
+ }
+ 
++std::optional<authority::FieldExactRational>
++field_aligned_slide_interior_fraction(
++    const FieldAlignedCarrierOccupancy &slide,
++    const authority::FieldExactRational &parameter) {
++  if (slide.from == slide.to) return std::nullopt;
++  const authority::FieldExactRational fraction =
++      (parameter - slide.from) / (slide.to - slide.from);
++  if (!(authority::FieldExactRational::from_integer(0) < fraction &&
++        fraction < authority::FieldExactRational::from_integer(1))) {
++    return std::nullopt;
++  }
++  return fraction;
++}
++
++std::optional<FieldAlignedSlideEntryContact> field_aligned_slide_entry_contact(
++    const TriMesh &sourceMesh, const FieldTraceArrivalPriority priority,
++    const FieldAlignedCandidateTraceSegment &moving,
++    const FieldAlignedArrivalMeasure movingArrival,
++    const std::size_t movingTraceIndex,
++    const FieldAlignedCandidateTraceSegment &wall,
++    const FieldAlignedArrivalMeasure wallStart,
++    const std::size_t wallTraceIndex) {
++  const auto contact = first_field_aligned_carrier_contact(moving, wall);
++  if (!contact.has_value() || contact->movingInSlide || !contact->wallInSlide) {
++    return std::nullopt;
++  }
++  const auto slide = field_aligned_segment_slide_occupancy(wall);
++  FieldAlignedSlideEntryContact entry{
++      authority::FieldBoundaryPoint{
++          contact->carrier, authority::ExactUnitParameter{contact->parameter}},
++      slide.has_value() &&
++          field_aligned_slide_interior_fraction(*slide, contact->parameter)
++              .has_value(),
++      std::nullopt};
++  if (const auto wallAtContact = field_aligned_arrival_at_slide_parameter(
++          sourceMesh, wall, wallStart, contact->parameter)) {
++    entry.movingArrival = field_aligned_compare_priority_arrivals(
++        priority, movingArrival, *wallAtContact, movingTraceIndex,
++        wallTraceIndex);
++  }
++  return entry;
++}
++
++bool field_aligned_slide_entry_stops_moving_trace(
++    const FieldAlignedSlideEntryContact &contact) noexcept {
++  return contact.slideInterior &&
++         contact.movingArrival == FieldAlignedArrivalOrdering::Later;
++}
++
+ std::optional<FieldAlignedArrivalMeasure>
+ field_aligned_filtered_arrival_measure(
+     const TriMesh &sourceMesh,
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 0f6c58d84..ce3a3e935 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -20421,6 +20421,157 @@ TEST(FieldAlignedCarrierOccupancy,
+       (embedded::CarrierContactBinding{struck.id, 0U, exact_ratio(1, 2)}));
+ }
+ 
++TEST(FieldAlignedCarrierOccupancy,
++     SlideEntryStopsOnlyALaterEntryStrictlyInsideTheWallSlide) {
++  using directional::authority::FieldBranch;
++  using directional::authority::TopologyRegionId;
++  using directional::authority::TraceId;
++  using directional::geometry::FieldAlignedCandidateTrace;
++  using directional::geometry::FieldAlignedCandidateTraceSegment;
++  using directional::geometry::FieldAlignedTerminalContact;
++  using directional::geometry::FieldTraceArrivalPriority;
++  using directional::geometry::surface_cell_tracing_detail::
++      FieldAlignedArrivalMeasure;
++  using directional::geometry::surface_cell_tracing_detail::
++      FieldAlignedArrivalOrdering;
++  using directional::geometry::surface_cell_tracing_detail::
++      FieldAlignedCarrierOccupancy;
++  using directional::geometry::surface_cell_tracing_detail::
++      field_aligned_arrival_at_slide_parameter;
++  using directional::geometry::surface_cell_tracing_detail::
++      field_aligned_slide_entry_contact;
++  using directional::geometry::surface_cell_tracing_detail::
++      field_aligned_slide_entry_stops_moving_trace;
++  using directional::geometry::surface_cell_tracing_detail::
++      field_aligned_slide_interior_fraction;
++  using Position = embedded::TraceCutPosition;
++  // Unit square: faces (0,1,2) and (0,2,3) share the diagonal (0,2). The wall
++  // enters (0,1,2) across (0,1) at 3/4 and slides along the diagonal from 3/8
++  // to 3/4. Each moving segment crosses the diagonal into (0,2,3).
++  const TriMesh mesh = make_square_mesh();
++  const auto lower = topology_face(0, 1, 2, 4U);
++  const auto upper = topology_face(0, 2, 3, 4U);
++  const auto ab = topology_edge(0, 1, 4U);
++  const auto ac = topology_edge(0, 2, 4U);
++  const auto ad = topology_edge(0, 3, 4U);
++  const auto branch = FieldBranch::from_integer(0);
++  FieldAlignedCandidateTraceSegment wall(lower, branch, boundary_point(ab, 3, 4),
++                                         ab, ac, std::nullopt);
++  wall.edgeTransitEntry = boundary_point(ac, 3, 8);
++  wall.edgeTransitExit = boundary_point(ac, 3, 4);
++  const FieldAlignedArrivalMeasure wallStart{2.0, 0.0, 5U};
++  const auto crossingAt = [&](const int numerator, const int denominator) {
++    return FieldAlignedCandidateTraceSegment(
++        upper, branch, boundary_point(ac, numerator, denominator), ac, ad,
++        std::nullopt);
++  };
++  const auto arcLength = FieldTraceArrivalPriority::ArcLengthFiltered;
++  const FieldAlignedArrivalMeasure late{9.0, 0.0, 3U};
++  const FieldAlignedArrivalMeasure early{1.0, 0.0, 3U};
++
++  // The shared interior rule: the fraction along the slide in its direction
++  // of travel, and nothing at a slide end, outside the slide, or on a point.
++  const FieldAlignedCarrierOccupancy slide{ac, exact_ratio(3, 8),
++                                           exact_ratio(3, 4)};
++  const FieldAlignedCarrierOccupancy reversed{ac, exact_ratio(3, 4),
++                                              exact_ratio(3, 8)};
++  EXPECT_EQ(std::optional{exact_ratio(1, 3)},
++            field_aligned_slide_interior_fraction(slide, exact_ratio(1, 2)));
++  EXPECT_EQ(std::optional{exact_ratio(2, 3)},
++            field_aligned_slide_interior_fraction(reversed, exact_ratio(1, 2)));
++  EXPECT_FALSE(field_aligned_slide_interior_fraction(slide, exact_ratio(3, 8)));
++  EXPECT_FALSE(field_aligned_slide_interior_fraction(slide, exact_ratio(3, 4)));
++  EXPECT_FALSE(field_aligned_slide_interior_fraction(slide, exact_ratio(7, 8)));
++  EXPECT_FALSE(field_aligned_slide_interior_fraction(
++      FieldAlignedCarrierOccupancy{ac, exact_ratio(1, 2), exact_ratio(1, 2)},
++      exact_ratio(1, 2)));
++
++  // A later entry strictly inside the slide stops the moving trace at its
++  // entry point on the diagonal.
++  const auto interior = field_aligned_slide_entry_contact(
++      mesh, arcLength, crossingAt(1, 2), late, 4U, wall, wallStart, 1U);
++  ASSERT_TRUE(interior.has_value());
++  EXPECT_EQ(ac, interior->locus.edge);
++  EXPECT_EQ(exact_ratio(1, 2), interior->locus.parameter.value);
++  EXPECT_TRUE(interior->slideInterior);
++  EXPECT_EQ(std::optional{FieldAlignedArrivalOrdering::Later},
++            interior->movingArrival);
++  EXPECT_TRUE(field_aligned_slide_entry_stops_moving_trace(*interior));
++
++  // Earlier and inconclusive entries do not stop it. The inconclusive entry
++  // arrives with the wall's own measure at the contact.
++  const auto earlier = field_aligned_slide_entry_contact(
++      mesh, arcLength, crossingAt(1, 2), early, 4U, wall, wallStart, 1U);
++  ASSERT_TRUE(earlier.has_value());
++  EXPECT_EQ(std::optional{FieldAlignedArrivalOrdering::Earlier},
++            earlier->movingArrival);
++  EXPECT_FALSE(field_aligned_slide_entry_stops_moving_trace(*earlier));
++  const auto wallAtMidpoint = field_aligned_arrival_at_slide_parameter(
++      mesh, wall, wallStart, exact_ratio(1, 2));
++  ASSERT_TRUE(wallAtMidpoint.has_value());
++  const auto tied = field_aligned_slide_entry_contact(
++      mesh, arcLength, crossingAt(1, 2), *wallAtMidpoint, 4U, wall, wallStart,
++      1U);
++  ASSERT_TRUE(tied.has_value());
++  EXPECT_EQ(std::optional{FieldAlignedArrivalOrdering::Inconclusive},
++            tied->movingArrival);
++  EXPECT_FALSE(field_aligned_slide_entry_stops_moving_trace(*tied));
++
++  // The ordering is the active priority's: by seniority the early entry of a
++  // younger trace is later, and that of an older trace is earlier.
++  const auto younger = field_aligned_slide_entry_contact(
++      mesh, FieldTraceArrivalPriority::TraceSeniority, crossingAt(1, 2), early,
++      4U, wall, wallStart, 1U);
++  ASSERT_TRUE(younger.has_value());
++  EXPECT_TRUE(field_aligned_slide_entry_stops_moving_trace(*younger));
++  const auto older = field_aligned_slide_entry_contact(
++      mesh, FieldTraceArrivalPriority::TraceSeniority, crossingAt(1, 2), late,
++      0U, wall, wallStart, 1U);
++  ASSERT_TRUE(older.has_value());
++  EXPECT_FALSE(field_aligned_slide_entry_stops_moving_trace(*older));
++
++  // A later entry at either slide end is a slide-entry contact but not a
++  // stop: the slide end is not an interior point of the wall.
++  for (const auto &end : {crossingAt(3, 8), crossingAt(3, 4)}) {
++    const auto atEnd = field_aligned_slide_entry_contact(
++        mesh, arcLength, end, late, 4U, wall, wallStart, 1U);
++    ASSERT_TRUE(atEnd.has_value());
++    EXPECT_FALSE(atEnd->slideInterior);
++    EXPECT_EQ(std::optional{FieldAlignedArrivalOrdering::Later},
++              atEnd->movingArrival);
++    EXPECT_FALSE(field_aligned_slide_entry_stops_moving_trace(*atEnd));
++  }
++
++  // An entry outside the slide is no contact. The wall's slide over the
++  // moving segment's entry is the contact with the roles swapped.
++  EXPECT_FALSE(field_aligned_slide_entry_contact(mesh, arcLength,
++                                                 crossingAt(1, 4), late, 4U,
++                                                 wall, wallStart, 1U));
++  EXPECT_FALSE(field_aligned_slide_entry_contact(
++      mesh, arcLength, wall, wallStart, 1U, crossingAt(1, 2), late, 4U));
++
++  // The cut-graph consumer cuts the struck slide where the producer stops: a
++  // record at the stop locus binds inside the struck segment at the shared
++  // fraction, and a record at the slide start, which the producer declines,
++  // does not bind.
++  FieldAlignedCandidateTrace struck(
++      TraceId::from_index(1U, 5U).value(),
++      SingularityPortId::from_index(0, 1).value(),
++      FieldSingularityId::from_index(0, 1).value(),
++      SourceVertexId::from_index(1, 4).value(),
++      SourceComponentId::from_index(0, 1).value(),
++      TopologyRegionId::from_index(0, 1).value());
++  struck.segments.push_back(wall);
++  const FieldAlignedTerminalContact stopRecord{
++      lower, {exact_ratio(1, 2), exact_ratio(0, 1), exact_ratio(1, 2)},
++      struck.id, 0U, interior->locus};
++  EXPECT_EQ((Position{0U, exact_ratio(1, 3)}),
++            embedded::carrier_contact_cut_position(struck, stopRecord));
++  auto atSlideStart = stopRecord;
++  atSlideStart.carrierLocus = boundary_point(ac, 3, 8);
++  EXPECT_FALSE(embedded::carrier_contact_cut_position(struck, atSlideStart));
++}
++
+ TEST(FieldAlignedCarrierOccupancy,
+      SourcePieceCountsBindEachTraceSegmentToItsRealPieces) {
+   namespace authority = directional::authority;

@@ -1,0 +1,230 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index f865b0b2a25a2a0cf68fc3653326a7af66c2edae..63a30df189a98a089f544ef7a2dacd868c2f2214 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -477,6 +477,8 @@ struct FieldAlignedCandidateTrace {
+   std::optional<authority::FieldSingularityId> terminalSingularity;
+   std::optional<FieldAlignedTerminalContact> terminalContact;
+   std::optional<FieldAlignedLimitCycleTermination> terminalLimitCycle;
++  // The opposite departure port owned by this arrival after exact retrace selection.
++  std::optional<authority::SingularityPortId> arrivalPort;
+
+   auto operator<=>(const FieldAlignedCandidateTrace &) const = default;
+ };
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index a7af367bf91a8a24e899e313381b49c23eb79b60..21ba4688db9453cbbe4f61f85db5bd664d40cccd 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -3,6 +3,8 @@
+ #include <directional/geometry/GlobalConformityBaseline.h>
+ #include <directional/geometry/GlobalTopologyPlan.h>
+
++#include "RetracedTraceReferences.h"
++
+ #include <directional/authority/CanonicalRoute.h>
+ #include <directional/authority/GridAutomorphism.h>
+ #include <directional/core/TriMesh.h>
+@@ -4283,6 +4285,96 @@ std::optional<FieldAlignedCurveNetworkError> field_aligned_publish_contact(
+   return std::nullopt;
+ }
+
++// Only reciprocal singularity arrivals can own a removed departure port.
++// Read exact paths in port order, within the same topology region. The
++// published candidate changes only if every selected pair can be remapped.
++std::optional<FieldAlignedCurveNetworkError>
++field_aligned_select_retraced_traces(FieldAlignedCurveNetworkCandidate &candidate) {
++  using Group = std::pair<authority::SourceComponentId, authority::TopologyRegionId>;
++  using Pair = std::pair<authority::TraceId, authority::TraceId>;
++  std::map<Group, std::vector<std::size_t>> groups;
++  for (std::size_t i = 0U; i < candidate.candidateTraces.size(); ++i) {
++    const auto &trace = candidate.candidateTraces[i];
++    if (trace.terminalSingularity.has_value()) {
++      groups[{trace.sourceComponent, trace.sourceTopologyRegion}].push_back(i);
++    }
++  }
++  std::vector<Pair> selected;
++  for (auto &[group, indices] : groups) {
++    (void)group;
++    std::sort(indices.begin(), indices.end(), [&](std::size_t a, std::size_t b) {
++      return candidate.candidateTraces[a].port < candidate.candidateTraces[b].port;
++    });
++    std::vector<authority::ExactSourcePath> paths;
++    paths.reserve(indices.size());
++    for (const auto index : indices) {
++      const auto &trace = candidate.candidateTraces[index];
++      authority::ExactSourcePath path;
++      for (std::size_t segment = 0U; segment < trace.segments.size(); ++segment) {
++        const auto pieces = embedded_graph_topology_detail::exact_trace_segment_pieces(
++            trace, segment);
++        if (!pieces || pieces->empty() ||
++            (!path.empty() && path.back().second != pieces->front().first)) {
++          return field_aligned_error(
++              FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
++              trace.sourceVertex, std::nullopt, std::nullopt, trace.singularity);
++        }
++        path.insert(path.end(), pieces->begin(), pieces->end());
++      }
++      if (path.empty() || !trace.terminalPoint ||
++          path.front().first != authority::ExactSourcePoint{trace.sourceVertex} ||
++          authority::canonical_exact_source_boundary_point(*trace.terminalPoint) !=
++              std::optional<authority::ExactSourcePoint>{path.back().second}) {
++        return field_aligned_error(
++            FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
++            trace.sourceVertex, std::nullopt, std::nullopt, trace.singularity);
++      }
++      paths.push_back(std::move(path));
++    }
++    for (const auto &pair : authority::exact_source_retraced_traces(paths)) {
++      selected.emplace_back(candidate.candidateTraces[indices[pair.kept]].id,
++                            candidate.candidateTraces[indices[pair.removed]].id);
++    }
++  }
++  if (selected.empty()) return std::nullopt;
++  std::sort(selected.begin(), selected.end());
++  std::set<authority::TraceId> used;
++  for (const auto &[kept, removed] : selected) {
++    if (!used.insert(kept).second || !used.insert(removed).second) {
++      return field_aligned_error(
++          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding);
++    }
++  }
++  auto transaction = candidate;
++  for (const auto &[kept, removed] : selected) {
++    auto remapped = remap_retraced_trace_references(transaction, kept, removed);
++    if (!remapped) {
++      const auto trace = std::find_if(
++          transaction.candidateTraces.begin(), transaction.candidateTraces.end(),
++          [&](const auto &value) { return value.id == kept; });
++      if (trace == transaction.candidateTraces.end()) {
++        return field_aligned_error(
++            FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding);
++      }
++      return field_aligned_error(
++          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
++          trace->sourceVertex, std::nullopt, std::nullopt, trace->singularity);
++    }
++    auto &traces = remapped->candidate.candidateTraces;
++    const auto arrival = std::find_if(traces.begin(), traces.end(), [&](const auto &trace) {
++      return trace.id == remapped->arrivalTrace;
++    });
++    if (arrival == traces.end() || arrival->arrivalPort) {
++      return field_aligned_error(
++          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding);
++    }
++    arrival->arrivalPort = remapped->arrivalPort;
++    transaction = std::move(remapped->candidate);
++  }
++  candidate = std::move(transaction);
++  return std::nullopt;
++}
++
+ std::optional<FieldAlignedCurveNetworkError>
+ canonical_field_aligned_traces_and_events(
+     const TriMesh &sourceMesh,
+@@ -4884,6 +4976,10 @@ canonical_field_aligned_traces_and_events(
+     }
+   }
+
++  if (const auto error = field_aligned_select_retraced_traces(candidate)) {
++    return *error;
++  }
++
+   // P13 (RA-262): every slide segment a finished trace keeps, so a gate run
+   // shows which fixtures publish slide geometry. A last segment that ends at a
+   // face contact stops before its slide, so the slide is not traversed.
+@@ -5615,6 +5711,12 @@ std::uint64_t field_aligned_candidate_digest(
+   for (const FieldAlignedCandidateTrace &trace : candidate.candidateTraces) {
+     field_aligned_hash_id(hash, trace.id);
+     field_aligned_hash_id(hash, trace.port);
++    if (trace.arrivalPort) {
++      constexpr std::uint64_t kArrivalPortHashDomain =
++          0x4152524956504f52ULL; // "ARRIVPOR"
++      field_aligned_hash_consume(hash, kArrivalPortHashDomain);
++      field_aligned_hash_id(hash, *trace.arrivalPort);
++    }
+     field_aligned_hash_id(hash, trace.singularity);
+     field_aligned_hash_id(hash, trace.sourceVertex);
+     field_aligned_hash_id(hash, trace.sourceComponent);
+@@ -5838,6 +5940,7 @@ std::optional<FieldAlignedCurveNetworkError> validate_field_aligned_candidate(
+     const FieldAlignedCandidateTrace &actual = candidate.candidateTraces[index];
+     const FieldAlignedCandidateTrace &wanted = expected.candidateTraces[index];
+     if (actual.id != wanted.id || actual.port != wanted.port ||
++        actual.arrivalPort != wanted.arrivalPort ||
+         actual.singularity != wanted.singularity ||
+         actual.sourceVertex != wanted.sourceVertex ||
+         actual.sourceComponent != wanted.sourceComponent ||
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index d03386d2b1b617166bb7af1dc68a0ae07055abd4..ef6a0b1a31ea283fde076333cb0c00ae0f48f166 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -23587,3 +23587,70 @@ TEST(RetracedTraceReferences, RemapsExactStruckSegmentAndEndpointPortWithoutPubl
+   EXPECT_EQ(original.candidateTraces, input.candidateTraces);
+   EXPECT_EQ(original.events, input.events);
+ }
++
++TEST(FieldAlignedCurveNetwork, MechanicalRetracesPublishBothPortsBeforeTopologyReaders) {
++  const auto &fixture = cp4c_mechanical_atlas_fixture();
++  ASSERT_TRUE(fixture.sourceAuthority);
++  ASSERT_TRUE(fixture.atlas);
++  ASSERT_TRUE(fixture.network) << fixture.terminalFailureCode << '/'
++                               << fixture.terminalFailureDetailCode;
++  const auto &network = *fixture.network;
++  const std::map<std::size_t, std::size_t> expected{{0U, 3U}, {2U, 8U},
++                                                    {4U, 11U}, {7U, 9U}};
++  std::map<std::size_t, std::size_t> arrivals;
++  std::map<directional::authority::SingularityPortId, std::size_t> owners;
++  std::set<directional::authority::TraceId> traceIds;
++  for (const auto &trace : network.candidate_traces()) {
++    ASSERT_TRUE(traceIds.insert(trace.id).second);
++    ++owners[trace.port];
++    if (trace.arrivalPort) {
++      ++owners[*trace.arrivalPort];
++      arrivals.emplace(trace.id.index(), trace.arrivalPort->index());
++      const auto port = std::find_if(network.singularity_ports().begin(),
++          network.singularity_ports().end(), [&](const auto &value) {
++            return value.id == *trace.arrivalPort;
++          });
++      ASSERT_NE(port, network.singularity_ports().end());
++      EXPECT_EQ(trace.terminalSingularity, port->singularity);
++    }
++  }
++  EXPECT_EQ(expected, arrivals);
++  EXPECT_EQ(8U, network.candidate_traces().size());
++  for (const auto &trace : network.candidate_traces()) {
++    EXPECT_EQ(trace.id.index(), trace.port.index());
++    EXPECT_NE(3U, trace.id.index());
++    EXPECT_NE(8U, trace.id.index());
++    EXPECT_NE(9U, trace.id.index());
++    EXPECT_NE(11U, trace.id.index());
++  }
++  EXPECT_EQ(12U, network.singularity_ports().size());
++  EXPECT_EQ(network.singularity_ports().size(), owners.size());
++  for (const auto &port : network.singularity_ports()) EXPECT_EQ(1U, owners[port.id]);
++  for (const auto &trace : network.candidate_traces()) {
++    if (trace.terminalContact) EXPECT_EQ(1U, traceIds.count(trace.terminalContact->struckTrace));
++  }
++  for (const auto &event : network.events()) {
++    for (const auto &incidence : event.incidences) {
++      const auto trace = std::find_if(network.candidate_traces().begin(),
++          network.candidate_traces().end(), [&](const auto &value) {
++            return value.id == incidence.trace;
++          });
++      ASSERT_NE(trace, network.candidate_traces().end());
++      EXPECT_EQ(trace->port, incidence.sourcePort);
++    }
++  }
++  auto candidate = network.validation_candidate();
++  const auto rebuilt = FieldAlignedCurveNetwork::make_from_candidate(
++      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, fixture.rails, candidate);
++  ASSERT_TRUE(rebuilt);
++  EXPECT_EQ(network.semantic_digest(), rebuilt.value().semantic_digest());
++  const auto arrival = std::find_if(candidate.candidateTraces.begin(),
++      candidate.candidateTraces.end(), [](const auto &trace) { return trace.arrivalPort.has_value(); });
++  ASSERT_NE(arrival, candidate.candidateTraces.end());
++  arrival->arrivalPort.reset();
++  const auto rejected = FieldAlignedCurveNetwork::make_from_candidate(
++      fixture.mesh, *fixture.sourceAuthority, *fixture.atlas, fixture.rails, std::move(candidate));
++  ASSERT_FALSE(rejected);
++  EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceBinding,
++            rejected.error().code);
++}

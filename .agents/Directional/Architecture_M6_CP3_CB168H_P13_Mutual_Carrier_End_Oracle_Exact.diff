@@ -1,0 +1,110 @@
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 11a2f24..205c939 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -17127,6 +17127,10 @@ TEST(TraceTerminationCorrection,
+   const FieldAlignedCurveNetwork &network = *sphere.network;
+   ASSERT_EQ(24U, network.candidate_traces().size()) << sphere.report;
+
++  using Role = directional::geometry::FieldAlignedTraceEventRole;
++  const auto parameter = exact_ratio(574181338608147LL, 4503599627370496LL);
++  std::set<std::size_t> carrierEnds;
++  std::set<std::size_t> carrierNodes;
+   std::size_t contactTermini = 0U;
+   for (const auto &trace : network.candidate_traces()) {
+     const std::size_t terminalKinds =
+@@ -17141,11 +17145,93 @@ TEST(TraceTerminationCorrection,
+         network.candidate_traces().begin(), network.candidate_traces().end(),
+         [&](const auto &candidate) { return candidate.id == contact.struckTrace; });
+     ASSERT_NE(network.candidate_traces().end(), struck);
+-    EXPECT_LT(contact.struckSegmentIndex, struck->segments.size());
++    SCOPED_TRACE(::testing::Message() << "trace=" << trace.id.index()
++                 << ", struck=" << struck->id.index());
++    const auto id = trace.id.index();
++    const bool expectedCarrierEnd = id == 4U || id == 6U ||
++                                    id == 15U || id == 19U;
++    if (!expectedCarrierEnd) {
++      EXPECT_LT(contact.struckSegmentIndex, struck->segments.size());
++    } else {
++      const auto partner = id == 4U ? 6U : id == 6U ? 4U :
++                           id == 15U ? 19U : 15U;
++      EXPECT_EQ(partner, struck->id.index());
++      EXPECT_NE(trace.id, struck->id);
++      ASSERT_EQ(7U, trace.segments.size());
++      ASSERT_EQ(7U, struck->segments.size());
++      EXPECT_EQ(struck->segments.size(), contact.struckSegmentIndex);
++      ASSERT_TRUE(contact.carrierLocus.has_value());
++      ASSERT_TRUE(struck->terminalContact.has_value());
++      const auto &other = *struck->terminalContact;
++      EXPECT_EQ(trace.id, other.struckTrace);
++      EXPECT_EQ(trace.segments.size(), other.struckSegmentIndex);
++      const auto &locus = *contact.carrierLocus;
++      ASSERT_EQ(contact.carrierLocus, other.carrierLocus);
++      EXPECT_EQ(id == 4U || id == 6U ? 0U : 25U, locus.edge.first().index());
++      EXPECT_EQ(id == 4U || id == 6U ? 2U : 27U, locus.edge.second().index());
++      EXPECT_EQ(parameter, locus.parameter.value);
++      EXPECT_NE(contact.sourceFace, other.sourceFace);
++      const auto &last = trace.segments.back();
++      EXPECT_EQ(last.sourceFace, contact.sourceFace);
++      EXPECT_EQ(last.outgoingCarrier, locus.edge);
++      EXPECT_FALSE(last.edgeTransitEntry.has_value());
++      EXPECT_FALSE(last.edgeTransitExit.has_value());
++      EXPECT_FALSE(trace.terminalLimitCycle.has_value());
++      EXPECT_FALSE(trace.terminalPoint.has_value());
++      const auto &corners = contact.sourceFace.vertices();
++      EXPECT_EQ(1, std::count(corners.begin(), corners.end(), locus.edge.first()));
++      EXPECT_EQ(1, std::count(corners.begin(), corners.end(), locus.edge.second()));
++      for (std::size_t k = 0U; k < corners.size(); ++k) {
++        const auto expected = corners[k] == locus.edge.first()
++                                  ? exact_integer(1) - parameter
++                              : corners[k] == locus.edge.second()
++                                  ? parameter : exact_integer(0);
++        EXPECT_EQ(expected, contact.barycentric[k]);
++      }
++      std::size_t terminalEvents = 0U;
++      for (const auto &event : network.events()) {
++        if (event.kind != Kind::TraceIntersection) continue;
++        const auto own = std::find_if(event.incidences.begin(), event.incidences.end(),
++            [&](const auto &incidence) {
++              return incidence.trace == trace.id && incidence.role == Role::Terminal;
++            });
++        if (own == event.incidences.end()) continue;
++        ++terminalEvents;
++        ASSERT_EQ(2U, event.incidences.size());
++        EXPECT_EQ(own->sourcePort, trace.port);
++        const auto peer = std::find_if(event.incidences.begin(), event.incidences.end(),
++            [&](const auto &incidence) {
++              return incidence.trace == struck->id && incidence.role == Role::Terminal;
++            });
++        ASSERT_NE(event.incidences.end(), peer);
++        EXPECT_EQ(peer->sourcePort, struck->port);
++        ASSERT_TRUE(event.sourceEdge.has_value());
++        EXPECT_EQ(locus.edge, *event.sourceEdge);
++        EXPECT_TRUE(event.sourceFace == contact.sourceFace ||
++                    event.sourceFace == other.sourceFace);
++        carrierNodes.insert(event.node.index());
++        std::ostringstream receipt;
++        receipt << "SphereMutualCarrierEnd trace=" << id
++                << " segments=" << trace.segments.size()
++                << " struck=" << struck->id.index()
++                << " struckIndex=" << contact.struckSegmentIndex
++                << " face=(" << corners[0].index() << ',' << corners[1].index()
++                << ',' << corners[2].index() << ") carrier=("
++                << locus.edge.first().index() << ',' << locus.edge.second().index()
++                << ") parameter=" << locus.parameter.value.numerator_string()
++                << '/' << locus.parameter.value.denominator_string()
++                << " node=" << event.node.index() << " roles=Terminal,Terminal\n";
++        std::cout << receipt.str();
++      }
++      EXPECT_EQ(1U, terminalEvents);
++      EXPECT_TRUE(carrierEnds.insert(id).second);
++    }
+     EXPECT_EQ(exact_integer(1), contact.barycentric[0] + contact.barycentric[1] +
+                                     contact.barycentric[2]);
+   }
+   EXPECT_GT(contactTermini, 0U) << sphere.report;
++  EXPECT_EQ((std::set<std::size_t>{4U, 6U, 15U, 19U}), carrierEnds);
++  EXPECT_EQ(2U, carrierNodes.size());
+
+   std::size_t correctedIntersections = 0U;
+   bool hasMutualTermination = false;

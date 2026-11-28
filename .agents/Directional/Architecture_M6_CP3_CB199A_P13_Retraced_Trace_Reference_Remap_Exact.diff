@@ -1,0 +1,472 @@
+diff --git a/src/geometry/RetracedTraceReferences.h b/src/geometry/RetracedTraceReferences.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..2967b6a6a58a691fa2e89841e103060477d15959
+--- /dev/null
++++ b/src/geometry/RetracedTraceReferences.h
+@@ -0,0 +1,283 @@
++// This file is part of Directional, a library for directional field processing.
++//
++// This Source Code Form is subject to the terms of the Mozilla Public License
++// v. 2.0. If a copy of the MPL was not distributed with this file, You can
++// obtain one at http://mozilla.org/MPL/2.0/.
++
++#pragma once
++
++#include <algorithm>
++#include <map>
++#include <optional>
++#include <set>
++#include <utility>
++
++#include "ExactTraceSegmentPieces.h"
++
++namespace directional::geometry::surface_cell_tracing_detail {
++
++// A selected pair's references, before publication. The producer must retain
++// the arrival binding with the selected trace; the old candidate is untouched.
++struct RetracedTraceReferences {
++  FieldAlignedCurveNetworkCandidate candidate;
++  authority::TraceId arrivalTrace;
++  authority::SingularityPortId arrivalPort;
++};
++
++// Use the same strict entry/slide and face-chord admissibility as the cut
++// reader. A terminal sentinel is not an interior contact. A face contact is
++// not silently converted to a carrier contact when the chart changes.
++[[nodiscard]] inline bool retraced_trace_contact_segment(
++    const FieldAlignedCandidateTrace &trace, std::size_t index,
++    const FieldAlignedTerminalContact &contact) {
++  if (index >= trace.segments.size()) return false;
++  const auto &segment = trace.segments[index];
++  namespace exact = embedded_graph_topology_detail;
++  if (contact.carrierLocus) {
++    const auto &locus = *contact.carrierLocus;
++    const auto zero = authority::FieldExactRational::from_integer(0);
++    const auto one = authority::FieldExactRational::from_integer(1);
++    const auto barycentric = exact::canonical_boundary_barycentric(
++        contact.sourceFace, locus);
++    if (!barycentric || *barycentric != contact.barycentric ||
++        !(zero < locus.parameter.value && locus.parameter.value < one)) {
++      return false;
++    }
++    const auto entry = field_aligned_segment_entry_occupancy(segment);
++    if (entry && entry->carrier == locus.edge &&
++        entry->from == locus.parameter.value) return true;
++    const auto slide = field_aligned_segment_slide_occupancy(segment);
++    return slide && slide->carrier == locus.edge &&
++           field_aligned_slide_interior_fraction(*slide, locus.parameter.value)
++               .has_value();
++  }
++  if (segment.sourceFace != contact.sourceFace || segment.edgeTransitExit) {
++    return false;
++  }
++  const auto entry = exact::canonical_boundary_barycentric(
++      segment.sourceFace, segment.entryPoint);
++  const auto exit = index + 1U < trace.segments.size()
++      ? std::optional<authority::FieldBoundaryPoint>{
++            trace.segments[index + 1U].entryPoint}
++      : trace.terminalPoint;
++  if (!entry || !exit) return false;
++  const auto end = exact::canonical_boundary_barycentric(segment.sourceFace, *exit);
++  return end && exact::face_chart_segment_parameter(
++                    *entry, *end, contact.barycentric).has_value();
++}
++
++// Remap one exact, oppositely directed singular-to-singular retrace. The caller
++// selects disjoint pairs in port order and publishes only after all succeed.
++// This helper is not a network constructor and does not change port identities.
++[[nodiscard]] inline std::optional<RetracedTraceReferences>
++remap_retraced_trace_references(const FieldAlignedCurveNetworkCandidate &input,
++                                authority::TraceId keptId,
++                                authority::TraceId removedId) {
++  using Kind = FieldAlignedNetworkEventKind;
++  using Role = FieldAlignedTraceEventRole;
++  const auto trace_for = [&](authority::TraceId id) {
++    return std::find_if(input.candidateTraces.begin(), input.candidateTraces.end(),
++                        [&](const auto &trace) { return trace.id == id; });
++  };
++  const auto kept = trace_for(keptId);
++  const auto removed = trace_for(removedId);
++  if (kept == input.candidateTraces.end() ||
++      removed == input.candidateTraces.end() || keptId == removedId ||
++      !(kept->port < removed->port) ||
++      kept->sourceComponent != removed->sourceComponent ||
++      kept->sourceTopologyRegion != removed->sourceTopologyRegion ||
++      kept->singularity == removed->singularity ||
++      kept->sourceVertex == removed->sourceVertex) return std::nullopt;
++  const auto unique_trace = [&](const FieldAlignedCandidateTrace &trace) {
++    return std::count_if(input.candidateTraces.begin(), input.candidateTraces.end(),
++                         [&](const auto &other) {
++      return other.id == trace.id || other.port == trace.port;
++    }) == 1;
++  };
++  if (!unique_trace(*kept) || !unique_trace(*removed)) return std::nullopt;
++  const auto arrives_at = [](const auto &from, const auto &to) {
++    return from.terminalSingularity == to.singularity && from.terminalPoint &&
++           !from.terminalBarrier && !from.terminalContact &&
++           !from.terminalLimitCycle &&
++           authority::canonical_exact_source_boundary_point(*from.terminalPoint) ==
++               authority::ExactSourcePoint{to.sourceVertex};
++  };
++  if (!arrives_at(*kept, *removed) || !arrives_at(*removed, *kept)) {
++    return std::nullopt;
++  }
++  const auto path = [](const FieldAlignedCandidateTrace &trace)
++      -> std::optional<authority::ExactSourcePath> {
++    authority::ExactSourcePath result;
++    for (std::size_t i = 0; i < trace.segments.size(); ++i) {
++      const auto pieces =
++          embedded_graph_topology_detail::exact_trace_segment_pieces(trace, i);
++      if (!pieces || pieces->empty() ||
++          (!result.empty() && result.back().second != pieces->front().first)) {
++        return std::nullopt;
++      }
++      result.insert(result.end(), pieces->begin(), pieces->end());
++    }
++    if (result.empty() ||
++        result.front().first != authority::ExactSourcePoint{trace.sourceVertex}) {
++      return std::nullopt;
++    }
++    return result;
++  };
++  const auto a = path(*kept);
++  const auto b = path(*removed);
++  if (!a || !b || !authority::exact_source_paths_retrace_along_edges(*a, *b)) {
++    return std::nullopt;
++  }
++  const auto port_for = [&](const FieldAlignedCandidateTrace &trace) {
++    return std::find_if(input.singularityPorts.begin(), input.singularityPorts.end(),
++                        [&](const auto &port) {
++      return port.id == trace.port && port.singularity == trace.singularity &&
++             port.sourceVertex == trace.sourceVertex &&
++             port.sourceComponent == trace.sourceComponent &&
++             port.sourceTopologyRegion == trace.sourceTopologyRegion;
++    });
++  };
++  const auto first = port_for(*kept);
++  const auto last = port_for(*removed);
++  if (first == input.singularityPorts.end() ||
++      last == input.singularityPorts.end() || first->node == last->node) {
++    return std::nullopt;
++  }
++  const auto unique_port = [&](authority::SingularityPortId id) {
++    return std::count_if(input.singularityPorts.begin(), input.singularityPorts.end(),
++                         [&](const auto &port) { return port.id == id; }) == 1;
++  };
++  if (!unique_port(kept->port) || !unique_port(removed->port)) return std::nullopt;
++  RetracedTraceReferences result{input, keptId, removed->port};
++  // For every redirected contact require both event records at its exact node.
++  std::map<authority::NetworkNodeId, std::pair<std::size_t, std::size_t>> redirectedEvents;
++  std::map<authority::NetworkNodeId, authority::ExactSourcePoint> nodePoints;
++  std::map<authority::ExactSourcePoint, authority::NetworkNodeId> contactNodes;
++  for (auto &trace : result.candidate.candidateTraces) {
++    if (!trace.terminalContact ||
++        (trace.terminalContact->struckTrace != keptId &&
++         trace.terminalContact->struckTrace != removedId)) continue;
++    auto &record = *trace.terminalContact;
++    const bool redirects = record.struckTrace == removedId;
++    const auto &old = redirects ? *removed : *kept;
++    if (trace.sourceComponent != old.sourceComponent ||
++        trace.sourceTopologyRegion != old.sourceTopologyRegion ||
++        !retraced_trace_contact_segment(old, record.struckSegmentIndex, record)) {
++      return std::nullopt;
++    }
++    std::optional<std::size_t> match;
++    for (std::size_t i = 0; i < kept->segments.size(); ++i) {
++      if (!retraced_trace_contact_segment(*kept, i, record)) continue;
++      if (match) return std::nullopt;
++      match = i;
++    }
++    if (!match || (!redirects && *match != record.struckSegmentIndex)) {
++      return std::nullopt;
++    }
++    // The contact's node is identified by the original terminal incidence,
++    // not by NetworkNode.sourceVertex (which may just be chart provenance).
++    std::optional<authority::NetworkNodeId> node;
++    for (const auto &event : input.events) {
++      if (event.kind != Kind::TraceIntersection ||
++          event.sourceFace != record.sourceFace) continue;
++      const auto has = [&](authority::TraceId id, Role role) {
++        return std::any_of(event.incidences.begin(), event.incidences.end(),
++                           [&](const auto &incidence) {
++          return incidence.trace == id && incidence.role == role;
++        });
++      };
++      if (!has(trace.id, Role::Terminal) || !has(old.id, Role::Interior)) continue;
++      if (node) return std::nullopt;
++      node = event.node;
++    }
++    const auto point = authority::canonical_exact_source_face_point(
++        record.sourceFace, record.barycentric);
++    if (!node || !point || *node == first->node || *node == last->node) {
++      return std::nullopt;
++    }
++    const auto [it, inserted] = contactNodes.emplace(*point, *node);
++    if (!inserted && it->second != *node) return std::nullopt;
++    const auto [nodeIt, nodeInserted] = nodePoints.emplace(*node, *point);
++    if (!nodeInserted && nodeIt->second != *point) return std::nullopt;
++    if (redirects) redirectedEvents.try_emplace(*node);
++    record.struckTrace = keptId;
++    record.struckSegmentIndex = *match;
++  }
++  std::size_t keptArrivals = 0, removedArrivals = 0, removedOrigins = 0, keptOrigins = 0;
++  std::size_t keptContacts = 0, removedContacts = 0;
++  for (auto &event : result.candidate.events) {
++    auto &incidences = event.incidences;
++    if (incidences.empty()) return std::nullopt;
++    for (auto it = incidences.begin(); it != incidences.end();) {
++      if (it->trace == keptId && event.kind == Kind::SingularityPortOrigin) {
++        if (event.node != first->node || event.sourceEdge ||
++            it->role != Role::Origin || it->sourcePort != kept->port) return std::nullopt;
++        ++keptOrigins;
++      }
++      if (it->trace == keptId && event.node == last->node &&
++          ((event.kind == Kind::SingularityTermination && it->role == Role::Terminal) ||
++           (event.kind == Kind::FirstContact && it->role == Role::Interior))) {
++        if (it->sourcePort != kept->port || event.sourceEdge != kept->terminalPoint->edge) {
++          return std::nullopt;
++        }
++        if (event.kind == Kind::SingularityTermination) ++keptArrivals;
++        else ++keptContacts;
++        it->sourcePort = removed->port;
++      }
++      if (it->trace != removedId) { ++it; continue; }
++      if (it->sourcePort != removed->port) return std::nullopt;
++      if (event.node == last->node && event.kind == Kind::SingularityPortOrigin &&
++          it->role == Role::Origin && !event.sourceEdge) {
++        ++removedOrigins;
++        it = incidences.erase(it);
++        continue;
++      }
++      if (event.node == first->node &&
++          event.sourceEdge == removed->terminalPoint->edge &&
++          ((event.kind == Kind::SingularityTermination && it->role == Role::Terminal) ||
++           (event.kind == Kind::FirstContact && it->role == Role::Interior))) {
++        if (event.kind == Kind::SingularityTermination) ++removedArrivals;
++        else ++removedContacts;
++        it = incidences.erase(it);
++        continue;
++      }
++      if (event.node == last->node && event.kind == Kind::SingularityPortJunction &&
++          it->role == Role::Interior && !event.sourceEdge) {
++        // This port is now owned by the retained trace's arrival, not origin.
++        it->trace = keptId;
++        it->role = Role::Terminal;
++      } else if (redirectedEvents.count(event.node) &&
++                 (event.kind == Kind::FirstContact || event.kind == Kind::TraceIntersection) &&
++                 it->role == Role::Interior) {
++        auto &counts = redirectedEvents.at(event.node);
++        if (event.kind == Kind::FirstContact) ++counts.first;
++        else ++counts.second;
++        it->trace = keptId;
++        it->sourcePort = kept->port;
++      } else {
++        return std::nullopt;
++      }
++      ++it;
++    }
++    // A mapped incidence may not duplicate an already published incidence.
++    if (std::set<FieldAlignedNetworkEventIncidence>(incidences.begin(), incidences.end()).size() != incidences.size()) {
++      return std::nullopt;
++    }
++  }
++  for (const auto &entry : redirectedEvents) {
++    if (entry.second.first != 1 || entry.second.second != 1) return std::nullopt;
++  }
++  if (keptArrivals != 1 || removedArrivals != 1 || removedOrigins != 1 || keptOrigins != 1 ||
++      keptContacts != 1 || removedContacts != 1) return std::nullopt;
++  auto &events = result.candidate.events;
++  events.erase(std::remove_if(events.begin(), events.end(), [](const auto &event) {
++    return event.incidences.empty();
++  }), events.end());
++  auto &traces = result.candidate.candidateTraces;
++  traces.erase(std::remove_if(traces.begin(), traces.end(), [&](const auto &trace) {
++    return trace.id == removedId;
++  }), traces.end());
++  return result;
++}
++
++} // namespace directional::geometry::surface_cell_tracing_detail
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 943187e3a732eca91bd3a824b9c05f9e8ca15bcb..3e0466224907aa684bfe006e5f06b009ebc3f69b 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -23414,3 +23414,178 @@ TEST(ExactSourcePathRetrace, PathRunningOverAStretchTwiceDoesNotRetrace) {
+                 edge_piece(1, 2, on_edge(1, 2, 2, 3), at_vertex(1)),
+                 edge_piece(0, 1, at_vertex(1), at_vertex(0))}));
+ }
++
++#include "../src/geometry/RetracedTraceReferences.h"
++
++TEST(RetracedTraceReferences, RemapsExactStruckSegmentAndEndpointPortWithoutPublication) {
++  namespace authority = directional::authority;
++  namespace geometry = directional::geometry;
++  namespace remap = geometry::surface_cell_tracing_detail;
++  using Kind = geometry::FieldAlignedNetworkEventKind;
++  using Role = geometry::FieldAlignedTraceEventRole;
++  using Incidence = geometry::FieldAlignedNetworkEventIncidence;
++  const auto face = topology_face(0, 1, 2);
++  const auto edge = topology_edge(0, 2);
++  const auto otherEdge = topology_edge(0, 1);
++  const auto v0 = boundary_point(edge, 0, 1);
++  const auto mid = boundary_point(edge, 1, 2);
++  const auto v2 = boundary_point(edge, 1, 1);
++  const auto contactPoint = boundary_point(edge, 3, 4);
++  const auto component = authority::SourceComponentId::from_index(0U, 1U).value();
++  const auto region = authority::TopologyRegionId::from_index(0U, 1U).value();
++  const auto traceId = [](std::size_t n) { return authority::TraceId::from_index(n, 4U).value(); };
++  const auto portId = [](std::size_t n) { return authority::SingularityPortId::from_index(n, 4U).value(); };
++  const auto singularity = [](std::size_t n) { return authority::FieldSingularityId::from_index(n, 3U).value(); };
++  const auto vertex = [](std::size_t n) { return authority::SourceVertexId::from_index(n, 3U).value(); };
++  const auto node = [](std::size_t n) { return authority::NetworkNodeId::from_index(n, 4U).value(); };
++  geometry::FieldAlignedCurveNetworkCandidate input;
++  for (std::size_t i = 0; i < 3; ++i) {
++    const std::size_t sourceVertex = i == 0 ? 0 : (i == 1 ? 2 : 1);
++    input.nodes.emplace_back(node(i), vertex(sourceVertex));
++    input.singularityPorts.emplace_back(portId(i), singularity(i), node(i),
++        vertex(sourceVertex), component, region, 1, 0);
++    input.candidateTraces.emplace_back(traceId(i), portId(i), singularity(i),
++        vertex(sourceVertex), component, region);
++  }
++  // An unrelated port shares the removed trace's origin node. Its trace and
++  // its origin/junction incidence must survive the remap unchanged.
++  input.singularityPorts.emplace_back(portId(3), singularity(1), node(1),
++      vertex(2), component, region, 1, 1);
++  input.candidateTraces.emplace_back(traceId(3), portId(3), singularity(1),
++      vertex(2), component, region);
++  input.nodes.emplace_back(node(3), vertex(0)); // chart provenance, not the contact
++  auto &kept = input.candidateTraces[0];
++  auto &removed = input.candidateTraces[1];
++  auto &ending = input.candidateTraces[2];
++  const auto slide = [&](auto &trace, const auto &from, const auto &to) {
++    trace.segments.emplace_back(face, authority::FieldBranch::from_integer(0),
++                                from, edge, edge, std::nullopt);
++    trace.segments.back().edgeTransitEntry = from;
++    trace.segments.back().edgeTransitExit = to;
++  };
++  slide(kept, v0, mid);
++  slide(kept, mid, v2);
++  slide(removed, v2, v0);
++  kept.terminalSingularity = singularity(1);
++  kept.terminalPoint = v2;
++  removed.terminalSingularity = singularity(0);
++  removed.terminalPoint = v0;
++  ending.segments.emplace_back(face, authority::FieldBranch::from_integer(0),
++      boundary_point(otherEdge, 1, 1), std::nullopt, edge, std::nullopt);
++  const auto weights = embedded::canonical_boundary_barycentric(face, contactPoint);
++  ASSERT_TRUE(weights);
++  ending.terminalContact = geometry::FieldAlignedTerminalContact{
++      face, *weights, removed.id, 0U, contactPoint};
++  auto &unrelated = input.candidateTraces[3];
++  const auto bc = topology_edge(1, 2);
++  unrelated.segments.emplace_back(face, authority::FieldBranch::from_integer(0),
++      boundary_point(bc, 1, 1), bc, bc, std::nullopt);
++  unrelated.segments.back().edgeTransitEntry = boundary_point(bc, 1, 1);
++  unrelated.segments.back().edgeTransitExit = boundary_point(bc, 0, 1);
++  unrelated.terminalPoint = boundary_point(bc, 0, 1);
++  unrelated.terminalSingularity = singularity(2);
++  const auto addEvent = [&](std::size_t n, Kind kind, bool withEdge,
++                            std::vector<Incidence> incidences) {
++    input.events.emplace_back(node(n), kind, face,
++        withEdge ? std::optional<authority::SourceEdgeTopologyKey>{edge} : std::nullopt,
++        std::move(incidences));
++  };
++  addEvent(0, Kind::SingularityPortOrigin, false, {{traceId(0), portId(0), Role::Origin}});
++  addEvent(1, Kind::SingularityPortOrigin, false, {{traceId(1), portId(1), Role::Origin}, {traceId(3), portId(3), Role::Origin}});
++  addEvent(2, Kind::SingularityPortOrigin, false, {{traceId(2), portId(2), Role::Origin}});
++  addEvent(1, Kind::FirstContact, true, {{traceId(0), portId(0), Role::Interior}});
++  addEvent(1, Kind::SingularityTermination, true, {{traceId(0), portId(0), Role::Terminal}});
++  addEvent(0, Kind::FirstContact, true, {{traceId(1), portId(1), Role::Interior}});
++  addEvent(0, Kind::SingularityTermination, true, {{traceId(1), portId(1), Role::Terminal}});
++  addEvent(3, Kind::FirstContact, true, {{traceId(1), portId(1), Role::Interior}, {traceId(2), portId(2), Role::Interior}});
++  addEvent(3, Kind::TraceIntersection, true, {{traceId(1), portId(1), Role::Interior}, {traceId(2), portId(2), Role::Terminal}});
++  addEvent(1, Kind::SingularityPortJunction, false, {{traceId(1), portId(1), Role::Interior}, {traceId(3), portId(3), Role::Interior}});
++  input.events.emplace_back(node(2), Kind::FirstContact, face, bc,
++      std::vector<Incidence>{{traceId(3), portId(3), Role::Interior}});
++  input.events.emplace_back(node(2), Kind::SingularityTermination, face, bc,
++      std::vector<Incidence>{{traceId(3), portId(3), Role::Terminal}});
++  const auto original = input;
++  const auto result = remap::remap_retraced_trace_references(input, kept.id, removed.id);
++  ASSERT_TRUE(result);
++  EXPECT_EQ(kept.id, result->arrivalTrace);
++  EXPECT_EQ(removed.port, result->arrivalPort);
++  ASSERT_EQ(3U, result->candidate.candidateTraces.size());
++  EXPECT_EQ(kept, result->candidate.candidateTraces[0]);
++  auto expectedEnding = ending;
++  expectedEnding.terminalContact->struckTrace = kept.id;
++  expectedEnding.terminalContact->struckSegmentIndex = 1U;
++  EXPECT_EQ(expectedEnding, result->candidate.candidateTraces[1]);
++  EXPECT_EQ(unrelated, result->candidate.candidateTraces[2]);
++  EXPECT_EQ(input.singularityPorts, result->candidate.singularityPorts);
++  EXPECT_EQ(input.nodes, result->candidate.nodes);
++  auto expectedEvents = input.events;
++  expectedEvents[3].incidences[0].sourcePort = removed.port;
++  expectedEvents[4].incidences[0].sourcePort = removed.port;
++  for (const auto i : {7U, 8U}) {
++    expectedEvents[i].incidences[0].trace = kept.id;
++    expectedEvents[i].incidences[0].sourcePort = kept.port;
++  }
++  expectedEvents[1].incidences.erase(expectedEvents[1].incidences.begin());
++  expectedEvents[9].incidences[0].trace = kept.id;
++  expectedEvents[9].incidences[0].role = Role::Terminal;
++  for (const auto i : {6U, 5U}) expectedEvents.erase(expectedEvents.begin() + i);
++  EXPECT_EQ(expectedEvents, result->candidate.events);
++  EXPECT_EQ(original.candidateTraces, input.candidateTraces);
++  EXPECT_EQ(original.events, input.events);
++
++  // The same exact contact can be an entry on the removed path and an
++  // interior slide on the kept path. The original segment index is validated
++  // against the old representation, not used as an index on the kept path.
++  auto splitRemoved = input;
++  auto &reverse = splitRemoved.candidateTraces[1];
++  reverse.segments.clear();
++  slide(reverse, v2, contactPoint);
++  slide(reverse, contactPoint, v0);
++  splitRemoved.candidateTraces[2].terminalContact->struckSegmentIndex = 1U;
++  const auto entryResult = remap::remap_retraced_trace_references(
++      splitRemoved, kept.id, removed.id);
++  ASSERT_TRUE(entryResult);
++  EXPECT_EQ(expectedEnding, entryResult->candidate.candidateTraces[1]);
++
++  // The edge-supported paths may instead have face pieces in a common chart.
++  // Their face contact remains a face contact, not a fabricated carrier stop.
++  auto facePieces = input;
++  for (const auto i : {0U, 1U}) {
++    for (auto &segment : facePieces.candidateTraces[i].segments) {
++      segment.edgeTransitEntry.reset();
++      segment.edgeTransitExit.reset();
++    }
++  }
++  facePieces.candidateTraces[2].terminalContact->carrierLocus.reset();
++  const auto faceResult = remap::remap_retraced_trace_references(
++      facePieces, kept.id, removed.id);
++  ASSERT_TRUE(faceResult);
++  auto expectedFace = expectedEnding;
++  expectedFace.terminalContact->carrierLocus.reset();
++  EXPECT_EQ(expectedFace, faceResult->candidate.candidateTraces[1]);
++
++  // chart must fail without mutating any input record.
++  auto broken = input;
++  broken.candidateTraces[0].terminalSingularity.reset();
++  EXPECT_FALSE(remap::remap_retraced_trace_references(broken, kept.id, removed.id));
++  broken = input;
++  broken.candidateTraces[2].terminalContact->struckSegmentIndex = 1U;
++  EXPECT_FALSE(remap::remap_retraced_trace_references(broken, kept.id, removed.id));
++  broken = input;
++  broken.candidateTraces[2].terminalContact->carrierLocus.reset();
++  EXPECT_FALSE(remap::remap_retraced_trace_references(broken, kept.id, removed.id));
++  broken = input;
++  broken.events.erase(broken.events.begin() + 7U);
++  EXPECT_FALSE(remap::remap_retraced_trace_references(broken, kept.id, removed.id));
++  // Both paths retrace a non-simple route, which visits the contact three
++  // times. Neither the reverse index nor the first matching segment is valid.
++  broken = input;
++  auto &a = broken.candidateTraces[0];
++  auto &b = broken.candidateTraces[1];
++  a.segments.clear(); b.segments.clear();
++  slide(a, v0, v2); slide(a, v2, v0); slide(a, v0, v2);
++  slide(b, v2, v0); slide(b, v0, v2); slide(b, v2, v0);
++  EXPECT_FALSE(remap::remap_retraced_trace_references(broken, kept.id, removed.id));
++  EXPECT_EQ(original.candidateTraces, input.candidateTraces);
++  EXPECT_EQ(original.events, input.events);
++}

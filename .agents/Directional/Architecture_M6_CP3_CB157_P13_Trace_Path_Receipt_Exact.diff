@@ -1,0 +1,68 @@
+diff --git a/src/geometry/EmbeddedGraphTopology.cpp b/src/geometry/EmbeddedGraphTopology.cpp
+index 08060fbda..045498473 100644
+--- a/src/geometry/EmbeddedGraphTopology.cpp
++++ b/src/geometry/EmbeddedGraphTopology.cpp
+@@ -1017,6 +1017,54 @@ void print_trace_terminal_contact(const FieldAlignedCandidateTrace *trace) {
+   }
+ }
+ 
++// P13 (RA-255): one exact boundary point as edge:parameter, with the source
++// vertex named when the parameter is exactly 0 or 1.
++void print_boundary_point(const authority::FieldBoundaryPoint &point) {
++  print_edge(point.edge);
++  std::clog << ':' << static_cast<double>(point.parameter.value.to_double());
++  if (point.parameter.value == authority::FieldExactRational::from_integer(0)) {
++    std::clog << "=v" << point.edge.first().index();
++  } else if (point.parameter.value ==
++             authority::FieldExactRational::from_integer(1)) {
++    std::clog << "=v" << point.edge.second().index();
++  }
++}
++
++// P13 (RA-255): the stored path of one trace, segment by segment (face,
++// branch, entry point, incoming/outgoing carrier, edge-transit exit) and its
++// end, so the onset of a shared locus or overlap can be located exactly.
++void print_trace_path(const FieldAlignedCandidateTrace *trace,
++                      const authority::TraceId id) {
++  std::clog << " path=" << id.index() << ':';
++  if (trace == nullptr) {
++    std::clog << "missing";
++    return;
++  }
++  for (std::size_t index = 0U; index < trace->segments.size(); ++index) {
++    const auto &segment = trace->segments[index];
++    std::clog << (index == 0U ? "" : ",") << index << '@';
++    print_face(segment.sourceFace);
++    std::clog << "b=" << static_cast<int>(segment.branch.value()) << " in=";
++    print_boundary_point(segment.entryPoint);
++    std::clog << " from=";
++    print_edge(segment.incomingCarrier);
++    std::clog << " to=";
++    print_edge(segment.outgoingCarrier);
++    if (segment.edgeTransitExit.has_value()) {
++      std::clog << " transit=";
++      print_boundary_point(*segment.edgeTransitExit);
++    }
++  }
++  std::clog << " end=";
++  if (trace->terminalContact.has_value()) {
++    std::clog << "contact";
++  } else if (trace->terminalPoint.has_value()) {
++    print_boundary_point(*trace->terminalPoint);
++  } else {
++    std::clog << "none";
++  }
++}
++
+ // P13 (RA-254): every pair of segments of two traces that lie in one source
+ // face, with their branches, the exact orientation signs of each segment's
+ // ends against the other segment's supporting line (first line, then second
+@@ -1069,6 +1117,8 @@ void print_same_face_segment_pairs(const FieldAlignedCurveNetwork &network,
+     }
+   }
+   if (!any) std::clog << "none";
++  print_trace_path(a, first);
++  print_trace_path(b, second);
+ }
+ 
+ // P13 (RA-253): both traces that cross one selected cut edge at the same

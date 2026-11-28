@@ -1,0 +1,470 @@
+diff --git a/include/directional/authority/FieldTransportAtlas.h b/include/directional/authority/FieldTransportAtlas.h
+index ea8fe47db..a0ed39d77 100644
+--- a/include/directional/authority/FieldTransportAtlas.h
++++ b/include/directional/authority/FieldTransportAtlas.h
+@@ -756,6 +756,15 @@ struct FieldDirectedBranchTransport {
+   auto operator<=>(const FieldDirectedBranchTransport &) const = default;
+ };
+ 
++/**
++ * One separatrix leaving a singular vertex. For a face-supported port the
++ * branch points into the start face's wedge and firstOutgoingCarrier is the
++ * start face's edge opposite the vertex. For an edge-supported port the
++ * separatrix lies on a radial edge: both incident faces push the branch across
++ * that edge towards each other and its slide along the edge leaves the vertex.
++ * firstOutgoingCarrier is then that radial edge, so it contains sourceVertex,
++ * and startFace is the incident face whose next-vertex ray it is.
++ */
+ struct FieldSingularityPortAttachment {
+   FieldSingularityId singularity;
+   SourceVertexId sourceVertex;
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index cba6afcc4..ee46a854f 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -1181,6 +1181,21 @@ field_dyadic_interior_exit_parameter(
+     const authority::SourceEdgeTopologyKey &carrier, int signedLift,
+     const authority::ExactUnitParameter &entryParameter);
+ 
++/**
++ * @brief First continuation of an edge-supported singularity port.
++ *
++ * Such a port's separatrix lies on its radial carrier, which contains the
++ * singular vertex. The in-face part is empty, so the decision exits at the
++ * singular vertex on that carrier; the trace then slides along the carrier by
++ * the grazing transit. Fails closed when the carrier is not a radial outflow
++ * edge of the start face for this branch.
++ */
++[[nodiscard]] FieldBranchContinuationResult resolve_field_edge_port_departure(
++    const authority::SourceFaceTopologyKey &startFace,
++    const authority::FieldBranchBoundaryPairing &pairing,
++    const authority::SourceEdgeTopologyKey &carrier,
++    authority::SourceVertexId singularVertex);
++
+ [[nodiscard]] FieldVertexTransitResult resolve_field_vertex_transit(
+     const TriMesh &sourceMesh,
+     const authority::FieldBranchTopology &topology,
+diff --git a/src/authority/FieldTransportAtlas.cpp b/src/authority/FieldTransportAtlas.cpp
+index b9804a2ae..6c5d1d3b2 100644
+--- a/src/authority/FieldTransportAtlas.cpp
++++ b/src/authority/FieldTransportAtlas.cpp
+@@ -808,6 +808,9 @@ build_singularity_attachments(
+     // branch in face i+1 points short of it (back into face i) straddles the
+     // ray: the separatrix slides along that radial edge and no wedge holds
+     // it. Classes plus straddles must equal 4 - index for any valid fan.
++    // A straddle whose slide leaves the vertex (negative weight on it in both
++    // faces) is published as an edge-supported port of face i (RA-237).
++    std::vector<FieldSingularityPortAttachment> edgePorts;
+     {
+       const FieldExactRational zero = FieldExactRational::from_integer(0);
+       const auto weight = [](const IncidentFanFace &face,
+@@ -847,6 +850,25 @@ build_singularity_attachments(
+                    << static_cast<int>(pairing.branch.value()) << ','
+                    << sourceEdge.first().index() << '-'
+                    << sourceEdge.second().index() << ')';
++            const auto towardSource =
++                weight(face, pairing.direction, singularity.sourceVertex);
++            const auto nextTowardSource =
++                weight(nextFace, target->direction, singularity.sourceVertex);
++            const bool attached = towardSource && nextTowardSource &&
++                                  *towardSource < zero &&
++                                  *nextTowardSource < zero;
++            if (attached) {
++              edgePorts.push_back(FieldSingularityPortAttachment{
++                  singularity.id, singularity.sourceVertex, 0, face.topology,
++                  pairing.branch, sourceEdge, *singularity.topologyRegion,
++                  singularity.sourceComponent});
++            }
++            std::clog << "FieldTransportAtlas.partition edgePort singularity="
++                      << singularity.id.index() << " fanIndex=" << fanIndex
++                      << " branch=" << static_cast<int>(pairing.branch.value())
++                      << " carrier=(" << sourceEdge.first().index() << ','
++                      << sourceEdge.second().index() << ')'
++                      << " attached=" << (attached ? 1 : 0) << '\n';
+           }
+         }
+       }
+@@ -862,7 +884,7 @@ build_singularity_attachments(
+                 << '\n';
+     }
+ 
+-    if (static_cast<int>(classes.size()) != expected) {
++    if (static_cast<int>(classes.size() + edgePorts.size()) != expected) {
+       error = FieldAtlasBuildError{
+           FieldAtlasBuildErrorCode::SingularityPortClassCountMismatch,
+           std::nullopt, std::nullopt, singularity.sourceVertex,
+@@ -875,7 +897,7 @@ build_singularity_attachments(
+                       incidences[index].firstOutgoingCarrier);
+     };
+     std::vector<FieldSingularityPortAttachment> representatives;
+-    representatives.reserve(classes.size());
++    representatives.reserve(classes.size() + edgePorts.size());
+     for (auto &[unusedRoot, classIndices] : classes) {
+       (void)unusedRoot;
+       std::sort(classIndices.begin(), classIndices.end(),
+@@ -896,10 +918,14 @@ build_singularity_attachments(
+       }
+       representatives.push_back(incidences[classIndices.front()]);
+     }
++    representatives.insert(representatives.end(), edgePorts.begin(),
++                           edgePorts.end());
+ 
+     // Within one corner the counter-clockwise angle from the next-vertex ray
+     // grows with the exact ratio towardPrevious / towardNext (towardNext > 0
+-    // for a sector member), so slots compare by cross-multiplication.
++    // for a sector member), so slots compare by cross-multiplication. An
++    // edge-supported port lies on its start face's next-vertex ray, so its
++    // ratio is exactly zero and a face port on the same ray is ambiguous.
+     struct OrderedRepresentative {
+       FieldSingularityPortAttachment attachment;
+       std::size_t counterClockwiseFanSlot = 0U;
+@@ -947,12 +973,19 @@ build_singularity_attachments(
+             fanIt->row, singularity.sourceVertex, singularity.topologyRegion};
+         return std::nullopt;
+       }
++      const bool edgeSupported =
++          representative.firstOutgoingCarrier.first() ==
++              singularity.sourceVertex ||
++          representative.firstOutgoingCarrier.second() ==
++              singularity.sourceVertex;
+       orderedRepresentatives.push_back(OrderedRepresentative{
+           representative, counterClockwiseFanSlot,
+           pairing->direction[static_cast<std::size_t>(
+               std::distance(faceVertices.begin(), nextAt))],
+-          pairing->direction[static_cast<std::size_t>(
+-              std::distance(faceVertices.begin(), previousAt))]});
++          edgeSupported
++              ? FieldExactRational::from_integer(0)
++              : pairing->direction[static_cast<std::size_t>(
++                    std::distance(faceVertices.begin(), previousAt))]});
+     }
+     std::sort(orderedRepresentatives.begin(), orderedRepresentatives.end(),
+               [&](const OrderedRepresentative &first,
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index edec8e3e0..08b3943cc 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -14,6 +14,7 @@
+ #include <cmath>
+ #include <exception>
+ #include <functional>
++#include <iostream>
+ #include <limits>
+ #include <optional>
+ #include <queue>
+@@ -2023,6 +2024,30 @@ FieldBranchContinuationResult resolve_field_branch_grazing_transit(
+       carrier, endpoint};
+ }
+ 
++FieldBranchContinuationResult resolve_field_edge_port_departure(
++    const authority::SourceFaceTopologyKey &startFace,
++    const authority::FieldBranchBoundaryPairing &pairing,
++    const authority::SourceEdgeTopologyKey &carrier,
++    const authority::SourceVertexId singularVertex) {
++  const bool radial =
++      carrier.first() == singularVertex || carrier.second() == singularVertex;
++  if (!radial || !field_face_opposite_index(startFace, carrier).has_value() ||
++      std::find(pairing.outgoingCarriers.begin(), pairing.outgoingCarriers.end(),
++                carrier) == pairing.outgoingCarriers.end()) {
++    return continuation_error(
++        FieldAlignedCurveNetworkErrorCode::BranchContinuationOutsideOutflowSet,
++        startFace, pairing.branch, carrier, singularVertex, std::nullopt, {},
++        pairing.outgoingCarriers);
++  }
++  return FieldBranchContinuationDecision{
++      FieldBranchContinuationKind::EdgeExit,
++      authority::FieldBoundaryPoint{
++          carrier, authority::ExactUnitParameter{
++                       authority::FieldExactRational::from_integer(
++                           carrier.first() == singularVertex ? 0 : 1)}},
++      carrier, std::nullopt};
++}
++
+ void annotate_field_aligned_trace_seed(
+     FieldAlignedCurveNetworkError &error,
+     const authority::SourceVertexId traceSeedVertex,
+@@ -3078,6 +3103,8 @@ struct FieldAlignedTraceRuntime {
+   authority::FieldBoundaryPoint currentEntryPoint;
+   FieldAlignedTraceTraversalGuard traversalGuard;
+   FieldAlignedArrivalMeasure arrival;
++  // Radial carrier of an edge-supported port; consumed by the first proposal.
++  std::optional<authority::SourceEdgeTopologyKey> edgePortCarrier;
+   bool active = true;
+   std::optional<FieldAlignedTraceProposal> proposal;
+   std::vector<FieldAlignedArrivalMeasure> segmentStarts;
+@@ -3141,8 +3168,15 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
+         runtime.currentFace, runtime.currentBranch));
+   }
+ 
+-  auto continuation = resolve_field_branch_continuation(
+-      runtime.currentFace, *pairing, runtime.currentEntryPoint);
++  const bool edgePortDeparture =
++      runtime.edgePortCarrier.has_value() && trace.segments.empty();
++  auto continuation =
++      edgePortDeparture
++          ? resolve_field_edge_port_departure(runtime.currentFace, *pairing,
++                                              *runtime.edgePortCarrier,
++                                              trace.sourceVertex)
++          : resolve_field_branch_continuation(
++                runtime.currentFace, *pairing, runtime.currentEntryPoint);
+   if (auto *error = std::get_if<FieldAlignedCurveNetworkError>(&continuation)) {
+     return traceError(std::move(*error));
+   }
+@@ -3221,6 +3255,13 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
+   }
+ 
+   if (mandatoryByEdge.count(decision.outgoingCarrier) != 0U) {
++    // An edge-supported port on a barrier edge would end where it starts.
++    if (edgePortDeparture) {
++      return traceError(trace_scoped_field_aligned_error(
++          FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
++          trace.sourceVertex, trace.singularity, trace.sourceVertex,
++          decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
++    }
+     proposal.disposition = FieldAlignedProposalDisposition::TerminalBarrier;
+     proposal.terminalBarrier = decision.outgoingCarrier;
+     proposal.terminalPoint = decision.exitPoint;
+@@ -3262,6 +3303,13 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
+       classify_field_branch_transport_flow(
+           runtime.currentFace, *pairing, *nextFace, *nextPairing,
+           decision.outgoingCarrier);
++  // An edge-supported port must slide along its carrier away from its vertex.
++  if (edgePortDeparture && targetFlow != FieldBranchEdgeFlowRelation::Outflow) {
++    return traceError(trace_scoped_field_aligned_error(
++        FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
++        trace.sourceVertex, trace.singularity, trace.sourceVertex,
++        decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
++  }
+   if (targetFlow == FieldBranchEdgeFlowRelation::Outflow) {
+     auto transit = resolve_field_branch_grazing_transit(
+         runtime.currentFace, *pairing, *nextFace, *nextPairing,
+@@ -3273,12 +3321,25 @@ FieldAlignedTraceProposalResult field_aligned_next_trace_proposal(
+     const FieldBranchContinuationDecision edgeTransit =
+         std::get<FieldBranchContinuationDecision>(transit);
+     if (edgeTransit.kind != FieldBranchContinuationKind::EdgeTransit ||
+-        !edgeTransit.sourceVertex.has_value()) {
++        !edgeTransit.sourceVertex.has_value() ||
++        (edgePortDeparture && *edgeTransit.sourceVertex == trace.sourceVertex)) {
+       return traceError(trace_scoped_field_aligned_error(
+           FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport,
+           trace.sourceVertex, trace.singularity, std::nullopt,
+           decision.outgoingCarrier, runtime.currentFace, runtime.currentBranch));
+     }
++    if (edgePortDeparture) {
++      const auto &faceVertices = runtime.currentFace.vertices();
++      std::clog << "FieldAlignedCurveNetwork.edgePortDeparture singularity="
++                << trace.singularity.index()
++                << " sourceVertex=" << trace.sourceVertex.index()
++                << " startFace=(" << faceVertices[0].index() << ','
++                << faceVertices[1].index() << ',' << faceVertices[2].index()
++                << ") branch=" << static_cast<int>(runtime.currentBranch.value())
++                << " carrier=(" << decision.outgoingCarrier.first().index()
++                << ',' << decision.outgoingCarrier.second().index()
++                << ") slideEnd=" << edgeTransit.sourceVertex->index() << '\n';
++    }
+     proposal.segment.edgeTransitExit = edgeTransit.exitPoint;
+     proposal.terminalPoint = edgeTransit.exitPoint;
+     const auto transitExitBarycentric = field_boundary_point_barycentric(
+@@ -3766,6 +3827,10 @@ canonical_field_aligned_traces_and_events(
+         port.sourceTopologyRegion);
+     runtimes.emplace_back(attachment->startFace, attachment->branch, *entry,
+                           field_aligned_trace_step_budget(topology));
++    if (attachment->firstOutgoingCarrier.first() == port.sourceVertex ||
++        attachment->firstOutgoingCarrier.second() == port.sourceVertex) {
++      runtimes.back().edgePortCarrier = attachment->firstOutgoingCarrier;
++    }
+   }
+ 
+   const auto ensure_proposal = [&](const std::size_t traceIndex)
+diff --git a/tests/FieldTransportAtlasTests.cpp b/tests/FieldTransportAtlasTests.cpp
+index 40e672585..443cc3f9c 100644
+--- a/tests/FieldTransportAtlasTests.cpp
++++ b/tests/FieldTransportAtlasTests.cpp
+@@ -3638,6 +3638,187 @@ TEST(FieldTransportAtlas, PublishesCheckedSingularityPortAttachments) {
+             missingSupport.error().code);
+ }
+ 
++// Six counter-clockwise rows around centre vertex 6. Uneven rays and radii keep
++// every sign decision away from a symmetric tie.
++constexpr std::array<double, 6> kSaddleFanRayDegrees{10.0,  68.0,  131.0,
++                                                     186.0, 247.0, 303.0};
++
++TriMesh make_planar_saddle_fan() {
++  constexpr std::array<double, 6> radii{1.30, 1.10, 1.25, 1.05, 1.20, 1.15};
++  Eigen::MatrixXd vertices(7, 3);
++  for (int k = 0; k < 6; ++k) {
++    const double angle = kSaddleFanRayDegrees[static_cast<std::size_t>(k)] *
++                         std::numbers::pi / 180.0;
++    const double radius = radii[static_cast<std::size_t>(k)];
++    vertices.row(k) << radius * std::cos(angle), radius * std::sin(angle), 0.0;
++  }
++  vertices.row(6) << 0.0, 0.0, 0.0;
++  Eigen::MatrixXi faces(6, 3);
++  for (int k = 0; k < 6; ++k) faces.row(k) << k, (k + 1) % 6, 6;
++  TriMesh mesh;
++  mesh.set_mesh(vertices, faces);
++  return mesh;
++}
++
++// Constant cross per face at offset - (wedge midpoint) / 4 degrees: a planar
++// index -1 field whose five separatrices are spaced 72 degrees apart.
++void make_planar_saddle_field(const TriMesh &mesh, const double offsetDegrees,
++                              CrossFieldResult &field) {
++  Eigen::MatrixXd primary(6, 3);
++  Eigen::MatrixXd secondary(6, 3);
++  for (int k = 0; k < 6; ++k) {
++    const double lower = kSaddleFanRayDegrees[static_cast<std::size_t>(k)];
++    double upper = kSaddleFanRayDegrees[static_cast<std::size_t>((k + 1) % 6)];
++    if (upper <= lower) upper += 360.0;
++    const double angle =
++        (offsetDegrees - 0.125 * (lower + upper)) * std::numbers::pi / 180.0;
++    primary.row(k) << std::cos(angle), std::sin(angle), 0.0;
++    secondary.row(k) << -std::sin(angle), std::cos(angle), 0.0;
++  }
++  directional::PCFaceTangentBundle bundle;
++  bundle.init(mesh);
++  directional::CartesianField rawField;
++  rawField.init(bundle, directional::fieldTypeEnum::RAW_FIELD,
++                directional::fields::kCrossFieldDegree);
++  ASSERT_NO_THROW(rawField.set_extrinsic_field(
++      directional::fields::make_raw_cross_field(mesh, primary, secondary)));
++  ASSERT_NO_THROW(field = directional::fields::finalize_cross_field_result(
++                      rawField, false, true));
++  ASSERT_TRUE(field.singularitiesComputed);
++}
++
++TEST(FieldTransportAtlas, PublishesEdgeSupportedPortForRadialStraddle) {
++  namespace geometry = directional::geometry;
++  namespace tracing = directional::geometry::surface_cell_tracing_detail;
++  using directional::authority::ExactUnitParameter;
++  using directional::authority::FieldBoundaryPoint;
++  using directional::authority::FieldExactRational;
++  const TriMesh mesh = make_planar_saddle_fan();
++  const auto sourceAuthority = make_source_authority(mesh);
++  ASSERT_TRUE(sourceAuthority.has_value());
++  const auto vertex = [](const int index) {
++    return SourceVertexId::from_index(index, 7U).value();
++  };
++  const auto face = [&](const int a, const int b, const int c) {
++    return SourceFaceTopologyKey::make({vertex(a), vertex(b), vertex(c)})
++        .value();
++  };
++  const auto centre_ports = [&](const FieldTransportAtlas &atlas) {
++    std::vector<FieldSingularityPortAttachment> ports;
++    for (const FieldSingularityFact &singularity : atlas.singularities()) {
++      if (singularity.sourceVertex != vertex(6)) continue;
++      EXPECT_EQ(-1, singularity.indexNumerator);
++      for (const auto &attachment :
++           atlas.branch_topology().singularity_port_attachments()) {
++        if (attachment.singularity == singularity.id) {
++          ports.push_back(attachment);
++        }
++      }
++    }
++    return ports;
++  };
++  const auto radial = [&](const FieldSingularityPortAttachment &port) {
++    return port.firstOutgoingCarrier.first() == vertex(6) ||
++           port.firstOutgoingCarrier.second() == vertex(6);
++  };
++
++  // Control: every separatrix inside a wedge, so no edge-supported port.
++  CrossFieldResult control;
++  ASSERT_NO_FATAL_FAILURE(make_planar_saddle_field(mesh, 63.0, control));
++  const auto controlBuilt =
++      FieldTransportAtlas::make(mesh, *sourceAuthority, {}, control);
++  ASSERT_TRUE(controlBuilt)
++      << describe_field_atlas_build_error(controlBuilt.error());
++  const auto controlPorts = centre_ports(controlBuilt.value());
++  ASSERT_EQ(5U, controlPorts.size());
++  EXPECT_EQ(0, std::count_if(controlPorts.begin(), controlPorts.end(), radial));
++
++  // One separatrix straddles the ray to vertex 4: face (4,5,6) points it
++  // 7.25 degrees past the ray and face (3,4,6) 7.375 degrees short of it.
++  // Without an edge-supported port this field has four classes for five
++  // expected ports and the atlas rejects it.
++  CrossFieldResult field;
++  ASSERT_NO_FATAL_FAILURE(make_planar_saddle_field(mesh, 38.5, field));
++  const auto built = FieldTransportAtlas::make(mesh, *sourceAuthority, {}, field);
++  ASSERT_TRUE(built) << describe_field_atlas_build_error(built.error());
++  const auto ports = centre_ports(built.value());
++  ASSERT_EQ(5U, ports.size());
++  for (std::size_t slot = 0U; slot < ports.size(); ++slot) {
++    EXPECT_EQ(static_cast<int>(slot), ports[slot].localSlot);
++  }
++  ASSERT_EQ(1, std::count_if(ports.begin(), ports.end(), radial));
++  const FieldSingularityPortAttachment &edgePort =
++      *std::find_if(ports.begin(), ports.end(), radial);
++  const SourceEdgeTopologyKey carrier =
++      SourceEdgeTopologyKey::from_indices(4, 6, 7U).value();
++  EXPECT_EQ(carrier, edgePort.firstOutgoingCarrier);
++  EXPECT_EQ(face(4, 5, 6), edgePort.startFace);
++  // Counter-clockwise from the fan start: wedge ports at 28.75, 103.625 and
++  // 178.875 degrees, this port on the 247 degree ray, then 314.375 degrees.
++  EXPECT_EQ(3, edgePort.localSlot);
++
++  // A2a contract: the port departs from the vertex on its carrier and the
++  // grazing transit slides it to the carrier's far vertex.
++  const FieldBranchTopology &topology = built.value().branch_topology();
++  const auto *frame = topology.find_frame(edgePort.startFace);
++  ASSERT_NE(nullptr, frame);
++  const auto pairing = std::find_if(
++      frame->branches.begin(), frame->branches.end(),
++      [&](const auto &candidate) { return candidate.branch == edgePort.branch; });
++  ASSERT_NE(frame->branches.end(), pairing);
++  const auto departure = tracing::resolve_field_edge_port_departure(
++      edgePort.startFace, *pairing, carrier, vertex(6));
++  const auto *exit =
++      std::get_if<tracing::FieldBranchContinuationDecision>(&departure);
++  ASSERT_NE(nullptr, exit);
++  EXPECT_EQ(tracing::FieldBranchContinuationKind::EdgeExit, exit->kind);
++  EXPECT_EQ(carrier, exit->outgoingCarrier);
++  EXPECT_EQ((FieldBoundaryPoint{
++                carrier, ExactUnitParameter{FieldExactRational::from_integer(1)}}),
++            exit->exitPoint);
++
++  const SourceFaceTopologyKey nextFace = face(3, 4, 6);
++  const auto directed = topology.transport(carrier, edgePort.startFace, nextFace);
++  ASSERT_TRUE(directed.has_value());
++  const auto *nextFrame = topology.find_frame(nextFace);
++  ASSERT_NE(nullptr, nextFrame);
++  const FieldBranch nextBranch = edgePort.branch.rotated(directed->signedLift);
++  const auto nextPairing = std::find_if(
++      nextFrame->branches.begin(), nextFrame->branches.end(),
++      [&](const auto &candidate) { return candidate.branch == nextBranch; });
++  ASSERT_NE(nextFrame->branches.end(), nextPairing);
++  EXPECT_EQ(tracing::FieldBranchEdgeFlowRelation::Outflow,
++            tracing::classify_field_branch_transport_flow(
++                edgePort.startFace, *pairing, nextFace, *nextPairing, carrier));
++  const auto slide = tracing::resolve_field_branch_grazing_transit(
++      edgePort.startFace, *pairing, nextFace, *nextPairing, carrier,
++      directed->signedLift, exit->exitPoint.parameter);
++  const auto *slideEnd =
++      std::get_if<tracing::FieldBranchContinuationDecision>(&slide);
++  ASSERT_NE(nullptr, slideEnd);
++  EXPECT_EQ(tracing::FieldBranchContinuationKind::EdgeTransit, slideEnd->kind);
++  EXPECT_EQ(std::optional<SourceVertexId>{vertex(4)}, slideEnd->sourceVertex);
++
++  // A face-supported port has no radial carrier and is not a departure.
++  for (const FieldSingularityPortAttachment &port : ports) {
++    if (radial(port)) continue;
++    const auto *portFrame = topology.find_frame(port.startFace);
++    ASSERT_NE(nullptr, portFrame);
++    const auto portPairing = std::find_if(
++        portFrame->branches.begin(), portFrame->branches.end(),
++        [&](const auto &candidate) { return candidate.branch == port.branch; });
++    ASSERT_NE(portFrame->branches.end(), portPairing);
++    const auto refused = tracing::resolve_field_edge_port_departure(
++        port.startFace, *portPairing, port.firstOutgoingCarrier, vertex(6));
++    const auto *error =
++        std::get_if<geometry::FieldAlignedCurveNetworkError>(&refused);
++    ASSERT_NE(nullptr, error);
++    EXPECT_EQ(geometry::FieldAlignedCurveNetworkErrorCode::
++                  BranchContinuationOutsideOutflowSet,
++              error->code);
++  }
++}
++
+ TEST(FieldTransportAtlas, BranchTopologyIsInvariantToEquivalentZ4Relabeling) {
+   const TriMesh mesh = make_skew_four_triangle_fan();
+   const auto sourceAuthority = make_source_authority(mesh);

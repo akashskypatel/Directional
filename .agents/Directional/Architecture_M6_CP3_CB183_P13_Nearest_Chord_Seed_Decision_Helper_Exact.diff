@@ -1,0 +1,94 @@
+diff --git a/src/geometry/ThirdEdgeSideOwner.h b/src/geometry/ThirdEdgeSideOwner.h
+index e578cf576..6daa8ebab 100644
+--- a/src/geometry/ThirdEdgeSideOwner.h
++++ b/src/geometry/ThirdEdgeSideOwner.h
+@@ -76,4 +76,27 @@ third_edge_side_owner(const std::vector<ThirdEdgeChordCandidate> &candidates) {
+   return {candidates[outermost].thirdEdgeOrbit};
+ }
+ 
++/** Orbit a trace-crossed triangle offers, through its third edge, as the seed
++ * of the uncut neighbour across that edge, or nothing.
++ *
++ * `chords` must hold every chord recorded against the edge, whether or not
++ * its third-edge orbit is certified, so that an uncertified outermost chord
++ * is never skipped in favour of an inner one. The selected orbit must also be
++ * among the orbits recorded for the edge side, which holds only certified
++ * orbits. A triangle that a trace segment crosses without a carrier order
++ * (a vertex fan, a turn back through one edge, a segment without an incoming
++ * carrier) is never decided here, since that segment may lie nearer the edge
++ * than every ordered chord. */
++inline std::optional<std::size_t> nearest_chord_edge_side_seed(
++    const std::set<std::size_t> &recordedEdgeSideOrbits,
++    const std::vector<ThirdEdgeChordCandidate> &chords,
++    const bool triangleHasUnorderedSegment) {
++  if (triangleHasUnorderedSegment) return std::nullopt;
++  const auto selected = third_edge_side_owner(chords);
++  if (selected.size() != 1U) return std::nullopt;
++  const std::size_t orbit = *selected.begin();
++  if (recordedEdgeSideOrbits.count(orbit) == 0U) return std::nullopt;
++  return orbit;
++}
++
+ } // namespace directional::geometry::detail
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 8a1be5ad6..f0f16cdb4 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -22378,3 +22378,57 @@ TEST(SurfaceCutGraph, CarrierApexDistanceMeasuresFromTheSharedApex) {
+             carrier_apex_distance(point, vertex(5)));
+   EXPECT_FALSE(carrier_apex_distance(point, vertex(7)).has_value());
+ }
++
++TEST(SurfaceCutGraph, NearestChordEdgeSideSeedTakesTheRecordedOutermostOrbit) {
++  using directional::authority::FieldExactRational;
++  using directional::geometry::detail::nearest_chord_edge_side_seed;
++  using directional::geometry::detail::ThirdEdgeChordCandidate;
++  const auto at = [](const std::int64_t numerator,
++                     const std::int64_t denominator) {
++    return FieldExactRational::from_ratio(numerator, denominator).value();
++  };
++  // The edge side records both nested chords' sides; only the outer one
++  // touches the third edge.
++  const std::set<std::size_t> recorded{0U, 6U};
++  const ThirdEdgeChordCandidate inner{0U, at(1, 4), at(1, 3)};
++  const ThirdEdgeChordCandidate outer{6U, at(1, 2), at(2, 3)};
++  EXPECT_EQ(std::optional<std::size_t>(6U),
++            nearest_chord_edge_side_seed(recorded, {inner, outer}, false));
++  EXPECT_EQ(std::optional<std::size_t>(6U),
++            nearest_chord_edge_side_seed(recorded, {outer, inner}, false));
++  // A single recorded chord seeds its own orbit.
++  EXPECT_EQ(std::optional<std::size_t>(6U),
++            nearest_chord_edge_side_seed({6U}, {outer}, false));
++}
++
++TEST(SurfaceCutGraph, NearestChordEdgeSideSeedRefusesUndecidedOrUnrecordedSides) {
++  using directional::authority::FieldExactRational;
++  using directional::geometry::detail::nearest_chord_edge_side_seed;
++  using directional::geometry::detail::ThirdEdgeChordCandidate;
++  const auto at = [](const std::int64_t numerator,
++                     const std::int64_t denominator) {
++    return FieldExactRational::from_ratio(numerator, denominator).value();
++  };
++  const std::set<std::size_t> recorded{0U, 6U};
++  const ThirdEdgeChordCandidate inner{0U, at(1, 4), at(1, 3)};
++  const ThirdEdgeChordCandidate outer{6U, at(1, 2), at(2, 3)};
++  // An unordered segment in the triangle (a vertex fan) may be nearer still.
++  EXPECT_FALSE(
++      nearest_chord_edge_side_seed(recorded, {inner, outer}, true).has_value());
++  // The outermost chord's orbit is uncertified, so it was never recorded:
++  // the inner chord must not take its place.
++  EXPECT_FALSE(
++      nearest_chord_edge_side_seed({0U}, {inner, outer}, false).has_value());
++  // Ties, crossings and missing placements decide nothing.
++  const ThirdEdgeChordCandidate tied{6U, at(1, 4), at(2, 3)};
++  EXPECT_FALSE(
++      nearest_chord_edge_side_seed(recorded, {inner, tied}, false).has_value());
++  const ThirdEdgeChordCandidate crossing{6U, at(1, 2), at(1, 4)};
++  EXPECT_FALSE(nearest_chord_edge_side_seed(recorded, {inner, crossing}, false)
++                   .has_value());
++  const ThirdEdgeChordCandidate missing{6U, at(1, 2), std::nullopt};
++  EXPECT_FALSE(nearest_chord_edge_side_seed(recorded, {inner, missing}, false)
++                   .has_value());
++  // No chord means no seed from this rule.
++  EXPECT_FALSE(nearest_chord_edge_side_seed(recorded, {}, false).has_value());
++}

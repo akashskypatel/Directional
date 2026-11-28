@@ -260,29 +260,6 @@ private:
     return area;
   }
 
-  [[nodiscard]] static int dominant_axis(const Eigen::Vector3d &normal) {
-    Eigen::Vector3d absNormal = normal.cwiseAbs();
-    int axis = 0;
-    if (absNormal(1) > absNormal(axis)) {
-      axis = 1;
-    }
-    if (absNormal(2) > absNormal(axis)) {
-      axis = 2;
-    }
-    return axis;
-  }
-
-  [[nodiscard]] static Eigen::Vector2d project2(const Eigen::Vector3d &point,
-                                                const int dropAxis) {
-    if (dropAxis == 0) {
-      return {point.y(), point.z()};
-    }
-    if (dropAxis == 1) {
-      return {point.x(), point.z()};
-    }
-    return {point.x(), point.y()};
-  }
-
   [[nodiscard]] static double orient2(const Eigen::Vector2d &a,
                                       const Eigen::Vector2d &b,
                                       const Eigen::Vector2d &c) {
@@ -310,18 +287,46 @@ private:
     if (face.size() != 4) {
       return false;
     }
-    const Eigen::Vector3d p0 = vertices.row(face[0]).transpose();
-    const Eigen::Vector3d p1 = vertices.row(face[1]).transpose();
-    const Eigen::Vector3d p2 = vertices.row(face[2]).transpose();
-    const Eigen::Vector3d p3 = vertices.row(face[3]).transpose();
-    const Eigen::Vector3d normal = (p1 - p0).cross(p2 - p0);
-    const int axis = dominant_axis(normal);
-    return segments_intersect_strict(project2(p0, axis), project2(p1, axis),
-                                     project2(p2, axis), project2(p3, axis),
-                                     tolerance) ||
-           segments_intersect_strict(project2(p1, axis), project2(p2, axis),
-                                     project2(p3, axis), project2(p0, axis),
-                                     tolerance);
+    std::array<Eigen::Vector3d, 4> corners;
+    for (int corner = 0; corner < 4; ++corner) {
+      corners[static_cast<std::size_t>(corner)] =
+          vertices.row(face[static_cast<std::size_t>(corner)]).transpose();
+    }
+    // The whole-polygon (Newell) normal does not depend on which corner the
+    // cycle starts at or on its direction, so neither does the verdict; the
+    // first triangle's normal did both (RA-208).
+    Eigen::Vector3d normal = Eigen::Vector3d::Zero();
+    double longestEdge = 0.0;
+    for (int corner = 0; corner < 4; ++corner) {
+      const Eigen::Vector3d &current = corners[static_cast<std::size_t>(corner)];
+      const Eigen::Vector3d &next =
+          corners[static_cast<std::size_t>((corner + 1) % 4)];
+      normal.x() += (current.y() - next.y()) * (current.z() + next.z());
+      normal.y() += (current.z() - next.z()) * (current.x() + next.x());
+      normal.z() += (current.x() - next.x()) * (current.y() + next.y());
+      longestEdge = std::max(longestEdge, (next - current).norm());
+    }
+    // A quad whose vector area vanishes, such as a symmetric bow-tie, has no
+    // embedding.
+    if (normal.norm() <= tolerance * longestEdge * longestEdge) {
+      return true;
+    }
+    // Project orthogonally onto the quad's own plane. Dropping the coordinate
+    // nearest the normal can be 55 degrees off it and hides the crossing of a
+    // strongly twisted quad (RA-209).
+    const Eigen::Vector3d unit = normal.normalized();
+    const Eigen::Vector3d u = unit.unitOrthogonal();
+    const Eigen::Vector3d w = unit.cross(u);
+    std::array<Eigen::Vector2d, 4> projected;
+    for (int corner = 0; corner < 4; ++corner) {
+      const Eigen::Vector3d &point = corners[static_cast<std::size_t>(corner)];
+      projected[static_cast<std::size_t>(corner)] =
+          Eigen::Vector2d(point.dot(u), point.dot(w));
+    }
+    return segments_intersect_strict(projected[0], projected[1], projected[2],
+                                     projected[3], tolerance) ||
+           segments_intersect_strict(projected[1], projected[2], projected[3],
+                                     projected[0], tolerance);
   }
 
   [[nodiscard]] static bool point_in_triangle3(
@@ -447,7 +452,7 @@ private:
     }
   }
 
-  [[nodiscard]] static bool same_source_sheet(
+  [[nodiscard]] static bool same_source_face(
       const int vertex, const int a, const int b,
       const MeshValidatorOptions &options) {
     if (options.vertexProvenance.empty()) {
@@ -467,15 +472,10 @@ private:
     if (!p.valid() || !pa.valid() || !pb.valid()) {
       return false;
     }
-    if (p.face == pa.face && p.face == pb.face) {
-      return true;
-    }
-    if (p.component >= 0 && pa.component >= 0 && pb.component >= 0 &&
-        p.sheet >= 0 && pa.sheet >= 0 && pb.sheet >= 0) {
-      return p.component == pa.component && p.component == pb.component &&
-             p.sheet == pa.sheet && p.sheet == pb.sheet;
-    }
-    return false;
+    // Generic validation has no typed cross-chart authority. Raw projection
+    // mirrors may be exported for diagnostics, but they never prove that
+    // different source faces belong to one semantic sheet.
+    return p.face == pa.face && p.face == pb.face;
   }
 
   static void validate_geometric_t_junctions(
@@ -524,7 +524,7 @@ private:
         if (vertex == aIndex || vertex == bIndex) {
           continue;
         }
-        if (!same_source_sheet(vertex, aIndex, bIndex, options)) {
+        if (!same_source_face(vertex, aIndex, bIndex, options)) {
           continue;
         }
         const Eigen::Vector3d p = vertices.row(vertex).transpose();
@@ -552,6 +552,18 @@ private:
       const std::vector<std::set<int>> &vertexFaceNeighbors,
       const std::map<std::pair<int, int>, std::vector<int>> &edgeIncidence,
       MeshValidationResult &result) {
+    // Each vertex reads only the face lists of its own edges (Amendment 34).
+    std::vector<std::vector<const std::vector<int> *>> incidentEdgeFaces(
+        vertexFaceNeighbors.size());
+    for (const auto &[edge, faces] : edgeIncidence) {
+      for (const int vertex : {edge.first, edge.second}) {
+        if (vertex >= 0 &&
+            static_cast<std::size_t>(vertex) < incidentEdgeFaces.size()) {
+          incidentEdgeFaces[static_cast<std::size_t>(vertex)].push_back(
+              &faces);
+        }
+      }
+    }
     for (std::size_t vertex = 0; vertex < vertexFaceNeighbors.size();
          ++vertex) {
       const std::set<int> &incidentFaces = vertexFaceNeighbors[vertex];
@@ -562,13 +574,9 @@ private:
       for (const int face : incidentFaces) {
         adjacency[face];
       }
-      for (const auto &[edge, faces] : edgeIncidence) {
-        if (edge.first != static_cast<int>(vertex) &&
-            edge.second != static_cast<int>(vertex)) {
-          continue;
-        }
-        for (const int a : faces) {
-          for (const int b : faces) {
+      for (const std::vector<int> *faces : incidentEdgeFaces[vertex]) {
+        for (const int a : *faces) {
+          for (const int b : *faces) {
             if (a != b && incidentFaces.count(a) && incidentFaces.count(b)) {
               adjacency[a].insert(b);
             }

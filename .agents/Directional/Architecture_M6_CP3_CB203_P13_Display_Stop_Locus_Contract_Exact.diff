@@ -1,0 +1,139 @@
+diff --git a/tests/SurfaceCellTracingDisplayTests.cpp b/tests/SurfaceCellTracingDisplayTests.cpp
+index 9009edb71..a21f8e5e6 100644
+--- a/tests/SurfaceCellTracingDisplayTests.cpp
++++ b/tests/SurfaceCellTracingDisplayTests.cpp
+@@ -11,7 +11,9 @@
+ #include <array>
+ #include <cmath>
+ #include <fstream>
++#include <iostream>
+ #include <numbers>
++#include <optional>
+ #include <stdexcept>
+ #include <string>
+ 
+@@ -117,6 +119,41 @@ bool has_vertex(const directional::visualization::SurfaceCellTracingDisplay &dis
+   return false;
+ }
+ 
++Eigen::Index face_row_of(const Eigen::MatrixXi &F, std::array<std::size_t, 3> corners) {
++  std::sort(corners.begin(), corners.end());
++  for (Eigen::Index face = 0; face < F.rows(); ++face) {
++    std::array<std::size_t, 3> key{static_cast<std::size_t>(F(face, 0)),
++                                   static_cast<std::size_t>(F(face, 1)),
++                                   static_cast<std::size_t>(F(face, 2))};
++    std::sort(key.begin(), key.end());
++    if (key == corners) return face;
++  }
++  return -1;
++}
++
++bool has_edge(const directional::visualization::SurfaceCellTracingDisplay &display,
++              const Eigen::MatrixXd &V, std::size_t a, std::size_t b) {
++  const Eigen::RowVector3d pa = V.row(static_cast<Eigen::Index>(a));
++  const Eigen::RowVector3d pb = V.row(static_cast<Eigen::Index>(b));
++  for (Eigen::Index edge = 0; edge < display.stopEdges.rows(); ++edge) {
++    const Eigen::RowVector3d start = display.stopEdgePoints.row(display.stopEdges(edge, 0));
++    const Eigen::RowVector3d end = display.stopEdgePoints.row(display.stopEdges(edge, 1));
++    if ((start == pa && end == pb) || (start == pb && end == pa)) return true;
++  }
++  return false;
++}
++
++template <std::size_t N>
++std::string indices_or_dash(const std::optional<std::array<std::size_t, N>> &value) {
++  if (!value.has_value()) return "-";
++  std::string text;
++  for (std::size_t i = 0; i < N; ++i) {
++    if (i > 0) text += ",";
++    text += std::to_string((*value)[i]);
++  }
++  return text;
++}
++
+ } // namespace
+ 
+ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
+@@ -149,24 +186,38 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
+                          singular.mesh.V.row(static_cast<Eigen::Index>(
+                              *vertexLocus.sourceVertex))));
+ 
+-  // The cut graph rejects sphere_prescribed at a face given by its corners.
++  // Whichever stage stops sphere_prescribed, the display shows every source
++  // locus that stage reported.
+   const FixtureRun sphere = run_fixture("sphere_prescribed");
+-  const auto &faceLocus = sphere.result.diagnostics.terminalFailureLocus;
+-  ASSERT_TRUE(faceLocus.sourceFace.has_value())
+-      << sphere.result.diagnostics.terminalFailureStage;
+-  std::array<std::size_t, 3> corners = *faceLocus.sourceFace;
+-  std::sort(corners.begin(), corners.end());
+-  Eigen::Index row = -1;
+-  for (Eigen::Index face = 0; face < sphere.mesh.F.rows(); ++face) {
+-    std::array<std::size_t, 3> key{static_cast<std::size_t>(sphere.mesh.F(face, 0)),
+-                                   static_cast<std::size_t>(sphere.mesh.F(face, 1)),
+-                                   static_cast<std::size_t>(sphere.mesh.F(face, 2))};
+-    std::sort(key.begin(), key.end());
+-    if (key == corners) row = face;
+-  }
+-  ASSERT_GE(row, 0);
++  const auto &sphereDiagnostics = sphere.result.diagnostics;
++  const auto &sphereLocus = sphereDiagnostics.terminalFailureLocus;
++  ASSERT_NE("None", sphereDiagnostics.terminalFailureCode)
++      << sphereDiagnostics.terminalFailureStage;
++  std::cout << "SphereDisplayStop stage=" << sphereDiagnostics.terminalFailureStage
++            << " code=" << sphereDiagnostics.terminalFailureCode
++            << " sourceFace=" << indices_or_dash(sphereLocus.sourceFace)
++            << " relatedSourceFace=" << indices_or_dash(sphereLocus.relatedSourceFace)
++            << " sourceEdge=" << indices_or_dash(sphereLocus.sourceEdge)
++            << " sourceVertex="
++            << (sphereLocus.sourceVertex ? std::to_string(*sphereLocus.sourceVertex)
++                                         : std::string("-"))
++            << '\n';
+   const auto sphereDisplay = display_of(sphere);
+-  EXPECT_TRUE(has_face(sphereDisplay, sphere.mesh.V, sphere.mesh.F, row));
++  for (const auto *face : {&sphereLocus.sourceFace, &sphereLocus.relatedSourceFace}) {
++    if (!face->has_value()) continue;
++    const Eigen::Index row = face_row_of(sphere.mesh.F, **face);
++    ASSERT_GE(row, 0);
++    EXPECT_TRUE(has_face(sphereDisplay, sphere.mesh.V, sphere.mesh.F, row));
++  }
++  if (sphereLocus.sourceEdge.has_value()) {
++    const auto &e = *sphereLocus.sourceEdge;
++    EXPECT_TRUE(has_edge(sphereDisplay, sphere.mesh.V, e[0], e[1]));
++  }
++  if (sphereLocus.sourceVertex.has_value()) {
++    const auto v = *sphereLocus.sourceVertex;
++    EXPECT_TRUE(has_vertex(sphereDisplay,
++                           sphere.mesh.V.row(static_cast<Eigen::Index>(v))));
++  }
+   for (const auto *display : {&genusDisplay, &singularDisplay, &sphereDisplay}) {
+     EXPECT_TRUE(display->has_stop_location());
+     EXPECT_EQ(0U, display->cellCount);
+@@ -246,3 +297,27 @@ TEST(SurfaceCellTracingDisplay, RejectsMalformedMatrices) {
+                    Eigen::MatrixXd(3, 3), Eigen::MatrixXi(1, 4), diagnostics, nullptr),
+                std::invalid_argument);
+ }
++
++TEST(SurfaceCellTracingDisplay, TerminalFaceLocusIsShownByItsCorners) {
++  Eigen::MatrixXd V(4, 3);
++  V << 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0;
++  Eigen::MatrixXi F(2, 3);
++  F << 0, 1, 2, 0, 2, 3;
++  directional::RemeshDiagnostics diagnostics;
++  diagnostics.terminalFailureStage = "surface-cut-graph";
++  diagnostics.terminalFailureCode = "CutSearchExhaustedBeforeCellularity";
++  diagnostics.terminalFailureLocus.sourceFace = std::array<std::size_t, 3>{3, 0, 2};
++
++  const auto display =
++      directional::visualization::surface_cell_tracing_display(V, F, diagnostics, nullptr);
++  EXPECT_TRUE(display.has_stop_location());
++  ASSERT_EQ(1, display.stopFaces.rows());
++  EXPECT_TRUE(has_face(display, V, F, 1));
++  EXPECT_FALSE(has_face(display, V, F, 0));
++  EXPECT_EQ(0, display.stopEdges.rows());
++  EXPECT_EQ(0, display.stopVertices.rows());
++  EXPECT_TRUE(std::any_of(display.stopNotes.begin(), display.stopNotes.end(),
++                          [](const std::string &note) {
++                            return note == "code: CutSearchExhaustedBeforeCellularity";
++                          }));
++}

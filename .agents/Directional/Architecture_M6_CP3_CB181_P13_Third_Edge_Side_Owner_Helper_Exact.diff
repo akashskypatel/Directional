@@ -1,0 +1,181 @@
+diff --git a/src/geometry/ThirdEdgeSideOwner.h b/src/geometry/ThirdEdgeSideOwner.h
+new file mode 100644
+index 000000000..e578cf576
+--- /dev/null
++++ b/src/geometry/ThirdEdgeSideOwner.h
+@@ -0,0 +1,79 @@
++#pragma once
++
++#include <directional/authority/AuthorityIds.h>
++#include <directional/authority/FieldTransportAtlas.h>
++
++#include <cstddef>
++#include <optional>
++#include <set>
++#include <vector>
++
++namespace directional::geometry::detail {
++
++/** Exact distance of a carrier point from the triangle apex the carrier
++ * shares with the other carrier, in edge-parameter units. Absent when the
++ * apex is not an endpoint of the point's edge. */
++inline std::optional<authority::FieldExactRational>
++carrier_apex_distance(const authority::FieldBoundaryPoint &point,
++                      const authority::SourceVertexId apex) {
++  if (apex == point.edge.first()) return point.parameter.value;
++  if (apex == point.edge.second()) {
++    return authority::FieldExactRational::from_integer(1) -
++           point.parameter.value;
++  }
++  return std::nullopt;
++}
++
++/** One trace segment that crosses a source triangle from one carrier edge to
++ * the other, seen from the triangle's third (uncrossed) edge. */
++struct ThirdEdgeChordCandidate {
++  /** Orbit on the segment's side that faces the third edge. */
++  std::size_t thirdEdgeOrbit = 0U;
++  /** Crossing distance from the apex on the carrier after the third edge. */
++  std::optional<authority::FieldExactRational> firstCarrierApexDistance;
++  /** Crossing distance from the apex on the carrier before the third edge. */
++  std::optional<authority::FieldExactRational> secondCarrierApexDistance;
++};
++
++/** Orbits that own the third edge's side of a triangle crossed by chords.
++ *
++ * Every chord that crosses both carriers separates the apex from the third
++ * edge, so the chords are nested and only the one farthest from the apex
++ * bounds the region touching the third edge. When both carriers order every
++ * pair of chords strictly and identically, that chord's orbit is returned
++ * alone. Otherwise (a missing crossing, a tie, or disagreeing orders, which
++ * would mean the chords meet inside the triangle) every candidate orbit is
++ * returned, so the ambiguity stays visible to the caller. */
++inline std::set<std::size_t>
++third_edge_side_owner(const std::vector<ThirdEdgeChordCandidate> &candidates) {
++  std::set<std::size_t> orbits;
++  for (const auto &candidate : candidates) orbits.insert(candidate.thirdEdgeOrbit);
++  if (orbits.size() <= 1U) return orbits;
++
++  for (const auto &candidate : candidates) {
++    if (!candidate.firstCarrierApexDistance.has_value() ||
++        !candidate.secondCarrierApexDistance.has_value()) {
++      return orbits;
++    }
++  }
++  for (std::size_t left = 0U; left < candidates.size(); ++left) {
++    for (std::size_t right = left + 1U; right < candidates.size(); ++right) {
++      const auto first = *candidates[left].firstCarrierApexDistance <=>
++                         *candidates[right].firstCarrierApexDistance;
++      const auto second = *candidates[left].secondCarrierApexDistance <=>
++                          *candidates[right].secondCarrierApexDistance;
++      if (first == 0 || first != second) return orbits;
++    }
++  }
++
++  std::size_t outermost = 0U;
++  for (std::size_t index = 1U; index < candidates.size(); ++index) {
++    if (*candidates[index].firstCarrierApexDistance >
++        *candidates[outermost].firstCarrierApexDistance) {
++      outermost = index;
++    }
++  }
++  return {candidates[outermost].thirdEdgeOrbit};
++}
++
++} // namespace directional::geometry::detail
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 78868b742..a6b9739f3 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -41,6 +41,7 @@
+ #include "../src/geometry/CertifiedSourceFaceOwnerConsistency.h"
+ #include "../src/geometry/CertifiedOwnerConflictCensus.h"
+ #include "../src/geometry/UncutComponentCertificateCensus.h"
++#include "../src/geometry/ThirdEdgeSideOwner.h"
+ #include "TestFixturePaths.h"
+ #include "support/SkewSingularFieldWitness.h"
+ 
+@@ -22279,3 +22280,83 @@ TEST(FieldAlignedCarrierOccupancy,
+                                                    crossingInto(upper, cd, 1, 3))
+                    .has_value());
+ }
++
++TEST(SurfaceCutGraph, ThirdEdgeSideOwnerTakesTheChordNearestTheThirdEdge) {
++  using directional::authority::FieldExactRational;
++  using directional::geometry::detail::third_edge_side_owner;
++  using directional::geometry::detail::ThirdEdgeChordCandidate;
++  const auto at = [](const std::int64_t numerator,
++                     const std::int64_t denominator) {
++    return FieldExactRational::from_ratio(numerator, denominator).value();
++  };
++  // Two nested chords: the one nearer the apex faces the middle region (0),
++  // the farther one faces the third edge (6). A union of both sides is {0, 6}.
++  const ThirdEdgeChordCandidate inner{0U, at(1, 4), at(1, 3)};
++  const ThirdEdgeChordCandidate outer{6U, at(1, 2), at(2, 3)};
++  EXPECT_EQ((std::set<std::size_t>{6U}), third_edge_side_owner({inner, outer}));
++  EXPECT_EQ((std::set<std::size_t>{6U}), third_edge_side_owner({outer, inner}));
++  const ThirdEdgeChordCandidate outermost{9U, at(3, 4), at(5, 6)};
++  EXPECT_EQ((std::set<std::size_t>{9U}),
++            third_edge_side_owner({outer, outermost, inner}));
++  // A chord ending on the far carrier's endpoint is still the outermost.
++  const ThirdEdgeChordCandidate atCorner{7U, at(1, 1), at(3, 4)};
++  EXPECT_EQ((std::set<std::size_t>{7U}),
++            third_edge_side_owner({inner, atCorner, outer}));
++  // Agreeing orbits never need an order.
++  const ThirdEdgeChordCandidate unplaced{6U, std::nullopt, std::nullopt};
++  EXPECT_EQ((std::set<std::size_t>{6U}), third_edge_side_owner({unplaced}));
++  EXPECT_EQ((std::set<std::size_t>{6U}),
++            third_edge_side_owner({outer, unplaced}));
++  EXPECT_TRUE(third_edge_side_owner({}).empty());
++}
++
++TEST(SurfaceCutGraph, ThirdEdgeSideOwnerKeepsUndecidedChordOrdersAmbiguous) {
++  using directional::authority::FieldExactRational;
++  using directional::geometry::detail::third_edge_side_owner;
++  using directional::geometry::detail::ThirdEdgeChordCandidate;
++  const auto at = [](const std::int64_t numerator,
++                     const std::int64_t denominator) {
++    return FieldExactRational::from_ratio(numerator, denominator).value();
++  };
++  const std::set<std::size_t> both{0U, 6U};
++  const ThirdEdgeChordCandidate inner{0U, at(1, 4), at(1, 3)};
++  // The carriers disagree: the chords would cross inside the triangle.
++  const ThirdEdgeChordCandidate crossing{6U, at(1, 2), at(1, 4)};
++  EXPECT_EQ(both, third_edge_side_owner({inner, crossing}));
++  // A tie on either carrier decides nothing.
++  const ThirdEdgeChordCandidate tiedFirst{6U, at(1, 4), at(2, 3)};
++  EXPECT_EQ(both, third_edge_side_owner({inner, tiedFirst}));
++  const ThirdEdgeChordCandidate tiedSecond{6U, at(1, 2), at(1, 3)};
++  EXPECT_EQ(both, third_edge_side_owner({inner, tiedSecond}));
++  // A crossing that is not placed on both carriers decides nothing.
++  const ThirdEdgeChordCandidate missingSecond{6U, at(1, 2), std::nullopt};
++  EXPECT_EQ(both, third_edge_side_owner({inner, missingSecond}));
++  const ThirdEdgeChordCandidate missingFirst{6U, std::nullopt, at(2, 3)};
++  EXPECT_EQ(both, third_edge_side_owner({missingFirst, inner}));
++  // One undecided pair keeps a three-chord set ambiguous.
++  const ThirdEdgeChordCandidate outer{6U, at(1, 2), at(2, 3)};
++  const ThirdEdgeChordCandidate crossingOuter{9U, at(3, 4), at(1, 2)};
++  EXPECT_EQ((std::set<std::size_t>{0U, 6U, 9U}),
++            third_edge_side_owner({inner, outer, crossingOuter}));
++}
++
++TEST(SurfaceCutGraph, CarrierApexDistanceMeasuresFromTheSharedApex) {
++  using directional::authority::ExactUnitParameter;
++  using directional::authority::FieldBoundaryPoint;
++  using directional::authority::FieldExactRational;
++  using directional::geometry::detail::carrier_apex_distance;
++  const auto at = [](const std::int64_t numerator,
++                     const std::int64_t denominator) {
++    return FieldExactRational::from_ratio(numerator, denominator).value();
++  };
++  const FieldBoundaryPoint point{topology_edge(2, 5, 8U),
++                                 ExactUnitParameter{at(1, 4)}};
++  const auto vertex = [](const std::int64_t index) {
++    return SourceVertexId::from_index(index, 8U).value();
++  };
++  EXPECT_EQ(std::optional<FieldExactRational>(at(1, 4)),
++            carrier_apex_distance(point, vertex(2)));
++  EXPECT_EQ(std::optional<FieldExactRational>(at(3, 4)),
++            carrier_apex_distance(point, vertex(5)));
++  EXPECT_FALSE(carrier_apex_distance(point, vertex(7)).has_value());
++}

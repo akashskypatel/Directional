@@ -1,0 +1,49 @@
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 72705a82b..693782f59 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -18704,8 +18704,11 @@ TEST(FaceChartExactGeometry, OrdersRaysAndContactsExactlyAroundAFaceInteriorPoin
+   using Point = embedded::FaceChartPoint;
+   const auto zero = exact_ratio(0, 1);
+   const auto one = exact_ratio(1, 1);
+-  // 2^-60: below half a double ulp near 1/3 and 1/2, so the perturbed
+-  // coordinates below round to the unperturbed ones.
++  // 2^-60: smaller than the distance from 1/3 and 2/3 to their neighbouring
++  // doubles, so each perturbed coordinate below converts to the same double
++  // as the unperturbed one whether conversion truncates (GMP) or rounds.
++  // Exact dyadic coordinates such as 1/2 are avoided: 1/2 - 2^-60 truncates
++  // to the double below 1/2.
+   const auto epsilon = exact_ratio(1, 1152921504606846976LL);
+   const auto sameDoubles = [](const Point &left, const Point &right) {
+     for (std::size_t index = 0U; index < 3U; ++index) {
+@@ -18761,9 +18764,9 @@ TEST(FaceChartExactGeometry, OrdersRaysAndContactsExactlyAroundAFaceInteriorPoin
+ 
+   // Rays from an interior point: a struck segment A -> B through the origin
+   // and stubs towards e2 (one side) and the midpoint of (e0,e1) (other side).
+-  const Point origin{exact_ratio(1, 4), exact_ratio(1, 4), exact_ratio(1, 2)};
+-  const Point towardA{exact_ratio(1, 2), zero, exact_ratio(1, 2)};
+-  const Point towardB{zero, exact_ratio(1, 2), exact_ratio(1, 2)};
++  const Point origin{exact_ratio(1, 6), exact_ratio(1, 6), exact_ratio(2, 3)};
++  const Point towardA{exact_ratio(1, 3), zero, exact_ratio(2, 3)};
++  const Point towardB{zero, exact_ratio(1, 3), exact_ratio(2, 3)};
+   const Point midE0E1{exact_ratio(1, 2), exact_ratio(1, 2), zero};
+   using Order = std::optional<std::vector<std::size_t>>;
+   EXPECT_EQ((Order{{0U, 2U, 1U}}),
+@@ -18779,7 +18782,7 @@ TEST(FaceChartExactGeometry, OrdersRaysAndContactsExactlyAroundAFaceInteriorPoin
+             embedded::face_chart_counter_clockwise_ray_order(
+                 origin, {midE0E1, e2, towardA, towardB}))
+       << "the same cycle B, e2, A, mid read from another start";
+-  const Point nearB{zero, exact_ratio(1, 2) + epsilon, exact_ratio(1, 2) - epsilon};
++  const Point nearB{zero, exact_ratio(1, 3) + epsilon, exact_ratio(2, 3) - epsilon};
+   ASSERT_TRUE(sameDoubles(towardB, nearB));
+   EXPECT_EQ((Order{{0U, 1U, 2U}}),
+             embedded::face_chart_counter_clockwise_ray_order(
+@@ -18788,7 +18791,7 @@ TEST(FaceChartExactGeometry, OrdersRaysAndContactsExactlyAroundAFaceInteriorPoin
+   EXPECT_EQ((Order{{0U, 2U, 1U}}),
+             embedded::face_chart_counter_clockwise_ray_order(
+                 origin, {towardA, towardB, nearB}));
+-  const Point beyondB{exact_ratio(-1, 4), exact_ratio(3, 4), exact_ratio(1, 2)};
++  const Point beyondB{exact_ratio(-1, 6), exact_ratio(1, 2), exact_ratio(2, 3)};
+   EXPECT_EQ(Order{}, embedded::face_chart_counter_clockwise_ray_order(
+                          origin, {towardB, towardA, beyondB}))
+       << "two rays leaving in the same direction";

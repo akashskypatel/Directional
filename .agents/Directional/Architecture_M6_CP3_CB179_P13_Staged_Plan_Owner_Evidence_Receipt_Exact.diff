@@ -1,0 +1,111 @@
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index 98989156eaed2cf7d92e3805193b0ef37447621c..6755a2f8076cad447fd5b76a7efd906cb3c027c3 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -17921,6 +17921,106 @@ TEST(TraceTerminationCorrection,
+   }
+   std::cout << planLine.str() << '\n';
+ 
++  // Owner evidence the plan already publishes for its failing uncut component.
++  if (!plan) {
++    std::cout << "SphereStagedPlanLocus"
++              << production_global_topology_plan_error_locus(plan.error())
++              << '\n';
++  }
++
++  // Certificate source-face owners: the records read by proves_cellularity()
++  // and by the plan's owner-consistency check. Status: 0 Established,
++  // 1 Unavailable, 2 Conflicting. Sides: trace:segment:f|r:orbit.
++  const auto owner_text =
++      [](const directional::geometry::SurfaceCutGraphSourceFaceOwnership
++             &owner) {
++        std::ostringstream text;
++        text << " status=" << static_cast<int>(owner.status) << " orbits=";
++        for (std::size_t i = 0U; i < owner.certifiedFaceOrbits.size(); ++i)
++          text << (i == 0U ? "" : ",") << owner.certifiedFaceOrbits[i];
++        if (owner.certifiedFaceOrbits.empty()) text << '-';
++        text << " sides=";
++        for (std::size_t i = 0U; i < owner.traceFragmentSides.size(); ++i) {
++          const auto &side = owner.traceFragmentSides[i];
++          text << (i == 0U ? "" : ",") << side.trace.index() << ':'
++               << side.segmentIndex << ':'
++               << (side.orientation ==
++                           directional::authority::Orientation::Forward
++                       ? 'f'
++                       : 'r')
++               << ':' << side.orbit;
++        }
++        if (owner.traceFragmentSides.empty()) text << '-';
++        return text.str();
++      };
++  using OwnerStatus =
++      directional::geometry::SurfaceCutGraphSourceFaceOwnershipStatus;
++  std::size_t established = 0U;
++  std::size_t unavailable = 0U;
++  std::size_t conflicting = 0U;
++  std::size_t traceCrossed = 0U;
++  std::size_t singleUncrossed = 0U;
++  std::size_t multiUncrossed = 0U;
++  std::size_t noOrbit = 0U;
++  std::size_t ownerViolations = 0U;
++  for (const auto &owner : certificate.sourceFaceOwners) {
++    established += owner.status == OwnerStatus::Established ? 1U : 0U;
++    unavailable += owner.status == OwnerStatus::Unavailable ? 1U : 0U;
++    conflicting += owner.status == OwnerStatus::Conflicting ? 1U : 0U;
++    traceCrossed += owner.trace_crossed() ? 1U : 0U;
++    noOrbit += owner.certifiedFaceOrbits.empty() ? 1U : 0U;
++    if (!owner.trace_crossed()) {
++      singleUncrossed += owner.certifiedFaceOrbits.size() == 1U ? 1U : 0U;
++      multiUncrossed += owner.certifiedFaceOrbits.size() > 1U ? 1U : 0U;
++    }
++    const bool violates =
++        !owner.established() || owner.certifiedFaceOrbits.empty() ||
++        (!owner.trace_crossed() && owner.certifiedFaceOrbits.size() != 1U);
++    if (!violates) continue;
++    ++ownerViolations;
++    std::cout << "SphereStagedOwnerViolation face="
++              << source_face_locus(owner.sourceFace) << owner_text(owner)
++              << '\n';
++  }
++  if (!plan && plan.error().sourceFace.has_value()) {
++    const auto *owner =
++        certificate.find_source_face_owner(*plan.error().sourceFace);
++    std::cout << "SphereStagedPlanFaceOwner face="
++              << source_face_locus(*plan.error().sourceFace)
++              << (owner == nullptr ? std::string(" owner=absent")
++                                   : owner_text(*owner))
++              << '\n';
++  }
++  for (const auto &conflict : certificate.certifiedOwnerConflictCensus) {
++    std::cout << "SphereStagedOwnerConflict edge="
++              << source_edge_locus(conflict.sourceEdge)
++              << " first=" << source_face_locus(conflict.firstFace) << ':'
++              << conflict.firstOwner
++              << " second=" << source_face_locus(conflict.secondFace) << ':'
++              << conflict.secondOwner
++              << " barrier=" << static_cast<int>(conflict.barrierClass)
++              << '\n';
++  }
++  std::cout << "SphereStagedOwners sourceFaces=" << certificate.sourceFaceCount
++            << " owners=" << certificate.sourceFaceOwners.size()
++            << " established=" << established
++            << " unavailable=" << unavailable
++            << " conflicting=" << conflicting
++            << " traceCrossed=" << traceCrossed
++            << " singleUncrossed=" << singleUncrossed
++            << " multiUncrossed=" << multiUncrossed
++            << " noOrbit=" << noOrbit << " violations=" << ownerViolations
++            << " conflictCensus="
++            << (certificate.certifiedOwnerConflictCensusPublished
++                    ? std::to_string(
++                          certificate.certifiedOwnerConflictCensus.size())
++                    : std::string("unpublished"))
++            << " uncutCensuses="
++            << (certificate.uncutComponentCensusPublished
++                    ? std::to_string(certificate.uncutComponentCensuses.size())
++                    : std::string("unpublished"))
++            << '\n';
++
+   // Per-trace end: the quantities the twenty-four-trace row reads.
+   for (const auto &trace : traces) {
+     std::size_t slides = 0U;

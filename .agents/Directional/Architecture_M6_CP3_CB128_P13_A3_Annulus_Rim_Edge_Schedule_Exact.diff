@@ -1,0 +1,709 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index fcabfe8b5..f5a1d8517 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -2673,6 +2673,50 @@ int normalized_branch(const int branch);
+     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+     int face, int a, int b);
+ 
++// D4/D5 (RA-228): the A3 span breakpoints one Mandatory arc carries on its
++// source edge, in ascending ordinal; a breakpoint on either end of the arc is
++// included. Parameters are on the edge from its first vertex, and the arc
++// covers [first, second] there.
++struct SourceEdgeSpanBreakpoint {
++  std::size_t ordinal = 0U;
++  authority::FieldExactRational parameter;
++};
++
++struct SourceEdgeArcBreakpoints {
++  authority::NetworkArcId span;
++  authority::FieldExactRational first;
++  authority::FieldExactRational second;
++  std::vector<SourceEdgeSpanBreakpoint> breakpoints;
++};
++
++// D4/D5 (RA-228): every Mandatory arc on `mandatoryEdge`, read on source edge
++// `edge` from the plan, in edge order. Nothing unless at most two arcs tile
++// the edge and their spans locate every ordinal. Producers read source edges
++// through the same rule.
++[[nodiscard]] std::optional<std::vector<SourceEdgeArcBreakpoints>>
++source_edge_arc_breakpoints(const GlobalTopologyPlan &topology,
++                            const GlobalConformityBaselinePlan &baseline,
++                            authority::NetworkEdgeId mandatoryEdge,
++                            const authority::SourceEdgeTopologyKey &edge);
++
++// D4 (RA-228): one unit interval of an annulus rim edge, with its span and the
++// ordinals at the start and the end of the walk across it.
++struct AnnulusRimInterval {
++  authority::NetworkArcId span;
++  std::size_t startOrdinal = 0U;
++  std::size_t endOrdinal = 0U;
++};
++
++// D4 (RA-228): a rim source edge of a periodic annulus strip, read from the
++// arcs on it (in edge order) as the strip walks it, from the edge's first
++// vertex when `forward`. Entry k runs from walk parameter k/n to (k+1)/n,
++// where n is the entry count. Nothing unless every arc starts and ends on a
++// breakpoint, consecutive breakpoints are consecutive ordinals, and the
++// breakpoints split the edge evenly.
++[[nodiscard]] std::optional<std::vector<AnnulusRimInterval>>
++read_annulus_rim_edge(const std::vector<SourceEdgeArcBreakpoints> &arcs,
++                      bool forward);
++
+ SurfacePeriodicHolonomy canonicalize_periodic_holonomy(
+     SurfacePeriodicHolonomy relation);
+ 
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 29b7f516c..7e6e8e456 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -13301,8 +13301,184 @@ BoundArcSchedule bound_arc_schedule(const GlobalConformityBaselinePlan &baseline
+   return {binding, schedule};
+ }
+ 
++std::optional<std::size_t> exact_count_to_size(const EInt &value) {
++  if (value <= EInt(0)) return std::nullopt;
++  const std::string text = value.to_string();
++  std::size_t converted = 0U;
++  const auto parsed =
++      std::from_chars(text.data(), text.data() + text.size(), converted);
++  if (parsed.ec != std::errc{} || parsed.ptr != text.data() + text.size()) {
++    return std::nullopt;
++  }
++  return converted;
++}
++
++// D4/D5 (RA-228): one Mandatory arc read on its source edge from the plan:
++// its bound span and the span breakpoints that lie on it. Every producer that
++// reads a source edge from A3 reads it through this.
++struct EdgeArcSchedule {
++  const GlobalTopologyArc *arc = nullptr;
++  const BaselineConformityArcBinding *binding = nullptr;
++  const ConformityScheduleEntry *schedule = nullptr;
++  std::size_t count = 0U;
++  SourceEdgeArcBreakpoints located;
++};
++
++// Each span's breakpoints, ordinals 0..count, located once per producer call.
++using SpanBreakpointLocations =
++    std::map<ConformitySpanId, std::vector<ConformityBreakpointLocation>>;
++
++// Nothing unless `arc` is one piece of `edge` on `mandatoryEdge` and its span
++// locates every ordinal.
++std::optional<EdgeArcSchedule> edge_arc_schedule(
++    const GlobalConformityBaselinePlan &baseline, const GlobalTopologyArc &arc,
++    const authority::NetworkEdgeId mandatoryEdge,
++    const authority::SourceEdgeTopologyKey &edge,
++    SpanBreakpointLocations &spanBreakpoints) {
++  if (arc.kind != GlobalTopologyArcKind::Mandatory ||
++      !arc.mandatoryEdge.has_value() || *arc.mandatoryEdge != mandatoryEdge ||
++      arc.sourcePath.size() != 1U) {
++    return std::nullopt;
++  }
++  const auto *carrier =
++      std::get_if<authority::SourceEdgeSupport>(&arc.sourcePath.front().carrier);
++  const auto first = exact_edge_parameter(arc.sourcePath.front().first, edge);
++  const auto second = exact_edge_parameter(arc.sourcePath.front().second, edge);
++  const BoundArcSchedule bound = bound_arc_schedule(baseline, arc);
++  const ConformityScheduleEntry *schedule = bound.schedule;
++  const auto count = schedule == nullptr ? std::optional<std::size_t>{}
++                                         : exact_count_to_size(schedule->count);
++  if (carrier == nullptr || carrier->edge != edge || !first || !second ||
++      !(*first < *second) || schedule == nullptr || !count || *count == 0U ||
++      *count > static_cast<std::size_t>(std::numeric_limits<int>::max())) {
++    return std::nullopt;
++  }
++  const BaselineConformityArcBinding &binding = *bound.binding;
++  const ConformitySpanId span = binding.span;
++  auto located = spanBreakpoints.find(span);
++  if (located == spanBreakpoints.end()) {
++    std::vector<ConformityBreakpointLocation> locations;
++    locations.reserve(*count + 1U);
++    for (std::size_t ordinal = 0U; ordinal <= *count; ++ordinal) {
++      auto location = baseline.breakpoint_location(
++          span, EInt(static_cast<long long>(ordinal)));
++      if (!location || location->localDenominator == EInt(0)) {
++        return std::nullopt;
++      }
++      locations.push_back(std::move(*location));
++    }
++    located = spanBreakpoints.emplace(span, std::move(locations)).first;
++  }
++  const std::vector<ConformityBreakpointLocation> &locations = located->second;
++  // A Mandatory arc is one piece of its span's support.
++  const std::size_t piece = binding.firstSupportPiece;
++  const auto before_piece = [](const ConformityBreakpointLocation &location,
++                               const std::size_t value) {
++    return location.supportPieceIndex < value;
++  };
++  const std::size_t begin = static_cast<std::size_t>(
++      std::lower_bound(locations.begin(), locations.end(), piece,
++                       before_piece) -
++      locations.begin());
++  std::size_t end = static_cast<std::size_t>(
++      std::lower_bound(locations.begin(), locations.end(), piece + 1U,
++                       before_piece) -
++      locations.begin());
++  // A breakpoint on the piece's far end is located at the start of the next
++  // piece.
++  if (end < locations.size() &&
++      locations[end].supportPieceIndex == piece + 1U &&
++      locations[end].localNumerator == EInt(0)) {
++    ++end;
++  }
++  const bool chainForward =
++      binding.orientation == authority::Orientation::Forward;
++  const authority::FieldExactRational &pieceStart =
++      chainForward ? *first : *second;
++  const authority::FieldExactRational &pieceEnd =
++      chainForward ? *second : *first;
++  const auto one = authority::FieldExactRational::from_integer(1);
++  EdgeArcSchedule read{&arc, bound.binding, schedule, *count,
++                       SourceEdgeArcBreakpoints{span.network_arc(), *first,
++                                                *second, {}}};
++  read.located.breakpoints.reserve(end - begin);
++  for (std::size_t ordinal = begin; ordinal < end; ++ordinal) {
++    const ConformityBreakpointLocation &location = locations[ordinal];
++    const auto local =
++        location.supportPieceIndex == piece
++            ? authority::FieldExactRational::from_exact_fraction(
++                  location.localNumerator, location.localDenominator)
++            : std::optional<authority::FieldExactRational>{one};
++    if (!local) return std::nullopt;
++    read.located.breakpoints.push_back(
++        {ordinal, pieceStart + *local * (pieceEnd - pieceStart)});
++  }
++  return read;
++}
++
++// Puts the arcs read on one source edge in edge order; false unless at most
++// two arcs tile the edge from 0 to 1.
++bool order_edge_arc_schedules(std::vector<EdgeArcSchedule> &arcs) {
++  const auto zero = authority::FieldExactRational::from_integer(0);
++  const auto one = authority::FieldExactRational::from_integer(1);
++  std::sort(arcs.begin(), arcs.end(),
++            [](const EdgeArcSchedule &a, const EdgeArcSchedule &b) {
++              if (a.located.first != b.located.first) {
++                return a.located.first < b.located.first;
++              }
++              return a.located.second < b.located.second;
++            });
++  if (arcs.empty() || arcs.size() > 2U || arcs.front().located.first != zero ||
++      arcs.back().located.second != one) {
++    return false;
++  }
++  for (std::size_t index = 1U; index < arcs.size(); ++index) {
++    if (arcs[index - 1U].located.second != arcs[index].located.first) {
++      return false;
++    }
++  }
++  return true;
++}
++
++// Every Mandatory arc on `mandatoryEdge`, read on `edge`, in edge order.
++std::optional<std::vector<EdgeArcSchedule>> mandatory_edge_arc_schedules(
++    const GlobalTopologyPlan &topology,
++    const GlobalConformityBaselinePlan &baseline,
++    const authority::NetworkEdgeId mandatoryEdge,
++    const authority::SourceEdgeTopologyKey &edge,
++    SpanBreakpointLocations &spanBreakpoints) {
++  std::vector<EdgeArcSchedule> arcs;
++  for (const GlobalTopologyArc &arc : topology.arcs()) {
++    if (arc.kind != GlobalTopologyArcKind::Mandatory ||
++        !arc.mandatoryEdge.has_value() || *arc.mandatoryEdge != mandatoryEdge) {
++      continue;
++    }
++    auto read =
++        edge_arc_schedule(baseline, arc, mandatoryEdge, edge, spanBreakpoints);
++    if (!read) return std::nullopt;
++    arcs.push_back(std::move(*read));
++  }
++  if (!order_edge_arc_schedules(arcs)) return std::nullopt;
++  return arcs;
++}
++
+ } // namespace
+ 
++std::optional<std::vector<SourceEdgeArcBreakpoints>> source_edge_arc_breakpoints(
++    const GlobalTopologyPlan &topology,
++    const GlobalConformityBaselinePlan &baseline,
++    const authority::NetworkEdgeId mandatoryEdge,
++    const authority::SourceEdgeTopologyKey &edge) {
++  SpanBreakpointLocations spanBreakpoints;
++  auto arcs = mandatory_edge_arc_schedules(topology, baseline, mandatoryEdge,
++                                           edge, spanBreakpoints);
++  if (!arcs) return std::nullopt;
++  std::vector<SourceEdgeArcBreakpoints> located;
++  located.reserve(arcs->size());
++  for (EdgeArcSchedule &arc : *arcs) located.push_back(std::move(arc.located));
++  return located;
++}
++
+ struct AcceptedCutBoundaryFaceAuthorityKey {
+   SurfaceBoundaryOccurrenceId occurrence;
+   authority::NetworkArcId span;
+@@ -14241,6 +14417,60 @@ std::vector<SurfaceTraceSegment> bounded_disk_chart_segment(
+ 
+ } // namespace
+ 
++std::optional<std::vector<AnnulusRimInterval>> read_annulus_rim_edge(
++    const std::vector<SourceEdgeArcBreakpoints> &arcs, const bool forward) {
++  using Rational = authority::FieldExactRational;
++  const Rational zero = Rational::from_integer(0);
++  const Rational one = Rational::from_integer(1);
++  struct WalkBreakpoint {
++    Rational parameter;
++    std::size_t ordinal = 0U;
++  };
++  std::vector<Rational> points;
++  std::vector<AnnulusRimInterval> intervals;
++  for (std::size_t index = 0U; index < arcs.size(); ++index) {
++    const SourceEdgeArcBreakpoints &arc =
++        arcs[forward ? index : arcs.size() - 1U - index];
++    std::vector<WalkBreakpoint> walk;
++    walk.reserve(arc.breakpoints.size());
++    for (const SourceEdgeSpanBreakpoint &breakpoint : arc.breakpoints) {
++      walk.push_back({forward ? breakpoint.parameter : one - breakpoint.parameter,
++                      breakpoint.ordinal});
++    }
++    std::sort(walk.begin(), walk.end(),
++              [](const WalkBreakpoint &a, const WalkBreakpoint &b) {
++                return a.parameter < b.parameter;
++              });
++    const Rational start = forward ? arc.first : one - arc.second;
++    const Rational end = forward ? arc.second : one - arc.first;
++    if (walk.size() < 2U || walk.front().parameter != start ||
++        walk.back().parameter != end ||
++        (points.empty() ? start != zero : points.back() != start)) {
++      return std::nullopt;
++    }
++    if (points.empty()) points.push_back(start);
++    for (std::size_t step = 1U; step < walk.size(); ++step) {
++      const WalkBreakpoint &from = walk[step - 1U];
++      const WalkBreakpoint &to = walk[step];
++      if (!(from.parameter < to.parameter) ||
++          (to.ordinal != from.ordinal + 1U && from.ordinal != to.ordinal + 1U)) {
++        return std::nullopt;
++      }
++      points.push_back(to.parameter);
++      intervals.push_back({arc.span, from.ordinal, to.ordinal});
++    }
++  }
++  if (intervals.empty() || points.back() != one) return std::nullopt;
++  const Rational parts =
++      Rational::from_integer(static_cast<std::int64_t>(intervals.size()));
++  for (std::size_t k = 0U; k < points.size(); ++k) {
++    if (points[k] * parts != Rational::from_integer(static_cast<std::int64_t>(k))) {
++      return std::nullopt;
++    }
++  }
++  return intervals;
++}
++
+ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+     const Eigen::MatrixXd &vertices, const Eigen::MatrixXi &faces,
+     const Eigen::MatrixXd &faceAxisX, const Eigen::MatrixXd &faceAxisY,
+@@ -17476,18 +17706,6 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+   };
+   std::array<AcceptedBoundarySubdivision, 4> acceptedBoundary;
+ 
+-  const auto exact_count_to_size = [](const EInt &value)
+-      -> std::optional<std::size_t> {
+-    if (value <= EInt(0)) return std::nullopt;
+-    const std::string text = value.to_string();
+-    std::size_t converted = 0U;
+-    const auto parsed =
+-        std::from_chars(text.data(), text.data() + text.size(), converted);
+-    if (parsed.ec != std::errc{} || parsed.ptr != text.data() + text.size()) {
+-      return std::nullopt;
+-    }
+-    return converted;
+-  };
+   const auto boundary_trace_point = [&faces](
+       const int face, const int firstVertex, const int secondVertex,
+       const authority::FieldExactRational &parameter,
+@@ -17507,11 +17725,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+     const GlobalTopologyPlan &topology = *options.globalTopologyPlan;
+     const GlobalConformityBaselinePlan &baseline =
+         *options.globalConformityBaselinePlan;
+-    const auto zero = authority::FieldExactRational::from_integer(0);
+-    const auto one = authority::FieldExactRational::from_integer(1);
+-    // D5 (RA-220): each span's breakpoints, ordinals 0..count, located once.
+-    std::map<ConformitySpanId, std::vector<ConformityBreakpointLocation>>
+-        spanBreakpoints;
++    SpanBreakpointLocations spanBreakpoints;
+ 
+     for (int side = 0; side < 4; ++side) {
+       const SurfaceBoundedDiskBoundaryRun &run =
+@@ -17541,45 +17755,8 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+           return result;
+         }
+ 
+-        struct ArcSchedule {
+-          const GlobalTopologyArc *arc = nullptr;
+-          const BaselineConformityArcBinding *binding = nullptr;
+-          const ConformityScheduleEntry *schedule = nullptr;
+-          authority::FieldExactRational first =
+-              authority::FieldExactRational::from_integer(0);
+-          authority::FieldExactRational second =
+-              authority::FieldExactRational::from_integer(0);
+-          std::size_t count = 0U;
+-        };
+-        std::vector<ArcSchedule> arcSchedules;
++        std::vector<EdgeArcSchedule> arcSchedules;
+         std::optional<SurfaceBoundaryOccurrenceId> boundaryOccurrence;
+-        const auto append_arc_schedule = [&](const GlobalTopologyArc &arc) {
+-          if (arc.kind != GlobalTopologyArcKind::Mandatory ||
+-              !arc.mandatoryEdge.has_value() ||
+-              *arc.mandatoryEdge != mandatory->id || arc.sourcePath.size() != 1U) {
+-            return false;
+-          }
+-          const auto *carrier = std::get_if<authority::SourceEdgeSupport>(
+-              &arc.sourcePath.front().carrier);
+-          const auto first = exact_edge_parameter(arc.sourcePath.front().first,
+-                                                  edge);
+-          const auto second = exact_edge_parameter(arc.sourcePath.front().second,
+-                                                   edge);
+-          const BoundArcSchedule bound = bound_arc_schedule(baseline, arc);
+-          const ConformityScheduleEntry *schedule = bound.schedule;
+-          const auto count =
+-              schedule == nullptr ? std::optional<std::size_t>{}
+-                                  : exact_count_to_size(schedule->count);
+-          if (carrier == nullptr || carrier->edge != edge || !first || !second ||
+-              !(*first < *second) || schedule == nullptr || !count ||
+-              *count == 0U ||
+-              *count > static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+-            return false;
+-          }
+-          arcSchedules.push_back(
+-              {&arc, bound.binding, schedule, *first, *second, *count});
+-          return true;
+-        };
+ 
+         if (useAcceptedCutDomain) {
+           if (static_cast<std::size_t>(side) >= runAcceptedSegments.size() ||
+@@ -17595,14 +17772,19 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+           const AcceptedCutBoundarySegment &accepted =
+               *runAcceptedSegments[static_cast<std::size_t>(side)][edgeIndex];
+           const GlobalTopologyArc *arc = topology.find_arc(accepted.arc);
+-          if (arc == nullptr || accepted.edge != edge ||
+-              !append_arc_schedule(*arc)) {
++          std::optional<EdgeArcSchedule> read;
++          if (arc != nullptr && accepted.edge == edge) {
++            read = edge_arc_schedule(baseline, *arc, mandatory->id, edge,
++                                     spanBreakpoints);
++          }
++          if (!read) {
+             result.disposition = SurfaceCellProducerDisposition::Rejected;
+             set_phase_front_failure(
+                 result.failure,
+                 SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+             return result;
+           }
++          arcSchedules.push_back(std::move(*read));
+           const BaselineConformityArcBinding &binding =
+               *arcSchedules.front().binding;
+           const BaselineConformityIncidence *incidence = nullptr;
+@@ -17632,45 +17814,24 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+           boundaryOccurrence = SurfaceBoundaryOccurrenceId{
+               accepted.incidence.region,
+               accepted.incidence.canonicalBoundaryOccurrenceOrdinal};
+-        } else {
+-          for (const GlobalTopologyArc &arc : topology.arcs()) {
+-            if (arc.kind != GlobalTopologyArcKind::Mandatory ||
+-                !arc.mandatoryEdge.has_value() ||
+-                *arc.mandatoryEdge != mandatory->id) {
+-              continue;
+-            }
+-            if (!append_arc_schedule(arc)) {
+-              result.disposition = SurfaceCellProducerDisposition::Rejected;
+-              set_phase_front_failure(
+-                  result.failure,
+-                  SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+-              return result;
+-            }
++          if (!order_edge_arc_schedules(arcSchedules)) {
++            result.disposition = SurfaceCellProducerDisposition::Rejected;
++            set_phase_front_failure(
++                result.failure,
++                SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
++            return result;
+           }
+-        }
+-        std::sort(arcSchedules.begin(), arcSchedules.end(),
+-                  [](const ArcSchedule &a, const ArcSchedule &b) {
+-                    if (a.first != b.first) return a.first < b.first;
+-                    return a.second < b.second;
+-                  });
+-        if (arcSchedules.empty() || arcSchedules.size() > 2U ||
+-            arcSchedules.front().first != zero ||
+-            arcSchedules.back().second != one) {
+-          result.disposition = SurfaceCellProducerDisposition::Rejected;
+-          set_phase_front_failure(
+-              result.failure,
+-              SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+-          return result;
+-        }
+-        for (std::size_t arcIndex = 1U; arcIndex < arcSchedules.size();
+-             ++arcIndex) {
+-          if (arcSchedules[arcIndex - 1U].second != arcSchedules[arcIndex].first) {
++        } else {
++          auto read = mandatory_edge_arc_schedules(
++              topology, baseline, mandatory->id, edge, spanBreakpoints);
++          if (!read) {
+             result.disposition = SurfaceCellProducerDisposition::Rejected;
+             set_phase_front_failure(
+                 result.failure,
+                 SurfacePhaseFrontFailureReason::InvalidFrontBoundaryAuthority);
+             return result;
+           }
++          arcSchedules = std::move(*read);
+         }
+ 
+         if (static_cast<std::size_t>(side) >= runChartVertices.size() ||
+@@ -17746,72 +17907,25 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+         // interval, wherever the arcs between them end. A side starts, and a
+         // span gives way to the next, only on a breakpoint at the vertex the
+         // walk is on.
+-        const auto append_arc = [&](const ArcSchedule &arcSchedule,
++        const auto append_arc = [&](const EdgeArcSchedule &arcSchedule,
+                                     const bool increasing) -> bool {
+           const BaselineConformityArcBinding &binding = *arcSchedule.binding;
+           const ConformitySpanId span = binding.span;
+-          auto located = spanBreakpoints.find(span);
+-          if (located == spanBreakpoints.end()) {
+-            std::vector<ConformityBreakpointLocation> locations;
+-            locations.reserve(arcSchedule.count + 1U);
+-            for (std::size_t ordinal = 0U; ordinal <= arcSchedule.count;
+-                 ++ordinal) {
+-              auto location = baseline.breakpoint_location(
+-                  span, EInt(static_cast<long long>(ordinal)));
+-              if (!location || location->localDenominator == EInt(0)) {
+-                return false;
+-              }
+-              locations.push_back(std::move(*location));
+-            }
+-            located = spanBreakpoints.emplace(span, std::move(locations)).first;
+-          }
+-          const std::vector<ConformityBreakpointLocation> &locations =
+-              located->second;
+-          // A Mandatory arc is one piece of its span's support.
+-          const std::size_t piece = binding.firstSupportPiece;
+-          const auto before_piece = [](const ConformityBreakpointLocation &location,
+-                                       const std::size_t value) {
+-            return location.supportPieceIndex < value;
+-          };
+-          const std::size_t begin = static_cast<std::size_t>(
+-              std::lower_bound(locations.begin(), locations.end(), piece,
+-                               before_piece) -
+-              locations.begin());
+-          std::size_t end = static_cast<std::size_t>(
+-              std::lower_bound(locations.begin(), locations.end(), piece + 1U,
+-                               before_piece) -
+-              locations.begin());
+-          // A breakpoint on the piece's far end is located at the start of the
+-          // next piece.
+-          if (end < locations.size() &&
+-              locations[end].supportPieceIndex == piece + 1U &&
+-              locations[end].localNumerator == EInt(0)) {
+-            ++end;
+-          }
++          const std::vector<SourceEdgeSpanBreakpoint> &breakpoints =
++              arcSchedule.located.breakpoints;
+           const bool chainForward =
+               binding.orientation == authority::Orientation::Forward;
+-          const authority::FieldExactRational &pieceStart =
+-              chainForward ? arcSchedule.first : arcSchedule.second;
+-          const authority::FieldExactRational &pieceEnd =
+-              chainForward ? arcSchedule.second : arcSchedule.first;
+           const authority::FieldExactRational &walkStart =
+-              increasing ? arcSchedule.first : arcSchedule.second;
++              increasing ? arcSchedule.located.first : arcSchedule.located.second;
+           const authority::FieldExactRational &walkEnd =
+-              increasing ? arcSchedule.second : arcSchedule.first;
++              increasing ? arcSchedule.located.second : arcSchedule.located.first;
+           // The side follows the span when it walks the arc along its chain.
+           const bool ascending = increasing == chainForward;
+-          for (std::size_t step = 0U; step < end - begin; ++step) {
+-            const std::size_t ordinal =
+-                ascending ? begin + step : end - 1U - step;
+-            const ConformityBreakpointLocation &location = locations[ordinal];
+-            const auto local =
+-                location.supportPieceIndex == piece
+-                    ? authority::FieldExactRational::from_exact_fraction(
+-                          location.localNumerator, location.localDenominator)
+-                    : std::optional<authority::FieldExactRational>{one};
+-            if (!local) return false;
+-            const authority::FieldExactRational parameter =
+-                pieceStart + *local * (pieceEnd - pieceStart);
++          for (std::size_t step = 0U; step < breakpoints.size(); ++step) {
++            const SourceEdgeSpanBreakpoint &breakpoint =
++                breakpoints[ascending ? step : breakpoints.size() - 1U - step];
++            const std::size_t ordinal = breakpoint.ordinal;
++            const authority::FieldExactRational &parameter = breakpoint.parameter;
+             if (cursor && cursor->span == span && cursor->ordinal == ordinal) {
+               cursor->atArcEnd = parameter == walkEnd;
+               continue;
+@@ -17844,12 +17958,12 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+             cursor = SideCursor{span, ordinal, parameter == walkEnd};
+           }
+           if (!cursor) return false;
+-          if (begin == end) cursor->atArcEnd = false;
++          if (breakpoints.empty()) cursor->atArcEnd = false;
+           return true;
+         };
+ 
+         if (forward) {
+-          for (const ArcSchedule &arcSchedule : arcSchedules) {
++          for (const EdgeArcSchedule &arcSchedule : arcSchedules) {
+             if (!append_arc(arcSchedule, true)) {
+               result.disposition = SurfaceCellProducerDisposition::Rejected;
+               set_phase_front_failure(
+diff --git a/tests/SurfaceCellsPhase10Tests.cpp b/tests/SurfaceCellsPhase10Tests.cpp
+index 53bbe87f3..90dc3f2ef 100644
+--- a/tests/SurfaceCellsPhase10Tests.cpp
++++ b/tests/SurfaceCellsPhase10Tests.cpp
+@@ -5673,6 +5673,57 @@ TEST(SurfaceCellsPhase10,
+   EXPECT_TRUE(result.diagnostics.surfaceCellPeriodicHolonomyAvailable);
+   EXPECT_TRUE(network.seeds.empty());
+   EXPECT_TRUE(network.traces.empty());
++
++  // RA-228: on how many rim edges the plan reads as an annulus rim, and with
++  // the count of output rim edges the annulus builds there.
++  const auto &snapshots = result.surfaceCellContext.productSnapshots;
++  if (!snapshots.globalTopologyPlan.has_value() ||
++      !snapshots.globalConformityBaseline.has_value() ||
++      !snapshots.fieldAlignedCurveNetwork.has_value()) {
++    std::cout << "annulus-read case=CommittedCylinder inputs=missing" << std::endl;
++    return;
++  }
++  const auto &curveNetwork = *snapshots.fieldAlignedCurveNetwork;
++  std::map<directional::authority::NetworkEdgeId, std::size_t> output;
++  std::size_t outputRimEdges = 0U;
++  std::size_t recorded = 0U;
++  for (const auto &edge : network.phaseFront.product().edges()) {
++    if (edge.boundaryKind !=
++            directional::geometry::SurfaceFrontBoundaryKind::GenuineSourceBoundary ||
++        edge.route.steps().empty()) {
++      continue;
++    }
++    ++outputRimEdges;
++    if (edge.sharedBoundaryInterval.has_value()) ++recorded;
++    const auto *mandatory =
++        curveNetwork.find_mandatory_edge(edge.route.steps().front().topology());
++    if (mandatory != nullptr) ++output[mandatory->id];
++  }
++  std::size_t rimEdges = 0U;
++  std::size_t readable = 0U;
++  std::size_t equalOutput = 0U;
++  for (const auto &mandatory : curveNetwork.mandatory_edges()) {
++    if (mandatory.kind != directional::geometry::SurfaceCellRailKind::Boundary) {
++      continue;
++    }
++    ++rimEdges;
++    const auto arcs =
++        directional::geometry::surface_cell_tracing_detail::source_edge_arc_breakpoints(
++            *snapshots.globalTopologyPlan, *snapshots.globalConformityBaseline,
++            mandatory.id, mandatory.sourceEdge);
++    if (!arcs) continue;
++    const auto rim =
++        directional::geometry::surface_cell_tracing_detail::read_annulus_rim_edge(
++            *arcs, true);
++    if (!rim) continue;
++    ++readable;
++    const auto built = output.find(mandatory.id);
++    if (built != output.end() && built->second == rim->size()) ++equalOutput;
++  }
++  std::cout << "annulus-read case=CommittedCylinder rimEdges=" << rimEdges
++            << " readable=" << readable << " equalOutput=" << equalOutput
++            << " outputRimEdges=" << outputRimEdges << " recorded=" << recorded
++            << std::endl;
+ }
+ 
+ 
+@@ -8398,6 +8449,85 @@ TEST(SurfaceCellAuthorityContractCutover,
+   EXPECT_EQ(-1, branch(collinear, x, Eigen::RowVector3d(0.0, 1.0, 0.0), 0, 1));
+ }
+ 
++// D4 (RA-228): an annulus rim edge is read from its arcs' span breakpoints in
++// the strip's walk order. It reads only when every arc starts and ends on a
++// breakpoint, consecutive breakpoints are consecutive ordinals and the edge is
++// split evenly. Walking it the other way reads the same intervals reversed.
++TEST(SurfaceCellAuthorityContractCutover,
++     D4AnnulusRimEdgeReadsEvenSplitsInWalkOrder) {
++  namespace detail = directional::geometry::surface_cell_tracing_detail;
++  using directional::authority::FieldExactRational;
++  using directional::authority::NetworkArcId;
++  const NetworkArcId spanA = NetworkArcId::from_index(0, 2U).value();
++  const NetworkArcId spanB = NetworkArcId::from_index(1, 2U).value();
++  const auto q = [](const std::int64_t numerator, const std::int64_t denominator) {
++    return FieldExactRational::from_integer(numerator) /
++           FieldExactRational::from_integer(denominator);
++  };
++  const auto arc =
++      [](const NetworkArcId span, const FieldExactRational &first,
++         const FieldExactRational &second,
++         const std::vector<std::pair<std::size_t, FieldExactRational>> &points) {
++        detail::SourceEdgeArcBreakpoints located{span, first, second, {}};
++        for (const auto &[ordinal, parameter] : points) {
++          located.breakpoints.push_back({ordinal, parameter});
++        }
++        return located;
++      };
++  using Read = std::vector<std::tuple<char, std::size_t, std::size_t>>;
++  const auto read = [&](const std::vector<detail::SourceEdgeArcBreakpoints> &arcs,
++                        const bool forward) -> std::optional<Read> {
++    const auto intervals = detail::read_annulus_rim_edge(arcs, forward);
++    if (!intervals) return std::nullopt;
++    Read named;
++    for (const auto &interval : *intervals) {
++      named.emplace_back(interval.span == spanA ? 'A' : 'B',
++                         interval.startOrdinal, interval.endOrdinal);
++    }
++    return named;
++  };
++
++  // One arc, its span running with the edge, count 2.
++  const std::vector<detail::SourceEdgeArcBreakpoints> withEdge{
++      arc(spanA, q(0, 1), q(1, 1), {{0U, q(0, 1)}, {1U, q(1, 2)}, {2U, q(1, 1)}})};
++  EXPECT_EQ(std::optional<Read>(Read{{'A', 0U, 1U}, {'A', 1U, 2U}}),
++            read(withEdge, true));
++  EXPECT_EQ(std::optional<Read>(Read{{'A', 2U, 1U}, {'A', 1U, 0U}}),
++            read(withEdge, false));
++  // Its span running against the edge.
++  const std::vector<detail::SourceEdgeArcBreakpoints> againstEdge{
++      arc(spanA, q(0, 1), q(1, 1), {{3U, q(1, 1)}, {4U, q(1, 2)}, {5U, q(0, 1)}})};
++  EXPECT_EQ(std::optional<Read>(Read{{'A', 5U, 4U}, {'A', 4U, 3U}}),
++            read(againstEdge, true));
++  // Two arcs meeting at the middle of the edge.
++  const std::vector<detail::SourceEdgeArcBreakpoints> twoArcs{
++      arc(spanA, q(0, 1), q(1, 2), {{0U, q(0, 1)}, {1U, q(1, 2)}}),
++      arc(spanB, q(1, 2), q(1, 1), {{0U, q(1, 2)}, {1U, q(1, 1)}})};
++  EXPECT_EQ(std::optional<Read>(Read{{'A', 0U, 1U}, {'B', 0U, 1U}}),
++            read(twoArcs, true));
++  EXPECT_EQ(std::optional<Read>(Read{{'B', 1U, 0U}, {'A', 1U, 0U}}),
++            read(twoArcs, false));
++
++  // A span that bridges the edge's far vertex has no breakpoint there.
++  EXPECT_FALSE(read({arc(spanA, q(0, 1), q(1, 1), {{0U, q(0, 1)}, {1U, q(2, 3)}})},
++                    true)
++                   .has_value());
++  // Arcs meeting off the middle split the edge unevenly.
++  EXPECT_FALSE(read({arc(spanA, q(0, 1), q(1, 3), {{0U, q(0, 1)}, {1U, q(1, 3)}}),
++                     arc(spanB, q(1, 3), q(1, 1), {{0U, q(1, 3)}, {1U, q(1, 1)}})},
++                    true)
++                   .has_value());
++  // A skipped ordinal, an arc that leaves the edge's start uncovered, and no
++  // arc at all.
++  EXPECT_FALSE(read({arc(spanA, q(0, 1), q(1, 1), {{0U, q(0, 1)}, {2U, q(1, 1)}})},
++                    true)
++                   .has_value());
++  EXPECT_FALSE(read({arc(spanA, q(1, 2), q(1, 1), {{0U, q(1, 2)}, {1U, q(1, 1)}})},
++                    true)
++                   .has_value());
++  EXPECT_FALSE(read({}, true).has_value());
++}
++
+ // At a rim node that only its two rim arcs reach, a field corner (RA-224) must
+ // be exactly a side start the curved producer derives inside the region, on
+ // its accepted-cut path (hard rail) and on its plain path (chained plan).

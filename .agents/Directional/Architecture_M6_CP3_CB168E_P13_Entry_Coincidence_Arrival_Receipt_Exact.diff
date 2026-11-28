@@ -1,0 +1,89 @@
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 305b9dad0..498e7df8a 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -4354,15 +4354,19 @@ canonical_field_aligned_traces_and_events(
+   // Diagnostic only: two different traces that enter one carrier at the same
+   // interior exact parameter, measured by the carrier-contact rule itself
+   // (neither occupancy is a slide). Each unordered (trace, segment) pair is
+-  // reported once; contact scheduling is unchanged.
++  // reported once, with the first end's arrival at the shared entry ordered
++  // against the second's by the active priority, and whether the two entered
++  // segments share a source face; contact scheduling is unchanged.
+   using EntryCoincidenceEnd = std::pair<std::size_t, std::size_t>;
+   std::set<std::pair<EntryCoincidenceEnd, EntryCoincidenceEnd>>
+       reportedEntryCoincidences;
+   const auto reportEntryCoincidence =
+       [&](const EntryCoincidenceEnd first,
+           const FieldAlignedCandidateTraceSegment &firstSegment,
++          const FieldAlignedArrivalMeasure &firstArrival,
+           const EntryCoincidenceEnd second,
+-          const FieldAlignedCandidateTraceSegment &secondSegment) {
++          const FieldAlignedCandidateTraceSegment &secondSegment,
++          const FieldAlignedArrivalMeasure &secondArrival) {
+         if (first.first == second.first) return;
+         const auto contact =
+             first_field_aligned_carrier_contact(firstSegment, secondSegment);
+@@ -4370,16 +4374,35 @@ canonical_field_aligned_traces_and_events(
+             contact->wallInSlide) {
+           return;
+         }
+-        const auto key = first < second ? std::pair{first, second}
+-                                        : std::pair{second, first};
++        const bool inOrder = first < second;
++        const auto key = inOrder ? std::pair{first, second}
++                                 : std::pair{second, first};
+         if (!reportedEntryCoincidences.insert(key).second) return;
++        const FieldAlignedArrivalOrdering ordering =
++            inOrder ? field_aligned_compare_priority_arrivals(
++                          priority, firstArrival, secondArrival, first.first,
++                          second.first)
++                    : field_aligned_compare_priority_arrivals(
++                          priority, secondArrival, firstArrival, second.first,
++                          first.first);
+         std::clog << "FieldAlignedCurveNetwork.entryCoincidence first="
+                   << key.first.first << ':' << key.first.second
+                   << " second=" << key.second.first << ':' << key.second.second
+                   << " carrier=(" << contact->carrier.first().index() << ','
+                   << contact->carrier.second().index() << ") parameter="
+                   << contact->parameter.numerator_string() << '/'
+-                  << contact->parameter.denominator_string() << '\n';
++                  << contact->parameter.denominator_string()
++                  << " firstArrival="
++                  << (ordering == FieldAlignedArrivalOrdering::Earlier
++                          ? "earlier"
++                          : ordering == FieldAlignedArrivalOrdering::Later
++                                ? "later"
++                                : "inconclusive")
++                  << " faces="
++                  << (firstSegment.sourceFace == secondSegment.sourceFace
++                          ? "same"
++                          : "different")
++                  << '\n';
+       };
+ 
+   while (std::any_of(runtimes.begin(), runtimes.end(),
+@@ -4425,8 +4448,10 @@ canonical_field_aligned_traces_and_events(
+         }
+         reportEntryCoincidence({firstIndex, firstTrace.segments.size()},
+                                firstRuntime.proposal->segment,
++                               firstRuntime.arrival,
+                                {secondIndex, secondTrace.segments.size()},
+-                               secondRuntime.proposal->segment);
++                               secondRuntime.proposal->segment,
++                               secondRuntime.arrival);
+         const auto contact = classify_field_aligned_segment_contact_impl(
+             topology, firstRuntime.proposal->segment,
+             secondRuntime.proposal->segment);
+@@ -4501,8 +4526,10 @@ canonical_field_aligned_traces_and_events(
+                       : std::nullopt;
+           reportEntryCoincidence({movingIndex, movingTrace.segments.size()},
+                                  movingRuntime.proposal->segment,
++                                 movingRuntime.arrival,
+                                  {wallIndex, wallSegmentIndex},
+-                                 wallTrace.segments[wallSegmentIndex]);
++                                 wallTrace.segments[wallSegmentIndex],
++                                 wallRuntime.segmentStarts[wallSegmentIndex]);
+           const auto contact =
+               classify_field_aligned_segment_contact_with_second_exit(
+                   topology, movingRuntime.proposal->segment,

@@ -1,0 +1,398 @@
+diff --git a/include/directional/geometry/SurfaceCellTracing.h b/include/directional/geometry/SurfaceCellTracing.h
+index 63a30df189a98a089f544ef7a2dacd868c2f2214..565c0b791faa0483d4640d93fc55a623312f8288 100644
+--- a/include/directional/geometry/SurfaceCellTracing.h
++++ b/include/directional/geometry/SurfaceCellTracing.h
+@@ -2532,9 +2532,20 @@ struct SourceSurfaceClassifierOptions {
+   int geodesicExclusionDepth = 2;
+ };
+
++// Diagnostic-only observation of an actual regional producer invocation.
++// Predicate names refer to the return site, not to inferred plan ownership.
++struct SurfacePhaseFrontAttemptReceipt {
++  authority::TopologyRegionId sourceRegion;
++  const char *producer;
++  SurfaceCellProducerDisposition disposition;
++  const char *declinePredicate;
++  SurfacePhaseFrontFailureReason failureReason;
++};
++
+ struct SurfaceCellTracingOptions {
+   /// Enable the bounded uniform phase-labelled advancing-front proof.
+   bool enableUniformPhaseFront = true;
++  bool retainPhaseFrontAttemptReceipts = false;
+   double defaultTargetSize = 1.0;
+   double coverageRadiusFactor = 1.0;
+   double maxTraceLength = 1.0;
+@@ -2592,6 +2603,7 @@ struct SurfaceCellTracingOptions {
+
+ struct SurfaceCellNetwork {
+   SurfacePhaseFrontResult phaseFront;
++  std::vector<SurfacePhaseFrontAttemptReceipt> phaseFrontAttemptReceipts;
+   std::vector<SurfaceTraceSeed> seeds;
+   std::vector<SurfaceTraceResult> traces;
+   std::vector<SurfaceSingularitySeparatrix> singularSeparatrices;
+diff --git a/src/geometry/SurfaceCellTracing.cpp b/src/geometry/SurfaceCellTracing.cpp
+index 7d469ee72d64997f3ddba1369e927900799905a6..70b22024aa7bf33e6dbbba181996db5e0a9f7c42 100644
+--- a/src/geometry/SurfaceCellTracing.cpp
++++ b/src/geometry/SurfaceCellTracing.cpp
+@@ -14677,6 +14677,8 @@ struct AcceptedCutBoundaryFaceAuthorityKey {
+ struct SurfacePhaseFrontBuildState {
+   SurfaceCellProducerDisposition disposition =
+       SurfaceCellProducerDisposition::NotApplicable;
++  // Read only by the opt-in invocation receipt.
++  const char *declinePredicate = "unclassified";
+   bool attempted = false;
+   bool succeeded = false;
+   int gridU = 0;
+@@ -14792,6 +14794,7 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
+   SurfacePhaseFrontBuildState result;
+   result.attempted = options.enableUniformPhaseFront;
+   if (!result.attempted) {
++    result.declinePredicate = "disabled";
+     return result;
+   }
+
+@@ -14801,6 +14804,9 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
+   // Unsupported topology is NotApplicable; malformed authoritative metadata
+   // on an applicable domain is Rejected and must remain fail-closed.
+   if (surface_cell_tracing_detail::tracing_has_singularities(options)) {
++    result.declinePredicate = options.fieldAlignedNetwork != nullptr
++                                  ? "global-singularity-ports"
++                                  : "legacy-singularity-vertices";
+     return result;
+   }
+   // Once the accepted A2b/A3 conformity plan is present, shared hard rails
+@@ -14836,6 +14842,9 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
+   if (options.globalConformityBaselinePlan != nullptr &&
+       (chainedPlan || options.declinePlannedUniformRegions ||
+        region_has_hard_feature())) {
++    result.declinePredicate = chainedPlan ? "chained-plan" :
++        (options.declinePlannedUniformRegions ? "planned-uniform-disabled" :
++                                               "planned-hard-feature");
+     return result;
+   }
+   UniformPhaseFrame applicabilityFrame;
+@@ -14855,6 +14864,8 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_for_faces(
+     default:
+       // Non-planar, non-rectangular, or globally non-uniform phase domains are
+       // outside this bounded producer. A separately selected producer may run.
++      result.declinePredicate =
++          surface_phase_front_failure_reason_name(applicabilityFailure.reason);
+       break;
+     }
+     return result;
+@@ -15672,9 +15683,18 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
+   SurfacePhaseFrontBuildState result;
+   result.attempted = options.enableUniformPhaseFront;
+-  if (!result.attempted ||
+-      surface_cell_tracing_detail::tracing_has_singularities(options) ||
+-      activeFaces.empty()) {
++  if (!result.attempted) {
++    result.declinePredicate = "disabled";
++    return result;
++  }
++  if (surface_cell_tracing_detail::tracing_has_singularities(options)) {
++    result.declinePredicate = options.fieldAlignedNetwork != nullptr
++                                  ? "global-singularity-ports"
++                                  : "legacy-singularity-vertices";
++    return result;
++  }
++  if (activeFaces.empty()) {
++    result.declinePredicate = "empty-source-region";
+     return result;
+   }
+   // The periodic producer reads only its two rims from the A3 plan (RA-228),
+@@ -15701,6 +15721,7 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+   };
+   if (options.globalConformityBaselinePlan != nullptr &&
+       region_has_hard_feature()) {
++    result.declinePredicate = "planned-hard-feature";
+     return result;
+   }
+   SourceChartTransitionGraph canonicalSourceCharts(
+@@ -15757,6 +15778,7 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+                     static_cast<int>(edgeFaces.size()) +
+                     static_cast<int>(activeFaces.size());
+   if (euler != 0) {
++    result.declinePredicate = "source-euler-not-zero";
+     return result;
+   }
+
+@@ -15810,6 +15832,7 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+   }
+   if (boundaryCycles.size() != 2U ||
+       boundaryCycles[0].size() != boundaryCycles[1].size()) {
++    result.declinePredicate = "incompatible-boundary-rims";
+     return result;
+   }
+   std::sort(boundaryCycles.begin(), boundaryCycles.end());
+@@ -15817,7 +15840,10 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+   const std::set<int> secondBoundary(boundaryCycles.back().begin(),
+                                      boundaryCycles.back().end());
+   const int ringSize = static_cast<int>(firstBoundary.size());
+-  if (ringSize < 3) return result;
++  if (ringSize < 3) {
++    result.declinePredicate = "rim-too-small";
++    return result;
++  }
+
+   std::map<int, int> distance;
+   std::queue<int> queue;
+@@ -15846,9 +15872,15 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+     (void)vertex;
+     maxDistance = std::max(maxDistance, value);
+   }
+-  if (maxDistance < 1) return result;
++  if (maxDistance < 1) {
++    result.declinePredicate = "no-interior-ring";
++    return result;
++  }
+   for (const int vertex : secondBoundary) {
+-    if (distance[vertex] != maxDistance) return result;
++    if (distance[vertex] != maxDistance) {
++      result.declinePredicate = "incompatible-rim-distance";
++      return result;
++    }
+   }
+
+   std::vector<std::vector<int>> rings(static_cast<std::size_t>(maxDistance + 1));
+@@ -15863,9 +15895,15 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+       }
+       std::sort(ringAdjacency[vertex].begin(), ringAdjacency[vertex].end());
+     }
+-    if (ringAdjacency.size() != static_cast<std::size_t>(ringSize)) return result;
++    if (ringAdjacency.size() != static_cast<std::size_t>(ringSize)) {
++      result.declinePredicate = "incompatible-ring-size";
++      return result;
++    }
+     std::vector<int> ring = canonical_cycle(ringAdjacency);
+-    if (ring.size() != static_cast<std::size_t>(ringSize)) return result;
++    if (ring.size() != static_cast<std::size_t>(ringSize)) {
++      result.declinePredicate = "incompatible-ring-cycle";
++      return result;
++    }
+     rings[static_cast<std::size_t>(layer)] = std::move(ring);
+   }
+
+@@ -16273,7 +16311,10 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+                  row3(vertices, ring[static_cast<std::size_t>(u)])).norm();
+     }
+     length /= static_cast<double>(rings.size());
+-    if (!(length > 0.0) || !std::isfinite(length)) return result;
++    if (!(length > 0.0) || !std::isfinite(length)) {
++      result.declinePredicate = "invalid-ring-or-strip-length";
++      return result;
++    }
+     s[static_cast<std::size_t>(u + 1)] = s[static_cast<std::size_t>(u)] + length;
+   }
+   std::vector<double> t(rings.size(), 0.0);
+@@ -16282,11 +16323,17 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+     for (int u = 0; u < ringSize; ++u) {
+       const int a = rings[static_cast<std::size_t>(layer)][static_cast<std::size_t>(u)];
+       const int b = rings[static_cast<std::size_t>(layer + 1)][static_cast<std::size_t>(u)];
+-      if (edgeFaces.count(edge_key(a, b, source_vertex_extent(faces))) == 0U) return result;
++      if (edgeFaces.count(edge_key(a, b, source_vertex_extent(faces))) == 0U) {
++        result.declinePredicate = "missing-longitudinal-edge";
++        return result;
++      }
+       length += (row3(vertices, b) - row3(vertices, a)).norm();
+     }
+     length /= static_cast<double>(ringSize);
+-    if (!(length > 0.0) || !std::isfinite(length)) return result;
++    if (!(length > 0.0) || !std::isfinite(length)) {
++      result.declinePredicate = "invalid-ring-or-strip-length";
++      return result;
++    }
+     t[static_cast<std::size_t>(layer + 1)] =
+         t[static_cast<std::size_t>(layer)] + length;
+   }
+@@ -16475,7 +16522,10 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+   chartTriangles.reserve(activeFaces.size());
+   for (const authority::SourceFaceId faceId : activeFaces) {
+     const auto faceRow = source_face_row(faceId, faces.rows());
+-    if (!faceRow.has_value()) return result;
++    if (!faceRow.has_value()) {
++      result.declinePredicate = "missing-chart-face";
++      return result;
++    }
+     const int face = *faceRow;
+     PeriodicChartTriangle triangle(faceId);
+     triangle.vertices = canonical_face_vertices(faces, face);
+@@ -16483,7 +16533,10 @@ SurfacePhaseFrontBuildState build_periodic_annulus_phase_front_for_faces(
+     for (int corner = 0; corner < 3; ++corner) {
+       const int vertex = faces(face, corner);
+       const auto found = vertexChartIndex.find(vertex);
+-      if (found == vertexChartIndex.end()) return result;
++      if (found == vertexChartIndex.end()) {
++        result.declinePredicate = "missing-chart-vertex";
++        return result;
++      }
+       columns[static_cast<std::size_t>(corner)] = found->second.first;
+       triangle.uv[static_cast<std::size_t>(corner)] = {
+           s[static_cast<std::size_t>(found->second.first)],
+@@ -17152,9 +17205,18 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+     const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
+   SurfacePhaseFrontBuildState result;
+   result.attempted = options.enableUniformPhaseFront;
+-  if (!result.attempted ||
+-      surface_cell_tracing_detail::tracing_has_singularities(options) ||
+-      activeFaces.empty()) {
++  if (!result.attempted) {
++    result.declinePredicate = "disabled";
++    return result;
++  }
++  if (surface_cell_tracing_detail::tracing_has_singularities(options)) {
++    result.declinePredicate = options.fieldAlignedNetwork != nullptr
++                                  ? "global-singularity-ports"
++                                  : "legacy-singularity-vertices";
++    return result;
++  }
++  if (activeFaces.empty()) {
++    result.declinePredicate = "empty-source-region";
+     return result;
+   }
+   SourceChartTransitionGraph canonicalSourceCharts(
+@@ -17790,7 +17852,10 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+     const int euler = static_cast<int>(activeVertices.size()) -
+                       static_cast<int>(incident.size()) +
+                       static_cast<int>(activeFaces.size());
+-    if (euler != 1) return result;
++    if (euler != 1) {
++      result.declinePredicate = "source-euler-not-one";
++      return result;
++    }
+
+     for (const auto &[key, pair] : incident) {
+       if (pair[1] >= 0) continue;
+@@ -17834,6 +17899,7 @@ SurfacePhaseFrontBuildState build_curved_bounded_disk_phase_front_for_faces(
+   }
+
+   if (boundaryEdgeKeys.size() < 4U || boundaryAdjacency.size() < 4U) {
++    result.declinePredicate = "boundary-too-small";
+     return result;
+   }
+   for (auto &[vertex, neighbors] : boundaryAdjacency) {
+@@ -19962,7 +20028,8 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
+     const SourceTopologyRegions &sourceAuthority,
+     const SurfaceCellTracingOptions &options,
+     const Eigen::VectorXi *edgeMatching, const Eigen::VectorXd *edgeEffort,
+-    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions) {
++    const std::vector<fields::CrossFieldEdgeTransition> *edgeTransitions,
++    std::vector<SurfacePhaseFrontAttemptReceipt> &attemptReceipts) {
+   SurfacePhaseFrontBuildState result;
+   result.attempted = options.enableUniformPhaseFront;
+   if (!result.attempted) return result;
+@@ -20127,23 +20194,36 @@ SurfacePhaseFrontBuildState build_uniform_phase_front_state(
+         local.boundedDiskBoundaryPhases.clear();
+       };
+
++  const auto retain_attempt = [&](const SurfaceTopologyRegion &region,
++                                  const char *producer,
++                                  const SurfacePhaseFrontBuildState &local) {
++    if (!options.retainPhaseFrontAttemptReceipts) return;
++    attemptReceipts.push_back({
++        region.id(), producer, local.disposition,
++        local.disposition == SurfaceCellProducerDisposition::NotApplicable
++            ? local.declinePredicate : "-",
++        local.failure.reason});
++  };
+   for (const RegionWork &work : regions) {
+     const SurfaceTopologyRegion &region = *work.region;
+     SurfacePhaseFrontBuildState local = build_uniform_phase_front_for_faces(
+         vertices, faces, faceAxisX, faceAxisY, targetSize, work.sourceRows,
+         region, *result.sourceTopologyRegions, options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
+         edgeEffort, edgeTransitions);
++    retain_attempt(region, "uniform", local);
+     if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+       local = build_periodic_annulus_phase_front_for_faces(
+           vertices, faces, faceAxisX, faceAxisY, targetSize, work.sourceRows,
+           region, *result.sourceTopologyRegions, options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
+           edgeEffort, edgeTransitions);
++      retain_attempt(region, "periodic-annulus", local);
+     }
+     if (local.disposition == SurfaceCellProducerDisposition::NotApplicable) {
+       local = build_curved_bounded_disk_phase_front_for_faces(
+           vertices, faces, faceAxisX, faceAxisY, targetSize, work.sourceRows,
+           region, *result.sourceTopologyRegions, options, sourceEdgeFaces, sourceMatchingIndices, edgeMatching,
+           edgeEffort, edgeTransitions);
++      retain_attempt(region, "curved-bounded-disk", local);
+     }
+     if (!validate_region_scope(local, region)) {
+       result.disposition = SurfaceCellProducerDisposition::Rejected;
+@@ -21171,7 +21251,7 @@ SurfaceCellNetwork build_surface_cell_network(
+       surface_cell_tracing_detail::build_uniform_phase_front_state(
+           vertices, faces, faceAxisX, faceAxisY, targetSize,
+           *network.sourceTopologyRegions, authoritativeOptions, edgeMatching,
+-          edgeEffort, edgeTransitions);
++          edgeEffort, edgeTransitions, network.phaseFrontAttemptReceipts);
+   const auto sourceEdges = surface_cell_tracing_detail::edge_faces(faces);
+   // edge_faces retains at most two incident face rows. Do not let that
+   // lossy representation certify a nonmanifold junction spoke: A4's
+diff --git a/src/pipeline/RemeshPipeline.cpp b/src/pipeline/RemeshPipeline.cpp
+index 7097063d20374b513b3b3672e86f0d1e881604f6..82e26f32eab7d904f33f13dda9deeadb1062451d 100644
+--- a/src/pipeline/RemeshPipeline.cpp
++++ b/src/pipeline/RemeshPipeline.cpp
+@@ -12741,6 +12741,7 @@ remesh_from_raw_cross_field_impl_with_stage_products(
+     const Eigen::MatrixXd &faceAxisY =
+         crossFieldProduct.secondaryDirections;
+     geometry::SurfaceCellTracingOptions tracingOptions;
++    tracingOptions.retainPhaseFrontAttemptReceipts = retainRequested;
+     tracingOptions.authoritativeRails = authoritativeRails;
+     const auto railProvenance = hard_rail_source_provenance_from_rails(
+         authoritativeRails, static_cast<std::size_t>(meshWhole.V.rows()));
+diff --git a/tests/SurfaceCellTracingDisplayTests.cpp b/tests/SurfaceCellTracingDisplayTests.cpp
+index bab206adfc5e7de7289b3dceaa4f2588e5cd013c..714eb94734c7ddfd58c63055addead1ec6e2e5df 100644
+--- a/tests/SurfaceCellTracingDisplayTests.cpp
++++ b/tests/SurfaceCellTracingDisplayTests.cpp
+@@ -417,6 +417,50 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
+       std::cout << "SphereAuditedInputCell unavailable\n";
+     }
+   }
++  {
++    const auto &context = sphere.result.surfaceCellContext;
++    const auto &network = context.productSnapshots.traceNetwork;
++    const auto &source = network.sourceTopologyRegions;
++    const auto &plan = context.productSnapshots.globalTopologyPlan;
++    std::cout << "SphereA4Attempts retained=" << (context.hasTraceNetwork ? 1 : 0)
++              << " sourceRegions=" << (source ? source->regions().size() : 0U)
++              << " attempts=" << network.phaseFrontAttemptReceipts.size() << '\n';
++    if (source) {
++      for (const auto &region : source->regions()) {
++        std::cout << "SphereA4SourceRegion sourceRegion=" << region.id().index()
++                  << " faces=" << region.faces().size() << '\n';
++      }
++    }
++    for (const auto &receipt : network.phaseFrontAttemptReceipts) {
++      std::cout << "SphereA4Attempt sourceRegion=" << receipt.sourceRegion.index()
++                << " producer=" << receipt.producer
++                << " disposition="
++                << directional::geometry::surface_cell_producer_disposition_name(
++                       receipt.disposition)
++                << " predicate=" << receipt.declinePredicate
++                << " failure="
++                << directional::geometry::surface_phase_front_failure_reason_name(
++                       receipt.failureReason) << '\n';
++    }
++    // Source-face support is not an equality or fragment-ownership proof.
++    // Report A1 region IDs separately from A2b network-region IDs.
++    if (source && plan) {
++      for (const auto &region : plan->regions()) {
++        std::set<std::size_t> sourceRegions;
++        std::size_t missing = 0U;
++        for (const auto &face : region.sourceFaces) {
++          const auto row = source->row_for_topology(face);
++          if (!row) { ++missing; continue; }
++          sourceRegions.insert(source->region_for_row(*row).index());
++        }
++        std::cout << "SphereA4PlanSupport planRegion=" << region.id.index()
++                  << " faces=" << region.sourceFaces.size()
++                  << " missing=" << missing << " sourceRegions=";
++        for (const auto id : sourceRegions) std::cout << id << ',';
++        std::cout << '\n';
++      }
++    }
++  }
+   const auto sphereDisplay = display_of(sphere);
+   for (const auto *face : {&sphereLocus.sourceFace, &sphereLocus.relatedSourceFace,
+                           &sphereLocus.edgeTraceFaceCorners}) {

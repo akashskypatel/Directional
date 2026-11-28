@@ -1,0 +1,46 @@
+diff --git a/tests/FieldAlignedCurveNetworkTests.cpp b/tests/FieldAlignedCurveNetworkTests.cpp
+index b40ea4b82..a8268ba08 100644
+--- a/tests/FieldAlignedCurveNetworkTests.cpp
++++ b/tests/FieldAlignedCurveNetworkTests.cpp
+@@ -23976,7 +23976,7 @@ TEST(TraceTerminationCorrection, SlideEntryActivationReachByReaderRecipe) {
+         out << "absent";
+       }
+     } else {
+-      out << "not-applicable";
++      out << " published=not-applicable";
+       publishedEligible = production && eligible(production.value());
+     }
+     if (requireBaseline) {
+@@ -24025,7 +24025,9 @@ TEST(TraceTerminationCorrection, SlideEntryActivationReachByReaderRecipe) {
+       });
+ 
+   // Match the options and selection order of produced_network() in
+-  // FieldAlignedNetworkPolylinesTests.cpp, including its fallback fixtures.
++  // FieldAlignedNetworkPolylinesTests.cpp. Like that reader, stop at the first
++  // eligible production fixture; continue only until the staged diagnostic
++  // also has an eligible fixture. Later fallback fixtures are not read.
+   directional::pipeline::RemeshOptions options;
+   options.backend = directional::pipeline::RemeshBackend::SurfaceCells;
+   options.surfaceCells.enabled = true;
+@@ -24034,6 +24036,7 @@ TEST(TraceTerminationCorrection, SlideEntryActivationReachByReaderRecipe) {
+   options.surfaceCells.retainIntermediateGeometry = true;
+   options.parallelizeComponents = false;
+   std::string firstProduction, firstStaged;
++  std::size_t polylineFixtures = 0U;
+   for (const std::string name : {"sphere_prescribed", "genus_two", "close_sheets", "cylinder"}) {
+     const auto fixture = build_cp4c_pipeline_products_fixture(name, name, options);
+     EXPECT_TRUE(fixture.loadError.empty()) << fixture.loadError;
+@@ -24046,10 +24049,12 @@ TEST(TraceTerminationCorrection, SlideEntryActivationReachByReaderRecipe) {
+         false, false);
+     if (firstProduction.empty() && production) firstProduction = name;
+     if (firstStaged.empty() && staged) firstStaged = name;
++    ++polylineFixtures;
++    if (!firstProduction.empty() && !firstStaged.empty()) break;
+   }
+   EXPECT_FALSE(firstProduction.empty());
+   std::cout << "SlideEntryActivationReachPolyline productionFirst=" << firstProduction
+             << " stagedDiagnosticFirst=" << (firstStaged.empty() ? "none" : firstStaged)
+             << '\n';
+-  EXPECT_EQ(13U, receipts.size());
++  EXPECT_EQ(9U + polylineFixtures, receipts.size());
+ }

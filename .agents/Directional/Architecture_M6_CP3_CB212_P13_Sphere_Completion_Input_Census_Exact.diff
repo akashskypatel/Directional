@@ -1,0 +1,133 @@
+diff --git a/tests/SurfaceCellTracingDisplayTests.cpp b/tests/SurfaceCellTracingDisplayTests.cpp
+index c4f3bfbe0..bab206adf 100644
+--- a/tests/SurfaceCellTracingDisplayTests.cpp
++++ b/tests/SurfaceCellTracingDisplayTests.cpp
+@@ -295,6 +295,128 @@ TEST(SurfaceCellTracingDisplay, StopLocationShowsWhatEachStageReported) {
+       }
+     }
+   }
++  {
++    // Recorded census of the complex the completion stage received (the
++    // retained simplification output) and of the arrangement before it, plus
++    // the input cell named by the first rejecting boundary audit. Output
++    // only; nothing here is asserted.
++    const auto &context = sphere.result.surfaceCellContext;
++    const auto flag = [](const bool value) { return value ? 1 : 0; };
++    const auto census = [&](const char *name, const bool retained,
++                            const directional::geometry::SurfaceCellComplex &complex) {
++      int closed = 0, disk = 0, cutCellDisk = 0, bridgeExcursion = 0, supportOnly = 0;
++      int multiCycle = 0, oddBounded = 0, repeatedNode = 0, sameCellTwin = 0;
++      int diskWithRepeatedNode = 0, invalidHalfedges = 0;
++      const auto halfedgeCount = static_cast<int>(complex.halfedges.size());
++      for (const auto &cell : complex.cells) {
++        closed += flag(cell.closed);
++        disk += flag(cell.disk);
++        cutCellDisk += flag(cell.cutCellDisk);
++        bridgeExcursion += flag(cell.bridgeExcursion);
++        supportOnly += flag(cell.supportOnlyCycle);
++        multiCycle += flag(cell.boundaryComponentCount > 1);
++        oddBounded += flag(!cell.boundaryCycle && cell.halfedges.size() % 2U != 0U);
++        std::set<int> nodes;
++        bool repeated = false;
++        bool twinInCell = false;
++        for (const int id : cell.halfedges) {
++          if (id < 0 || id >= halfedgeCount) {
++            ++invalidHalfedges;
++            continue;
++          }
++          const auto &edge = complex.halfedges[static_cast<std::size_t>(id)];
++          repeated = !nodes.insert(edge.from).second || repeated;
++          twinInCell = twinInCell ||
++                       (edge.twin >= 0 && edge.twin < halfedgeCount &&
++                        complex.halfedges[static_cast<std::size_t>(edge.twin)].cell ==
++                            edge.cell);
++        }
++        repeatedNode += flag(repeated);
++        sameCellTwin += flag(twinInCell);
++        diskWithRepeatedNode += flag(cell.disk && repeated);
++      }
++      std::cout << "SphereCompletionInput complex=" << name
++                << " retained=" << flag(retained) << " nodes=" << complex.nodes.size()
++                << " halfedges=" << complex.halfedges.size()
++                << " cells=" << complex.cells.size() << " closed=" << closed
++                << " disk=" << disk << " cutCellDisk=" << cutCellDisk
++                << " bridgeExcursion=" << bridgeExcursion
++                << " supportOnlyCycle=" << supportOnly << " multiCycle=" << multiCycle
++                << " oddBounded=" << oddBounded << " repeatedNodeCells=" << repeatedNode
++                << " sameCellTwinCells=" << sameCellTwin
++                << " diskWithRepeatedNode=" << diskWithRepeatedNode
++                << " invalidHalfedges=" << invalidHalfedges << '\n';
++    };
++    census("arrangement", context.hasArrangement, context.productSnapshots.arrangement);
++    census("simplified", context.hasSimplifiedComplex, context.simplifiedComplex);
++    std::cout << "SphereSimplification candidates=" << context.simplificationCandidateCount
++              << " healingCandidates="
++              << context.simplificationTopologyHealingCandidateCount
++              << " committed=" << context.simplificationCommitted
++              << " rejected=" << context.simplificationRejected
++              << " transactions=" << context.simplificationTransactions.size()
++              << " oddBeforeRepair=" << context.completionOddCellsBeforeRepair << '\n';
++    const auto &audit = context.completionDomainIdentityAudit;
++    std::cout << "SphereCompletionAudit present="
++              << flag(context.hasCompletionDomainIdentityAudit) << " failure="
++              << directional::geometry::surface_cell_domain_identity_failure_name(
++                     audit.failure)
++              << " cell=" << audit.cellId << " halfedge=" << audit.halfedgeId
++              << " node=" << audit.nodeId << " sourceFace=" << audit.sourceFace << '\n';
++    const auto &input = context.simplifiedComplex;
++    if (context.hasCompletionDomainIdentityAudit && context.hasSimplifiedComplex &&
++        audit.cellId >= 0 && audit.cellId < static_cast<int>(input.cells.size()) &&
++        input.cells[static_cast<std::size_t>(audit.cellId)].id == audit.cellId) {
++      const auto &cell = input.cells[static_cast<std::size_t>(audit.cellId)];
++      const auto halfedgeCount = static_cast<int>(input.halfedges.size());
++      const auto bridgeTwin = [&](const int id) {
++        const auto &edge = input.halfedges[static_cast<std::size_t>(id)];
++        return edge.twin >= 0 && edge.twin < halfedgeCount &&
++               input.halfedges[static_cast<std::size_t>(edge.twin)].cell == cell.id;
++      };
++      std::set<int> nodes;
++      int auditedNodeOccurrences = 0;
++      int sameCellTwinHalfedges = 0;
++      for (const int id : cell.halfedges) {
++        if (id < 0 || id >= halfedgeCount) continue;
++        const auto &edge = input.halfedges[static_cast<std::size_t>(id)];
++        nodes.insert(edge.from);
++        auditedNodeOccurrences += flag(edge.from == audit.nodeId);
++        sameCellTwinHalfedges += flag(bridgeTwin(id));
++      }
++      std::cout << "SphereAuditedInputCell cell=" << cell.id
++                << " halfedges=" << cell.halfedges.size()
++                << " distinctNodes=" << nodes.size()
++                << " auditedNodeOccurrences=" << auditedNodeOccurrences
++                << " boundaryCycle=" << flag(cell.boundaryCycle)
++                << " closed=" << flag(cell.closed) << " disk=" << flag(cell.disk)
++                << " cutCellDisk=" << flag(cell.cutCellDisk)
++                << " bridgeExcursion=" << flag(cell.bridgeExcursion)
++                << " supportOnlyCycle=" << flag(cell.supportOnlyCycle)
++                << " components=" << cell.boundaryComponentCount
++                << " cycleOffsets=" << cell.boundaryCycleOffsets.size()
++                << " euler=" << cell.eulerCharacteristic
++                << " sameCellTwinHalfedges=" << sameCellTwinHalfedges << " region="
++                << (cell.sourceTopologyRegion.has_value()
++                        ? std::to_string(cell.sourceTopologyRegion->index())
++                        : std::string("-"))
++                << '\n';
++      for (const int id : cell.halfedges) {
++        if (id < 0 || id >= halfedgeCount || !bridgeTwin(id)) continue;
++        const auto &edge = input.halfedges[static_cast<std::size_t>(id)];
++        if (edge.twin < id) continue;
++        std::cout << "SphereAuditedBridge halfedge=" << id << " twin=" << edge.twin
++                  << " from=" << edge.from << " to=" << edge.to
++                  << " family=" << edge.family
++                  << " layoutSupport=" << flag(edge.layoutSupport)
++                  << " singularitySupport=" << flag(edge.singularitySupport)
++                  << " hardFeature=" << flag(edge.hardFeature)
++                  << " sourceArc=" << edge.sourceArc << " curve=" << edge.curveId << '\n';
++      }
++    } else {
++      std::cout << "SphereAuditedInputCell unavailable\n";
++    }
++  }
+   const auto sphereDisplay = display_of(sphere);
+   for (const auto *face : {&sphereLocus.sourceFace, &sphereLocus.relatedSourceFace,
+                           &sphereLocus.edgeTraceFaceCorners}) {
