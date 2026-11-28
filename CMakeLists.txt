@@ -200,6 +200,7 @@ add_library(
   src/geometry/PatchDescriptor.cpp
   src/geometry/PolyToConstantSubdivision.cpp
   src/geometry/PureQuadCompletion.cpp
+  src/geometry/FourSidedDiscQuadrangulation.cpp
   src/geometry/RegularizedProxyMesh.cpp
   src/geometry/ReliefTopology.cpp
   src/geometry/Streamlines.cpp

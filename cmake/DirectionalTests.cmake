@@ -512,6 +512,7 @@ directional_configure_test_target(directional_surface_cell_authority_kernel_test
 add_executable(
   directional_surface_cell_completion_tests
   tests/FlowRepStrandsPhase15Tests.cpp
+  tests/FourSidedDiscQuadrangulationTests.cpp
   tests/PatchDescriptorMilestoneETests.cpp
   tests/PureQuadCompletionPhase18Tests.cpp
   tests/SurfaceArrangementRowIdentityTests.cpp
