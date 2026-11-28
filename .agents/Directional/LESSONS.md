@@ -702,6 +702,8 @@ This document records **reusable failure-derived engineering lessons**, not an e
 
 - **A frozen prediction must carry every caveat of its source, and a census item marked inferred must not become a frozen prediction.** TB-REV-194: the switch DEFN froze 37 although TB-REV-192 adv. said "counts assume additive segment counts" (D7 counts are global parity-constrained roundings), and froze "fragment diagnostics unchanged" although census 2 marked diagnostics inferred (they are emitted during plan construction, one record per region) (2026-11-28).
 
+- **Before accepting a broad "general contract" successor, census which existing components already cover each part, and split the work along DESIGN's own ownership seams (DESIGN §4.9: combinatorial constructibility versus injective embedding) into independently testable turns** (TB-REV-195 adv., 2026-11-28).
+
 ## Build, artifact, workflow, and tool mechanics
 
 - **Preserve exact source/package authority across stages.** Pre-package and package checks must name

@@ -28,6 +28,10 @@
   - PC3: CB-217 unique classification `d3d3102e…aff8`.
   - PC4: CB-218 deletion `b0be915a…cfab5`, witness rows 1012/1013.
   - PC5: TB-EXEC-193 requires rows 1–1010 N1–N3-equal to TB192.
+- **TB-REV-195 adv. GG1 (upheld):** every TB195 prediction matched; guards 1014/1015 non-vacuous (reversed walk turns 1, not 4).
+- **GG2 (split DD5):** no existing component fills a four-corner disc with unequal opposite counts and interior vertices (ClosedForm needs equal pairs; Pattern/BoundedCombinatorial boundary-only and capped at 128 < 132); no Tutte embedding exists. Split into combinatorial construction → injective embedding → sphere wiring, each DEFN → CB → TB.
+- **GG3 (corner rule before Vase):** CR1 refuses Mandatory/Cut arcs; genus_two's refusal is inferred from cut arcs; Vase rails need the D5/O38 rim-corner product and a typed corner extension before the Vase row.
+- **GG4 (parity falsifiers):** for even total, a − c ≡ b − d (mod 2); odd/odd regions 0, 3, 5, 6; even/even regions 1, 7; slivers 2, 4 (0, 0); the combinatorial step needs an exhaustive small-case sweep covering both classes.
 - **Turn sequence:**
   1. `M6-CP3-CB-217-P13-UNIQUE-ARRIVAL-CLASSIFICATION` (COMPLETE, compile only).
   2. `M6-CP3-CB-218-P13-CLAIMED-COTRACE-DELETION` (COMPLETE, compile only).
@@ -36,14 +40,18 @@
   5. `M6-CP3-DEFN-P13-A2A-COTRACE-DELETION-SWITCH` (COMPLETE; CB-219 frozen).
   6. `M6-CP3-CB-219-P13-COTRACE-DELETION-SWITCH` (COMPLETE, compile only) → `M6-CP3-TB-EXEC-194` (COMPLETE, prediction STOP) → `M6-CP3-TB-REV-194` (COMPLETE, test gate and pinned O51 accepted; D7 exact numeric evidence carried).
   7. `M6-CP3-DEFN-P13-A4-DISC-CORNERS` (COMPLETE; CB-220 frozen).
-  8. `M6-CP3-CB-220-P13-REGION-CORNER-SIDES` (COMPLETE, compile only) → 9. TB-EXEC-195 (COMPLETE, execution PASS) → 10. TB-REV-195 (COMPLETE independent review; pinned gate only).
-  11. `M6-CP3-DEFN-P13-A4-UNEQUAL-SIDE-CONSTRUCTION` (DD5, NEXT) → CB/TB → Vase row → fill → 65B → 65D (O50, Amendment-19) → O41/switch.
+  8. `M6-CP3-CB-220-P13-REGION-CORNER-SIDES` (COMPLETE, compile only) → 9. TB-EXEC-195 (COMPLETE) → 10. TB-REV-195 (COMPLETE, +adv. GG1–GG4).
+  11. `M6-CP3-DEFN-P13-A4-UNEQUAL-SIDE-CONSTRUCTION` (NEXT, combinatorial only) → `M6-CP3-CB-221-P13-FOUR-SIDED-DISC-QUADRANGULATION` (compile only) → TB-EXEC-196 → TB-REV-196 → `M6-CP3-DEFN-P13-A4-DISC-EMBEDDING` → `M6-CP3-DEFN-P13-A4-SPHERE-REGION-CONSTRUCTION` → `M6-CP3-DEFN-P13-A4-RAIL-AND-CUT-CORNERS` → Vase row → 65B → 65D (O50, Amendment-19) → O41/switch.
 
 ```text
 NEXT_TURN: M6-CP3-DEFN-P13-A4-UNEQUAL-SIDE-CONSTRUCTION
-Owner: runtime-free definition only, after TB-REV-195 formal closeout. Establish a constructive A4 disc quadrangulation contract for four-corner discs with unequal opposite A3 subdivision counts (DD5), without changing the validated schedule or corner ownership. Authority: TB-REV-195, corners DEFN CR1–CR4, A4D1–A4D5, DESIGN §§5,7 and D7; six unequal sphere discs and two equal-side quality slivers.
-Require a general construction argument and typed refusal for its unsupported input class; exact boundary occurrence/count preservation, reciprocal trace interval ownership, all-quad disk topology, orientation and index constraints. Freeze independently derived positive and negative falsifiers before any later CB. A rectangular grid alone cannot cover the six unequal cases. STOP if no construction proof, exact schedule/corner input is missing or inconsistent, required topology/index/ownership cannot be certified, or a normative choice needs owner authorization. No presumed geometry or test success; no code/build/runtime in DEFN.
-Keep D7 numeric re-derivation as a nonblocking separate oracle (FF2); do not alter A3 counts, remove O52 slivers, repair B1, activate dispatch/veto, add Vase row or run V5 in this turn. CP3/497/D0/H4 and production unpromoted.
+Owner: Review/DEFN only, runtime-free. Combinatorial construction only: no geometry, embedding or pipeline wiring.
+Authority: TB-REV-195 (+adv. GG1-GG4); DESIGN §4.9 (A4 owns general-even-boundary constructibility; embedding separate); DEFN-65C A4D2 item 3; corners DEFN CR1-CR4.
+  First census PureQuadCompletion's TransitionTemplate backend (PureQuadCompletion.h:107) and reuse it if it covers unequal opposite counts with interior vertices.
+  Define a construction family: four-corner disc, positive side counts (a,b,c,d), even total -> pure-quad combinatorial disc with exact boundary partition, with a constructive argument for each parity class (a-c, b-d both odd; both even; equal). STOP and ask the owner if DESIGN leaves a normative choice (e.g. irregular-vertex budget or placement).
+  Freeze CB-221 as one pure function plus tests: exhaustive sweep of all (a,b,c,d) up to a stated bound with even total (pure quads, disc Euler characteristic 1, manifold, boundary cycle = sum with the side partition, interior valence bounds), the sphere schedules 30,35,35,32 / 31,35,35,31 / 1,32,1,32, and negative cases (odd total, zero side) with typed failures.
+Then: CB-221 (compile only) -> TB-EXEC-196 -> TB-REV-196 -> DEFN A4 disc embedding -> DEFN sphere region construction -> DEFN rail/cut corners -> Vase row -> 65B -> 65D.
+Do not: change A3 counts or corner ownership, reuse the 128-edge boundary-only search as the construction, wire into production, delete slivers, repair B1/fallback, change dispatch/veto, promote CP3/497/D0/H4.
 ```
 
 ## CURRENT — per-disc A4 route: TB-REV-195 gate accepted; DD5 definition next (2026-11-28 UTC)
