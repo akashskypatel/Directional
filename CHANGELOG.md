@@ -1,3 +1,7 @@
+## 2026-11-28 — CB-217 unique arrival classification (compile only)
+
+[record](.agents/Directional/Architecture_M6_CP3_CB217_P13_Unique_Arrival_Classification_Code_Build_Record_20261128.md). Diff `d3d3102e…aff8` applied on `c76e74b3…3033` as commit `3e5a26b4…`. Compile run `46108573400` (request `86a74343…`, mailbox `m6-cp3-cb217-compile`), candidate artifact `15248359837` ZIP `4a2d85cf…abf`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Row 1011 is compiled, not run. CB-218 is next.
+
 ## 2026-11-27 — AP4 DEFN: A2a claimed co-trace deletion (Amendment 35)
 
 [record](.agents/Directional/Architecture_M6_CP3_DEFN_P13_A2a_Partial_CoTrace_Removal_20261127.md). The user delegated the AP4 choice to the design, which gives A0. Step 7 deletes a port trace whose separatrix another trace's arrival realizes. The arrival's `arrivalPort` owns the port. There is no re-trace, and five typed fail-closed conditions apply. This is DESIGN §7.2.1 Amendment 35. It is staged behind an option that defaults off, because 27 gated rows carry the sphere network. Frozen: CB-217 unique classification `d3d3102e…aff8` and CB-218 deletion `b0be915a…cfab5`; both apply, reverse and syntax-check cleanly with no new warning. Also frozen: the 1013-row TB-EXEC-193 manifest `b910f2a9…2fc2`. Runtime-free; no product change applied. Next `M6-CP3-CB-217-P13-UNIQUE-ARRIVAL-CLASSIFICATION`.
