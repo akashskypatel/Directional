@@ -1,8 +1,8 @@
 ---TURN_STATUS---
-Turn: M6-CP3-TB-EXEC-195
-Status: COMPLETE
-Successor: M6-CP3-TB-REV-195
-Started at: 2026-11-28T10:20:44Z
-Resumed at: 2026-11-28T10:42:54Z
-Ended at: 2026-11-28T10:49:56Z
+Turn: M6-CP3-TB-REV-195
+Status: IN_PROGRESS
+Successor: UNKNOWN
+Started at: 2026-11-28T11:05:03Z
+Resumed at: 
+Ended at: 
 ---END_TURN_STATUS---
