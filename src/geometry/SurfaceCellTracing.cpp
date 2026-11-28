@@ -4375,6 +4375,171 @@ field_aligned_select_retraced_traces(FieldAlignedCurveNetworkCandidate &candidat
   return std::nullopt;
 }
 
+} // namespace
+
+// DESIGN 7.2 Amendment 35. Claims are read from the whole candidate before
+// anything changes, so the result does not depend on trace order (10.1). The
+// candidate is replaced only when every claim is admissible.
+std::optional<FieldAlignedCurveNetworkError>
+field_aligned_delete_claimed_co_traces(
+    FieldAlignedCurveNetworkCandidate &candidate,
+    const std::vector<authority::FieldSingularityRay> &rays,
+    const std::vector<authority::FieldSingularityPortAttachment> &attachments) {
+  using Condition = FieldAlignedCurveNetworkErrorCondition;
+  using Kind = FieldAlignedNetworkEventKind;
+  const auto arrivals =
+      classify_field_aligned_candidate_arrivals(candidate, rays, attachments);
+  if (!arrivals) {
+    return field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidCandidateTraceTransport);
+  }
+  const auto trace_for = [&](const authority::TraceId id) {
+    return std::find_if(candidate.candidateTraces.begin(),
+                        candidate.candidateTraces.end(),
+                        [&](const auto &trace) { return trace.id == id; });
+  };
+  const auto rejection = [](const Condition condition,
+                            const FieldAlignedCandidateTrace &trace,
+                            const std::optional<authority::FieldSingularityId>
+                                singularity) {
+    return trace_scoped_terminal_ownership_error(
+        condition, trace.sourceVertex, trace.singularity, std::nullopt,
+        trace.terminalPoint
+            ? std::optional<authority::SourceEdgeTopologyKey>{trace.terminalPoint->edge}
+            : std::nullopt,
+        trace.segments.empty()
+            ? std::optional<authority::SourceFaceTopologyKey>{}
+            : trace.segments.back().sourceFace,
+        trace.segments.empty()
+            ? std::optional<authority::FieldBranch>{}
+            : std::optional<authority::FieldBranch>{trace.segments.back().branch},
+        singularity);
+  };
+
+  for (const FieldAlignedCandidateArrival &value : *arrivals) {
+    const FieldAlignedSingularityArrival &arrival = value.arrival;
+    const bool publishesPorts = std::any_of(
+        candidate.singularityPorts.begin(), candidate.singularityPorts.end(),
+        [&](const auto &port) { return port.singularity == arrival.singularity; });
+    if (!publishesPorts || arrival.port) continue;
+    return rejection(value.match == FieldAlignedArrivalPortMatch::SeveralPortSlots
+                         ? Condition::CoTraceDeletionArrivalMatchesSeveralPorts
+                         : Condition::CoTraceDeletionArrivalMatchesNoPort,
+                     *trace_for(arrival.trace), arrival.singularity);
+  }
+  std::map<authority::SingularityPortId, authority::TraceId> claimants;
+  for (const FieldAlignedCandidateArrival &value : *arrivals) {
+    const FieldAlignedSingularityArrival &arrival = value.arrival;
+    const auto trace = trace_for(arrival.trace);
+    if (!arrival.port || !arrival.portTraced || trace->arrivalPort) continue;
+    if (!claimants.emplace(*arrival.port, arrival.trace).second) {
+      return rejection(Condition::CoTraceDeletionPortClaimedTwice, *trace,
+                       arrival.singularity);
+    }
+  }
+  if (claimants.empty()) return std::nullopt;
+  std::set<authority::TraceId> deleted;
+  for (const FieldAlignedCandidateTrace &trace : candidate.candidateTraces) {
+    if (claimants.count(trace.port) == 0U) continue;
+    if (trace.terminalSingularity) {
+      return rejection(Condition::CoTraceDeletionClaimedTraceArrives, trace,
+                       trace.terminalSingularity);
+    }
+    deleted.insert(trace.id);
+  }
+  for (const FieldAlignedCandidateTrace &trace : candidate.candidateTraces) {
+    if (deleted.count(trace.id) == 0U && trace.terminalContact &&
+        deleted.count(trace.terminalContact->struckTrace) != 0U) {
+      return rejection(Condition::CoTraceDeletionKeptTraceEndsOnDeletedTrace,
+                       trace, std::nullopt);
+    }
+  }
+
+  const auto node_references = [](const FieldAlignedCurveNetworkCandidate &value) {
+    std::set<authority::NetworkNodeId> nodes;
+    for (const auto &port : value.singularityPorts) nodes.insert(port.node);
+    for (const auto &edge : value.mandatoryEdges) {
+      nodes.insert(edge.firstNode);
+      nodes.insert(edge.secondNode);
+    }
+    for (const auto &event : value.events) nodes.insert(event.node);
+    return nodes;
+  };
+  FieldAlignedCurveNetworkCandidate result = candidate;
+  const auto referenced = node_references(result);
+  for (const auto &[port, claimant] : claimants) {
+    std::find_if(result.candidateTraces.begin(), result.candidateTraces.end(),
+                 [&](const auto &trace) { return trace.id == claimant; })
+        ->arrivalPort = port;
+  }
+  std::erase_if(result.candidateTraces, [&](const auto &trace) {
+    return deleted.count(trace.id) != 0U;
+  });
+  std::vector<FieldAlignedNetworkEvent> events;
+  events.reserve(result.events.size());
+  for (FieldAlignedNetworkEvent &event : result.events) {
+    const std::size_t published = event.incidences.size();
+    std::erase_if(event.incidences, [&](const auto &incidence) {
+      return deleted.count(incidence.trace) != 0U;
+    });
+    // An origin lists the traces leaving its node and a junction is published
+    // only for two of them; every other event is one meeting of its traces.
+    const bool keeps =
+        event.kind == Kind::SingularityPortOrigin ? !event.incidences.empty()
+        : event.kind == Kind::SingularityPortJunction ? event.incidences.size() >= 2U
+                                                     : event.incidences.size() == published;
+    if (keeps) {
+      events.push_back(std::move(event));
+      continue;
+    }
+    for (const auto &incidence : event.incidences) {
+      if (incidence.role != FieldAlignedTraceEventRole::Terminal) continue;
+      const auto kept = trace_for(incidence.trace);
+      if (kept == candidate.candidateTraces.end()) {
+        return field_aligned_error(
+            FieldAlignedCurveNetworkErrorCode::InvalidNetworkEventIncidence);
+      }
+      return rejection(Condition::CoTraceDeletionKeptTraceEndsOnDeletedTrace,
+                       *kept, std::nullopt);
+    }
+  }
+  result.events = std::move(events);
+
+  const auto remaining = node_references(result);
+  std::map<authority::NetworkNodeId, authority::NetworkNodeId> renumbered;
+  for (const FieldAlignedCurveNetworkNode &node : result.nodes) {
+    if (referenced.count(node.id) == 0U || remaining.count(node.id) != 0U) {
+      renumbered.emplace(node.id, node.id);
+    }
+  }
+  if (!std::all_of(remaining.begin(), remaining.end(), [&](const auto &node) {
+        return renumbered.count(node) != 0U;
+      })) {
+    return field_aligned_error(
+        FieldAlignedCurveNetworkErrorCode::InvalidNetworkEventBinding);
+  }
+  std::size_t nodeIndex = 0U;
+  for (auto &[old, renumber] : renumbered) {
+    (void)old;
+    renumber = field_aligned_id<authority::NetworkNodeId>(nodeIndex++,
+                                                          renumbered.size());
+  }
+  std::erase_if(result.nodes, [&](const auto &node) {
+    return renumbered.count(node.id) == 0U;
+  });
+  for (auto &node : result.nodes) node.id = renumbered.at(node.id);
+  for (auto &port : result.singularityPorts) port.node = renumbered.at(port.node);
+  for (auto &edge : result.mandatoryEdges) {
+    edge.firstNode = renumbered.at(edge.firstNode);
+    edge.secondNode = renumbered.at(edge.secondNode);
+  }
+  for (auto &event : result.events) event.node = renumbered.at(event.node);
+  candidate = std::move(result);
+  return std::nullopt;
+}
+
+namespace {
+
 std::optional<FieldAlignedCurveNetworkError>
 canonical_field_aligned_traces_and_events(
     const TriMesh &sourceMesh,
@@ -4384,7 +4549,7 @@ canonical_field_aligned_traces_and_events(
     FieldAlignedCurveNetworkCandidate &candidate,
     const FieldTraceArrivalPriority priority,
     FieldAlignedTraceScaleCensus *scaleCensus,
-    const bool stopAtLaterSlideEntry) {
+    const bool stopAtLaterSlideEntry, const bool deleteClaimedCoTraces) {
   const authority::FieldBranchTopology &topology =
       fieldTransportAtlas.branch_topology();
   candidate.arrivalPriority = priority;
@@ -4979,6 +5144,13 @@ canonical_field_aligned_traces_and_events(
   if (const auto error = field_aligned_select_retraced_traces(candidate)) {
     return *error;
   }
+  if (deleteClaimedCoTraces) {
+    if (const auto error = field_aligned_delete_claimed_co_traces(
+            candidate, topology.singularity_rays(),
+            topology.singularity_port_attachments())) {
+      return *error;
+    }
+  }
 
   // P13 (RA-262): every slide segment a finished trace keeps, so a gate run
   // shows which fixtures publish slide geometry. A last segment that ends at a
@@ -5334,7 +5506,8 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
     const FieldTraceArrivalPriority priority =
         FieldTraceArrivalPriority::ArcLengthFiltered,
     FieldAlignedTraceScaleCensus *scaleCensus = nullptr,
-    const bool stopAtLaterSlideEntry = true) {
+    const bool stopAtLaterSlideEntry = true,
+    const bool deleteClaimedCoTraces = false) {
   if (scaleCensus != nullptr) *scaleCensus = FieldAlignedTraceScaleCensus{};
   const Eigen::MatrixXi &sourceFaces = sourceMesh.F;
   const std::size_t sourceVertexCount =
@@ -5601,7 +5774,7 @@ FieldAlignedCandidateResult canonical_field_aligned_candidate(
 
   if (const auto tracingError = canonical_field_aligned_traces_and_events(
           sourceMesh, fieldTransportAtlas, mandatoryByEdge, candidate,
-          priority, scaleCensus, stopAtLaterSlideEntry);
+          priority, scaleCensus, stopAtLaterSlideEntry, deleteClaimedCoTraces);
       tracingError.has_value()) {
     return *tracingError;
   }
@@ -5826,9 +5999,12 @@ std::optional<FieldAlignedCurveNetworkError> validate_field_aligned_candidate(
     const SourceTopologyRegions &sourceAuthority,
     const authority::FieldTransportAtlas &fieldTransportAtlas,
     const std::vector<SurfaceCellRail> &authoritativeRails,
-    FieldAlignedCurveNetworkCandidate candidate) {
+    FieldAlignedCurveNetworkCandidate candidate,
+    const bool deleteClaimedCoTraces = false) {
   const FieldAlignedCandidateResult canonical = canonical_field_aligned_candidate(
-      sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails);
+      sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails,
+      nullptr, FieldTraceArrivalPriority::ArcLengthFiltered, nullptr, true,
+      deleteClaimedCoTraces);
   if (const auto *error =
           std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
     return *error;
@@ -6358,13 +6534,13 @@ FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
     const authority::FieldTransportAtlas &fieldTransportAtlas,
     const std::vector<SurfaceCellRail> &authoritativeRails,
     const FieldTraceArrivalPriority priority,
-    const bool stopAtLaterSlideEntry) {
+    const bool stopAtLaterSlideEntry, const bool deleteClaimedCoTraces) {
   try {
     const auto canonical =
         surface_cell_tracing_detail::canonical_field_aligned_candidate(
             sourceMesh, sourceAuthority, fieldTransportAtlas,
             authoritativeRails, nullptr, priority, nullptr,
-            stopAtLaterSlideEntry);
+            stopAtLaterSlideEntry, deleteClaimedCoTraces);
     if (const auto *error =
             std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
       return FieldAlignedCurveNetworkBuildResult(*error);
@@ -6399,15 +6575,18 @@ FieldAlignedCurveNetwork::make_from_candidate(
     const SourceTopologyRegions &sourceAuthority,
     const authority::FieldTransportAtlas &fieldTransportAtlas,
     const std::vector<SurfaceCellRail> &authoritativeRails,
-    FieldAlignedCurveNetworkCandidate candidate) {
+    FieldAlignedCurveNetworkCandidate candidate,
+    const bool deleteClaimedCoTraces) {
   const auto error = surface_cell_tracing_detail::validate_field_aligned_candidate(
       sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails,
-      candidate);
+      candidate, deleteClaimedCoTraces);
   if (error.has_value()) return FieldAlignedCurveNetworkBuildResult(*error);
 
   const auto canonical =
       surface_cell_tracing_detail::canonical_field_aligned_candidate(
-          sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails);
+          sourceMesh, sourceAuthority, fieldTransportAtlas, authoritativeRails,
+          nullptr, FieldTraceArrivalPriority::ArcLengthFiltered, nullptr, true,
+          deleteClaimedCoTraces);
   if (const auto *canonicalError =
           std::get_if<FieldAlignedCurveNetworkError>(&canonical)) {
     return FieldAlignedCurveNetworkBuildResult(*canonicalError);
@@ -6602,6 +6781,18 @@ const char *field_aligned_curve_network_error_condition_name(
   case FieldAlignedCurveNetworkErrorCondition::
       SingularityTerminationBarrierAbsorbedNodeMissing:
     return "SingularityTerminationBarrierAbsorbedNodeMissing";
+  case FieldAlignedCurveNetworkErrorCondition::CoTraceDeletionArrivalMatchesNoPort:
+    return "CoTraceDeletionArrivalMatchesNoPort";
+  case FieldAlignedCurveNetworkErrorCondition::
+      CoTraceDeletionArrivalMatchesSeveralPorts:
+    return "CoTraceDeletionArrivalMatchesSeveralPorts";
+  case FieldAlignedCurveNetworkErrorCondition::CoTraceDeletionPortClaimedTwice:
+    return "CoTraceDeletionPortClaimedTwice";
+  case FieldAlignedCurveNetworkErrorCondition::CoTraceDeletionClaimedTraceArrives:
+    return "CoTraceDeletionClaimedTraceArrives";
+  case FieldAlignedCurveNetworkErrorCondition::
+      CoTraceDeletionKeptTraceEndsOnDeletedTrace:
+    return "CoTraceDeletionKeptTraceEndsOnDeletedTrace";
   }
   return "Unknown";
 }

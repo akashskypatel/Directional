@@ -193,6 +193,13 @@ enum class FieldAlignedCurveNetworkErrorCondition : std::uint8_t {
   FinalizeBarrierMandatoryEdgeMissing = 10,
   FinalizeLoopClosureUnavailable = 11,
   SingularityTerminationBarrierAbsorbedNodeMissing = 12,
+  // DESIGN 7.2 Amendment 35: step 7 deletes a port trace whose separatrix
+  // another trace's arrival realizes, and rejects the claims it cannot apply.
+  CoTraceDeletionArrivalMatchesNoPort = 13,
+  CoTraceDeletionArrivalMatchesSeveralPorts = 14,
+  CoTraceDeletionPortClaimedTwice = 15,
+  CoTraceDeletionClaimedTraceArrives = 16,
+  CoTraceDeletionKeptTraceEndsOnDeletedTrace = 17,
 };
 
 struct FieldAlignedTraceStepDiagnostic {
@@ -608,12 +615,16 @@ public:
       const authority::FieldTransportAtlas &fieldTransportAtlas,
       const std::vector<SurfaceCellRail> &authoritativeRails);
 
+  // `deleteClaimedCoTraces` validates against, and publishes, the canonical
+  // derivation with the staged claimed co-trace deletion (see
+  // `diagnose_with_arrival_priority`). Production `make` never passes it.
   [[nodiscard]] static FieldAlignedCurveNetworkBuildResult make_from_candidate(
       const TriMesh &sourceMesh,
       const SourceTopologyRegions &sourceAuthority,
       const authority::FieldTransportAtlas &fieldTransportAtlas,
       const std::vector<SurfaceCellRail> &authoritativeRails,
-      FieldAlignedCurveNetworkCandidate candidate);
+      FieldAlignedCurveNetworkCandidate candidate,
+      bool deleteClaimedCoTraces = false);
 
   // Diagnostic/offline comparison surface only. Production `make` has no
   // priority parameter and always selects ArcLengthFiltered.
@@ -622,13 +633,17 @@ public:
   // than that trace reaches it, stops at the crossing before entering
   // (`field_aligned_slide_entry_stops_moving_trace`). Production `make` never
   // stops there.
+  // `deleteClaimedCoTraces` stages DESIGN 7.2 Amendment 35 after the exact
+  // retrace selection (`surface_cell_tracing_detail::
+  // field_aligned_delete_claimed_co_traces`). Production `make` never deletes.
   [[nodiscard]] static FieldAlignedCurveNetworkBuildResult
   diagnose_with_arrival_priority(
       const TriMesh &sourceMesh,
       const SourceTopologyRegions &sourceAuthority,
       const authority::FieldTransportAtlas &fieldTransportAtlas,
       const std::vector<SurfaceCellRail> &authoritativeRails,
-      FieldTraceArrivalPriority priority, bool stopAtLaterSlideEntry = false);
+      FieldTraceArrivalPriority priority, bool stopAtLaterSlideEntry = false,
+      bool deleteClaimedCoTraces = false);
 
   [[nodiscard]] const std::vector<FieldAlignedCurveNetworkNode> &nodes() const
       noexcept {
@@ -1378,6 +1393,29 @@ void annotate_field_aligned_trace_seed(
 append_field_aligned_singularity_termination(
     FieldAlignedCurveNetworkCandidate &candidate,
     const FieldAlignedCandidateTrace &trace);
+
+/**
+ * DESIGN 7.2 Amendment 35, a step-7 selection. An arrival whose last piece
+ * matches exactly one port (classify_field_aligned_candidate_arrivals), whose
+ * `arrivalPort` is unset, and whose port still departs along its own trace
+ * claims that port. Every claim is read before anything changes. Each claimed
+ * trace is deleted and the claimant's `arrivalPort` records the port. The
+ * deleted traces' event incidences are removed, then every event left without
+ * the incidences it requires: an origin keeps any departure, a junction keeps
+ * two, and every other event records one meeting of exactly its traces. Nodes
+ * no longer referenced are deleted and the rest re-indexed densely in id
+ * order, in nodes, ports, mandatory edges and events. Trace ids are kept.
+ * Never re-traces. Fails with an InvalidNetworkTerminalOwnership condition,
+ * leaving `candidate` unchanged, when an arrival at a singularity that
+ * publishes ports matches no port or several, two arrivals claim one port, a
+ * claimed trace itself ends at a singularity, or a kept trace ends on a
+ * deleted one.
+ */
+[[nodiscard]] std::optional<FieldAlignedCurveNetworkError>
+field_aligned_delete_claimed_co_traces(
+    FieldAlignedCurveNetworkCandidate &candidate,
+    const std::vector<authority::FieldSingularityRay> &rays,
+    const std::vector<authority::FieldSingularityPortAttachment> &attachments);
 
 // Diagnostic-only test seam over the exact production finalizer. The finalizer
 // itself remains unchanged; this exposes its typed failure observation so unit

@@ -24395,3 +24395,260 @@ TEST(FieldAlignedCurveNetwork, CandidateArrivalClassificationRequiresExactlyOneP
   EXPECT_EQ(FieldAlignedArrivalPortMatch::NoPortSlot, (*none)[*chosen].match);
   EXPECT_FALSE((*none)[*chosen].arrival.port.has_value());
 }
+
+TEST(FieldAlignedCurveNetwork, PrescribedSphereClaimedCoTraceDeletionKeepsOneTracePerSeparatrix) {
+  using directional::geometry::surface_cell_tracing_detail::
+      field_aligned_production_arrival_priority;
+  const auto fixture =
+      build_cp4c_pipeline_products_fixture("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(fixture.loadError.empty()) << fixture.loadError;
+  ASSERT_TRUE(fixture.sourceAuthority.has_value());
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.network.has_value()) << fixture.terminalFailureStage;
+  const auto &mesh = fixture.mesh;
+  const auto &source = *fixture.sourceAuthority;
+  const auto &atlas = *fixture.atlas;
+
+  // The option defaults off and leaves the production network unchanged.
+  const auto unstaged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+      mesh, source, atlas, fixture.rails, field_aligned_production_arrival_priority(),
+      true);
+  ASSERT_TRUE(unstaged) << network_error_locus(unstaged.error());
+  EXPECT_EQ(fixture.network->semantic_digest(), unstaged.value().semantic_digest());
+  EXPECT_EQ(24U, fixture.network->candidate_traces().size());
+  EXPECT_TRUE(std::none_of(fixture.network->candidate_traces().begin(),
+                           fixture.network->candidate_traces().end(),
+                           [](const auto &trace) { return trace.arrivalPort.has_value(); }));
+
+  const auto staged = FieldAlignedCurveNetwork::diagnose_with_arrival_priority(
+      mesh, source, atlas, fixture.rails, field_aligned_production_arrival_priority(),
+      true, true);
+  ASSERT_TRUE(staged) << network_error_locus(staged.error());
+  const auto &network = staged.value();
+  const auto &traces = network.candidate_traces();
+  EXPECT_EQ(24U, network.singularity_ports().size());
+  std::vector<std::size_t> traceIds;
+  std::map<std::size_t, std::size_t> arrivalPorts;
+  for (const auto &trace : traces) {
+    traceIds.push_back(trace.id.index());
+    if (trace.arrivalPort) {
+      EXPECT_TRUE(trace.terminalSingularity.has_value()) << trace.id.index();
+      arrivalPorts.emplace(trace.id.index(), trace.arrivalPort->index());
+    }
+  }
+  std::sort(traceIds.begin(), traceIds.end());
+  EXPECT_EQ((std::vector<std::size_t>{0U, 1U, 5U, 8U, 9U, 10U, 11U, 12U, 13U, 14U,
+                                      17U, 20U, 21U, 22U}),
+            traceIds);
+  EXPECT_EQ((std::map<std::size_t, std::size_t>{{0U, 4U}, {1U, 6U}, {9U, 3U},
+                                                {10U, 23U}, {11U, 7U}, {12U, 19U},
+                                                {13U, 15U}, {14U, 2U}, {21U, 16U},
+                                                {22U, 18U}}),
+            arrivalPorts);
+  for (const auto &port : network.singularity_ports()) {
+    const auto owners = std::count_if(traces.begin(), traces.end(), [&](const auto &trace) {
+      return trace.port == port.id || trace.arrivalPort == port.id;
+    });
+    EXPECT_EQ(1, owners) << "port " << port.id.index();
+  }
+  // Node ids are dense, and every node reference was rewritten.
+  ASSERT_EQ(12U, network.nodes().size());
+  std::vector<std::size_t> nodeIds;
+  for (const auto &node : network.nodes()) nodeIds.push_back(node.id.index());
+  std::sort(nodeIds.begin(), nodeIds.end());
+  for (std::size_t index = 0U; index < nodeIds.size(); ++index) {
+    EXPECT_EQ(index, nodeIds[index]);
+  }
+  for (const auto &port : network.singularity_ports()) {
+    EXPECT_LT(port.node.index(), network.nodes().size());
+  }
+  for (const auto &edge : network.mandatory_edges()) {
+    EXPECT_LT(edge.firstNode.index(), network.nodes().size());
+    EXPECT_LT(edge.secondNode.index(), network.nodes().size());
+  }
+  for (const auto &event : network.events()) {
+    EXPECT_LT(event.node.index(), network.nodes().size());
+    for (const auto &incidence : event.incidences) {
+      EXPECT_TRUE(std::any_of(traces.begin(), traces.end(), [&](const auto &trace) {
+        return trace.id == incidence.trace;
+      })) << "trace " << incidence.trace.index();
+    }
+  }
+
+  // The validator rebuilds the canonical candidate with the same option.
+  const auto validated = FieldAlignedCurveNetwork::make_from_candidate(
+      mesh, source, atlas, fixture.rails, network.validation_candidate(), true);
+  ASSERT_TRUE(validated) << network_error_locus(validated.error());
+  EXPECT_EQ(network.semantic_digest(), validated.value().semantic_digest());
+  EXPECT_FALSE(FieldAlignedCurveNetwork::make_from_candidate(
+      mesh, source, atlas, fixture.rails, network.validation_candidate()));
+}
+
+TEST(FieldAlignedCurveNetwork, PrescribedSphereClaimedCoTraceDeletionRejectsInadmissibleClaims) {
+  using directional::geometry::FieldAlignedCurveNetworkErrorCondition;
+  using directional::geometry::classify_field_aligned_candidate_arrivals;
+  using directional::geometry::surface_cell_tracing_detail::
+      field_aligned_delete_claimed_co_traces;
+  const auto fixture =
+      build_cp4c_pipeline_products_fixture("sphere_prescribed", "prescribed sphere");
+  ASSERT_TRUE(fixture.loadError.empty()) << fixture.loadError;
+  ASSERT_TRUE(fixture.atlas.has_value());
+  ASSERT_TRUE(fixture.network.has_value()) << fixture.terminalFailureStage;
+  const auto &rays = fixture.atlas->branch_topology().singularity_rays();
+  const auto &attachments =
+      fixture.atlas->branch_topology().singularity_port_attachments();
+  const FieldAlignedCurveNetworkCandidate traced = fixture.network->validation_candidate();
+  const auto arrivals = classify_field_aligned_candidate_arrivals(traced, rays, attachments);
+  ASSERT_TRUE(arrivals.has_value());
+  ASSERT_EQ(10U, arrivals->size());
+  std::set<SingularityPortId> claimedPorts;
+  for (const auto &value : *arrivals) {
+    ASSERT_TRUE(value.arrival.port.has_value());
+    ASSERT_TRUE(value.arrival.portTraced);
+    ASSERT_TRUE(value.arrival.radialEdge.has_value());
+    claimedPorts.insert(*value.arrival.port);
+  }
+  ASSERT_EQ(10U, claimedPorts.size());
+  const auto port_of = [&](const SingularityPortId id) {
+    return *std::find_if(traced.singularityPorts.begin(), traced.singularityPorts.end(),
+                         [&](const auto &port) { return port.id == id; });
+  };
+  const auto trace_of_port = [&](const SingularityPortId id) {
+    return std::find_if(traced.candidateTraces.begin(), traced.candidateTraces.end(),
+                        [&](const auto &trace) { return trace.port == id; });
+  };
+  // Every ray and attachment of one class of `singularity` names another slot.
+  const auto relabeled = [&](const FieldSingularityId singularity, const int from,
+                             const int to) {
+    auto movedRays = rays;
+    for (auto &ray : movedRays) {
+      if (ray.singularity == singularity && ray.portSlot == from) ray.portSlot = to;
+    }
+    auto movedAttachments = attachments;
+    for (auto &attachment : movedAttachments) {
+      if (attachment.singularity == singularity && attachment.localSlot == from) {
+        attachment.localSlot = to;
+      }
+    }
+    return std::pair{movedRays, movedAttachments};
+  };
+  const auto expect_rejection =
+      [&](const FieldAlignedCurveNetworkCandidate &input,
+          const std::vector<directional::authority::FieldSingularityRay> &withRays,
+          const std::vector<directional::authority::FieldSingularityPortAttachment>
+              &withAttachments,
+          const FieldAlignedCurveNetworkErrorCondition condition, const char *label) {
+        auto value = input;
+        const auto error =
+            field_aligned_delete_claimed_co_traces(value, withRays, withAttachments);
+        ASSERT_TRUE(error.has_value()) << label;
+        EXPECT_EQ(FieldAlignedCurveNetworkErrorCode::InvalidNetworkTerminalOwnership,
+                  error->code)
+            << label;
+        EXPECT_EQ(std::optional{condition}, error->condition) << label;
+        EXPECT_EQ(input.candidateTraces, value.candidateTraces) << label;
+        EXPECT_EQ(input.events, value.events) << label;
+        EXPECT_EQ(input.nodes, value.nodes) << label;
+      };
+
+  // Control: the unmodified inputs delete the ten claimed traces.
+  auto control = traced;
+  EXPECT_FALSE(field_aligned_delete_claimed_co_traces(control, rays, attachments).has_value());
+  EXPECT_EQ(14U, control.candidateTraces.size());
+
+  const auto &first = (*arrivals)[0].arrival;
+  const int firstSlot = port_of(*first.port).ordinal;
+  const auto otherSlot = std::find_if(
+      traced.singularityPorts.begin(), traced.singularityPorts.end(), [&](const auto &port) {
+        return port.singularity == first.singularity && port.ordinal != firstSlot;
+      });
+  ASSERT_NE(traced.singularityPorts.end(), otherSlot);
+  {
+    auto withoutSlotRays = rays;
+    std::erase_if(withoutSlotRays, [&](const auto &ray) {
+      return ray.singularity == first.singularity && ray.portSlot == firstSlot;
+    });
+    auto withoutSlotAttachments = attachments;
+    std::erase_if(withoutSlotAttachments, [&](const auto &attachment) {
+      return attachment.singularity == first.singularity &&
+             attachment.localSlot == firstSlot;
+    });
+    expect_rejection(traced, withoutSlotRays, withoutSlotAttachments,
+                     FieldAlignedCurveNetworkErrorCondition::
+                         CoTraceDeletionArrivalMatchesNoPort,
+                     "no port");
+  }
+  {
+    auto doubled = rays;
+    auto extra = *std::find_if(rays.begin(), rays.end(), [&](const auto &ray) {
+      return ray.singularity == first.singularity;
+    });
+    extra.alongRadialEdge = *first.radialEdge;
+    extra.portSlot = otherSlot->ordinal;
+    doubled.push_back(extra);
+    expect_rejection(traced, doubled, attachments,
+                     FieldAlignedCurveNetworkErrorCondition::
+                         CoTraceDeletionArrivalMatchesSeveralPorts,
+                     "several ports");
+  }
+  {
+    // Two arrivals at one singularity: move the first one's class onto the
+    // second one's, so both claim the second one's port.
+    std::optional<std::pair<std::size_t, std::size_t>> sameSingularity;
+    for (std::size_t a = 0U; a < arrivals->size() && !sameSingularity; ++a) {
+      for (std::size_t b = a + 1U; b < arrivals->size() && !sameSingularity; ++b) {
+        if ((*arrivals)[a].arrival.singularity == (*arrivals)[b].arrival.singularity) {
+          sameSingularity.emplace(a, b);
+        }
+      }
+    }
+    ASSERT_TRUE(sameSingularity.has_value());
+    const auto &moved = (*arrivals)[sameSingularity->first].arrival;
+    const auto &kept = (*arrivals)[sameSingularity->second].arrival;
+    const auto [movedRays, movedAttachments] =
+        relabeled(moved.singularity, port_of(*moved.port).ordinal,
+                  port_of(*kept.port).ordinal);
+    expect_rejection(traced, movedRays, movedAttachments,
+                     FieldAlignedCurveNetworkErrorCondition::CoTraceDeletionPortClaimedTwice,
+                     "claimed twice");
+  }
+  {
+    // An arrival moved onto an unclaimed port whose own trace also arrives.
+    std::optional<std::pair<std::size_t, SingularityPortId>> chain;
+    for (std::size_t a = 0U; a < arrivals->size() && !chain; ++a) {
+      const auto &arrival = (*arrivals)[a].arrival;
+      for (const auto &port : traced.singularityPorts) {
+        const auto trace = trace_of_port(port.id);
+        if (port.singularity == arrival.singularity && claimedPorts.count(port.id) == 0U &&
+            trace != traced.candidateTraces.end() && trace->terminalSingularity) {
+          chain.emplace(a, port.id);
+          break;
+        }
+      }
+    }
+    ASSERT_TRUE(chain.has_value());
+    const auto &moved = (*arrivals)[chain->first].arrival;
+    const auto [movedRays, movedAttachments] =
+        relabeled(moved.singularity, port_of(*moved.port).ordinal,
+                  port_of(chain->second).ordinal);
+    expect_rejection(traced, movedRays, movedAttachments,
+                     FieldAlignedCurveNetworkErrorCondition::CoTraceDeletionClaimedTraceArrives,
+                     "claimed trace arrives");
+  }
+  {
+    // A kept trace whose terminal contact strikes a claimed trace.
+    auto struck = traced;
+    const auto keptTrace = std::find_if(
+        struck.candidateTraces.begin(), struck.candidateTraces.end(), [&](const auto &trace) {
+          return trace.terminalContact.has_value() && claimedPorts.count(trace.port) == 0U;
+        });
+    ASSERT_NE(struck.candidateTraces.end(), keptTrace);
+    const auto claimed = trace_of_port(*claimedPorts.begin());
+    ASSERT_NE(traced.candidateTraces.end(), claimed);
+    keptTrace->terminalContact->struckTrace = claimed->id;
+    expect_rejection(struck, rays, attachments,
+                     FieldAlignedCurveNetworkErrorCondition::
+                         CoTraceDeletionKeptTraceEndsOnDeletedTrace,
+                     "kept trace ends on deleted trace");
+  }
+}
