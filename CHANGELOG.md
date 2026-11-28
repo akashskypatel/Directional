@@ -1,3 +1,7 @@
+## 2026-11-28 — TB-EXEC-195 region corner sides (execution PASS)
+
+[report](https://github.com/akashskypatel/Directional/blob/06fdba6885cc4c0349c53ccf21991a12c8f7c8eb/.agents/Directional/Architecture_M6_CP3_TB195_Region_Corner_Sides_Execution_Report_20261128.md). Run `46134852307`, result `15259492817` ZIP `f2fb104ac182cc24f1f8d6f68116eeb0fcb6d0e95f166c73d6a322aadd8f2a4b`, immutable CB-220 source `e55f01b9ac86e2dc0159771a45521cb6f35049be`, 2038/2038 checks, 1015/1015 PASS, membership1096. All 1012 inherited rows match N1–N3; row858 exact ten new lines, eight regions/32 corners/32 sides, all gap1 and CR2 counts match, genus permitted unsupported-arc-kind. Guards 1014/1015 PASS. DD5 six unequal-side discs measured. No rebuild, retry, V5, source or production promotion. Stable 67/17/50, debt1/deferred81 unchanged; independent TB-REV-195 next.
+
 ## 2026-11-28 — CB-220 region corner sides (compile only)
 
 [record](.agents/Directional/Architecture_M6_CP3_CB220_P13_Region_Corner_Sides_Code_Build_Record_20261128.md). Exact diff `35a164a8…41fa` (+434/−0), source `e55f01b9ac86e2dc0159771a45521cb6f35049be`, compile run `46131427922`, candidate `15257943465` ZIP `eb7e5ea11cb129c9d0ff33931967cf9bcf7227a831ff9af59014f44f9faa4f71`, 28/28 checks, eight GMP/GMPXX targets, `runtimeExecution=false`. Corner derivation is not wired. No runtime, gate or production promotion. Next M6-CP3-TB-EXEC-195.
